@@ -78,10 +78,10 @@ export class SoftwareAccountComponent implements OnInit {
     applicationPageChangeSub: Subject<void> = new Subject<void>()
     toEditApplicationSub: Subject<ApplicationSoftwareAccount> = new Subject<
         ApplicationSoftwareAccount
-    >()
+        >()
     toShowApplicationSub: Subject<ApplicationSoftwareAccount> = new Subject<
         ApplicationSoftwareAccount
-    >()
+        >()
 
     systems$: Observable<SystemSoftwareAccount[]>
     systemsCount$: Observable<number>
@@ -91,10 +91,10 @@ export class SoftwareAccountComponent implements OnInit {
     systemPageChangeSub: Subject<void> = new Subject<void>()
     toEditSystemSub: Subject<SystemSoftwareAccount> = new Subject<
         SystemSoftwareAccount
-    >()
+        >()
     toShowSystemSub: Subject<SystemSoftwareAccount> = new Subject<
         SystemSoftwareAccount
-    >()
+        >()
 
     middlewares$: Observable<MiddlewareSoftwareAccount[]>
     middlewaresCount$: Observable<number>
@@ -104,17 +104,17 @@ export class SoftwareAccountComponent implements OnInit {
     middlewarePageChangeSub: Subject<void> = new Subject<void>()
     toEditMiddlewareSub: Subject<MiddlewareSoftwareAccount> = new Subject<
         MiddlewareSoftwareAccount
-    >()
+        >()
     toShowMiddlewareSub: Subject<MiddlewareSoftwareAccount> = new Subject<
         MiddlewareSoftwareAccount
-    >()
+        >()
 
     constructor(
         private messageService: NzMessageService,
         private modalService: NzModalService,
         private store: Store<State>,
         private destroyService: DestroyService
-    ) {}
+    ) { }
 
     ngOnInit() {
         this.intDataSource()
@@ -127,18 +127,6 @@ export class SoftwareAccountComponent implements OnInit {
     }
 
     onSearch() {
-        if (this.tabIndex === 0) {
-            this.applicationPageIndex = 1
-            this.applicationPageSize = 10
-        }
-        if (this.tabIndex === 1) {
-            this.systemPageIndex = 1
-            this.systemPageSize = 10
-        }
-        if (this.tabIndex === 2) {
-            this.middlewarePageIndex = 1
-            this.middlewarePageSize = 10
-        }
         this.toSearchSub.next()
     }
 
@@ -228,7 +216,7 @@ export class SoftwareAccountComponent implements OnInit {
     private initCreateApplication(): void {
         this.toCreateSub
             .asObservable()
-            .filter(() => this.tabIndex === 0)
+            .filter(() => this.isApplicationTab())
             .mergeMap(() => {
                 return this.modalService.open({
                     title: '新建应用软件台帐',
@@ -249,7 +237,7 @@ export class SoftwareAccountComponent implements OnInit {
     private initCreateSystem(): void {
         this.toCreateSub
             .asObservable()
-            .filter(() => this.tabIndex === 1)
+            .filter(() => this.isSystemTab())
             .mergeMap(() => {
                 return this.modalService.open({
                     title: '新建系统软件台帐',
@@ -270,7 +258,7 @@ export class SoftwareAccountComponent implements OnInit {
     private initCreateMiddleware(): void {
         this.toCreateSub
             .asObservable()
-            .filter(() => this.tabIndex === 2)
+            .filter(() => this.isMiddlewareTab())
             .mergeMap(() => {
                 return this.modalService.open({
                     title: '新建中间件台帐',
@@ -291,7 +279,7 @@ export class SoftwareAccountComponent implements OnInit {
     private initSearchApplicationAndPageChange(): void {
         this.toSearchSub
             .asObservable()
-            .filter(() => this.tabIndex === 0)
+            .filter(() => this.isApplicationTab())
             .takeUntil(this.destroyService)
             .subscribe(() => {
                 this.store.dispatch(
@@ -304,7 +292,11 @@ export class SoftwareAccountComponent implements OnInit {
         Observable.merge(
             this.applicationPageChangeSub.asObservable(),
             this.toSearchSub
-                .filter(() => this.tabIndex === 0)
+                .filter(() => this.isApplicationTab())
+                .do(() => {
+                    this.applicationPageIndex = 1
+                    this.applicationPageSize = 10
+                })
                 .withLatestFrom(
                     this.store.select(getApplicationSoftwareAccountsPageParams)
                 )
@@ -337,12 +329,12 @@ export class SoftwareAccountComponent implements OnInit {
     private initSearchSystemAndPageChange(): void {
         this.toSearchSub
             .asObservable()
-            .filter(() => this.tabIndex === 1)
+            .filter(() => this.isSystemTab())
             .takeUntil(this.destroyService)
             .subscribe(() => {
                 console.log(
                     `to search system software accounts; search text: ${
-                        this.searchCtrl.value
+                    this.searchCtrl.value
                     };`
                 )
                 this.store.dispatch(
@@ -355,7 +347,11 @@ export class SoftwareAccountComponent implements OnInit {
         Observable.merge(
             this.systemPageChangeSub.asObservable(),
             this.toSearchSub
-                .filter(() => this.tabIndex === 1)
+                .filter(() => this.isSystemTab())
+                .do(() => {
+                    this.systemPageIndex = 1
+                    this.systemPageSize = 10
+                })
                 .withLatestFrom(
                     this.store.select(getSystemSoftwareAccountsPageParams)
                 )
@@ -388,12 +384,12 @@ export class SoftwareAccountComponent implements OnInit {
     private initSearchMiddlewareAndPageChange(): void {
         this.toSearchSub
             .asObservable()
-            .filter(() => this.tabIndex === 2)
+            .filter(() => this.isMiddlewareTab())
             .takeUntil(this.destroyService)
             .subscribe(() => {
                 console.log(
                     `to search middleware software accounts; search text: ${
-                        this.searchCtrl.value
+                    this.searchCtrl.value
                     };`
                 )
                 this.store.dispatch(
@@ -406,7 +402,11 @@ export class SoftwareAccountComponent implements OnInit {
         Observable.merge(
             this.middlewarePageChangeSub.asObservable(),
             this.toSearchSub
-                .filter(() => this.tabIndex === 2)
+                .filter(() => this.isMiddlewareTab())
+                .do(() => {
+                    this.middlewarePageIndex = 1
+                    this.middlewarePageSize = 10
+                })
                 .withLatestFrom(
                     this.store.select(getMiddlewareSoftwareAccountsPageParams)
                 )
@@ -551,5 +551,17 @@ export class SoftwareAccountComponent implements OnInit {
             .subscribe(account => {
                 console.log(`to show middleware software account success`)
             })
+    }
+
+    private isApplicationTab(): boolean {
+        return this.tabIndex === 0
+    }
+
+    private isSystemTab(): boolean {
+        return this.tabIndex === 1
+    }
+
+    private isMiddlewareTab(): boolean {
+        return this.tabIndex === 2
     }
 }
