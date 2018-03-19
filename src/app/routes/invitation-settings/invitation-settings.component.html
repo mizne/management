@@ -1,0 +1,205 @@
+<pro-header></pro-header>
+
+<div nz-row [nzGutter]="24">
+    <div nz-col [nzSpan]="6">
+        <nz-card nzTitle="基本设置" nzNoPadding>
+            <a (click)="active=1" class="d-block py-sm px-md" [ngClass]="{'bg-primary-light text-white':active===1}">
+                日程设置</a>
+            <a (click)="active=2" class="d-block py-sm px-md" [ngClass]="{'bg-primary-light text-white':active===2}">
+                托管审核</a>
+            <a (click)="active=3" class="d-block py-sm px-md" [ngClass]="{'bg-primary-light text-white':active===3}">
+                关键字过滤</a>
+            <a (click)="active=4" class="d-block py-sm px-md" [ngClass]="{'bg-primary-light text-white':active===4}">
+                消息模版</a>
+        </nz-card>
+    </div>
+
+    <div nz-col [nzSpan]="18">
+        <nz-card nzTitle="日程设置" *ngIf="active === 1">
+            <ng-template #extra>
+                <button nz-button [nzType]="'primary'" [nzShape]="'circle'" (click)="refreshCalendarSettings()">
+                    <i class="anticon anticon-sync"></i>
+                </button>
+            </ng-template>
+            <div nz-row [nzGutter]="64">
+                <div nz-col [nzSpan]="16">
+                    <nz-alert [nzType]="'info'">
+                        <span alert-body>
+                            <span>通过填写展会开始、结束日期和时间，约请时间间隔，午餐时间，确定可用的约请时间段。</span>
+                        </span>
+                    </nz-alert>
+                </div>
+            </div>
+
+            <div nz-row [nzGutter]="64" class="mt-md">
+                <div nz-col [nzSpan]="16">
+                    <form nz-form [formGroup]="calendarForm" (ngSubmit)="saveCalendar()" [nzLayout]="'vertical'">
+                        <div nz-form-item nz-row>
+                            <div nz-form-label nz-col>
+                                <label for="date" nz-form-item-required>日期</label>
+                            </div>
+                            <div nz-form-control nz-col>
+                                <nz-datepicker formControlName="startDate" [nzFormat]="'YYYY-MM-DD'"></nz-datepicker>
+                                <nz-datepicker class="ml-lg" formControlName="endDate" [nzFormat]="'YYYY-MM-DD'"></nz-datepicker>
+                            </div>
+                        </div>
+
+                        <div nz-form-item nz-row>
+                            <div nz-form-label nz-col>
+                                <label for="time" nz-form-item-required>时间</label>
+                            </div>
+                            <div nz-form-control nz-col>
+                                <nz-timepicker formControlName="startTime" nzPlaceHolder="开始时间" nzFormat="HH:mm"></nz-timepicker>
+                                <nz-timepicker class="ml-lg" formControlName="endTime" nzPlaceHolder="结束时间" nzFormat="HH:mm"></nz-timepicker>
+                            </div>
+                        </div>
+
+                        <div nz-form-item nz-row>
+                            <div nz-form-label nz-col>
+                                <label for="duration" nz-form-item-required>间隔</label>
+                            </div>
+                            <div nz-form-control nz-col>
+                                <nz-radio-group formControlName="duration">
+                                    <label nz-radio-button [nzValue]="'30'">
+                                        <span>30分钟</span>
+                                    </label>
+                                    <label nz-radio-button [nzValue]="'60'" class="ml-lg">
+                                        <span>1小时</span>
+                                    </label>
+                                </nz-radio-group>
+                            </div>
+                        </div>
+
+                        <div nz-form-item nz-row>
+                            <div nz-form-label nz-col>
+                                <label for="lunch" nz-form-item-required>午餐</label>
+                            </div>
+                            <div nz-form-control nz-col>
+                                <nz-timepicker formControlName="startLunch" nzPlaceHolder="开始时间" nzFormat="HH:mm"></nz-timepicker>
+                                <nz-timepicker class="ml-lg" formControlName="endLunch" nzPlaceHolder="结束时间" nzFormat="HH:mm"></nz-timepicker>
+                            </div>
+                        </div>
+
+                        <div nz-row class="text-center">
+                            <button nz-button type="submit" nzSize="large" [nzLoading]="calendarSettingsLoading$ | async" [nzType]="'primary'">保存设置</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </nz-card>
+
+        <nz-card nzTitle="托管审核" *ngIf="active === 2">
+            <ng-template #extra>
+                <button nz-button [nzType]="'primary'" [nzShape]="'circle'" (click)="refreshApprovalSettings()">
+                    <i class="anticon anticon-sync"></i>
+                </button>
+            </ng-template>
+            <div nz-row [nzGutter]="64">
+                <div nz-col [nzSpan]="16">
+                    <nz-alert [nzType]="'info'">
+                        <span alert-body>
+                            <span>开启托管审核, 将自动按关键字过滤来审核收到的约请记录。</span>
+                        </span>
+                    </nz-alert>
+                </div>
+            </div>
+            <div nz-row [nzGutter]="64" class="mt-md">
+                <div nz-col [nzSpan]="16">
+                    <nz-switch [formControl]="autoApprove">
+                        <span checked>开</span>
+                        <span unchecked>关</span>
+                    </nz-switch>
+                </div>
+            </div>
+        </nz-card>
+
+        <nz-card nzTitle="关键字过滤" *ngIf="active === 3">
+            <ng-template #extra>
+                <button nz-button [nzType]="'primary'" [nzShape]="'circle'" (click)="refreshKeySettings()">
+                    <i class="anticon anticon-sync"></i>
+                </button>
+            </ng-template>
+            <div nz-row [nzGutter]="64">
+                <div nz-col [nzSpan]="16">
+                    <nz-alert [nzType]="'info'">
+                        <span alert-body>
+                            <span>{{ (keys)?.length > 0 ? '已有关键字' : '还没有关键字'}}</span>
+                        </span>
+                    </nz-alert>
+                </div>
+            </div>
+
+            <div nz-row [nzGutter]="64" class="mt-md">
+                <div nz-col [nzSpan]="16">
+                    <nz-tag class="mb-md" *ngFor="let key of keys" nzClosable (nzClose)="deleteKey(key)">{{key}}</nz-tag>
+                </div>
+            </div>
+
+            <div nz-row [nzGutter]="64" class="mt-md">
+                <div nz-col [nzSpan]="16">
+                    <nz-input [formControl]="keyInput" nzPlaceHolder="填写关键字"></nz-input>
+                </div>
+            </div>
+
+            <div nz-row [nzGutter]="64" class="mt-md text-center">
+                <div nz-col [nzSpan]="16">
+                    <button nz-button [nzType]="'primary'" (click)="createKey(keyInput.value)">
+                        <span>添加</span>
+                    </button>
+                </div>
+            </div>
+        </nz-card>
+
+        <nz-card nzTitle="消息模版" *ngIf="active === 4">
+            <ng-template #extra>
+                <button nz-button [nzType]="'primary'" [nzShape]="'circle'" (click)="refreshTemplateSettings()">
+                    <i class="anticon anticon-sync"></i>
+                </button>
+            </ng-template>
+
+            <div nz-row [nzGutter]="64">
+                <div nz-col [nzSpan]="16">
+                    <nz-alert [nzType]="'info'">
+                        <span alert-body>
+                            <span [innerText]="line0"></span>
+                            <span [innerText]="line1"></span>
+                            <pre><code [innerText]="line2"></code></pre>
+                            <pre><code [innerText]="line3"></code></pre>
+                            <pre><code [innerText]="line4"></code></pre>
+                            <pre><code [innerText]="line5"></code></pre>
+                            <pre><code [innerText]="line6"></code></pre>
+                            <pre><code [innerText]="line7"></code></pre>
+                            <pre><code [innerText]="line8"></code></pre>
+                            <pre><code [innerText]="line9"></code></pre>
+                            <pre><code [innerText]="line10"></code></pre>
+                            <pre><code [innerText]="line11"></code></pre>
+                            <pre><code [innerText]="line12"></code></pre>
+                        </span>
+                    </nz-alert>
+                </div>
+            </div>
+
+            <nz-tabset class="mt-md" [(nzSelectedIndex)]="templateIndex">
+                <nz-tab *ngFor="let tmp of templates">
+                    <ng-template #nzTabHeading>
+                        <i [ngClass]="tmp.icon"></i>
+                        {{tmp.name}}
+                    </ng-template>
+                    <div nz-row [nzGutter]="64" class="mt-md">
+                        <div nz-col [nzSpan]="16">
+                            <nz-input nzType="textarea" [formControl]="tmp.ctrl" nzPlaceHolder="填写消息模版"></nz-input>
+                        </div>
+                    </div>
+                </nz-tab>
+            </nz-tabset>
+
+            <div nz-row [nzGutter]="64" class="mt-md text-center">
+                <div nz-col [nzSpan]="16">
+                    <button nz-button [nzType]="'primary'" [nzLoading]="templateSettingsLoading$ | async" (click)="saveMsgTemplate(msgTemplateCtrl.value)">
+                        <span>{{'保存' + templateName + '模版'}}</span>
+                    </button>
+                </div>
+            </div>
+        </nz-card>
+    </div>
+</div>

@@ -1,0 +1,64 @@
+<pro-header></pro-header>
+
+<nz-card [nzBordered]="false">
+    <div class="mb-md">
+        <!-- <button nz-button (click)="toCreate()" [nzType]="'primary'" [nzSize]="'large'">
+        <i class="anticon anticon-plus"></i>
+        <span>新建</span>
+      </button> -->
+        <ng-container>
+            <button nz-button [nzSize]="'large'" class="ml-sm" (click)="toBatchDelete()">批量删除</button>
+            <!-- <button nz-button [nzSize]="'large'" class="ml-sm" (click)="toBatchRejectVisitor()">批量拒绝</button> -->
+        </ng-container>
+    </div>
+
+    <nz-table #nzTable1 [nzAjaxData]="exhibitors$ | async" [nzShowSizeChanger]="true" [nzLoading]="loading$ | async" [nzTotal]="exhibitorsCount$ | async"
+        [(nzPageIndex)]="pageIndex" (nzPageIndexChange)="fetchTerminals()" [(nzPageSize)]="pageSize" (nzPageSizeChange)="fetchTerminals()"
+        [nzShowFooter]="true">
+        <thead nz-thead>
+            <tr>
+                <th nz-th [nzCheckbox]="true">
+                    <label nz-checkbox [ngModel]="allChecked" [nzIndeterminate]="indeterminate" (ngModelChange)="checkAll($event)"></label>
+                </th>
+                <th nz-th>
+                    <span>展商名称</span>
+                </th>
+                <th nz-th>
+                    <span>扫名片数</span>
+                </th>
+                <th nz-th>
+                    <span>邀请买家数</span>
+                </th>
+                <th nz-th>
+                    <span>邀请展商数</span>
+                </th>
+                <th nz-th>
+                    <span>操作</span>
+                </th>
+            </tr>
+        </thead>
+        <tbody nz-tbody>
+            <tr nz-tbody-tr *ngFor="let data of nzTable1.data">
+                <td nz-td [nzCheckbox]="true">
+                    <label nz-checkbox [nzDisabled]="data.disabled" [(ngModel)]="data.checked" (ngModelChange)="refreshStatus($event, data.id)">
+                    </label>
+                </td>
+                <td nz-td>{{data.name}}</td>
+                <td nz-td>{{data.scanCardsCount}}</td>
+                <td nz-td>{{data.inviteVisitorsCount}}</td>
+                <td nz-td>{{data.inviteExhibitorsCount}}</td>
+                <td nz-td>
+                    <span>
+                        <a [routerLink]="data.id">查看</a>
+                        <span nz-table-divider></span>
+                        <a (click)="toDelete(data.id)">删除</a>
+                    </span>
+                </td>
+            </tr>
+        </tbody>
+        <span nz-table-footer>
+            <i class="anticon anticon-database"></i>
+            {{'共 ' + (exhibitorsCount$ | async) + ' 条'}}
+        </span>
+    </nz-table>
+</nz-card>

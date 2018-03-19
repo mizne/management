@@ -1,0 +1,151 @@
+<pro-header>
+    <ng-template #breadcrumb>
+        <nz-breadcrumb>
+            <nz-breadcrumb-item>
+                <a [routerLink]="['/']">首页</a>
+            </nz-breadcrumb-item>
+            <nz-breadcrumb-item>工作台</nz-breadcrumb-item>
+        </nz-breadcrumb>
+    </ng-template>
+    <ng-template #content>
+        <div class="page-header">
+            <div class="avatar">
+                <nz-avatar nzSize="large" nzSrc="https://gw.alipayobjects.com/zos/rmsportal/lctvVCLfRpYCkYxAsiVQ.png"></nz-avatar>
+            </div>
+            <div class="desc">
+                <div class="desc-title">{{ (statistics$ | async)?.name }}</div>
+                <p>{{ statistics$ | async | exhibitionDesc }}</p>
+            </div>
+        </div>
+    </ng-template>
+    <ng-template #extra>
+        <div class="page-extra">
+            <div>
+                <p>展商数</p>
+                <p>{{ (statistics$ | async)?.exhibitorCount }}</p>
+            </div>
+            <div>
+                <p>买家数</p>
+                <p>{{ (statistics$ | async)?.visitorCount }}</p>
+            </div>
+            <div>
+                <p>约请总数</p>
+                <p>{{ (statistics$ | async)?.invitationCount }}</p>
+            </div>
+        </div>
+    </ng-template>
+</pro-header>
+
+<div nz-row nzGutter="16">
+    <div nz-col nzXs="24" nzSm="12" nzMd="6" class="mb-md">
+        <div nz-row nzType="flex" nzAlign="middle" class="bg-green text-white text-center rounded-md">
+            <div nz-col nzSpan="10" class="p-md">
+                <i class="anticon anticon-shop size-5x"></i>
+            </div>
+            <div nz-col nzSpan="14" class="py-md">
+                <h1 class="text-white">{{ (statistics$ | async)?.exhibitorCount }}</h1>
+                <p>展商数</p>
+            </div>
+            <a nz-col nzSpan="24" routerLink="/exhibitor-management" class="d-block p-sm bg-grey-darker text-white">
+                <div class="float-left">查看详情</div>
+                <div class="float-right">
+                    <i class="fa fa-chevron-circle-right"></i>
+                </div>
+            </a>
+        </div>
+    </div>
+    <div nz-col nzXs="24" nzSm="12" nzMd="6" class="mb-md">
+        <div nz-row nzType="flex" nzAlign="middle" class="bg-primary text-white text-center rounded-md">
+            <div nz-col nzSpan="10" class="p-md">
+                <i class="anticon anticon-wallet size-5x"></i>
+            </div>
+            <div nz-col nzSpan="14" class="py-md">
+                <h1 class="text-white">{{ (statistics$ | async)?.visitorCount }}</h1>
+                <p>买家数</p>
+            </div>
+            <a nz-col nzSpan="24" routerLink="/visitor-management" class="d-block p-sm bg-grey-darker text-white">
+                <div class="float-left">查看详情</div>
+                <div class="float-right">
+                    <i class="fa fa-chevron-circle-right"></i>
+                </div>
+            </a>
+        </div>
+    </div>
+    <div nz-col nzXs="24" nzSm="12" nzMd="6" class="mb-md">
+        <div nz-row nzType="flex" nzAlign="middle" class="bg-warning text-white text-center rounded-md">
+            <div nz-col nzSpan="10" class="p-md">
+                <i class="anticon anticon-usb size-5x"></i>
+            </div>
+            <div nz-col nzSpan="14" class="py-md">
+                <h1 class="text-white">{{ (statistics$ | async)?.terminalCount }}</h1>
+                <p>终端数</p>
+            </div>
+            <a nz-col nzSpan="24" routerLink="/terminal-management" class="d-block p-sm bg-grey-darker text-white">
+                <div class="float-left">查看详情</div>
+                <div class="float-right">
+                    <i class="fa fa-chevron-circle-right"></i>
+                </div>
+            </a>
+        </div>
+    </div>
+    <div nz-col nzXs="24" nzSm="12" nzMd="6" class="mb-md">
+        <div nz-row nzType="flex" nzAlign="middle" class="bg-red text-white text-center rounded-md">
+            <div nz-col nzSpan="10" class="p-md">
+                <i class="anticon anticon-schedule size-5x"></i>
+            </div>
+            <div nz-col nzSpan="14" class="py-md">
+                <h1 class="text-white">{{ (statistics$ | async)?.invitationCount }}</h1>
+                <p>约请数</p>
+            </div>
+            <a nz-col nzSpan="24" routerLink="/invitation-management" class="d-block p-sm bg-grey-darker text-white">
+                <div class="float-left">查看详情</div>
+                <div class="float-right">
+                    <i class="fa fa-chevron-circle-right"></i>
+                </div>
+            </a>
+        </div>
+    </div>
+</div>
+
+<div nz-row nzGutter="16">
+    <nz-card nzTitle="快捷菜单" [nzBordered]="false" nzNoPadding class="mb-lg">
+        <div class="shortcuts p-md" nz-row [nzGutter]="24">
+            <a nz-col nzMd="4" nzXs="8" *ngFor="let item of links" [routerLink]="item.url" class="text-center py-md px-lg">
+                <i [ngClass]="['anticon', 'size-3x', item.icon]"></i>
+                <div class="mt-sm hidden-xs">{{item.title}}</div>
+            </a>
+        </div>
+    </nz-card>
+</div>
+
+
+<div nz-row [nzGutter]="24">
+    <div nz-col nzXs="24" nzSm="24" nzMd="16">
+        <nz-card nzTitle="约请动态" [nzLoading]="activitiesLoading$ | async" [nzBordered]="false" nzNoPadding class="mb-lg active-card">
+            <ng-template #extra>
+                <button nz-button [nzType]="'primary'" [nzShape]="'circle'" (click)="refreshInvitations()">
+                    <i class="anticon anticon-sync"></i>
+                </button>
+            </ng-template>
+            <nz-list nzSize="large">
+                <nz-list-item *ngFor="let item of activities$ | async" class="activities">
+                    <nz-list-item-meta [nzTitle]="activeTitle" [nzDescription]="activeDescription">
+                        <ng-template #activeTitle>
+                            <span class="event">{{item.content}}</span>
+                        </ng-template>
+                        <ng-template #activeDescription>
+                            <span class="datetime" title="{{item.time}}">{{item.time | timeAgo}}</span>
+                        </ng-template>
+                    </nz-list-item-meta>
+                </nz-list-item>
+            </nz-list>
+        </nz-card>
+    </div>
+    <div nz-col nzXs="24" nzSm="24" nzMd="8">
+        <nz-card nzTitle="展会活力指数" [nzBordered]="false" class="mb-lg">
+            <ng-template #body>
+                <radar [data]="radarData" [height]="343" [hasLegend]="true"></radar>
+            </ng-template>
+        </nz-card>
+    </div>
+</div>

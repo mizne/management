@@ -1,0 +1,120 @@
+<pro-header></pro-header>
+
+<nz-card [nzTitle]="'买家约请审批历史'" [nzBordered]="false">
+    <div class="mb-md">
+        <ng-container>
+            <button nz-button [nzSize]="'large'" class="ml-sm" (click)="toBatchDeleteVisitor()">批量删除</button>
+        </ng-container>
+    </div>
+
+    <nz-table #nzTable1 [nzAjaxData]="visitorApprovalItems$ | async" [nzShowSizeChanger]="true" [nzLoading]="visitorLoading$ | async"
+        [nzTotal]="visitorApprovalItemsCount$ | async" [(nzPageIndex)]="visitorPageIndex" (nzPageIndexChange)="fetchVisitorApprovalItems()"
+        [(nzPageSize)]="visitorPageSize" (nzPageSizeChange)="fetchVisitorApprovalItems()" [nzShowFooter]="true">
+        <thead nz-thead>
+            <tr>
+                <th nz-th [nzCheckbox]="true">
+                    <label nz-checkbox [ngModel]="visitorAllChecked" [nzIndeterminate]="visitorIndeterminate" (ngModelChange)="checkVisitorAll($event)"></label>
+                </th>
+                <th nz-th>
+                    <span>审批时间</span>
+                </th>
+                <th nz-th>
+                    <span>邀请人</span>
+                </th>
+                <th nz-th>
+                    <span>受邀人</span>
+                </th>
+                <th nz-th>
+                    <span>状态</span>
+                </th>
+
+                <th nz-th>
+                    <span>操作</span>
+                </th>
+            </tr>
+        </thead>
+        <tbody nz-tbody>
+            <tr nz-tbody-tr *ngFor="let data of nzTable1.data">
+                <td nz-td [nzCheckbox]="true">
+                    <label nz-checkbox [nzDisabled]="data.disabled" [(ngModel)]="data.checked" (ngModelChange)="refreshVisitorStatus($event, data.id)">
+                    </label>
+                </td>
+                <td nz-td>{{data.approvedAt}}</td>
+                <td nz-td>{{data.initiator}}</td>
+                <td nz-td>{{data.receiver}}</td>
+                <td nz-td>{{data.status | visitorInvitationStatus : data.reason}}</td>
+                <td nz-td>
+                    <span>
+                        <a [routerLink]="'/approval-management/to-approve/visitor/' + data.id">查看</a>
+                        <span nz-table-divider></span>
+                        <a (click)="toDeleteVisitor(data.id)">删除</a>
+                    </span>
+                </td>
+            </tr>
+        </tbody>
+        <span nz-table-footer>
+            <i class="anticon anticon-database"></i>
+            {{'共 ' + (visitorApprovalItemsCount$ | async) + ' 条'}}
+        </span>
+    </nz-table>
+</nz-card>
+
+
+<nz-card [nzTitle]="'展商约请审批历史'" [nzBordered]="false">
+    <div class="mb-md">
+        <ng-container>
+            <button nz-button [nzSize]="'large'" class="ml-sm" (click)="toBatchDeleteExhibitor()">批量删除</button>
+        </ng-container>
+    </div>
+
+    <nz-table #nzTable2 [nzAjaxData]="exhibitorApprovalItems$ | async" [nzShowSizeChanger]="true" [nzLoading]="exhibitorLoading$ | async"
+        [nzTotal]="exhibitorApprovalItemsCount$ | async" [(nzPageIndex)]="exhibitorPageIndex" (nzPageIndexChange)="fetchExhibitorApprovalItems()"
+        [(nzPageSize)]="exhibitorPageSize" (nzPageSizeChange)="fetchExhibitorApprovalItems()" [nzShowFooter]="true">
+        <thead nz-thead>
+            <tr>
+                <th nz-th [nzCheckbox]="true">
+                    <label nz-checkbox [ngModel]="exhibitorAllChecked" [nzIndeterminate]="exhibitorIndeterminate" (ngModelChange)="checkExhibitorAll($event)"></label>
+                </th>
+                <th nz-th>
+                    <span>审批时间</span>
+                </th>
+                <th nz-th>
+                    <span>邀请人</span>
+                </th>
+                <th nz-th>
+                    <span>受邀人</span>
+                </th>
+                <th nz-th>
+                    <span>状态</span>
+                </th>
+
+                <th nz-th>
+                    <span>操作</span>
+                </th>
+            </tr>
+        </thead>
+        <tbody nz-tbody>
+            <tr nz-tbody-tr *ngFor="let data of nzTable2.data">
+                <td nz-td [nzCheckbox]="true">
+                    <label nz-checkbox [nzDisabled]="data.disabled" [(ngModel)]="data.checked" (ngModelChange)="refreshExhibitorStatus($event, data.id)">
+                    </label>
+                </td>
+                <td nz-td>{{data.approvedAt}}</td>
+                <td nz-td>{{data.initiator}}</td>
+                <td nz-td>{{data.receiver}}</td>
+                <td nz-td>{{data.status | exhibitorInvitationStatus : data.reason}}</td>
+                <td nz-td>
+                    <span>
+                        <a [routerLink]="'/approval-management/to-approve/exhibitor/' + data.id">查看</a>
+                        <span nz-table-divider></span>
+                        <a (click)="toDeleteExhibitor(data.id)">删除</a>
+                    </span>
+                </td>
+            </tr>
+        </tbody>
+        <span nz-table-footer>
+            <i class="anticon anticon-database"></i>
+            {{'共 ' + (exhibitorApprovalItemsCount$ | async) + ' 条'}}
+        </span>
+    </nz-table>
+</nz-card>

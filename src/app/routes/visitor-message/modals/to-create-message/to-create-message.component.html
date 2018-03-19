@@ -1,0 +1,55 @@
+<form nz-form [formGroup]="form" [nzLayout]="'vertical'">
+    <nz-card [nzBordered]="false">
+        <div nz-form-item nz-row>
+            <div nz-form-label nz-col>
+                <label nz-form-item-required>标题</label>
+            </div>
+            <div nz-form-control nz-col nzHasFeedback [nzValidateStatus]="title">
+                <nz-input formControlName="title" nzPlaceHolder="请输入标题" nzSize="large"></nz-input>
+                <p nz-form-explain *ngIf="(title.dirty || title.touched) && title.errors?.required">
+                    请输入标题
+                </p>
+            </div>
+        </div>
+        <div nz-form-item nz-row>
+            <div nz-form-label nz-col>
+                <label nz-form-item-required>内容</label>
+            </div>
+            <div nz-form-control nz-col nzHasFeedback [nzValidateStatus]="content">
+                <nz-input [nzRows]="2" [nzType]="'textarea'" formControlName="content" nzPlaceHolder="请输入内容" nzSize="large"></nz-input>
+                <p nz-form-explain *ngIf="(content.dirty || content.touched) && content.errors?.required">
+                    请输入内容
+                </p>
+            </div>
+        </div>
+        <!-- <div nz-form-item nz-row>
+            <div nz-form-label nz-col>
+                <label>目标买家</label>
+            </div>
+            <div nz-form-control nz-col nzHasFeedback [nzValidateStatus]="receiver">
+                <nz-select nzAllowClear [nzPlaceHolder]="'搜索买家'" [nzFilter]="false" formControlName="receiver" (nzSearchChange)="searchChange($event)"
+                    (nzScrollToBottom)="searchMore()" [nzNotFoundContent]="'无法找到'" nzShowSearch>
+                    <nz-option *ngFor="let option of searchOptions$ | async" [nzLabel]="option.name" [nzValue]="option.id">
+                    </nz-option>
+                    <nz-option [nzLabel]="'disabled'" [nzDisabled]="true" [nzValue]="'disabled'" *ngIf="searchLoading$ | async">
+                        <ng-template #nzOptionTemplate>
+                            <i class="anticon anticon-loading anticon-spin"></i> Loading...
+                        </ng-template>
+                    </nz-option>
+                </nz-select>
+            </div>
+        </div>
+        <div nz-form-item nz-row>
+            <div nz-form-control>
+                <label nz-checkbox formControlName="isTotal">
+                    <span>发送给全部买家</span>
+                </label>
+            </div>
+        </div> -->
+    </nz-card>
+
+    <div class="customize-footer">
+        <button nz-button nzSize="large" (click)="toCancel()">取消</button>
+        <button nz-button (click)="toSave()" [nzType]="'primary'" nzSize="large">发送</button>
+    </div>
+</form>

@@ -1,0 +1,32 @@
+<pro-header [title]="'买家详情'"></pro-header>
+
+<nz-spin [nzTip]="'正在获取详情...'" [nzSpinning]="loading$ | async">
+    <nz-card [nzNoHovering]="true" [nzBordered]="false">
+        <ng-template #body>
+            <desc-list size="large" title="基本信息" class="mb-lg">
+                <desc-list-item term="姓名">{{(visitorDetail$ | async)?.name}}</desc-list-item>
+                <desc-list-item term="性别">{{(visitorDetail$ | async)?.sex | visitorSex}}</desc-list-item>
+                <desc-list-item term="手机">{{(visitorDetail$ | async)?.phone}}</desc-list-item>
+                <desc-list-item term="邮箱">{{(visitorDetail$ | async)?.email}}</desc-list-item>
+            </desc-list>
+            <nz-divider class="mb-lg"></nz-divider>
+            <desc-list size="large" title="公司信息" class="mb-lg">
+                <desc-list-item term="公司名称">{{(visitorDetail$ | async)?.companyName}}</desc-list-item>
+                <desc-list-item term="公司地址">{{(visitorDetail$ | async)?.companyAddress}}</desc-list-item>
+                <desc-list-item term="公司部门">{{(visitorDetail$ | async)?.department}}</desc-list-item>
+            </desc-list>
+            <nz-divider class="mb-lg"></nz-divider>
+            <desc-list size="large" title="地址信息" class="mb-lg">
+                <desc-list-item term="省份">{{(visitorDetail$ | async)?.province}}</desc-list-item>
+                <desc-list-item term="城市">{{(visitorDetail$ | async)?.city}}</desc-list-item>
+                <desc-list-item term="地区">{{(visitorDetail$ | async)?.county}}</desc-list-item>
+            </desc-list>
+            <nz-divider class="mb-lg"></nz-divider>
+            <desc-list size="large" title="更多" class="mb-lg">
+                <desc-list-item term="参观目的">{{(visitorDetail$ | async)?.objective}}</desc-list-item>
+                <desc-list-item term="备注">{{(visitorDetail$ | async)?.remark}}</desc-list-item>
+            </desc-list>
+            <nz-divider class="mb-lg"></nz-divider>
+        </ng-template>
+    </nz-card>
+</nz-spin>
