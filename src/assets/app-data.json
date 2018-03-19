@@ -1,6 +1,6 @@
 {
     "app": {
-        "name": "会展人主办方后台管理系统",
+        "name": "国电后台管理系统",
         "description": "Ng-zorro admin panel front-end framework"
     },
     "user": {
@@ -8,20 +8,24 @@
         "avatar": "./assets/img/zorro.svg",
         "email": "cipchk@qq.com"
     },
-    "menu": [{
+    "menu": [
+        {
             "text": "主导航",
             "translate": "main_navigation",
             "group": true,
-            "children": [{
+            "children": [
+                {
                     "text": "主页",
                     "translate": "dashboard",
                     "link": "/dashboard",
                     "icon": "icon-speedometer",
-                    "children": [{
-                        "text": "工作台",
-                        "link": "/dashboard/workspace",
-                        "translate": "dashboard_workspace"
-                    }]
+                    "children": [
+                        {
+                            "text": "工作台",
+                            "link": "/dashboard/workspace",
+                            "translate": "dashboard_workspace"
+                        }
+                    ]
                 },
                 {
                     "text": "快捷菜单",
@@ -36,115 +40,81 @@
             "text": "基础",
             "translate": "basic",
             "group": true,
-            "children": [{
-                    "text": "消息管理",
-                    "translate": "message-management",
-                    "link": "/message-management",
+            "children": [
+                {
+                    "text": "台帐管理",
+                    "translate": "account-management",
+                    "link": "/account-management",
                     "icon": "anticon anticon-message",
                     "acl": "user1",
-                    "children": [{
-                            "text": "平台消息",
-                            "link": "/message-management/platform-message",
-                            "translate": "platform-message"
+                    "children": [
+                        {
+                            "text": "软件台帐",
+                            "link": "/account-management/software-account",
+                            "translate": "software-account"
                         },
                         {
-                            "text": "展商消息",
-                            "link": "/message-management/exhibitor-message",
-                            "translate": "exhibitor-message"
-                        },
-                        {
-                            "text": "买家消息",
-                            "link": "/message-management/visitor-message",
-                            "translate": "visitor-message"
+                            "text": "服务器台帐",
+                            "link": "/account-management/server-account",
+                            "translate": "server-account"
                         }
                     ]
                 },
                 {
-                    "text": "审核管理",
-                    "translate": "approval-management",
-                    "link": "/approval-management",
+                    "text": "资产管理",
+                    "translate": "assets-management",
+                    "link": "/assets-management",
                     "icon": "anticon anticon-hourglass",
                     "acl": "user1",
-                    "children": [{
+                    "children": [
+                        {
+                            "text": "资源申请管理",
+                            "link": "/assets-management/resource-application",
+                            "translate": "resource-application",
+                            "shortcut": true
+                        },
+                        {
                             "text": "待我审批",
-                            "link": "/approval-management/to-approve",
+                            "link": "/assets-management/to-approve",
                             "translate": "to-approve",
                             "shortcut": true
                         },
                         {
-                            "text": "审批历史",
-                            "link": "/approval-management/approval-history",
-                            "translate": "approval-history",
+                            "text": "我的申请",
+                            "link": "/assets-management/my-apply",
+                            "translate": "my-apply",
+                            "shortcut": true
+                        },
+                        {
+                            "text": "分配入库",
+                            "link": "/assets-management/distribution-treasury",
+                            "translate": "distribution-treasury",
+                            "shortcut": true
+                        },
+                        {
+                            "text": "资产回收",
+                            "link": "/assets-management/assets-recovery",
+                            "translate": "assets-recovery",
                             "shortcut": true
                         }
                     ]
                 },
                 {
-                    "text": "约请管理",
-                    "translate": "invitation-management",
-                    "link": "/invitation-management",
+                    "text": "监控管理",
+                    "translate": "monitor-management",
+                    "link": "/monitor-management",
                     "icon": "anticon anticon-schedule",
                     "acl": "user1",
-                    "children": [{
-                        "text": "约请查询",
-                        "link": "/invitation-management/invitation-query",
-                        "translate": "invitation-query",
-                        "shortcut": true
-                    }]
-                },
-                {
-                    "text": "展商管理",
-                    "translate": "exhibitor-management",
-                    "link": "/exhibitor-management",
-                    "icon": "anticon anticon-shop",
-                    "acl": "user1",
-                    "children": [{
-                        "text": "展商列表",
-                        "link": "/exhibitor-management/exhibitor-list",
-                        "translate": "exhibitor-list"
-                    }]
-                },
-                {
-                    "text": "买家管理",
-                    "translate": "visitor-management",
-                    "link": "/visitor-management",
-                    "icon": "anticon anticon-wallet",
-                    "acl": "user1",
-                    "children": [{
-                        "text": "买家列表",
-                        "link": "/visitor-management/visitor-list",
-                        "translate": "visitor-list"
-                    }]
-                },
-                {
-                    "text": "智慧终端",
-                    "translate": "terminal-management",
-                    "link": "/terminal-management",
-                    "icon": "anticon anticon-usb",
-                    "acl": "user1",
-                    "children": [{
-                        "text": "终端列表",
-                        "link": "/terminal-management/terminal-list",
-                        "translate": "terminal-list"
-                    }]
+                    "children": [
+                        {
+                            "text": "监控仪表盘",
+                            "link": "/monitor-management/monitor-dashboard",
+                            "translate": "monitor-dashboard",
+                            "shortcut": true
+                        }
+                    ]
                 }
             ]
-        },
-        {
-            "text": "设置",
-            "translate": "settings",
-            "group": true,
-            "children": [{
-                "text": "系统设置",
-                "translate": "system-settings",
-                "link": "/system-settings",
-                "icon": "anticon anticon-setting",
-                "children": [{
-                    "text": "约请设置",
-                    "link": "/system-settings/invitation-settings",
-                    "translate": "invitation-settings"
-                }]
-            }]
         }
     ]
 }

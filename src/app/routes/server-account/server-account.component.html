@@ -1,0 +1,178 @@
+<pro-header></pro-header>
+
+<nz-tabset>
+    <nz-tab>
+        <ng-template #nzTabHeading>
+            <i class="anticon anticon-apple"></i>
+            物理服务器
+        </ng-template>
+        <nz-card [nzBordered]="false">
+            <nz-table #nzTable1 [nzAjaxData]="physicals$ | async" [nzShowSizeChanger]="true" [nzLoading]="physicalLoading$ | async" [nzTotal]="physicalsCount$ | async"
+                [(nzPageIndex)]="physicalPageIndex" (nzPageIndexChange)="fetchPhysicals()" [(nzPageSize)]="physicalPageSize"
+                (nzPageSizeChange)="fetchPhysicals()" [nzShowFooter]="true">
+                <thead nz-thead>
+                    <tr>
+                        <th nz-th>
+                            <span>服务器名称</span>
+                        </th>
+                        <th nz-th>
+                            <span>用途</span>
+                        </th>
+                        <th nz-th>
+                            <span>使用对象</span>
+                        </th>
+                        <th nz-th>
+                            <span>所属集群</span>
+                        </th>
+                        <th nz-th>
+                            <span>品牌</span>
+                        </th>
+                        <th nz-th>
+                            <span>型号</span>
+                        </th>
+                        <th nz-th>
+                            <span>物理位置</span>
+                        </th>
+                        <th nz-th>
+                            <span>操作</span>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody nz-tbody>
+                    <tr nz-tbody-tr *ngFor="let data of nzTable1.data">
+                        <td nz-td>{{data.name}}</td>
+                        <td nz-td>{{data.purpose}}</td>
+                        <td nz-td>{{data.whoUse}}</td>
+                        <td nz-td>{{data.clusterGroupOwner}}</td>
+                        <td nz-td>{{data.brand}}</td>
+                        <td nz-td>{{data.modelNumber}}</td>
+                        <td nz-td>{{data.physicalLocation}}</td>
+                        <td nz-td>
+                            <span>
+                                <a (click)="toDelete(data.id)">删除</a>
+                            </span>
+                        </td>
+                    </tr>
+                </tbody>
+                <span nz-table-footer>
+                    <i class="anticon anticon-database"></i>
+                    {{'共 ' + (physicalsCount$ | async) + ' 条'}}
+                </span>
+            </nz-table>
+        </nz-card>
+    </nz-tab>
+
+    <nz-tab>
+        <ng-template #nzTabHeading>
+            <i class="anticon anticon-apple"></i>
+            虚拟服务器
+        </ng-template>
+        <nz-card [nzBordered]="false">
+            <nz-table #nzTable2 [nzAjaxData]="virtuals$ | async" [nzShowSizeChanger]="true" [nzLoading]="virtualLoading$ | async" [nzTotal]="virtualsCount$ | async"
+                [(nzPageIndex)]="virtualPageIndex" (nzPageIndexChange)="fetchVirtuals()" [(nzPageSize)]="virtualPageSize" (nzPageSizeChange)="fetchVirtuals()"
+                [nzShowFooter]="true">
+                <thead nz-thead>
+                    <tr>
+                        <th nz-th>
+                            <span>服务器名称</span>
+                        </th>
+                        <th nz-th>
+                            <span>用途</span>
+                        </th>
+                        <th nz-th>
+                            <span>使用对象</span>
+                        </th>
+                        <th nz-th>
+                            <span>所属集群</span>
+                        </th>
+                        <th nz-th>
+                            <span>品牌</span>
+                        </th>
+                        <th nz-th>
+                            <span>型号</span>
+                        </th>
+                        <th nz-th>
+                            <span>物理位置</span>
+                        </th>
+                        <th nz-th>
+                            <span>操作</span>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody nz-tbody>
+                    <tr nz-tbody-tr *ngFor="let data of nzTable2.data">
+                        <td nz-td>{{data.name}}</td>
+                        <td nz-td>{{data.purpose}}</td>
+                        <td nz-td>{{data.whoUse}}</td>
+                        <td nz-td>{{data.clusterGroupOwner}}</td>
+                        <td nz-td>{{data.brand}}</td>
+                        <td nz-td>{{data.modelNumber}}</td>
+                        <td nz-td>{{data.physicalLocation}}</td>
+                        <td nz-td>
+                            <span>
+                                <a (click)="toDelete(data.id)">删除</a>
+                            </span>
+                        </td>
+                    </tr>
+                </tbody>
+                <span nz-table-footer>
+                    <i class="anticon anticon-database"></i>
+                    {{'共 ' + (virtualsCount$ | async) + ' 条'}}
+                </span>
+            </nz-table>
+        </nz-card>
+    </nz-tab>
+
+    <nz-tab>
+        <ng-template #nzTabHeading>
+            <i class="anticon anticon-apple"></i>
+            服务器集群
+        </ng-template>
+        <nz-card [nzBordered]="false">
+            <nz-table #nzTable3 [nzAjaxData]="clusters$ | async" [nzShowSizeChanger]="true" [nzLoading]="clusterLoading$ | async" [nzTotal]="clustersCount$ | async"
+                [(nzPageIndex)]="clusterPageIndex" (nzPageIndexChange)="fetchClusters()" [(nzPageSize)]="clusterPageSize" (nzPageSizeChange)="fetchClusters()"
+                [nzShowFooter]="true">
+                <thead nz-thead>
+                    <tr>
+                        <th nz-th>
+                            <span>服务器集群名称</span>
+                        </th>
+                        <th nz-th>
+                            <span>集群用途</span>
+                        </th>
+                        <th nz-th>
+                            <span>工作状态</span>
+                        </th>
+                        <th nz-th>
+                            <span>使用对象</span>
+                        </th>
+                        <th nz-th>
+                            <span>使用年限</span>
+                        </th>
+                        <th nz-th>
+                            <span>操作</span>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody nz-tbody>
+                    <tr nz-tbody-tr *ngFor="let data of nzTable3.data">
+                        <td nz-td>{{data.name}}</td>
+                        <td nz-td>{{data.purpose}}</td>
+                        <td nz-td>{{data.workStatus}}</td>
+                        <td nz-td>{{data.whoUse}}</td>
+                        <td nz-td>{{data.yearsUse}}</td>
+                        <td nz-td>
+                            <span>
+                                <a (click)="toDelete(data.id)">删除</a>
+                            </span>
+                        </td>
+                    </tr>
+                </tbody>
+                <span nz-table-footer>
+                    <i class="anticon anticon-database"></i>
+                    {{'共 ' + (clustersCount$ | async) + ' 条'}}
+                </span>
+            </nz-table>
+        </nz-card>
+    </nz-tab>
+</nz-tabset>

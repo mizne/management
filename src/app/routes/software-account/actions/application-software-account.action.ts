@@ -1,0 +1,107 @@
+import { Action } from '@ngrx/store'
+
+import { ApplicationSoftwareAccount } from '@core/models/software-account.model'
+import {
+    PaginationParams,
+    FetchItemsParams,
+    defaultFetchItemsParams
+} from '@core/models/pagination.model'
+
+export const FETCH_APPLICATION_SOFTWARE_ACCOUNTS =
+    '[Software Account] Fetch Application Software Account'
+export const FETCH_APPLICATION_SOFTWARE_ACCOUNTS_SUCCESS =
+    '[Software Account] Fetch Application Software Account Success'
+export const FETCH_APPLICATION_SOFTWARE_ACCOUNTS_FAILURE =
+    '[Software Account] Fetch Application Software Account Failure'
+
+export const FETCH_APPLICATION_SOFTWARE_ACCOUNTS_COUNT =
+    '[Software Account] Fetch Application Software Account Count'
+export const FETCH_APPLICATION_SOFTWARE_ACCOUNTS_COUNT_SUCCESS =
+    '[Software Account] Fetch Application Software Account Count Success'
+export const FETCH_APPLICATION_SOFTWARE_ACCOUNTS_COUNT_FAILURE =
+    '[Software Account] Fetch Application Software Account Count Failure'
+
+export const CREATE_APPLICATION_SOFTWARE_ACCOUNT =
+    '[Software Account] Create Application Software Account'
+export const CREATE_APPLICATION_SOFTWARE_ACCOUNT_SUCCESS =
+    '[Software Account] Create Application Software Account Success'
+export const CREATE_APPLICATION_SOFTWARE_ACCOUNT_FAILURE =
+    '[Software Account] Create Application Software Account Failure'
+
+export const EDIT_APPLICATION_SOFTWARE_ACCOUNT =
+    '[Software Account] Edit Application Software Account'
+export const EDIT_APPLICATION_SOFTWARE_ACCOUNT_SUCCESS =
+    '[Software Account] Edit Application Software Account Success'
+export const EDIT_APPLICATION_SOFTWARE_ACCOUNT_FAILURE =
+    '[Software Account] Edit Application Software Account Failure'
+
+export const ENSURE_PAGE_PARAMS = '[Software Account] Ensure Page Params'
+
+export class FetchApplicationSoftwareAccountsAction implements Action {
+    readonly type = FETCH_APPLICATION_SOFTWARE_ACCOUNTS
+    constructor(public payload: FetchItemsParams = defaultFetchItemsParams) {}
+}
+export class FetchApplicationSoftwareAccountsSuccessAction implements Action {
+    readonly type = FETCH_APPLICATION_SOFTWARE_ACCOUNTS_SUCCESS
+    constructor(
+        public applicationSoftwareAccounts: ApplicationSoftwareAccount[]
+    ) {}
+}
+export class FetchApplicationSoftwareAccountsFailureAction implements Action {
+    readonly type = FETCH_APPLICATION_SOFTWARE_ACCOUNTS_FAILURE
+}
+
+export class FetchApplicationSoftwareAccountsCountAction implements Action {
+    readonly type = FETCH_APPLICATION_SOFTWARE_ACCOUNTS_COUNT
+}
+export class FetchApplicationSoftwareAccountsCountSuccessAction
+    implements Action {
+    readonly type = FETCH_APPLICATION_SOFTWARE_ACCOUNTS_COUNT_SUCCESS
+    constructor(public count: number) {}
+}
+export class FetchApplicationSoftwareAccountsCountFailureAction
+    implements Action {
+    readonly type = FETCH_APPLICATION_SOFTWARE_ACCOUNTS_COUNT_FAILURE
+}
+
+export class CreateApplicationSoftwareAccountAction implements Action {
+    readonly type = CREATE_APPLICATION_SOFTWARE_ACCOUNT
+    constructor(public account: ApplicationSoftwareAccount) {}
+}
+export class CreateApplicationSoftwareAccountSuccessAction implements Action {
+    readonly type = CREATE_APPLICATION_SOFTWARE_ACCOUNT_SUCCESS
+}
+export class CreateApplicationSoftwareAccountFailureAction implements Action {
+    readonly type = CREATE_APPLICATION_SOFTWARE_ACCOUNT_FAILURE
+}
+
+export class EditApplicationSoftwareAccountAction implements Action {
+    readonly type = EDIT_APPLICATION_SOFTWARE_ACCOUNT
+    constructor(public account: ApplicationSoftwareAccount) {}
+}
+export class EditApplicationSoftwareAccountSuccessAction implements Action {
+    readonly type = EDIT_APPLICATION_SOFTWARE_ACCOUNT_SUCCESS
+}
+export class EditApplicationSoftwareAccountFailureAction implements Action {
+    readonly type = EDIT_APPLICATION_SOFTWARE_ACCOUNT_FAILURE
+}
+
+export class EnsurePageParamsAction implements Action {
+    readonly type = ENSURE_PAGE_PARAMS
+    constructor(public params: PaginationParams) {}
+}
+
+export type Actions =
+    | FetchApplicationSoftwareAccountsAction
+    | FetchApplicationSoftwareAccountsSuccessAction
+    | FetchApplicationSoftwareAccountsFailureAction
+    | FetchApplicationSoftwareAccountsCountAction
+    | FetchApplicationSoftwareAccountsCountSuccessAction
+    | FetchApplicationSoftwareAccountsCountFailureAction
+    | CreateApplicationSoftwareAccountAction
+    | CreateApplicationSoftwareAccountSuccessAction
+    | CreateApplicationSoftwareAccountFailureAction
+    | EditApplicationSoftwareAccountAction
+    | EditApplicationSoftwareAccountSuccessAction
+    | EditApplicationSoftwareAccountFailureAction
+    | EnsurePageParamsAction

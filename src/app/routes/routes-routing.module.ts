@@ -29,104 +29,61 @@ const routes: Routes = [
                 path: 'dashboard/workspace',
                 loadChildren:
                     './dashboard/workspace/workspace.module#WorkspaceModule'
-                // component: DashboardWorkspaceComponent,
-                // data: { translate: 'dashboard_workspace' }
             },
             { path: 'pages', loadChildren: './pages/pages.module#PagesModule' },
             {
-                path: 'message-management',
-                redirectTo: 'message-management/platform-message',
+                path: 'account-management',
+                redirectTo: 'account-management/software-account',
                 pathMatch: 'full'
             },
             {
-                path: 'message-management/platform-message',
+                path: 'account-management/software-account',
                 loadChildren:
-                    './platform-message/platform-message.module#PlatformMessageModule'
+                    './software-account/software-account.module#SoftwareAccountModule'
             },
             {
-                path: 'message-management/exhibitor-message',
+                path: 'account-management/server-account',
                 loadChildren:
-                    './exhibitor-message/exhibitor-message.module#ExhibitorMessageModule'
-            },
-            {
-                path: 'message-management/visitor-message',
-                loadChildren:
-                    './visitor-message/visitor-message.module#VisitorMessageModule'
-            },
-            {
-                path: 'approval-management',
-                redirectTo: 'approval-management/to-approve',
-                pathMatch: 'full'
-            },
-            {
-                path: 'approval-management/to-approve',
-                loadChildren: './to-approve/to-approve.module#ToApproveModule'
-            },
-            {
-                path: 'approval-management/approval-history',
-                loadChildren:
-                    './approval-history/approval-history.module#ApprovalHistoryModule'
-            },
-            {
-                path: 'invitation-management',
-                redirectTo: 'invitation-management/invitation-query',
-                pathMatch: 'full'
-            },
-            {
-                path: 'invitation-management/invitation-query',
-                loadChildren:
-                    './invitation-query/invitation-query.module#InvitationQueryModule'
-            },
-            {
-                path: 'exhibitor-management',
-                redirectTo: 'exhibitor-management/exhibitor-list',
-                pathMatch: 'full'
-            },
-            {
-                path: 'exhibitor-management/exhibitor-list',
-                loadChildren:
-                    './exhibitor-list/exhibitor-list.module#ExhibitorListModule'
-            },
-            {
-                path: 'visitor-management',
-                redirectTo: 'visitor-management/visitor-list',
-                pathMatch: 'full'
-            },
-            {
-                path: 'visitor-management/visitor-list',
-                loadChildren:
-                    './visitor-list/visitor-list.module#VisitorListModule'
-            },
-            {
-                path: 'terminal-management',
-                redirectTo: 'terminal-management/terminal-list',
-                pathMatch: 'full'
-            },
-            {
-                path: 'terminal-management/terminal-list',
-                loadChildren:
-                    './terminal-list/terminal-list.module#TerminalListModule'
-            },
-            {
-                path: 'system-settings',
-                redirectTo: 'system-settings/invitation-settings',
-                pathMatch: 'full'
-            },
-            {
-                path: 'system-settings/invitation-settings',
-                loadChildren:
-                    './invitation-settings/invitation-settings.module#InvitationSettingsModule'
-            },
-            {
-                path: 'system-settings/sms-settings',
-                loadChildren:
-                    './sms-settings/sms-settings.module#SMSSettingsModule'
-            },
-            {
-                path: 'search-result',
-                loadChildren:
-                    './search-result/search-result.module#SearchResultModule'
+                    './server-account/server-account.module#ServerAccountModule'
             }
+            // {
+            //     path: 'assets-management',
+            //     redirectTo: 'assets-management/create-apply',
+            //     pathMatch: 'full'
+            // },
+            // {
+            //     path: 'assets-management/create-apply',
+            //     loadChildren:
+            //         './create-apply/create-apply.module#CreateApplyModule'
+            // }
+            // {
+            //     path: 'assets-management/to-approve',
+            //     loadChildren: './to-approve/to-approve.module#ToApproveModule'
+            // },
+            // {
+            //     path: 'assets-management/my-apply',
+            //     loadChildren: './my-apply/my-apply.module#MyApplyModule'
+            // },
+            // {
+            //     path: 'assets-management/distribution-treasury',
+            //     loadChildren:
+            //         './distribution-treasury/distribution-treasury.module#DistributionTreasuryModule'
+            // },
+            // {
+            //     path: 'assets-management/assets-recovery',
+            //     loadChildren:
+            //         './assets-recovery/assets-recovery.module#AssetsRecoveryModule'
+            // },
+            // {
+            //     path: 'monitor-management',
+            //     redirectTo: 'monitor-management/monitor-dashboard',
+            //     pathMatch: 'full'
+            // },
+            // {
+            //     path: 'monitor-management/monitor-dashboard',
+            //     loadChildren:
+            //         './monitor-dashboard/monitor-dashboard.module#MonitorDashboardModule'
+            // }
         ]
     },
     // passport

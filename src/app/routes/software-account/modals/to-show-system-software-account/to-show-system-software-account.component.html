@@ -1,0 +1,24 @@
+<nz-card [nzNoHovering]="true" [nzBordered]="false">
+    <ng-template #body>
+        <desc-list size="large" title="基本信息" class="mb-lg">
+            <desc-list-item term="软件名称">{{account.name}}</desc-list-item>
+            <desc-list-item term="软件类别">{{account.type}}</desc-list-item>
+            <desc-list-item term="软件版本">{{account.version}}</desc-list-item>
+        </desc-list>
+        <nz-divider class="mb-lg"></nz-divider>
+        <desc-list size="large" title="使用信息" class="mb-lg">
+            <desc-list-item term="使用对象">{{account.whoUse}}</desc-list-item>
+            <desc-list-item term="起始使用时间">{{account.startTimeUse}}</desc-list-item>
+            <desc-list-item term="使用期限">{{account.yearsUse}}</desc-list-item>
+        </desc-list>
+        <nz-divider class="mb-lg"></nz-divider>
+        <desc-list size="large" title="更多" class="mb-lg">
+            <desc-list-item term="许可证">{{account.license}}</desc-list-item>
+            <desc-list-item term="备注">{{account.remark}}</desc-list-item>
+        </desc-list>
+        <nz-divider class="mb-lg"></nz-divider>
+    </ng-template>
+</nz-card>
+<div class="customize-footer text-center">
+    <button nz-button [nzSize]="'large'" (click)="toSave()" [nzType]="'primary'" nzSize="large">我知道了</button>
+</div>

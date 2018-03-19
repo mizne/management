@@ -1,0 +1,184 @@
+<pro-header></pro-header>
+
+<nz-card [nzBordered]="false">
+    <div class="mb-md" nz-row>
+        <div nz-col [nzSpan]="'6'">
+            <button nz-button (click)="toCreate()" [nzType]="'primary'" [nzSize]="'large'">
+                <i class="anticon anticon-message"></i>
+                <span>新建</span>
+            </button>
+        </div>
+
+        <div nz-col [nzSpan]="'18'" class="text-center">
+            <nz-input [nzType]="'search'" [nzSize]="'large'" [nzPlaceHolder]="'搜索软件名称、类型'" style="width: 300px;" (nzOnSearch)="onSearch($event)"></nz-input>
+        </div>
+    </div>
+
+    <nz-tabset [(nzSelectedIndex)]="tabIndex">
+        <nz-tab>
+            <ng-template #nzTabHeading>
+                <i class="anticon anticon-apple"></i>
+                应用软件
+            </ng-template>
+            <nz-card [nzBordered]="false">
+                <nz-table #nzTable1 [nzAjaxData]="applications$ | async" [nzShowSizeChanger]="true" [nzLoading]="applicationLoading$ | async"
+                    [nzTotal]="applicationsCount$ | async" [(nzPageIndex)]="applicationPageIndex" (nzPageIndexChange)="fetchApplications()"
+                    [(nzPageSize)]="applicationPageSize" (nzPageSizeChange)="fetchApplications()" [nzShowFooter]="true">
+                    <thead nz-thead>
+                        <tr>
+                            <th nz-th>
+                                <span>软件名称</span>
+                            </th>
+                            <th nz-th>
+                                <span>软件类型</span>
+                            </th>
+                            <th nz-th>
+                                <span>软件版本</span>
+                            </th>
+                            <th nz-th>
+                                <span>使用对象</span>
+                            </th>
+                            <th nz-th>
+                                <span>使用年限</span>
+                            </th>
+                            <th nz-th>
+                                <span>操作</span>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody nz-tbody>
+                        <tr nz-tbody-tr *ngFor="let data of nzTable1.data">
+                            <td nz-td>{{data.name}}</td>
+                            <td nz-td>{{data.type}}</td>
+                            <td nz-td>{{data.version}}</td>
+                            <td nz-td>{{data.whoUse}}</td>
+                            <td nz-td>{{data.yearsUse}}</td>
+                            <td nz-td>
+                                <span>
+                                    <a (click)="toEditApplication(data)">编辑</a>
+                                    <span nz-table-divider></span>
+                                    <a (click)="toShowApplication(data)">详情</a>
+                                </span>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <span nz-table-footer>
+                        <i class="anticon anticon-database"></i>
+                        {{'共 ' + (applicationsCount$ | async) + ' 条'}}
+                    </span>
+                </nz-table>
+            </nz-card>
+        </nz-tab>
+
+        <nz-tab>
+            <ng-template #nzTabHeading>
+                <i class="anticon anticon-apple"></i>
+                系统软件
+            </ng-template>
+            <nz-card [nzBordered]="false">
+                <nz-table #nzTable2 [nzAjaxData]="systems$ | async" [nzShowSizeChanger]="true" [nzLoading]="systemLoading$ | async" [nzTotal]="systemsCount$ | async"
+                    [(nzPageIndex)]="systemPageIndex" (nzPageIndexChange)="fetchSystems()" [(nzPageSize)]="systemPageSize" (nzPageSizeChange)="fetchSystems()"
+                    [nzShowFooter]="true">
+                    <thead nz-thead>
+                        <tr>
+                            <th nz-th>
+                                <span>软件名称</span>
+                            </th>
+                            <th nz-th>
+                                <span>软件类型</span>
+                            </th>
+                            <th nz-th>
+                                <span>软件版本</span>
+                            </th>
+                            <th nz-th>
+                                <span>使用对象</span>
+                            </th>
+                            <th nz-th>
+                                <span>使用年限</span>
+                            </th>
+                            <th nz-th>
+                                <span>操作</span>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody nz-tbody>
+                        <tr nz-tbody-tr *ngFor="let data of nzTable2.data">
+                            <td nz-td>{{data.name}}</td>
+                            <td nz-td>{{data.type}}</td>
+                            <td nz-td>{{data.version}}</td>
+                            <td nz-td>{{data.whoUse}}</td>
+                            <td nz-td>{{data.yearsUse}}</td>
+                            <td nz-td>
+                                <span>
+                                    <a (click)="toEditSystem(data)">编辑</a>
+                                    <span nz-table-divider></span>
+                                    <a (click)="toShowSystem(data)">详情</a>
+                                </span>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <span nz-table-footer>
+                        <i class="anticon anticon-database"></i>
+                        {{'共 ' + (systemsCount$ | async) + ' 条'}}
+                    </span>
+                </nz-table>
+            </nz-card>
+        </nz-tab>
+
+        <nz-tab>
+            <ng-template #nzTabHeading>
+                <i class="anticon anticon-apple"></i>
+                中间件
+            </ng-template>
+            <nz-card [nzBordered]="false">
+                <nz-table #nzTable3 [nzAjaxData]="middlewares$ | async" [nzShowSizeChanger]="true" [nzLoading]="middlewareLoading$ | async"
+                    [nzTotal]="middlewaresCount$ | async" [(nzPageIndex)]="middlewarePageIndex" (nzPageIndexChange)="fetchMiddlewares()"
+                    [(nzPageSize)]="middlewarePageSize" (nzPageSizeChange)="fetchMiddlewares()" [nzShowFooter]="true">
+                    <thead nz-thead>
+                        <tr>
+                            <th nz-th>
+                                <span>名称</span>
+                            </th>
+                            <th nz-th>
+                                <span>版本</span>
+                            </th>
+                            <th nz-th>
+                                <span>别名</span>
+                            </th>
+                            <th nz-th>
+                                <span>操作系统</span>
+                            </th>
+                            <th nz-th>
+                                <span>中间件版本</span>
+                            </th>
+                            <th nz-th>
+                                <span>操作</span>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody nz-tbody>
+                        <tr nz-tbody-tr *ngFor="let data of nzTable3.data">
+                            <td nz-td>{{data.name}}</td>
+                            <td nz-td>{{data.version}}</td>
+                            <td nz-td>{{data.alias}}</td>
+                            <td nz-td>{{data.operationSystem}}</td>
+                            <td nz-td>{{data.middlewareVersion}}</td>
+                            <td nz-td>
+                                <span>
+                                    <a (click)="toEditMiddleware(data)">编辑</a>
+                                    <span nz-table-divider></span>
+                                    <a (click)="toShowMiddleware(data)">详情</a>
+                                </span>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <span nz-table-footer>
+                        <i class="anticon anticon-database"></i>
+                        {{'共 ' + (middlewaresCount$ | async) + ' 条'}}
+                    </span>
+                </nz-table>
+            </nz-card>
+        </nz-tab>
+    </nz-tabset>
+
+</nz-card>

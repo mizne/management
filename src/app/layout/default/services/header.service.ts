@@ -1,16 +1,11 @@
 import { Injectable } from '@angular/core'
 import { Observable } from 'rxjs/Observable'
-import { VisitorInvitationService } from '@core/services/visitor-invitation.service'
-import { ExhibitorInvitationService } from '@core/services/exhibitor-invitation.service'
-import { VisitorInvitationStatus } from '@core/models/visitor-invitation.model';
-import { ExhibitorInvitationStatus } from '@core/models/exhibitor-invitation.model';
+import { VisitorInvitationStatus } from '@core/models/visitor-invitation.model'
+import { ExhibitorInvitationStatus } from '@core/models/exhibitor-invitation.model'
 
 @Injectable()
 export class HeaderService {
-    constructor(
-        private visitorInvitationService: VisitorInvitationService,
-        private exhibitorInvitationService: ExhibitorInvitationService
-    ) { }
+    constructor() {}
 
     fetchApprovalsCount(): Observable<number> {
         return Observable.forkJoin(
@@ -20,20 +15,10 @@ export class HeaderService {
     }
 
     fetchVisitorApprovalsCount(): Observable<number> {
-        const params = {
-            condition: { State: { $in: [VisitorInvitationStatus.UN_AUDIT] } }
-        }
-        return this.visitorInvitationService.fetchVisitorInvitationsCount(
-            params
-        )
+        return Observable.of(11).delay(4e2)
     }
 
     fetchExhibitorApprovalsCount(): Observable<number> {
-        const params = {
-            condition: { State: { $in: [ExhibitorInvitationStatus.UN_AUDIT] } }
-        }
-        return this.exhibitorInvitationService.fetchExhibitorInvitationsCount(
-            params
-        )
+        return Observable.of(13).delay(4e2)
     }
 }
