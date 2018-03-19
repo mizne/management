@@ -70,32 +70,37 @@
                         {
                             "text": "资源申请管理",
                             "link": "/assets-management/resource-application",
-                            "translate": "resource-application",
-                            "shortcut": true
+                            "translate": "resource-application"
                         },
                         {
-                            "text": "待我审批",
-                            "link": "/assets-management/to-approve",
-                            "translate": "to-approve",
-                            "shortcut": true
+                            "text": "统一申请管理",
+                            "link": "/assets-management/unified-application",
+                            "translate": "unified-application"
                         },
                         {
-                            "text": "我的申请",
-                            "link": "/assets-management/my-apply",
-                            "translate": "my-apply",
-                            "shortcut": true
-                        },
-                        {
-                            "text": "分配入库",
+                            "text": "入库分配管理",
                             "link": "/assets-management/distribution-treasury",
-                            "translate": "distribution-treasury",
-                            "shortcut": true
+                            "translate": "distribution-treasury"
                         },
                         {
-                            "text": "资产回收",
+                            "text": "系统上、下线管理",
+                            "link": "/assets-management/system-up-and-down",
+                            "translate": "system-up-and-down"
+                        },
+                        {
+                            "text": "版本发布管理",
+                            "link": "/assets-management/version-release",
+                            "translate": "version-release"
+                        },
+                        {
+                            "text": "资产回收管理",
                             "link": "/assets-management/assets-recovery",
-                            "translate": "assets-recovery",
-                            "shortcut": true
+                            "translate": "assets-recovery"
+                        },
+                        {
+                            "text": "待我审批(演示)",
+                            "link": "/assets-management/to-approve",
+                            "translate": "to-approve"
                         }
                     ]
                 },
@@ -107,10 +112,34 @@
                     "acl": "user1",
                     "children": [
                         {
-                            "text": "监控仪表盘",
+                            "text": "监控仪表版",
                             "link": "/monitor-management/monitor-dashboard",
                             "translate": "monitor-dashboard",
                             "shortcut": true
+                        },
+                        {
+                            "text": "服务器拓扑",
+                            "link": "/monitor-management/server-topology",
+                            "translate": "server-topology"
+                        }
+                    ]
+                },
+                {
+                    "text": "系统管理",
+                    "translate": "system-management",
+                    "link": "/system-management",
+                    "icon": "anticon anticon-setting",
+                    "acl": "user1",
+                    "children": [
+                        {
+                            "text": "属性配置管理",
+                            "link": "/system-management/field-settings",
+                            "translate": "field-settings"
+                        },
+                        {
+                            "text": "系统日志管理",
+                            "link": "/system-management/system-logger",
+                            "translate": "system-logger"
                         }
                     ]
                 }

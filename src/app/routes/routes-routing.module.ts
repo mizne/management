@@ -48,13 +48,13 @@ const routes: Routes = [
             }
             // {
             //     path: 'assets-management',
-            //     redirectTo: 'assets-management/create-apply',
+            //     redirectTo: 'assets-management/resource-application',
             //     pathMatch: 'full'
             // },
             // {
-            //     path: 'assets-management/create-apply',
+            //     path: 'assets-management/resource-application',
             //     loadChildren:
-            //         './create-apply/create-apply.module#CreateApplyModule'
+            //         './resource-application/resource-application.module#ResourceApplicationModule'
             // }
             // {
             //     path: 'assets-management/to-approve',
