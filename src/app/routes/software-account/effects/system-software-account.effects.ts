@@ -37,9 +37,14 @@ export class SystemSoftwareAccountEffects {
     @Effect()
     fetchSystemSoftwareAccountsCount$ = this.actions$
         .ofType(fromSystemSoftwareAccount.FETCH_SYSTEM_SOFTWARE_ACCOUNTS_COUNT)
-        .switchMap(() => {
+        .map(
+            (
+                action: fromSystemSoftwareAccount.FetchSystemSoftwareAccountsCountAction
+            ) => action.searchText
+        )
+        .switchMap(searchText => {
             return this.softwareAccountService
-                .fetchSystemSoftwareAccountsCount()
+                .fetchSystemSoftwareAccountsCount(searchText)
                 .map(
                     count =>
                         new fromSystemSoftwareAccount.FetchSystemSoftwareAccountsCountSuccessAction(

@@ -41,9 +41,14 @@ export class ApplicationSoftwareAccountEffects {
         .ofType(
             fromApplicationSoftwareAccount.FETCH_APPLICATION_SOFTWARE_ACCOUNTS_COUNT
         )
-        .switchMap(() => {
+        .map(
+            (
+                action: fromApplicationSoftwareAccount.FetchApplicationSoftwareAccountsCountAction
+            ) => action.searchText
+        )
+        .switchMap(searchText => {
             return this.softwareAccountService
-                .fetchApplicationSoftwareAccountsCount()
+                .fetchApplicationSoftwareAccountsCount(searchText)
                 .map(
                     count =>
                         new fromApplicationSoftwareAccount.FetchApplicationSoftwareAccountsCountSuccessAction(

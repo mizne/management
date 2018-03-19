@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core'
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core'
 import { NzMessageService, NzModalService } from 'ng-zorro-antd'
 
 import {
@@ -18,7 +18,10 @@ import {
     getSystemSoftwareAccountCount,
     getMiddlewareLoading,
     getMiddlewareSoftwareAccounts,
-    getMiddlewareSoftwareAccountCount
+    getMiddlewareSoftwareAccountCount,
+    getApplicationSoftwareAccountsPageParams,
+    getSystemSoftwareAccountsPageParams,
+    getMiddlewareSoftwareAccountsPageParams
 } from './reducers'
 import {
     FetchApplicationSoftwareAccountsAction,
@@ -63,18 +66,21 @@ interface CheckRow {
     selector: 'app-software-account',
     templateUrl: './software-account.component.html',
     styleUrls: ['./software-account.component.less'],
-    providers: [DestroyService]
+    providers: [DestroyService],
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SoftwareAccountComponent implements OnInit {
     tabIndex = 0
     toCreateSub: Subject<void> = new Subject<void>()
-    toSearchSub: Subject<string> = new Subject<string>()
+    toSearchSub: Subject<void> = new Subject<void>()
+    searchCtrl: FormControl = new FormControl()
 
     applications$: Observable<ApplicationSoftwareAccount[]>
     applicationsCount$: Observable<number>
     applicationLoading$: Observable<boolean>
     applicationPageIndex = 1
     applicationPageSize = 10
+    applicationPageChangeSub: Subject<void> = new Subject<void>()
     toEditApplicationSub: Subject<ApplicationSoftwareAccount> = new Subject<
         ApplicationSoftwareAccount
     >()
@@ -87,6 +93,7 @@ export class SoftwareAccountComponent implements OnInit {
     systemLoading$: Observable<boolean>
     systemPageIndex = 1
     systemPageSize = 10
+    systemPageChangeSub: Subject<void> = new Subject<void>()
     toEditSystemSub: Subject<SystemSoftwareAccount> = new Subject<
         SystemSoftwareAccount
     >()
@@ -99,6 +106,7 @@ export class SoftwareAccountComponent implements OnInit {
     middlewareLoading$: Observable<boolean>
     middlewarePageIndex = 1
     middlewarePageSize = 10
+    middlewarePageChangeSub: Subject<void> = new Subject<void>()
     toEditMiddlewareSub: Subject<MiddlewareSoftwareAccount> = new Subject<
         MiddlewareSoftwareAccount
     >()
@@ -124,25 +132,23 @@ export class SoftwareAccountComponent implements OnInit {
     }
 
     onSearch(searchText: string) {
-        this.toSearchSub.next(searchText)
+        if (this.tabIndex === 0) {
+            this.applicationPageIndex = 1
+            this.applicationPageSize = 10
+        }
+        if (this.tabIndex === 1) {
+            this.systemPageIndex = 1
+            this.systemPageSize = 10
+        }
+        if (this.tabIndex === 2) {
+            this.middlewarePageIndex = 1
+            this.middlewarePageSize = 10
+        }
+        this.toSearchSub.next()
     }
 
     fetchApplications() {
-        this.store.dispatch(
-            new EnsureApplicationPageParamsAction({
-                pageIndex: this.applicationPageIndex,
-                pageSize: this.applicationPageSize
-            })
-        )
-        this.store.dispatch(
-            new FetchApplicationSoftwareAccountsAction({
-                condition: {},
-                options: {
-                    pageIndex: this.applicationPageIndex,
-                    pageSize: this.applicationPageSize
-                }
-            })
-        )
+        this.applicationPageChangeSub.next()
     }
 
     toEditApplication(account: ApplicationSoftwareAccount) {
@@ -154,21 +160,7 @@ export class SoftwareAccountComponent implements OnInit {
     }
 
     fetchSystems() {
-        this.store.dispatch(
-            new EnsureSystemPageParamsAction({
-                pageIndex: this.systemPageIndex,
-                pageSize: this.systemPageSize
-            })
-        )
-        this.store.dispatch(
-            new FetchSystemSoftwareAccountsAction({
-                condition: {},
-                options: {
-                    pageIndex: this.systemPageIndex,
-                    pageSize: this.systemPageSize
-                }
-            })
-        )
+        this.systemPageChangeSub.next()
     }
 
     toEditSystem(account: SystemSoftwareAccount) {
@@ -180,21 +172,7 @@ export class SoftwareAccountComponent implements OnInit {
     }
 
     fetchMiddlewares() {
-        this.store.dispatch(
-            new EnsureMiddlewarePageParamsAction({
-                pageIndex: this.middlewarePageIndex,
-                pageSize: this.middlewarePageSize
-            })
-        )
-        this.store.dispatch(
-            new FetchMiddlewareSoftwareAccountsAction({
-                condition: {},
-                options: {
-                    pageIndex: this.middlewarePageIndex,
-                    pageSize: this.middlewarePageSize
-                }
-            })
-        )
+        this.middlewarePageChangeSub.next()
     }
 
     toEditMiddleware(account: MiddlewareSoftwareAccount) {
@@ -239,9 +217,9 @@ export class SoftwareAccountComponent implements OnInit {
         this.initCreateSystem()
         this.initCreateMiddleware()
 
-        this.initSearchApplication()
-        this.initSearchSystem()
-        this.initSearchMiddleware()
+        this.initSearchApplicationAndPageChange()
+        this.initSearchSystemAndPageChange()
+        this.initSearchMiddlewareAndPageChange()
 
         this.initEditApplication()
         this.initEditSystem()
@@ -315,41 +293,150 @@ export class SoftwareAccountComponent implements OnInit {
             })
     }
 
-    private initSearchApplication(): void {
+    private initSearchApplicationAndPageChange(): void {
         this.toSearchSub
             .asObservable()
-            .filter(e => !!e)
             .filter(() => this.tabIndex === 0)
             .takeUntil(this.destroyService)
-            .subscribe(searchText => {
-                console.log(
-                    `to search application software accounts; search text: ${searchText};`
+            .subscribe(() => {
+                this.store.dispatch(
+                    new FetchApplicationSoftwareAccountsCountAction(
+                        this.searchCtrl.value
+                    )
+                )
+            })
+
+        Observable.merge(
+            this.applicationPageChangeSub.asObservable(),
+            this.toSearchSub
+                .filter(() => this.tabIndex === 0)
+                .withLatestFrom(
+                    this.store.select(getApplicationSoftwareAccountsPageParams)
+                )
+                .filter(
+                    ([_, { pageIndex, pageSize }]) =>
+                        pageIndex === this.applicationPageIndex &&
+                        pageSize === this.applicationPageSize
+                )
+        )
+            .takeUntil(this.destroyService)
+            .subscribe(() => {
+                this.store.dispatch(
+                    new EnsureApplicationPageParamsAction({
+                        pageIndex: this.applicationPageIndex,
+                        pageSize: this.applicationPageSize
+                    })
+                )
+                this.store.dispatch(
+                    new FetchApplicationSoftwareAccountsAction({
+                        condition: { searchText: this.searchCtrl.value },
+                        options: {
+                            pageIndex: this.applicationPageIndex,
+                            pageSize: this.applicationPageSize
+                        }
+                    })
                 )
             })
     }
 
-    private initSearchSystem(): void {
+    private initSearchSystemAndPageChange(): void {
         this.toSearchSub
             .asObservable()
-            .filter(e => !!e)
             .filter(() => this.tabIndex === 1)
             .takeUntil(this.destroyService)
-            .subscribe(searchText => {
+            .subscribe(() => {
                 console.log(
-                    `to search system software accounts; search text: ${searchText};`
+                    `to search system software accounts; search text: ${
+                        this.searchCtrl.value
+                    };`
+                )
+                this.store.dispatch(
+                    new FetchSystemSoftwareAccountsCountAction(
+                        this.searchCtrl.value
+                    )
+                )
+            })
+
+        Observable.merge(
+            this.systemPageChangeSub.asObservable(),
+            this.toSearchSub
+                .filter(() => this.tabIndex === 1)
+                .withLatestFrom(
+                    this.store.select(getSystemSoftwareAccountsPageParams)
+                )
+                .filter(
+                    ([_, { pageIndex, pageSize }]) =>
+                        pageIndex === this.systemPageIndex &&
+                        pageSize === this.systemPageSize
+                )
+        )
+            .takeUntil(this.destroyService)
+            .subscribe(() => {
+                this.store.dispatch(
+                    new EnsureSystemPageParamsAction({
+                        pageIndex: this.systemPageIndex,
+                        pageSize: this.systemPageSize
+                    })
+                )
+                this.store.dispatch(
+                    new FetchSystemSoftwareAccountsAction({
+                        condition: { searchText: this.searchCtrl.value },
+                        options: {
+                            pageIndex: this.systemPageIndex,
+                            pageSize: this.systemPageSize
+                        }
+                    })
                 )
             })
     }
 
-    private initSearchMiddleware(): void {
+    private initSearchMiddlewareAndPageChange(): void {
         this.toSearchSub
             .asObservable()
-            .filter(e => !!e)
             .filter(() => this.tabIndex === 2)
             .takeUntil(this.destroyService)
-            .subscribe(searchText => {
+            .subscribe(() => {
                 console.log(
-                    `to search middleware software accounts; search text: ${searchText};`
+                    `to search middleware software accounts; search text: ${
+                        this.searchCtrl.value
+                    };`
+                )
+                this.store.dispatch(
+                    new FetchMiddlewareSoftwareAccountsCountAction(
+                        this.searchCtrl.value
+                    )
+                )
+            })
+
+        Observable.merge(
+            this.middlewarePageChangeSub.asObservable(),
+            this.toSearchSub
+                .filter(() => this.tabIndex === 2)
+                .withLatestFrom(
+                    this.store.select(getMiddlewareSoftwareAccountsPageParams)
+                )
+                .filter(
+                    ([_, { pageIndex, pageSize }]) =>
+                        pageIndex === this.middlewarePageIndex &&
+                        pageSize === this.middlewarePageSize
+                )
+        )
+            .takeUntil(this.destroyService)
+            .subscribe(() => {
+                this.store.dispatch(
+                    new EnsureMiddlewarePageParamsAction({
+                        pageIndex: this.middlewarePageIndex,
+                        pageSize: this.middlewarePageSize
+                    })
+                )
+                this.store.dispatch(
+                    new FetchMiddlewareSoftwareAccountsAction({
+                        condition: { searchText: this.searchCtrl.value },
+                        options: {
+                            pageIndex: this.middlewarePageIndex,
+                            pageSize: this.middlewarePageSize
+                        }
+                    })
                 )
             })
     }

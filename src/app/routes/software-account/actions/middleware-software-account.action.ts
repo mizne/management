@@ -8,34 +8,35 @@ import {
 } from '@core/models/pagination.model'
 
 export const FETCH_MIDDLEWARE_SOFTWARE_ACCOUNTS =
-    '[Software Account] Fetch Middleware Software Account'
+    '[Middleware Software Account] Fetch Middleware Software Account'
 export const FETCH_MIDDLEWARE_SOFTWARE_ACCOUNTS_SUCCESS =
-    '[Software Account] Fetch Middleware Software Account Success'
+    '[Middleware Software Account] Fetch Middleware Software Account Success'
 export const FETCH_MIDDLEWARE_SOFTWARE_ACCOUNTS_FAILURE =
-    '[Software Account] Fetch Middleware Software Account Failure'
+    '[Middleware Software Account] Fetch Middleware Software Account Failure'
 
 export const FETCH_MIDDLEWARE_SOFTWARE_ACCOUNTS_COUNT =
-    '[Software Account] Fetch Middleware Software Account Count'
+    '[Middleware Software Account] Fetch Middleware Software Account Count'
 export const FETCH_MIDDLEWARE_SOFTWARE_ACCOUNTS_COUNT_SUCCESS =
-    '[Software Account] Fetch Middleware Software Account Count Success'
+    '[Middleware Software Account] Fetch Middleware Software Account Count Success'
 export const FETCH_MIDDLEWARE_SOFTWARE_ACCOUNTS_COUNT_FAILURE =
-    '[Software Account] Fetch Middleware Software Account Count Failure'
+    '[Middleware Software Account] Fetch Middleware Software Account Count Failure'
 
 export const CREATE_MIDDLEWARE_SOFTWARE_ACCOUNT =
-    '[Software Account] Create Middleware Software Account'
+    '[Middleware Software Account] Create Middleware Software Account'
 export const CREATE_MIDDLEWARE_SOFTWARE_ACCOUNT_SUCCESS =
-    '[Software Account] Create Middleware Software Account Success'
+    '[Middleware Software Account] Create Middleware Software Account Success'
 export const CREATE_MIDDLEWARE_SOFTWARE_ACCOUNT_FAILURE =
-    '[Software Account] Create Middleware Software Account Failure'
+    '[Middleware Software Account] Create Middleware Software Account Failure'
 
 export const EDIT_MIDDLEWARE_SOFTWARE_ACCOUNT =
-    '[Software Account] Edit Middleware Software Account'
+    '[Middleware Software Account] Edit Middleware Software Account'
 export const EDIT_MIDDLEWARE_SOFTWARE_ACCOUNT_SUCCESS =
-    '[Software Account] Edit Middleware Software Account Success'
+    '[Middleware Software Account] Edit Middleware Software Account Success'
 export const EDIT_MIDDLEWARE_SOFTWARE_ACCOUNT_FAILURE =
-    '[Software Account] Edit Middleware Software Account Failure'
+    '[Middleware Software Account] Edit Middleware Software Account Failure'
 
-export const ENSURE_PAGE_PARAMS = '[Software Account] Ensure Page Params'
+export const ENSURE_PAGE_PARAMS =
+    '[Middleware Software Account] Ensure Page Params'
 
 export class FetchMiddlewareSoftwareAccountsAction implements Action {
     readonly type = FETCH_MIDDLEWARE_SOFTWARE_ACCOUNTS
@@ -53,6 +54,7 @@ export class FetchMiddlewareSoftwareAccountsFailureAction implements Action {
 
 export class FetchMiddlewareSoftwareAccountsCountAction implements Action {
     readonly type = FETCH_MIDDLEWARE_SOFTWARE_ACCOUNTS_COUNT
+    constructor(public searchText: string = '') {}
 }
 export class FetchMiddlewareSoftwareAccountsCountSuccessAction
     implements Action {

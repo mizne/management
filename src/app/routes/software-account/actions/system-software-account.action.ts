@@ -8,34 +8,34 @@ import {
 } from '@core/models/pagination.model'
 
 export const FETCH_SYSTEM_SOFTWARE_ACCOUNTS =
-    '[Software Account] Fetch System Software Account'
+    '[System Software Account] Fetch System Software Account'
 export const FETCH_SYSTEM_SOFTWARE_ACCOUNTS_SUCCESS =
-    '[Software Account] Fetch System Software Account Success'
+    '[System Software Account] Fetch System Software Account Success'
 export const FETCH_SYSTEM_SOFTWARE_ACCOUNTS_FAILURE =
-    '[Software Account] Fetch System Software Account Failure'
+    '[System Software Account] Fetch System Software Account Failure'
 
 export const FETCH_SYSTEM_SOFTWARE_ACCOUNTS_COUNT =
-    '[Software Account] Fetch System Software Account Count'
+    '[System Software Account] Fetch System Software Account Count'
 export const FETCH_SYSTEM_SOFTWARE_ACCOUNTS_COUNT_SUCCESS =
-    '[Software Account] Fetch System Software Account Count Success'
+    '[System Software Account] Fetch System Software Account Count Success'
 export const FETCH_SYSTEM_SOFTWARE_ACCOUNTS_COUNT_FAILURE =
-    '[Software Account] Fetch System Software Account Count Failure'
+    '[System Software Account] Fetch System Software Account Count Failure'
 
 export const CREATE_SYSTEM_SOFTWARE_ACCOUNT =
-    '[Software Account] Create System Software Account'
+    '[System Software Account] Create System Software Account'
 export const CREATE_SYSTEM_SOFTWARE_ACCOUNT_SUCCESS =
-    '[Software Account] Create System Software Account Success'
+    '[System Software Account] Create System Software Account Success'
 export const CREATE_SYSTEM_SOFTWARE_ACCOUNT_FAILURE =
-    '[Software Account] Create System Software Account Failure'
+    '[System Software Account] Create System Software Account Failure'
 
 export const EDIT_SYSTEM_SOFTWARE_ACCOUNT =
-    '[Software Account] Edit System Software Account'
+    '[System Software Account] Edit System Software Account'
 export const EDIT_SYSTEM_SOFTWARE_ACCOUNT_SUCCESS =
-    '[Software Account] Edit System Software Account Success'
+    '[System Software Account] Edit System Software Account Success'
 export const EDIT_SYSTEM_SOFTWARE_ACCOUNT_FAILURE =
-    '[Software Account] Edit System Software Account Failure'
+    '[System Software Account] Edit System Software Account Failure'
 
-export const ENSURE_PAGE_PARAMS = '[Software Account] Ensure Page Params'
+export const ENSURE_PAGE_PARAMS = '[System Software Account] Ensure Page Params'
 
 export class FetchSystemSoftwareAccountsAction implements Action {
     readonly type = FETCH_SYSTEM_SOFTWARE_ACCOUNTS
@@ -51,6 +51,7 @@ export class FetchSystemSoftwareAccountsFailureAction implements Action {
 
 export class FetchSystemSoftwareAccountsCountAction implements Action {
     readonly type = FETCH_SYSTEM_SOFTWARE_ACCOUNTS_COUNT
+    constructor(public searchText: string = '') {}
 }
 export class FetchSystemSoftwareAccountsCountSuccessAction implements Action {
     readonly type = FETCH_SYSTEM_SOFTWARE_ACCOUNTS_COUNT_SUCCESS

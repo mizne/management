@@ -17,12 +17,22 @@ export class SoftwareAccountService {
     fetchApplicationSoftwareAccounts(
         params: FetchItemsParams
     ): Observable<ApplicationSoftwareAccount[]> {
+        if (params.condition.searchText) {
+            console.log(
+                `search application with ${params.condition.searchText}`
+            )
+        }
         return Observable.of(
             ApplicationSoftwareAccount.generateFakeDataItems(params.options)
         ).delay(4e2)
     }
 
-    fetchApplicationSoftwareAccountsCount(): Observable<number> {
+    fetchApplicationSoftwareAccountsCount(
+        searchText: string
+    ): Observable<number> {
+        if (searchText) {
+            console.log(`search application count with ${searchText}`)
+        }
         return Observable.of(42).delay(3e2)
     }
 
@@ -41,12 +51,18 @@ export class SoftwareAccountService {
     fetchSystemSoftwareAccounts(
         params: FetchItemsParams
     ): Observable<SystemSoftwareAccount[]> {
+        if (params.condition.searchText) {
+            console.log(`search system with ${params.condition.searchText}`)
+        }
         return Observable.of(
             SystemSoftwareAccount.generateFakeDataItems(params.options)
         ).delay(4e2)
     }
 
-    fetchSystemSoftwareAccountsCount(): Observable<number> {
+    fetchSystemSoftwareAccountsCount(searchText: string): Observable<number> {
+        if (searchText) {
+            console.log(`search system count with ${searchText}`)
+        }
         return Observable.of(42).delay(3e2)
     }
 
@@ -63,12 +79,20 @@ export class SoftwareAccountService {
     fetchMiddlewareSoftwareAccounts(
         params: FetchItemsParams
     ): Observable<MiddlewareSoftwareAccount[]> {
+        if (params.condition.searchText) {
+            console.log(`search middleware with ${params.condition.searchText}`)
+        }
         return Observable.of(
             MiddlewareSoftwareAccount.generateFakeDataItems(params.options)
         ).delay(4e2)
     }
 
-    fetchMiddlewareSoftwareAccountsCount(): Observable<number> {
+    fetchMiddlewareSoftwareAccountsCount(
+        searchText: string
+    ): Observable<number> {
+        if (searchText) {
+            console.log(`search middleware count with ${searchText}`)
+        }
         return Observable.of(42).delay(3e2)
     }
 

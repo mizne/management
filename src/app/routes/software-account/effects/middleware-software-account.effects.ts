@@ -41,9 +41,14 @@ export class MiddlewareSoftwareAccountEffects {
         .ofType(
             fromMiddlewareSoftwareAccount.FETCH_MIDDLEWARE_SOFTWARE_ACCOUNTS_COUNT
         )
-        .switchMap(() => {
+        .map(
+            (
+                action: fromMiddlewareSoftwareAccount.FetchMiddlewareSoftwareAccountsCountAction
+            ) => action.searchText
+        )
+        .switchMap(searchText => {
             return this.softwareAccountService
-                .fetchMiddlewareSoftwareAccountsCount()
+                .fetchMiddlewareSoftwareAccountsCount(searchText)
                 .map(
                     count =>
                         new fromMiddlewareSoftwareAccount.FetchMiddlewareSoftwareAccountsCountSuccessAction(

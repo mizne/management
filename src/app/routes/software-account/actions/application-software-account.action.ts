@@ -8,34 +8,35 @@ import {
 } from '@core/models/pagination.model'
 
 export const FETCH_APPLICATION_SOFTWARE_ACCOUNTS =
-    '[Software Account] Fetch Application Software Account'
+    '[Application Software Account] Fetch Application Software Account'
 export const FETCH_APPLICATION_SOFTWARE_ACCOUNTS_SUCCESS =
-    '[Software Account] Fetch Application Software Account Success'
+    '[Application Software Account] Fetch Application Software Account Success'
 export const FETCH_APPLICATION_SOFTWARE_ACCOUNTS_FAILURE =
-    '[Software Account] Fetch Application Software Account Failure'
+    '[Application Software Account] Fetch Application Software Account Failure'
 
 export const FETCH_APPLICATION_SOFTWARE_ACCOUNTS_COUNT =
-    '[Software Account] Fetch Application Software Account Count'
+    '[Application Software Account] Fetch Application Software Account Count'
 export const FETCH_APPLICATION_SOFTWARE_ACCOUNTS_COUNT_SUCCESS =
-    '[Software Account] Fetch Application Software Account Count Success'
+    '[Application Software Account] Fetch Application Software Account Count Success'
 export const FETCH_APPLICATION_SOFTWARE_ACCOUNTS_COUNT_FAILURE =
-    '[Software Account] Fetch Application Software Account Count Failure'
+    '[Application Software Account] Fetch Application Software Account Count Failure'
 
 export const CREATE_APPLICATION_SOFTWARE_ACCOUNT =
-    '[Software Account] Create Application Software Account'
+    '[Application Software Account] Create Application Software Account'
 export const CREATE_APPLICATION_SOFTWARE_ACCOUNT_SUCCESS =
-    '[Software Account] Create Application Software Account Success'
+    '[Application Software Account] Create Application Software Account Success'
 export const CREATE_APPLICATION_SOFTWARE_ACCOUNT_FAILURE =
-    '[Software Account] Create Application Software Account Failure'
+    '[Application Software Account] Create Application Software Account Failure'
 
 export const EDIT_APPLICATION_SOFTWARE_ACCOUNT =
-    '[Software Account] Edit Application Software Account'
+    '[Application Software Account] Edit Application Software Account'
 export const EDIT_APPLICATION_SOFTWARE_ACCOUNT_SUCCESS =
-    '[Software Account] Edit Application Software Account Success'
+    '[Application Software Account] Edit Application Software Account Success'
 export const EDIT_APPLICATION_SOFTWARE_ACCOUNT_FAILURE =
-    '[Software Account] Edit Application Software Account Failure'
+    '[Application Software Account] Edit Application Software Account Failure'
 
-export const ENSURE_PAGE_PARAMS = '[Software Account] Ensure Page Params'
+export const ENSURE_PAGE_PARAMS =
+    '[Application Software Account] Ensure Page Params'
 
 export class FetchApplicationSoftwareAccountsAction implements Action {
     readonly type = FETCH_APPLICATION_SOFTWARE_ACCOUNTS
@@ -53,6 +54,7 @@ export class FetchApplicationSoftwareAccountsFailureAction implements Action {
 
 export class FetchApplicationSoftwareAccountsCountAction implements Action {
     readonly type = FETCH_APPLICATION_SOFTWARE_ACCOUNTS_COUNT
+    constructor(public searchText: string = '') {}
 }
 export class FetchApplicationSoftwareAccountsCountSuccessAction
     implements Action {

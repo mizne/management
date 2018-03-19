@@ -10,7 +10,8 @@
         </div>
 
         <div nz-col [nzSpan]="'18'" class="text-center">
-            <nz-input [nzType]="'search'" [nzSize]="'large'" [nzPlaceHolder]="'搜索软件名称、类型'" style="width: 300px;" (nzOnSearch)="onSearch($event)"></nz-input>
+            <nz-input [nzType]="'search'" [formControl]="searchCtrl" [nzSize]="'large'" [nzPlaceHolder]="'搜索软件名称、类型'" style="width: 300px;"
+                (nzOnSearch)="onSearch($event)"></nz-input>
         </div>
     </div>
 
