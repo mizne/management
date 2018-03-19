@@ -13,7 +13,7 @@ import {
 
 @Injectable()
 export class ServerAccountService {
-    constructor() {}
+    constructor() { }
     fetchPhysicalServerAccounts(
         params: FetchItemsParams
     ): Observable<PhysicalServerAccount[]> {
@@ -35,11 +35,11 @@ export class ServerAccountService {
     createPhysicalServerAccount(
         account: PhysicalServerAccount
     ): Observable<any> {
-        return Observable.of().delay(4e2)
+        return Observable.of(null).delay(4e2)
     }
 
     editPhysicalServerAccount(account: PhysicalServerAccount): Observable<any> {
-        return Observable.of().delay(4e2)
+        return Observable.of(null).delay(4e2)
     }
 
     fetchVirtualServerAccounts(
@@ -61,11 +61,11 @@ export class ServerAccountService {
     }
 
     createVirtualServerAccount(account: VirtualServerAccount): Observable<any> {
-        return Observable.of().delay(4e2)
+        return Observable.of(null).delay(4e2)
     }
 
     editVirtualServerAccount(account: VirtualServerAccount): Observable<any> {
-        return Observable.of().delay(4e2)
+        return Observable.of(null).delay(4e2)
     }
 
     fetchClusterServerAccounts(
@@ -87,10 +87,10 @@ export class ServerAccountService {
     }
 
     createClusterServerAccount(account: ClusterServerAccount): Observable<any> {
-        return Observable.of().delay(4e2)
+        return Observable.of(null).delay(4e2)
     }
 
     editClusterServerAccount(account: ClusterServerAccount): Observable<any> {
-        return Observable.of().delay(4e2)
+        return Observable.of(null).delay(4e2)
     }
 }

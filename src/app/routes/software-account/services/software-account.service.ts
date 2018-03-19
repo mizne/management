@@ -13,7 +13,7 @@ import {
 
 @Injectable()
 export class SoftwareAccountService {
-    constructor() {}
+    constructor() { }
     fetchApplicationSoftwareAccounts(
         params: FetchItemsParams
     ): Observable<ApplicationSoftwareAccount[]> {
@@ -39,13 +39,13 @@ export class SoftwareAccountService {
     createApplicationSoftwareAccount(
         account: ApplicationSoftwareAccount
     ): Observable<any> {
-        return Observable.of().delay(4e2)
+        return Observable.of(null).delay(4e2)
     }
 
     editApplicationSoftwareAccount(
         account: ApplicationSoftwareAccount
     ): Observable<any> {
-        return Observable.of().delay(4e2)
+        return Observable.of(null).delay(4e2)
     }
 
     fetchSystemSoftwareAccounts(
@@ -69,11 +69,11 @@ export class SoftwareAccountService {
     createSystemSoftwareAccount(
         account: SystemSoftwareAccount
     ): Observable<any> {
-        return Observable.of().delay(4e2)
+        return Observable.of(null).delay(4e2)
     }
 
     editSystemSoftwareAccount(account: SystemSoftwareAccount): Observable<any> {
-        return Observable.of().delay(4e2)
+        return Observable.of(null).delay(4e2)
     }
 
     fetchMiddlewareSoftwareAccounts(
@@ -99,12 +99,12 @@ export class SoftwareAccountService {
     createMiddlewareSoftwareAccount(
         account: MiddlewareSoftwareAccount
     ): Observable<any> {
-        return Observable.of().delay(4e2)
+        return Observable.of(null).delay(4e2)
     }
 
     editMiddlewareSoftwareAccount(
         account: MiddlewareSoftwareAccount
     ): Observable<any> {
-        return Observable.of().delay(4e2)
+        return Observable.of(null).delay(4e2)
     }
 }

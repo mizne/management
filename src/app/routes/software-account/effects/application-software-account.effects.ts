@@ -166,5 +166,5 @@ export class ApplicationSoftwareAccountEffects {
         private softwareAccountService: SoftwareAccountService,
         private notify: NzNotificationService,
         private store: Store<State>
-    ) {}
+    ) { }
 }
