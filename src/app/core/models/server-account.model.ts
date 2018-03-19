@@ -14,33 +14,38 @@ export class PhysicalServerAccount {
     storageCost: string
     whoUse: string
     startTimeUse: string
-    endTimeUse: string
     durationUse: string
     physicalLocation: string
 
     disabled?: boolean
     checked?: boolean
 
-    static generateFakeDataItems(count = 5): PhysicalServerAccount[] {
-        return Array.from({ length: count }, (_, i) => ({
-            id: `id ${i}`,
-            name: `name ${i}`,
-            type: `type ${i}`,
-            purpose: `purpose ${i}`,
-            workStatus: `workStatus ${i}`,
-            clusterGroupOwner: `clusterGroupOwner ${i}`,
-            managementIP: `managementIP ${i}`,
-            operationSystem: `operationSystem ${i}`,
-            brand: `brand ${i}`,
-            modelNumber: `modelNumber ${i}`,
-            cpuCost: `cpuCost ${i}`,
-            memoryCost: `memoryCost ${i}`,
-            storageCost: `storageCost ${i}`,
-            whoUse: `whoUse ${i}`,
-            startTimeUse: `startTimeUse ${i}`,
-            endTimeUse: `endTimeUse ${i}`,
-            durationUse: `durationUse ${i}`,
-            physicalLocation: `physicalLocation ${i}`
+    static generateFakeDataItems({
+        pageIndex,
+        pageSize
+    }): PhysicalServerAccount[] {
+        return Array.from({ length: pageSize }, (_, i) => ({
+            id: `id ${i + (pageIndex - 1) * pageSize}`,
+            name: `name ${i + (pageIndex - 1) * pageSize}`,
+            type: `type ${i + (pageIndex - 1) * pageSize}`,
+            purpose: `purpose ${i + (pageIndex - 1) * pageSize}`,
+            workStatus: `workStatus ${i + (pageIndex - 1) * pageSize}`,
+            clusterGroupOwner: `clusterGroupOwner ${i +
+                (pageIndex - 1) * pageSize}`,
+            managementIP: `managementIP ${i + (pageIndex - 1) * pageSize}`,
+            operationSystem: `operationSystem ${i +
+                (pageIndex - 1) * pageSize}`,
+            brand: `brand ${i + (pageIndex - 1) * pageSize}`,
+            modelNumber: `modelNumber ${i + (pageIndex - 1) * pageSize}`,
+            cpuCost: `cpuCost ${i + (pageIndex - 1) * pageSize}`,
+            memoryCost: `memoryCost ${i + (pageIndex - 1) * pageSize}`,
+            storageCost: `storageCost ${i + (pageIndex - 1) * pageSize}`,
+            whoUse: `whoUse ${i + (pageIndex - 1) * pageSize}`,
+            startTimeUse: `startTimeUse ${i + (pageIndex - 1) * pageSize}`,
+            endTimeUse: `endTimeUse ${i + (pageIndex - 1) * pageSize}`,
+            durationUse: `durationUse ${i + (pageIndex - 1) * pageSize}`,
+            physicalLocation: `physicalLocation ${i +
+                (pageIndex - 1) * pageSize}`
         }))
     }
 }
@@ -59,32 +64,36 @@ export class VirtualServerAccount {
     storageCost: string
     whoUse: string
     startTimeUse: string
-    endTimeUse: string
     durationUse: string
-    brand: string
-    modelNumber: string
     physicalLocation: string
 
-    static generateFakeDataItems(count = 5): VirtualServerAccount[] {
-        return Array.from({ length: count }, (_, i) => ({
-            id: `id ${i}`,
-            name: `name ${i}`,
-            purpose: `purpose ${i}`,
-            workStatus: `workStatus ${i}`,
-            physicalHostOwner: `physicalHostOwner ${i}`,
-            clusterGroupOwner: `clusterGroupOwner ${i}`,
-            managementIP: `managementIP ${i}`,
-            operationSystem: `operationSystem ${i}`,
-            cpuCost: `cpuCost ${i}`,
-            memoryCost: `memoryCost ${i}`,
-            storageCost: `storageCost ${i}`,
-            whoUse: `whoUse ${i}`,
-            startTimeUse: `startTimeUse ${i}`,
-            endTimeUse: `endTimeUse ${i}`,
-            durationUse: `durationUse ${i}`,
-            brand: `brand ${i}`,
-            modelNumber: `modelNumber ${i}`,
-            physicalLocation: `physicalLocation ${i}`
+    static generateFakeDataItems({
+        pageIndex,
+        pageSize
+    }): VirtualServerAccount[] {
+        return Array.from({ length: pageSize }, (_, i) => ({
+            id: `id ${i + (pageIndex - 1) * pageSize}`,
+            name: `name ${i + (pageIndex - 1) * pageSize}`,
+            purpose: `purpose ${i + (pageIndex - 1) * pageSize}`,
+            workStatus: `workStatus ${i + (pageIndex - 1) * pageSize}`,
+            physicalHostOwner: `physicalHostOwner ${i +
+                (pageIndex - 1) * pageSize}`,
+            clusterGroupOwner: `clusterGroupOwner ${i +
+                (pageIndex - 1) * pageSize}`,
+            managementIP: `managementIP ${i + (pageIndex - 1) * pageSize}`,
+            operationSystem: `operationSystem ${i +
+                (pageIndex - 1) * pageSize}`,
+            cpuCost: `cpuCost ${i + (pageIndex - 1) * pageSize}`,
+            memoryCost: `memoryCost ${i + (pageIndex - 1) * pageSize}`,
+            storageCost: `storageCost ${i + (pageIndex - 1) * pageSize}`,
+            whoUse: `whoUse ${i + (pageIndex - 1) * pageSize}`,
+            startTimeUse: `startTimeUse ${i + (pageIndex - 1) * pageSize}`,
+            endTimeUse: `endTimeUse ${i + (pageIndex - 1) * pageSize}`,
+            durationUse: `durationUse ${i + (pageIndex - 1) * pageSize}`,
+            brand: `brand ${i + (pageIndex - 1) * pageSize}`,
+            modelNumber: `modelNumber ${i + (pageIndex - 1) * pageSize}`,
+            physicalLocation: `physicalLocation ${i +
+                (pageIndex - 1) * pageSize}`
         }))
     }
 }
@@ -98,21 +107,23 @@ export class ClusterServerAccount {
     managementIP: string
     whoUse: string
     startTimeUse: string
-    endTimeUse: string
     durationUse: string
 
-    static generateFakeDataItems(count = 5): ClusterServerAccount[] {
-        return Array.from({ length: count }, (_, i) => ({
-            id: `id ${i}`,
-            name: `name ${i}`,
-            purpose: `purpose ${i}`,
-            workStatus: `workStatus ${i}`,
-            memberServer: `memberServer ${i}`,
-            managementIP: `managementIP ${i}`,
-            whoUse: `whoUse ${i}`,
-            startTimeUse: `startTimeUse ${i}`,
-            endTimeUse: `endTimeUse ${i}`,
-            durationUse: `durationUse ${i}`
+    static generateFakeDataItems({
+        pageIndex,
+        pageSize
+    }): ClusterServerAccount[] {
+        return Array.from({ length: pageSize }, (_, i) => ({
+            id: `id ${i + (pageIndex - 1) * pageSize}`,
+            name: `name ${i + (pageIndex - 1) * pageSize}`,
+            purpose: `purpose ${i + (pageIndex - 1) * pageSize}`,
+            workStatus: `workStatus ${i + (pageIndex - 1) * pageSize}`,
+            memberServer: `memberServer ${i + (pageIndex - 1) * pageSize}`,
+            managementIP: `managementIP ${i + (pageIndex - 1) * pageSize}`,
+            whoUse: `whoUse ${i + (pageIndex - 1) * pageSize}`,
+            startTimeUse: `startTimeUse ${i + (pageIndex - 1) * pageSize}`,
+            endTimeUse: `endTimeUse ${i + (pageIndex - 1) * pageSize}`,
+            durationUse: `durationUse ${i + (pageIndex - 1) * pageSize}`
         }))
     }
 }

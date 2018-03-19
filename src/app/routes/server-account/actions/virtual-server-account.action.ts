@@ -8,20 +8,34 @@ import {
 } from '@core/models/pagination.model'
 
 export const FETCH_VIRTUAL_SERVER_ACCOUNTS =
-    '[Server Account] Fetch Virtual Server Account'
+    '[Virtual Server Account] Fetch Virtual Server Account'
 export const FETCH_VIRTUAL_SERVER_ACCOUNTS_SUCCESS =
-    '[Server Account] Fetch Virtual Server Account Success'
+    '[Virtual Server Account] Fetch Virtual Server Account Success'
 export const FETCH_VIRTUAL_SERVER_ACCOUNTS_FAILURE =
-    '[Server Account] Fetch Virtual Server Account Failure'
+    '[Virtual Server Account] Fetch Virtual Server Account Failure'
 
 export const FETCH_VIRTUAL_SERVER_ACCOUNTS_COUNT =
-    '[Server Account] Fetch Virtual Server Account Count'
+    '[Virtual Server Account] Fetch Virtual Server Account Count'
 export const FETCH_VIRTUAL_SERVER_ACCOUNTS_COUNT_SUCCESS =
-    '[Server Account] Fetch Virtual Server Account Count Success'
+    '[Virtual Server Account] Fetch Virtual Server Account Count Success'
 export const FETCH_VIRTUAL_SERVER_ACCOUNTS_COUNT_FAILURE =
-    '[Server Account] Fetch Virtual Server Account Count Failure'
+    '[Virtual Server Account] Fetch Virtual Server Account Count Failure'
 
-export const ENSURE_PAGE_PARAMS = '[Server Account] Ensure Page Params'
+export const CREATE_VIRTUAL_SERVER_ACCOUNT =
+    '[Virtual Server Account] Create Virtual Server Account'
+export const CREATE_VIRTUAL_SERVER_ACCOUNT_SUCCESS =
+    '[Virtual Server Account] Create Virtual Server Account Success'
+export const CREATE_VIRTUAL_SERVER_ACCOUNT_FAILURE =
+    '[Virtual Server Account] Create Virtual Server Account Failure'
+
+export const EDIT_VIRTUAL_SERVER_ACCOUNT =
+    '[Virtual Server Account] Edit Virtual Server Account'
+export const EDIT_VIRTUAL_SERVER_ACCOUNT_SUCCESS =
+    '[Virtual Server Account] Edit Virtual Server Account Success'
+export const EDIT_VIRTUAL_SERVER_ACCOUNT_FAILURE =
+    '[Virtual Server Account] Edit Virtual Server Account Failure'
+
+export const ENSURE_PAGE_PARAMS = '[Virtual Server Account] Ensure Page Params'
 
 export class FetchVirtualServerAccountsAction implements Action {
     readonly type = FETCH_VIRTUAL_SERVER_ACCOUNTS
@@ -37,6 +51,7 @@ export class FetchVirtualServerAccountsFailureAction implements Action {
 
 export class FetchVirtualServerAccountsCountAction implements Action {
     readonly type = FETCH_VIRTUAL_SERVER_ACCOUNTS_COUNT
+    constructor(public searchText = '') {}
 }
 export class FetchVirtualServerAccountsCountSuccessAction implements Action {
     readonly type = FETCH_VIRTUAL_SERVER_ACCOUNTS_COUNT_SUCCESS
@@ -44,6 +59,28 @@ export class FetchVirtualServerAccountsCountSuccessAction implements Action {
 }
 export class FetchVirtualServerAccountsCountFailureAction implements Action {
     readonly type = FETCH_VIRTUAL_SERVER_ACCOUNTS_COUNT_FAILURE
+}
+
+export class CreateVirtualServerAccountAction implements Action {
+    readonly type = CREATE_VIRTUAL_SERVER_ACCOUNT
+    constructor(public account: VirtualServerAccount) {}
+}
+export class CreateVirtualServerAccountSuccessAction implements Action {
+    readonly type = CREATE_VIRTUAL_SERVER_ACCOUNT_SUCCESS
+}
+export class CreateVirtualServerAccountFailureAction implements Action {
+    readonly type = CREATE_VIRTUAL_SERVER_ACCOUNT_FAILURE
+}
+
+export class EditVirtualServerAccountAction implements Action {
+    readonly type = EDIT_VIRTUAL_SERVER_ACCOUNT
+    constructor(public account: VirtualServerAccount) {}
+}
+export class EditVirtualServerAccountSuccessAction implements Action {
+    readonly type = EDIT_VIRTUAL_SERVER_ACCOUNT_SUCCESS
+}
+export class EditVirtualServerAccountFailureAction implements Action {
+    readonly type = EDIT_VIRTUAL_SERVER_ACCOUNT_FAILURE
 }
 
 export class EnsurePageParamsAction implements Action {

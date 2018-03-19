@@ -8,20 +8,34 @@ import {
 } from '@core/models/pagination.model'
 
 export const FETCH_PHYSICAL_SERVER_ACCOUNTS =
-    '[Server Account] Fetch Physical Server Account'
+    '[Physical Server Account] Fetch Physical Server Account'
 export const FETCH_PHYSICAL_SERVER_ACCOUNTS_SUCCESS =
-    '[Server Account] Fetch Physical Server Account Success'
+    '[Physical Server Account] Fetch Physical Server Account Success'
 export const FETCH_PHYSICAL_SERVER_ACCOUNTS_FAILURE =
-    '[Server Account] Fetch Physical Server Account Failure'
+    '[Physical Server Account] Fetch Physical Server Account Failure'
 
 export const FETCH_PHYSICAL_SERVER_ACCOUNTS_COUNT =
-    '[Server Account] Fetch Physical Server Account Count'
+    '[Physical Server Account] Fetch Physical Server Account Count'
 export const FETCH_PHYSICAL_SERVER_ACCOUNTS_COUNT_SUCCESS =
-    '[Server Account] Fetch Physical Server Account Count Success'
+    '[Physical Server Account] Fetch Physical Server Account Count Success'
 export const FETCH_PHYSICAL_SERVER_ACCOUNTS_COUNT_FAILURE =
-    '[Server Account] Fetch Physical Server Account Count Failure'
+    '[Physical Server Account] Fetch Physical Server Account Count Failure'
 
-export const ENSURE_PAGE_PARAMS = '[Server Account] Ensure Page Params'
+export const CREATE_PHYSICAL_SERVER_ACCOUNT =
+    '[Physical Server Account] Create Physical Server Account'
+export const CREATE_PHYSICAL_SERVER_ACCOUNT_SUCCESS =
+    '[Physical Server Account] Create Physical Server Account Success'
+export const CREATE_PHYSICAL_SERVER_ACCOUNT_FAILURE =
+    '[Physical Server Account] Create Physical Server Account Failure'
+
+export const EDIT_PHYSICAL_SERVER_ACCOUNT =
+    '[Physical Server Account] Edit Physical Server Account'
+export const EDIT_PHYSICAL_SERVER_ACCOUNT_SUCCESS =
+    '[Physical Server Account] Edit Physical Server Account Success'
+export const EDIT_PHYSICAL_SERVER_ACCOUNT_FAILURE =
+    '[Physical Server Account] Edit Physical Server Account Failure'
+
+export const ENSURE_PAGE_PARAMS = '[Physical Server Account] Ensure Page Params'
 
 export class FetchPhysicalServerAccountsAction implements Action {
     readonly type = FETCH_PHYSICAL_SERVER_ACCOUNTS
@@ -37,6 +51,7 @@ export class FetchPhysicalServerAccountsFailureAction implements Action {
 
 export class FetchPhysicalServerAccountsCountAction implements Action {
     readonly type = FETCH_PHYSICAL_SERVER_ACCOUNTS_COUNT
+    constructor(public searchText = '') {}
 }
 export class FetchPhysicalServerAccountsCountSuccessAction implements Action {
     readonly type = FETCH_PHYSICAL_SERVER_ACCOUNTS_COUNT_SUCCESS
@@ -44,6 +59,28 @@ export class FetchPhysicalServerAccountsCountSuccessAction implements Action {
 }
 export class FetchPhysicalServerAccountsCountFailureAction implements Action {
     readonly type = FETCH_PHYSICAL_SERVER_ACCOUNTS_COUNT_FAILURE
+}
+
+export class CreatePhysicalServerAccountAction implements Action {
+    readonly type = CREATE_PHYSICAL_SERVER_ACCOUNT
+    constructor(public account: PhysicalServerAccount) {}
+}
+export class CreatePhysicalServerAccountSuccessAction implements Action {
+    readonly type = CREATE_PHYSICAL_SERVER_ACCOUNT_SUCCESS
+}
+export class CreatePhysicalServerAccountFailureAction implements Action {
+    readonly type = CREATE_PHYSICAL_SERVER_ACCOUNT_FAILURE
+}
+
+export class EditPhysicalServerAccountAction implements Action {
+    readonly type = EDIT_PHYSICAL_SERVER_ACCOUNT
+    constructor(public account: PhysicalServerAccount) {}
+}
+export class EditPhysicalServerAccountSuccessAction implements Action {
+    readonly type = EDIT_PHYSICAL_SERVER_ACCOUNT_SUCCESS
+}
+export class EditPhysicalServerAccountFailureAction implements Action {
+    readonly type = EDIT_PHYSICAL_SERVER_ACCOUNT_FAILURE
 }
 
 export class EnsurePageParamsAction implements Action {

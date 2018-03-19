@@ -57,11 +57,6 @@ import { ToShowApplicationSoftwareAccountComponent } from './modals/to-show-appl
 import { ToShowSystemSoftwareAccountComponent } from './modals/to-show-system-software-account/to-show-system-software-account.component'
 import { ToShowMiddlewareSoftwareAccountComponent } from './modals/to-show-middleware-software-account/to-show-middleware-software-account.component'
 
-interface CheckRow {
-    id: string
-    checked: boolean
-}
-
 @Component({
     selector: 'app-software-account',
     templateUrl: './software-account.component.html',
@@ -131,7 +126,7 @@ export class SoftwareAccountComponent implements OnInit {
         this.toCreateSub.next()
     }
 
-    onSearch(searchText: string) {
+    onSearch() {
         if (this.tabIndex === 0) {
             this.applicationPageIndex = 1
             this.applicationPageSize = 10

@@ -8,20 +8,34 @@ import {
 } from '@core/models/pagination.model'
 
 export const FETCH_CLUSTER_SERVER_ACCOUNTS =
-    '[Server Account] Fetch Cluster Server Account'
+    '[Cluster Server Account] Fetch Cluster Server Account'
 export const FETCH_CLUSTER_SERVER_ACCOUNTS_SUCCESS =
-    '[Server Account] Fetch Cluster Server Account Success'
+    '[Cluster Server Account] Fetch Cluster Server Account Success'
 export const FETCH_CLUSTER_SERVER_ACCOUNTS_FAILURE =
-    '[Server Account] Fetch Cluster Server Account Failure'
+    '[Cluster Server Account] Fetch Cluster Server Account Failure'
 
 export const FETCH_CLUSTER_SERVER_ACCOUNTS_COUNT =
-    '[Server Account] Fetch Cluster Server Account Count'
+    '[Cluster Server Account] Fetch Cluster Server Account Count'
 export const FETCH_CLUSTER_SERVER_ACCOUNTS_COUNT_SUCCESS =
-    '[Server Account] Fetch Cluster Server Account Count Success'
+    '[Cluster Server Account] Fetch Cluster Server Account Count Success'
 export const FETCH_CLUSTER_SERVER_ACCOUNTS_COUNT_FAILURE =
-    '[Server Account] Fetch Cluster Server Account Count Failure'
+    '[Cluster Server Account] Fetch Cluster Server Account Count Failure'
 
-export const ENSURE_PAGE_PARAMS = '[Server Account] Ensure Page Params'
+export const CREATE_CLUSTER_SERVER_ACCOUNT =
+    '[Cluster Server Account] Create Cluster Server Account'
+export const CREATE_CLUSTER_SERVER_ACCOUNT_SUCCESS =
+    '[Cluster Server Account] Create Cluster Server Account Success'
+export const CREATE_CLUSTER_SERVER_ACCOUNT_FAILURE =
+    '[Cluster Server Account] Create Cluster Server Account Failure'
+
+export const EDIT_CLUSTER_SERVER_ACCOUNT =
+    '[Cluster Server Account] Edit Cluster Server Account'
+export const EDIT_CLUSTER_SERVER_ACCOUNT_SUCCESS =
+    '[Cluster Server Account] Edit Cluster Server Account Success'
+export const EDIT_CLUSTER_SERVER_ACCOUNT_FAILURE =
+    '[Cluster Server Account] Edit Cluster Server Account Failure'
+
+export const ENSURE_PAGE_PARAMS = '[Cluster Server Account] Ensure Page Params'
 
 export class FetchClusterServerAccountsAction implements Action {
     readonly type = FETCH_CLUSTER_SERVER_ACCOUNTS
@@ -37,6 +51,7 @@ export class FetchClusterServerAccountsFailureAction implements Action {
 
 export class FetchClusterServerAccountsCountAction implements Action {
     readonly type = FETCH_CLUSTER_SERVER_ACCOUNTS_COUNT
+    constructor(public searchText = '') {}
 }
 export class FetchClusterServerAccountsCountSuccessAction implements Action {
     readonly type = FETCH_CLUSTER_SERVER_ACCOUNTS_COUNT_SUCCESS
@@ -44,6 +59,28 @@ export class FetchClusterServerAccountsCountSuccessAction implements Action {
 }
 export class FetchClusterServerAccountsCountFailureAction implements Action {
     readonly type = FETCH_CLUSTER_SERVER_ACCOUNTS_COUNT_FAILURE
+}
+
+export class CreateClusterServerAccountAction implements Action {
+    readonly type = CREATE_CLUSTER_SERVER_ACCOUNT
+    constructor(public account: ClusterServerAccount) {}
+}
+export class CreateClusterServerAccountSuccessAction implements Action {
+    readonly type = CREATE_CLUSTER_SERVER_ACCOUNT_SUCCESS
+}
+export class CreateClusterServerAccountFailureAction implements Action {
+    readonly type = CREATE_CLUSTER_SERVER_ACCOUNT_FAILURE
+}
+
+export class EditClusterServerAccountAction implements Action {
+    readonly type = EDIT_CLUSTER_SERVER_ACCOUNT
+    constructor(public account: ClusterServerAccount) {}
+}
+export class EditClusterServerAccountSuccessAction implements Action {
+    readonly type = EDIT_CLUSTER_SERVER_ACCOUNT_SUCCESS
+}
+export class EditClusterServerAccountFailureAction implements Action {
+    readonly type = EDIT_CLUSTER_SERVER_ACCOUNT_FAILURE
 }
 
 export class EnsurePageParamsAction implements Action {
@@ -58,4 +95,10 @@ export type Actions =
     | FetchClusterServerAccountsCountAction
     | FetchClusterServerAccountsCountSuccessAction
     | FetchClusterServerAccountsCountFailureAction
+    | CreateClusterServerAccountAction
+    | CreateClusterServerAccountSuccessAction
+    | CreateClusterServerAccountFailureAction
+    | EditClusterServerAccountAction
+    | EditClusterServerAccountSuccessAction
+    | EditClusterServerAccountFailureAction
     | EnsurePageParamsAction
