@@ -3,15 +3,17 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms'
 import { NzModalSubject } from 'ng-zorro-antd'
 import { Subject } from 'rxjs/Subject'
 import { Observable } from 'rxjs/Observable'
+import * as uuid from 'uuid'
 
 import { DestroyService } from '@core/services/destroy.service'
+import { ApplyResource } from '@core/models/resource-apply.model'
 
 @Component({
-    selector: 'app-to-create-application-software-account',
-    templateUrl: './to-create-application-software-account.component.html',
+    selector: 'app-to-create-apply-resource',
+    templateUrl: './to-create-apply-resource.component.html',
     providers: [DestroyService]
 })
-export class ToCreateApplicationSoftwareAccountComponent implements OnInit {
+export class ToCreateApplyResourceComponent implements OnInit {
     form: FormGroup
     constructor(
         private fb: FormBuilder,
@@ -19,26 +21,30 @@ export class ToCreateApplicationSoftwareAccountComponent implements OnInit {
         private destroyService: DestroyService
     ) {}
 
-    get name() {
-        return this.form.controls.name
-    }
     get type() {
         return this.form.controls.type
+    }
+    get softwareType() {
+        return this.form.controls.softwareType
+    }
+    get softwareName() {
+        return this.form.controls.softwareName
     }
     get version() {
         return this.form.controls.version
     }
-    get whoUse() {
-        return this.form.controls.whoUse
+
+    get environment() {
+        return this.form.controls.environment
     }
-    get startTimeUse() {
-        return this.form.controls.startTimeUse
+    get applyCount() {
+        return this.form.controls.applyCount
     }
-    get yearsUse() {
-        return this.form.controls.yearsUse
+    get applyTime() {
+        return this.form.controls.applyTime
     }
-    get license() {
-        return this.form.controls.license
+    get endTime() {
+        return this.form.controls.endTime
     }
     get remark() {
         return this.form.controls.remark
@@ -51,13 +57,15 @@ export class ToCreateApplicationSoftwareAccountComponent implements OnInit {
     toSave() {
         if (this.form.valid) {
             this.subject.next({
-                name: this.name.value,
+                tempID: uuid.v4(),
                 type: this.type.value,
+                softwareType: this.softwareType.value,
+                softwareName: this.softwareName.value,
                 version: this.version.value,
-                whoUse: this.whoUse.value,
-                startTimeUse: this.startTimeUse.value,
-                yearsUse: this.yearsUse.value,
-                license: this.license.value,
+                environment: this.environment.value,
+                applyCount: this.applyCount.value,
+                applyTime: this.applyTime.value,
+                endTime: this.endTime.value,
                 remark: this.remark.value
             })
             this.subject.destroy('onOk')
@@ -70,14 +78,17 @@ export class ToCreateApplicationSoftwareAccountComponent implements OnInit {
 
     private buildForm() {
         this.form = this.fb.group({
-            name: [null, Validators.required],
             type: [null, Validators.required],
+            softwareType: [null, Validators.required],
+            softwareName: [null],
             version: [null],
-            whoUse: [null],
-            startTimeUse: [null],
-            yearsUse: [null],
-            license: [null],
+            environment: [null],
+            applyCount: [null],
+            applyTime: [null],
+            endTime: [null],
             remark: [null]
         })
+
+        this.form.patchValue(ApplyResource.generateTempData())
     }
 }

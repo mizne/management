@@ -57,35 +57,65 @@ export class ApplyResource {
     id?: string
     tempID?: string
     type: string
+    softwareType: string
+    softwareName: string
+    version: string
     name: string
     environment: string
     applyCount: string
     applyTime: string
     endTime: string
+    remark: string
 
     static generateFakeDataItems(): ApplyResource[] {
         return Array.from({ length: 3 }, (_, i) => ({
             id: `id ${i}`,
             type: `type ${i}`,
+            softwareType: `softwareType ${i}`,
+            softwareName: `softwareName ${i}`,
+            version: `version ${i}`,
             name: `name ${i}`,
             environment: `environment ${i}`,
             applyCount: `applyCount ${i}`,
             applyTime: `applyTime ${i}`,
-            endTime: `endTime ${i}`
+            endTime: `endTime ${i}`,
+            remark: `remark ${i}`
         }))
     }
 
     static generateTempData(): ApplyResource {
         return {
-            tempID: `tempID ${Math.random()
+            tempID: uuid.v4(),
+            type: `type ${Math.random()
                 .toString()
                 .slice(0, 5)}`,
-            type: `type`,
-            name: `name`,
-            environment: `environment`,
-            applyCount: `applyCount`,
-            applyTime: `applyTime`,
-            endTime: `endTime`
+            softwareType: `softwareType ${Math.random()
+                .toString()
+                .slice(0, 5)}`,
+            softwareName: `softwareName ${Math.random()
+                .toString()
+                .slice(0, 5)}`,
+            version: `version ${Math.random()
+                .toString()
+                .slice(0, 5)}`,
+            name: `name ${Math.random()
+                .toString()
+                .slice(0, 5)}`,
+            environment: `environment ${Math.random()
+                .toString()
+                .slice(0, 5)}`,
+            applyCount: `applyCount ${Math.random()
+                .toString()
+                .slice(0, 5)}`,
+            applyTime: `applyTime ${Math.random()
+                .toString()
+                .slice(0, 5)}`,
+            endTime: `endTime ${Math.random()
+                .toString()
+                .slice(0, 5)}`,
+            remark: `remark ${Math.random()
+                .toString()
+                .slice(0, 5)}`
         }
     }
 }

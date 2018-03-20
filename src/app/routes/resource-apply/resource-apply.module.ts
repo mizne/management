@@ -12,7 +12,7 @@ import { ExtraTabsEffects } from './effects/extra-tabs.effects'
 import { reducers } from './reducers'
 import { ResourceApplyService } from './services/resource-apply.service'
 
-import { ToCreateApplicationSoftwareAccountComponent } from './modals/to-create-application-software-account/to-create-application-software-account.component'
+import { ToCreateApplyResourceComponent } from './modals/to-create-apply-resource/to-create-apply-resource.component'
 import { ToCreateSystemSoftwareAccountComponent } from './modals/to-create-system-software-account/to-create-system-software-account.component'
 import { ToCreateMiddlewareSoftwareAccountComponent } from './modals/to-create-middleware-software-account/to-create-middleware-software-account.component'
 
@@ -31,7 +31,7 @@ export const routes: Routes = [
     }
 ]
 const modals = [
-    ToCreateApplicationSoftwareAccountComponent,
+    ToCreateApplyResourceComponent,
     ToCreateSystemSoftwareAccountComponent,
     ToCreateMiddlewareSoftwareAccountComponent,
     ToEditApplicationSoftwareAccountComponent,

@@ -7,7 +7,7 @@
                         <label nz-form-item-required>软件名称</label>
                     </div>
                     <div nz-form-control nz-col nzHasFeedback [nzValidateStatus]="name">
-                        <nz-input formControlName="name" nzPlaceHolder="请输入软件名称题" nzSize="large"></nz-input>
+                        <nz-input formControlName="name" nzPlaceHolder="请输入软件名称" nzSize="large"></nz-input>
                         <p nz-form-explain *ngIf="(name.dirty || name.touched) && name.errors?.required">
                             请输入软件名称
                         </p>

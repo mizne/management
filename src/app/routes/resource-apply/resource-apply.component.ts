@@ -43,7 +43,7 @@ import {
 
 import { Subject } from 'rxjs/Subject'
 import { DestroyService } from '@core/services/destroy.service'
-import { ToCreateApplicationSoftwareAccountComponent } from './modals/to-create-application-software-account/to-create-application-software-account.component'
+import { ToCreateApplyResourceComponent } from './modals/to-create-apply-resource/to-create-apply-resource.component'
 import { ToCreateSystemSoftwareAccountComponent } from './modals/to-create-system-software-account/to-create-system-software-account.component'
 import { ToCreateMiddlewareSoftwareAccountComponent } from './modals/to-create-middleware-software-account/to-create-middleware-software-account.component'
 import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms'
@@ -233,7 +233,7 @@ export class ResourceApplyComponent implements OnInit {
         )
         this.applyInfo$ = this.store.select(getApplyInfo)
 
-        this.addedApplyResources$ = this.store.select(getAddableApplyResources)
+        this.addedApplyResources$ = this.store.select(getAddedApplyResources)
 
         this.fetchApproversLoading$ = this.store.select(
             getFetchApproversLoading
@@ -335,9 +335,22 @@ export class ResourceApplyComponent implements OnInit {
     }
 
     private initCreateApplyResource() {
-        this.toCreateResourceSub.asObservable().subscribe(() => {
-            console.log(`to create apply resource`)
-        })
+        this.toCreateResourceSub
+            .asObservable()
+            .mergeMap(() => {
+                return this.modalService.open({
+                    title: '新建资源信息',
+                    content: ToCreateApplyResourceComponent,
+                    footer: false,
+                    width: 800
+                })
+            })
+            .filter(e => typeof e !== 'string')
+            .takeUntil(this.destroyService)
+            .subscribe(resource => {
+                console.log(`to create apply resource: `, resource)
+                this.store.dispatch(new CreateApplyResourceAction(resource))
+            })
     }
 
     private initAddApplyResources() {

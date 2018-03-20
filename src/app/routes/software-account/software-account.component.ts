@@ -78,10 +78,10 @@ export class SoftwareAccountComponent implements OnInit {
     applicationPageChangeSub: Subject<void> = new Subject<void>()
     toEditApplicationSub: Subject<ApplicationSoftwareAccount> = new Subject<
         ApplicationSoftwareAccount
-        >()
+    >()
     toShowApplicationSub: Subject<ApplicationSoftwareAccount> = new Subject<
         ApplicationSoftwareAccount
-        >()
+    >()
 
     systems$: Observable<SystemSoftwareAccount[]>
     systemsCount$: Observable<number>
@@ -91,10 +91,10 @@ export class SoftwareAccountComponent implements OnInit {
     systemPageChangeSub: Subject<void> = new Subject<void>()
     toEditSystemSub: Subject<SystemSoftwareAccount> = new Subject<
         SystemSoftwareAccount
-        >()
+    >()
     toShowSystemSub: Subject<SystemSoftwareAccount> = new Subject<
         SystemSoftwareAccount
-        >()
+    >()
 
     middlewares$: Observable<MiddlewareSoftwareAccount[]>
     middlewaresCount$: Observable<number>
@@ -104,17 +104,17 @@ export class SoftwareAccountComponent implements OnInit {
     middlewarePageChangeSub: Subject<void> = new Subject<void>()
     toEditMiddlewareSub: Subject<MiddlewareSoftwareAccount> = new Subject<
         MiddlewareSoftwareAccount
-        >()
+    >()
     toShowMiddlewareSub: Subject<MiddlewareSoftwareAccount> = new Subject<
         MiddlewareSoftwareAccount
-        >()
+    >()
 
     constructor(
         private messageService: NzMessageService,
         private modalService: NzModalService,
         private store: Store<State>,
         private destroyService: DestroyService
-    ) { }
+    ) {}
 
     ngOnInit() {
         this.intDataSource()
@@ -334,7 +334,7 @@ export class SoftwareAccountComponent implements OnInit {
             .subscribe(() => {
                 console.log(
                     `to search system software accounts; search text: ${
-                    this.searchCtrl.value
+                        this.searchCtrl.value
                     };`
                 )
                 this.store.dispatch(
@@ -389,7 +389,7 @@ export class SoftwareAccountComponent implements OnInit {
             .subscribe(() => {
                 console.log(
                     `to search middleware software accounts; search text: ${
-                    this.searchCtrl.value
+                        this.searchCtrl.value
                     };`
                 )
                 this.store.dispatch(
