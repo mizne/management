@@ -1,7 +1,6 @@
 import { Action } from '@ngrx/store'
 
 import { LoginParams, TenantInfo } from '../models/login.model'
-import { Exhibition } from '@core/models/exhibition.model'
 
 export const USER_LOGIN = '[Login] User Login'
 export const USER_LOGIN_SUCCESS = '[Login] User Login Success'

@@ -5,7 +5,6 @@ import {
     TenantInfo
 } from '../../routes/passport/login/models/login.model'
 import { Router } from '@angular/router'
-import { Exhibition } from '@core/models/exhibition.model'
 
 @Injectable()
 export class TenantService {
@@ -15,7 +14,7 @@ export class TenantService {
     private static REDIRECT_URL = 'RedirectUrl'
     private static DEFAULT_EXPIRED = '12h'
 
-    constructor(private local: LocalStorageService, private router: Router) { }
+    constructor(private local: LocalStorageService, private router: Router) {}
 
     toLogin(redirectUrl = '/'): void {
         this.setRedirectUrl(redirectUrl)
@@ -23,7 +22,11 @@ export class TenantService {
     }
 
     loginSuccess(tenantInfo: TenantInfo) {
-        this.local.set(TenantService.TOKEN, tenantInfo.login.token, TenantService.DEFAULT_EXPIRED)
+        this.local.set(
+            TenantService.TOKEN,
+            tenantInfo.login.token,
+            TenantService.DEFAULT_EXPIRED
+        )
         this.local.set(TenantService.LOGIN_RESULT, {
             tenantId: tenantInfo.login.tenantId,
             userId: tenantInfo.login.userId,
@@ -110,7 +113,7 @@ export class TenantService {
         return this.local.get(TenantService.LOGIN_RESULT)
     }
 
-    private getExhibition(): Exhibition | null {
+    private getExhibition() {
         return this.local.get(TenantService.EXHIBITION)
     }
 

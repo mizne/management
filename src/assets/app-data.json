@@ -69,13 +69,13 @@
                     "children": [
                         {
                             "text": "资源申请管理",
-                            "link": "/assets-management/resource-application",
-                            "translate": "resource-application"
+                            "link": "/assets-management/resource-apply",
+                            "translate": "resource-apply"
                         },
                         {
                             "text": "统一申请管理",
-                            "link": "/assets-management/unified-application",
-                            "translate": "unified-application"
+                            "link": "/assets-management/unified-apply",
+                            "translate": "unified-apply"
                         },
                         {
                             "text": "入库分配管理",

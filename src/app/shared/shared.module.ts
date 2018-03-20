@@ -10,10 +10,7 @@ import { ZORROMODULES, ABCMODULES } from '../delon.module'
 // i18n
 import { TranslateModule } from '@ngx-translate/core'
 
-import { VisitorInvitationsStatusPipe } from './pipes/visitor-invitation-status.pipe'
-import { ExhibitorInvitationsStatusPipe } from './pipes/exhibitor-invitation-status.pipe'
 import { TimeAgoPipe } from './pipes/time-ago.pipe'
-import { VisitorSexPipe } from './pipes/visitor-sex.pipe'
 
 @NgModule({
     imports: [
@@ -27,12 +24,7 @@ import { VisitorSexPipe } from './pipes/visitor-sex.pipe'
         ...ABCMODULES,
         AlainACLModule
     ],
-    declarations: [
-        VisitorInvitationsStatusPipe,
-        ExhibitorInvitationsStatusPipe,
-        TimeAgoPipe,
-        VisitorSexPipe
-    ],
+    declarations: [TimeAgoPipe],
     exports: [
         CommonModule,
         FormsModule,
@@ -43,10 +35,7 @@ import { VisitorSexPipe } from './pipes/visitor-sex.pipe'
         AlainThemeModule,
         ...ABCMODULES,
         TranslateModule,
-        VisitorInvitationsStatusPipe,
-        ExhibitorInvitationsStatusPipe,
-        TimeAgoPipe,
-        VisitorSexPipe
+        TimeAgoPipe
     ]
 })
 export class SharedModule {}

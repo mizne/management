@@ -1,13 +1,12 @@
 import * as fromWorkspace from '../actions/workspace.action'
 import { InvitationActivity } from '../models/workspace.model'
-import { Exhibition, ExhibitionStatistics } from '@core/models/exhibition.model'
 
 export interface State {
     statisticsLoading: boolean
-    statistics: ExhibitionStatistics
+    statistics: any
     activitiesLoading: boolean
     activities: InvitationActivity[]
-    exhibition: Exhibition
+    exhibition: any
 }
 
 const initialState: State = {

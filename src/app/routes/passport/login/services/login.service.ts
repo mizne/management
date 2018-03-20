@@ -3,7 +3,6 @@ import { Injectable } from '@angular/core'
 import { Observable } from 'rxjs/Observable'
 import { LoginParams, LoginResult } from '../models/login.model'
 import { ErrorLoggerService } from '@core/services/error-logger.service'
-import { Exhibition } from '@core/models/exhibition.model'
 import { environment } from '@env/environment'
 
 @Injectable()
@@ -15,7 +14,7 @@ export class LoginService {
     ) {}
     login(
         params: LoginParams
-    ): Observable<{ login: LoginResult; exhibition: Exhibition }> {
+    ): Observable<{ login: LoginResult; exhibition: any }> {
         return Observable.of({
             login: {
                 tenantId: `string`,

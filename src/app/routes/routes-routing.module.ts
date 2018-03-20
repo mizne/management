@@ -45,17 +45,17 @@ const routes: Routes = [
                 path: 'account-management/server-account',
                 loadChildren:
                     './server-account/server-account.module#ServerAccountModule'
+            },
+            {
+                path: 'assets-management',
+                redirectTo: 'assets-management/resource-application',
+                pathMatch: 'full'
+            },
+            {
+                path: 'assets-management/resource-apply',
+                loadChildren:
+                    './resource-apply/resource-apply.module#ResourceApplyModule'
             }
-            // {
-            //     path: 'assets-management',
-            //     redirectTo: 'assets-management/resource-application',
-            //     pathMatch: 'full'
-            // },
-            // {
-            //     path: 'assets-management/resource-application',
-            //     loadChildren:
-            //         './resource-application/resource-application.module#ResourceApplicationModule'
-            // }
             // {
             //     path: 'assets-management/to-approve',
             //     loadChildren: './to-approve/to-approve.module#ToApproveModule'

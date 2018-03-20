@@ -1,7 +1,5 @@
 import { Injectable } from '@angular/core'
 import { Observable } from 'rxjs/Observable'
-import { VisitorInvitationStatus } from '@core/models/visitor-invitation.model'
-import { ExhibitorInvitationStatus } from '@core/models/exhibitor-invitation.model'
 
 @Injectable()
 export class HeaderService {

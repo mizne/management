@@ -1,7 +1,6 @@
 import { Action } from '@ngrx/store'
 
 import { InvitationActivity } from '../models/workspace.model'
-import { Exhibition, ExhibitionStatistics } from '@core/models/exhibition.model'
 
 export const FETCH_INVITATION_ACTIVITIES =
     '[Workspace] Fetch Invitation Activities'
@@ -33,7 +32,7 @@ export class FetchExhibitionStatisticsAction implements Action {
 }
 export class FetchExhibitionStatisticsSuccessAction implements Action {
     readonly type = FETCH_EXHIBITION_STATISTICS_SUCCESS
-    constructor(public exhibitionStatistics: ExhibitionStatistics) {}
+    constructor(public exhibitionStatistics: any) {}
 }
 export class FetchExhibitionStatisticsFailureAction implements Action {
     readonly type = FETCH_EXHIBITION_STATISTICS_FAILURE

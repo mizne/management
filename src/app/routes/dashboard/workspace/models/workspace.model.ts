@@ -1,14 +1,9 @@
-import { VisitorInvitation } from '@core/models/visitor-invitation.model'
-import { ExhibitorInvitation } from '@core/models/exhibitor-invitation.model'
-
 export class InvitationActivity {
     id?: string
     time: string
     content: string
 
-    static convertFromVisitorInvitation(
-        invitation: VisitorInvitation
-    ): InvitationActivity {
+    static convertFromVisitorInvitation(invitation: any): InvitationActivity {
         return {
             id: invitation.id,
             time: invitation.createdAt,
@@ -20,9 +15,7 @@ export class InvitationActivity {
         }
     }
 
-    static convertFromExhibitorInvitation(
-        invitation: ExhibitorInvitation
-    ): InvitationActivity {
+    static convertFromExhibitorInvitation(invitation: any): InvitationActivity {
         return {
             id: invitation.id,
             time: invitation.createdAt,

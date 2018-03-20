@@ -15,7 +15,6 @@ import {
     FetchInvitationActivitiesAction
 } from './actions/workspace.action'
 import { InvitationActivity } from './models/workspace.model'
-import { Exhibition, ExhibitionStatistics } from '@core/models/exhibition.model'
 
 // {
 //     "text": "短信设置",
@@ -158,7 +157,7 @@ export class DashboardWorkspaceComponent implements OnInit, OnDestroy {
             title: '约请设置',
             url: '/system-settings/invitation-settings',
             icon: 'anticon-setting'
-        },
+        }
         // {
         //     title: '短信设置',
         //     url: '/system-settings/sms-settings',
@@ -167,7 +166,7 @@ export class DashboardWorkspaceComponent implements OnInit, OnDestroy {
     ]
 
     activities$: Observable<InvitationActivity[]>
-    statistics$: Observable<ExhibitionStatistics>
+    statistics$: Observable<any>
 
     activitiesLoading$: Observable<boolean>
 
@@ -175,7 +174,7 @@ export class DashboardWorkspaceComponent implements OnInit, OnDestroy {
         public msg: NzMessageService,
         private router: Router,
         private store: Store<State>
-    ) { }
+    ) {}
 
     ngOnInit() {
         this.initDataSource()
@@ -196,7 +195,7 @@ export class DashboardWorkspaceComponent implements OnInit, OnDestroy {
         this.store.dispatch(new FetchInvitationActivitiesAction())
     }
 
-    ngOnDestroy(): void { }
+    ngOnDestroy(): void {}
 
     private initDataSource() {
         this.activities$ = this.store.select(getInvitationActivities)

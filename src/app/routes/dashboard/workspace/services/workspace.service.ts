@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core'
 import { Observable } from 'rxjs/Observable'
 import * as moment from 'moment'
 import { InvitationActivity } from '../models/workspace.model'
-import { Exhibition, ExhibitionStatistics } from '@core/models/exhibition.model'
 import { TenantService } from '@core/services/tenant.service'
 import { ErrorLoggerService } from '@core/services/error-logger.service'
 
@@ -17,7 +16,7 @@ export class WorkspaceService {
         return Observable.of([]).delay(4e2)
     }
 
-    fetchStatistics(): Observable<ExhibitionStatistics> {
+    fetchStatistics(): Observable<any> {
         return Observable.of({
             id: `id`,
             name: `name`,

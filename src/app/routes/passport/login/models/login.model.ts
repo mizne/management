@@ -1,5 +1,3 @@
-import { Exhibition } from '@core/models/exhibition.model'
-
 export class LoginParams {
     name: string
     password: string
@@ -36,5 +34,5 @@ export interface LoginResp {
 
 export interface TenantInfo {
     login: LoginResult
-    exhibition: Exhibition
+    exhibition: any
 }

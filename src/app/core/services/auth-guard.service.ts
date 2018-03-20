@@ -12,12 +12,13 @@ export class AuthGuard implements CanActivate {
     constructor(private tenantService: TenantService) {}
 
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-        if (this.tenantService.getToken()) {
-            return true
-        }
+        // if (this.tenantService.getToken()) {
+        //     return true
+        // }
 
-        console.warn('no token store in client!')
-        this.tenantService.toLogin(state.url)
-        return false
+        // console.warn('no token store in client!')
+        // this.tenantService.toLogin(state.url)
+        // return false
+        return true
     }
 }
