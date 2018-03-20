@@ -1,11 +1,7 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core'
 import { NzMessageService, NzModalService } from 'ng-zorro-antd'
 
-import {
-    ApplicationSoftwareAccount,
-    SystemSoftwareAccount,
-    MiddlewareSoftwareAccount
-} from '@core/models/software-account.model'
+import { TabAction } from '@core/models/resource-apply.model'
 import { Observable } from 'rxjs/Observable'
 import { Store } from '@ngrx/store'
 import {
@@ -20,7 +16,9 @@ import {
     getFetchAddableApplyResourcesLoading,
     getAddableApplyResources,
     getFetchSavedAppliesLoading,
-    getSavedApplies
+    getSavedApplies,
+    getExtraTabs,
+    getActiveTabIndex
 } from './reducers'
 import {
     SwitchApplyTypeAction,
@@ -35,7 +33,13 @@ import {
     FetchApproversAction,
     SubmitRequirementApplyAction
 } from './actions/requirement-apply.action'
-import { FetchSavedAppliesAction } from './actions/saved-apply.action'
+import {
+    FetchSavedAppliesAction,
+    ToDetailSavedApplyAction,
+    ToEditSavedApplyAction,
+    SubmitSavedApplyAction,
+    DeleteSavedApplyAction
+} from './actions/saved-apply.action'
 
 import { Subject } from 'rxjs/Subject'
 import { DestroyService } from '@core/services/destroy.service'
@@ -53,8 +57,10 @@ import {
     ApplyInfo,
     Approver,
     ApplyResource,
-    RequirementApply
+    RequirementApply,
+    TabOptions
 } from '@core/models/resource-apply.model'
+import { CloseExtraTabAction } from './actions/extra-tabs.action'
 
 @Component({
     selector: 'app-resource-apply',
@@ -92,15 +98,24 @@ export class ResourceApplyComponent implements OnInit {
     // 第二个tab
     fetchSavedAppliesLoading$: Observable<boolean>
     savedApplies$: Observable<RequirementApply[]>
+    toEditSavedApplySub: Subject<RequirementApply> = new Subject<
+        RequirementApply
+    >()
+    toDetailSavedApplySub: Subject<RequirementApply> = new Subject<
+        RequirementApply
+    >()
+    toSubmitSavedApplySub: Subject<RequirementApply> = new Subject<
+        RequirementApply
+    >()
+    toDeleteSavedApplySub: Subject<RequirementApply> = new Subject<
+        RequirementApply
+    >()
 
-    tabs = [
-        {
-            name: 'Tab 1'
-        },
-        {
-            name: 'Tab 2'
-        }
-    ]
+    // 额外的tabs
+    extraTabs$: Observable<TabOptions[]>
+    toCloseExtraTabSub: Subject<string> = new Subject<string>()
+    EDIT_EXTRA_TAB_ACTION = TabAction.EDIT
+    DETAIL_EXTRA_TAB_ACTION = TabAction.DETAIL
 
     get type() {
         return this.applyForm.controls.type
@@ -137,7 +152,6 @@ export class ResourceApplyComponent implements OnInit {
     }
 
     tabChange(tabIndex: number) {
-        console.log(typeof tabIndex)
         this.tabChangeSub.next(tabIndex)
     }
 
@@ -174,19 +188,23 @@ export class ResourceApplyComponent implements OnInit {
     }
 
     toShowSavedApply(apply: RequirementApply) {
-        this.tabs.push({
-            name: 'New Tab'
-        })
+        this.toDetailSavedApplySub.next(apply)
     }
 
-    toEditSavedApply(apply: RequirementApply) {}
+    toEditSavedApply(apply: RequirementApply) {
+        this.toEditSavedApplySub.next(apply)
+    }
 
-    toSubmitSavedApply(apply: RequirementApply) {}
+    toSubmitSavedApply(apply: RequirementApply) {
+        this.toSubmitSavedApplySub.next(apply)
+    }
 
-    toDeleteSavedApply(apply: RequirementApply) {}
+    toDeleteSavedApply(apply: RequirementApply) {
+        this.toDeleteSavedApplySub.next(apply)
+    }
 
-    closeTab(tab) {
-        this.tabs.splice(this.tabs.indexOf(tab), 1)
+    closeTab(id: string) {
+        this.toCloseExtraTabSub.next(id)
     }
 
     private buildForm(): void {
@@ -203,6 +221,7 @@ export class ResourceApplyComponent implements OnInit {
     private intDataSource(): void {
         this.initFirstTabDataSource()
         this.initSecondTabDataSource()
+        this.initExtraTabsDataSource()
     }
 
     private initFirstTabDataSource() {
@@ -229,11 +248,16 @@ export class ResourceApplyComponent implements OnInit {
         this.savedApplies$ = this.store.select(getSavedApplies)
     }
 
+    private initExtraTabsDataSource() {
+        this.extraTabs$ = this.store.select(getExtraTabs)
+    }
+
     private initDispatcher(): void {}
 
     private initSubscriber(): void {
         this.initFirstTabSubscriber()
         this.initSecondTabSubscriber()
+        this.initExtraTabsSubscriber()
     }
 
     private initFirstTabSubscriber() {
@@ -250,6 +274,15 @@ export class ResourceApplyComponent implements OnInit {
 
     private initSecondTabSubscriber() {
         this.initFetchSavedApplies()
+        this.initToShowSavedApply()
+        this.initToEditSavedApply()
+        this.initToSubmitSavedApply()
+        this.initToDeleteSavedApply()
+    }
+
+    private initExtraTabsSubscriber() {
+        this.initExtraTabActiveIndex()
+        this.initCloseExtraTab()
     }
 
     private initSwitchApplyType() {
@@ -319,8 +352,81 @@ export class ResourceApplyComponent implements OnInit {
             .asObservable()
             .takeUntil(this.destroyService)
             .filter(tabIndex => tabIndex === 1)
+            .first()
             .subscribe(tabIndex => {
                 this.store.dispatch(new FetchSavedAppliesAction())
+            })
+    }
+
+    private initToShowSavedApply() {
+        this.toDetailSavedApplySub
+            .asObservable()
+            .takeUntil(this.destroyService)
+            .subscribe(apply => {
+                this.store.dispatch(new ToDetailSavedApplyAction(apply))
+            })
+    }
+
+    private initToEditSavedApply() {
+        this.toEditSavedApplySub
+            .asObservable()
+            .takeUntil(this.destroyService)
+            .subscribe(apply => {
+                this.store.dispatch(new ToEditSavedApplyAction(apply))
+            })
+    }
+
+    private initToSubmitSavedApply() {
+        this.toSubmitSavedApplySub
+            .asObservable()
+            .takeUntil(this.destroyService)
+            .subscribe(apply => {
+                this.modalService.confirm({
+                    title: '提交申请',
+                    content: '确定提交这个申请?',
+                    onOk: () => {
+                        this.store.dispatch(new SubmitSavedApplyAction(apply))
+                    }
+                })
+            })
+    }
+
+    private initToDeleteSavedApply() {
+        this.toDeleteSavedApplySub
+            .asObservable()
+            .takeUntil(this.destroyService)
+            .subscribe(apply => {
+                this.modalService.confirm({
+                    title: '删除申请',
+                    content: '确定删除这个申请?',
+                    onOk: () => {
+                        this.store.dispatch(new DeleteSavedApplyAction(apply))
+                    }
+                })
+            })
+    }
+
+    private initExtraTabActiveIndex() {
+        this.store
+            .select(getActiveTabIndex)
+            .filter(index => index !== -1)
+            .takeUntil(this.destroyService)
+            .subscribe(index => {
+                this.tabIndex = index + 2
+            })
+    }
+
+    private initCloseExtraTab() {
+        this.toCloseExtraTabSub
+            .asObservable()
+            .takeUntil(this.destroyService)
+            .subscribe(id => {
+                this.store.dispatch(
+                    new CloseExtraTabAction({
+                        tabId: id,
+                        activeTabIndex: this.tabIndex - 2
+                    })
+                )
             })
     }
 }

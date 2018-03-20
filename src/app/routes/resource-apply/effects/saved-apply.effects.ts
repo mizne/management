@@ -46,6 +46,70 @@ export class SavedApplyEffects {
             this.notify.error(`获取已保存申请`, `啊哦，获取已保存申请失败！`)
         })
 
+    @Effect()
+    submitSavedApplies$ = this.actions$
+        .ofType(fromSavedApply.SUBMIT_SAVED_APPLY)
+        .map((action: fromSavedApply.SubmitSavedApplyAction) => action.apply)
+        .switchMap(apply => {
+            return this.resourceApplyService
+                .submitApply(apply)
+                .concatMap(() => [
+                    new fromSavedApply.SubmitSavedApplySuccessAction(),
+                    new fromSavedApply.FetchSavedAppliesAction()
+                ])
+                .catch(err =>
+                    Observable.of(
+                        new fromSavedApply.SubmitSavedApplyFailureAction()
+                    )
+                )
+        })
+
+    @Effect({ dispatch: false })
+    submitSavedAppliesSuccess$ = this.actions$
+        .ofType(fromSavedApply.SUBMIT_SAVED_APPLY_SUCCESS)
+        .do(() => {
+            this.notify.success(`提交申请`, `恭喜您，提交申请成功！`)
+        })
+
+    @Effect({ dispatch: false })
+    submitSavedAppliesFailure$ = this.actions$
+        .ofType(fromSavedApply.SUBMIT_SAVED_APPLY_FAILURE)
+        .do(() => {
+            this.notify.error(`提交申请`, `啊哦，提交申请失败！`)
+        })
+
+    @Effect()
+    deleteSavedApplies$ = this.actions$
+        .ofType(fromSavedApply.DELETE_SAVED_APPLY)
+        .map((action: fromSavedApply.DeleteSavedApplyAction) => action.apply)
+        .switchMap(apply => {
+            return this.resourceApplyService
+                .deleteApply(apply)
+                .concatMap(() => [
+                    new fromSavedApply.DeleteSavedApplySuccessAction(),
+                    new fromSavedApply.FetchSavedAppliesAction()
+                ])
+                .catch(err =>
+                    Observable.of(
+                        new fromSavedApply.DeleteSavedApplyFailureAction()
+                    )
+                )
+        })
+
+    @Effect({ dispatch: false })
+    deleteSavedAppliesSuccess$ = this.actions$
+        .ofType(fromSavedApply.DELETE_SAVED_APPLY_SUCCESS)
+        .do(() => {
+            this.notify.success(`删除申请`, `恭喜您，删除申请成功！`)
+        })
+
+    @Effect({ dispatch: false })
+    deleteSavedAppliesFailure$ = this.actions$
+        .ofType(fromSavedApply.DELETE_SAVED_APPLY_FAILURE)
+        .do(() => {
+            this.notify.error(`删除申请`, `啊哦，删除申请失败！`)
+        })
+
     constructor(
         private actions$: Actions,
         private resourceApplyService: ResourceApplyService,

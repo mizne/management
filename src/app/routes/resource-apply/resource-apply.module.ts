@@ -8,6 +8,7 @@ import { StoreModule } from '@ngrx/store'
 import { EffectsModule } from '@ngrx/effects'
 import { RequirementApplyEffects } from './effects/requirement-apply.effects'
 import { SavedApplyEffects } from './effects/saved-apply.effects'
+import { ExtraTabsEffects } from './effects/extra-tabs.effects'
 import { reducers } from './reducers'
 import { ResourceApplyService } from './services/resource-apply.service'
 
@@ -45,7 +46,11 @@ const modals = [
         SharedModule,
         RouterModule.forChild(routes),
         StoreModule.forFeature('fromResourceApply', reducers),
-        EffectsModule.forFeature([RequirementApplyEffects, SavedApplyEffects])
+        EffectsModule.forFeature([
+            RequirementApplyEffects,
+            SavedApplyEffects,
+            ExtraTabsEffects
+        ])
     ],
     exports: [],
     declarations: [ResourceApplyComponent, ...modals],

@@ -40,4 +40,16 @@ export class ResourceApplyService {
             3e2
         )
     }
+
+    submitApply(apply: RequirementApply): Observable<any> {
+        return Observable.of(null).delay(4e2)
+    }
+
+    deleteApply(apply: RequirementApply): Observable<any> {
+        return Observable.of(null).delay(4e2)
+    }
+
+    editApply(apply: RequirementApply): Observable<any> {
+        return Observable.of(null).delay(4e2)
+    }
 }

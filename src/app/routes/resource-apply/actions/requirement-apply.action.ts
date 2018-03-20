@@ -6,11 +6,6 @@ import {
     ApplyResource,
     Approver
 } from '@core/models/resource-apply.model'
-import {
-    PaginationParams,
-    FetchItemsParams,
-    defaultFetchItemsParams
-} from '@core/models/pagination.model'
 
 export const SWITCH_APPLY_TYPE =
     '[Requirement Apply] Fetch Application Software Account'

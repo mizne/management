@@ -1,3 +1,5 @@
+import * as uuid from 'uuid'
+
 export class RequirementApply {
     id?: string
     applyInfo: ApplyInfo
@@ -10,6 +12,7 @@ export class RequirementApply {
 
     static generateFakeDataItems(): RequirementApply[] {
         return Array.from({ length: 3 }, (_, i) => ({
+            id: uuid.v4(),
             applyInfo: ApplyInfo.generateFakeData(),
             resources: ApplyResource.generateFakeDataItems(),
             approvers: Approver.generateFakeDataItems(),
@@ -28,11 +31,24 @@ export class ApplyInfo {
 
     static generateFakeData(): ApplyInfo {
         return {
-            listNumber: `fake listNumber`,
-            applicantName: `fake applicantName`,
-            applicantDept: `fake applicantDept`,
-            applicantPhone: `fake applicantPhone`,
-            applyReason: `fake applyReason`
+            type: `fake type ${Math.random()
+                .toString()
+                .slice(0, 5)}`,
+            listNumber: `fake listNumber ${Math.random()
+                .toString()
+                .slice(0, 5)}`,
+            applicantName: `fake applicantName ${Math.random()
+                .toString()
+                .slice(0, 5)}`,
+            applicantDept: `fake applicantDept ${Math.random()
+                .toString()
+                .slice(0, 5)}`,
+            applicantPhone: `fake applicantPhone ${Math.random()
+                .toString()
+                .slice(0, 5)}`,
+            applyReason: `fake applyReason ${Math.random()
+                .toString()
+                .slice(0, 5)}`
         }
     }
 }
@@ -88,5 +104,60 @@ export class Approver {
             department: `department ${i}`,
             job: `job ${i}`
         }))
+    }
+}
+
+export enum TabAction {
+    EDIT = 'EDIT',
+    DETAIL = 'DETAIL'
+}
+
+export interface TabData {
+    id: string
+    fetchApplyInfoLoading: boolean
+    applyInfo: ApplyInfo
+    fetchApproversLoading: boolean
+    approvers: Approver[]
+    addedApplyResources: ApplyResource[]
+}
+
+export class TabOptions {
+    id: string
+    name: string
+    data: TabData
+    action: TabAction
+
+    static convertFromApplyForEdit(apply: RequirementApply): TabOptions {
+        return {
+            id: uuid.v4(),
+            name: `编辑 ${apply.applyInfo.listNumber}`,
+            // name: uuid.v4(),
+            data: {
+                id: apply.id,
+                fetchApplyInfoLoading: false,
+                applyInfo: apply.applyInfo,
+                fetchApproversLoading: false,
+                approvers: apply.approvers,
+                addedApplyResources: apply.resources
+            },
+            action: TabAction.EDIT
+        }
+    }
+
+    static convertFromApplyForDetail(apply: RequirementApply): TabOptions {
+        return {
+            id: uuid.v4(),
+            name: `查看 ${apply.applyInfo.listNumber}`,
+            // name: uuid.v4(),
+            data: {
+                id: apply.id,
+                fetchApplyInfoLoading: false,
+                applyInfo: apply.applyInfo,
+                fetchApproversLoading: false,
+                approvers: apply.approvers,
+                addedApplyResources: apply.resources
+            },
+            action: TabAction.DETAIL
+        }
     }
 }

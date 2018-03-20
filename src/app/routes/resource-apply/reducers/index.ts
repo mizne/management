@@ -2,28 +2,32 @@ import { createFeatureSelector, createSelector } from '@ngrx/store'
 
 import * as fromRequirementApply from './requirement-apply.reducer'
 import * as fromSavedApply from './saved-apply.reducer'
+import * as fromExtraTabs from './extra-tabs.reducer'
+
 import * as fromRoot from '../../../reducers'
 
-export interface SoftwareAccountState {
+export interface ResourceApplyState {
     requirementApply: fromRequirementApply.State
     savedApply: fromSavedApply.State
+    extraTabs: fromExtraTabs.State
 }
 
 export interface State extends fromRoot.State {
-    fromResourceApply: SoftwareAccountState
+    fromResourceApply: ResourceApplyState
 }
 export const reducers = {
     requirementApply: fromRequirementApply.reducer,
-    savedApply: fromSavedApply.reducer
+    savedApply: fromSavedApply.reducer,
+    extraTabs: fromExtraTabs.reducer
 }
 
 export const getResourceApplyModuleState = createFeatureSelector<
-    SoftwareAccountState
+    ResourceApplyState
 >('fromResourceApply')
 
 export const getRequirementApplyState = createSelector(
     getResourceApplyModuleState,
-    (state: SoftwareAccountState) => state.requirementApply
+    (state: ResourceApplyState) => state.requirementApply
 )
 export const getSaveOrSubmitLoading = createSelector(
     getRequirementApplyState,
@@ -64,7 +68,7 @@ export const getAddableApplyResources = createSelector(
 
 export const getSavedApplyState = createSelector(
     getResourceApplyModuleState,
-    (state: SoftwareAccountState) => state.savedApply
+    (state: ResourceApplyState) => state.savedApply
 )
 export const getFetchSavedAppliesLoading = createSelector(
     getSavedApplyState,
@@ -73,4 +77,17 @@ export const getFetchSavedAppliesLoading = createSelector(
 export const getSavedApplies = createSelector(
     getSavedApplyState,
     fromSavedApply.getSavedApplies
+)
+
+export const getExtraTabsState = createSelector(
+    getResourceApplyModuleState,
+    (state: ResourceApplyState) => state.extraTabs
+)
+export const getExtraTabs = createSelector(
+    getExtraTabsState,
+    fromExtraTabs.getTabs
+)
+export const getActiveTabIndex = createSelector(
+    getExtraTabsState,
+    fromExtraTabs.getActiveTabIndex
 )

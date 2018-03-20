@@ -118,7 +118,7 @@
                     <button nz-button class="mx-sm" nzSize="large" (click)="toCreateResource()">新增资源信息</button>
                     <button nz-button class="mx-sm" nzSize="large" [nzType]="'primary'" (click)="toAddResources()">添加资源信息</button>
                 </ng-template>
-                <nz-table #nzTable1 [nzAjaxData]="addedApplyResources$ | async">
+                <nz-table #nzTable1 [nzAjaxData]="addedApplyResources$ | async" [nzIsPagination]="false">
                     <thead nz-thead>
                         <tr>
                             <th nz-th>
@@ -175,7 +175,7 @@
 
             <nz-spin [nzTip]="'获取审批人信息中...'" [nzSpinning]="fetchApproversLoading$ | async">
                 <nz-card [nzTitle]="'审批人信息'" [nzBordered]="false">
-                    <nz-table #nzTable2 [nzAjaxData]="approvers$ | async">
+                    <nz-table #nzTable2 [nzAjaxData]="approvers$ | async" [nzIsPagination]="false">
                         <thead nz-thead>
                             <tr>
                                 <th nz-th>
@@ -211,7 +211,7 @@
                 已保存的申请
             </ng-template>
             <nz-card [nzBordered]="false">
-                <nz-table #nzTable3 [nzAjaxData]="savedApplies$ | async" [nzLoading]="fetchSavedAppliesLoading$ | async">
+                <nz-table #nzTable3 [nzAjaxData]="savedApplies$ | async" [nzIsPagination]="false" [nzLoading]="fetchSavedAppliesLoading$ | async">
                     <thead nz-thead>
                         <tr>
                             <th nz-th>
@@ -257,14 +257,102 @@
                 </nz-table>
             </nz-card>
         </nz-tab>
-        <nz-tab *ngFor="let tab of tabs">
+        <nz-tab *ngFor="let tab of extraTabs$ | async">
             <ng-template #nzTabHeading>
                 <div>
                     {{tab.name}}
-                    <i class="anticon anticon-cross" (click)="closeTab(tab)"></i>
+                    <i class="anticon anticon-cross" (click)="closeTab(tab.id)"></i>
                 </div>
             </ng-template>
-            <span>Content of {{tab.name}}</span>
+            <span *ngIf="tab.action === DETAIL_EXTRA_TAB_ACTION;">
+                <nz-card *ngIf="tab.data; let tabData;" [nzNoHovering]="true" [nzBordered]="false">
+                    <ng-template #body>
+                        <desc-list *ngIf="tabData.applyInfo; let applyInfo;" size="large" title="申请信息" class="mb-lg">
+                            <desc-list-item term="申请类别">{{applyInfo.type}}</desc-list-item>
+                            <desc-list-item term="申请单号">{{applyInfo.listNumber}}</desc-list-item>
+                            <desc-list-item term="申请人姓名">{{applyInfo.applicantName}}</desc-list-item>
+                            <desc-list-item term="申请人部门">{{applyInfo.applicantDept}}</desc-list-item>
+                            <desc-list-item term="联系电话">{{applyInfo.applicantPhone}}</desc-list-item>
+                            <desc-list-item term="申请原因">{{applyInfo.applyReason}}</desc-list-item>
+                        </desc-list>
+                    </ng-template>
+                </nz-card>
+
+                <nz-card *ngIf="tab.data; let tabData;" [nzNoHovering]="true" [nzBordered]="false" nzTitle="资源信息">
+                    <nz-table #nzTable6 [nzDataSource]="tabData.addedApplyResources" [nzIsPagination]="false">
+                        <thead nz-thead>
+                            <tr>
+                                <th nz-th>
+                                    <span>资源类型</span>
+                                </th>
+                                <th nz-th>
+                                    <span>资源名称</span>
+                                </th>
+                                <th nz-th>
+                                    <span>使用环境</span>
+                                </th>
+                                <th nz-th>
+                                    <span>申请数量</span>
+                                </th>
+                                <th nz-th>
+                                    <span>申请时间</span>
+                                </th>
+                                <th nz-th>
+                                    <span>预计需要时间</span>
+                                </th>
+                                <th nz-th>
+                                    <span>操作</span>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody nz-tbody>
+                            <tr nz-tbody-tr *ngFor="let data of nzTable6.data; let i = index;">
+                                <td nz-td>{{data.type}}</td>
+                                <td nz-td>{{data.name}}</td>
+                                <td nz-td>{{data.environment}}</td>
+                                <td nz-td>{{data.applyCount}}</td>
+                                <td nz-td>{{data.applyTime}}</td>
+                                <td nz-td>{{data.endTime}}</td>
+                                <td nz-td>
+                                    <span>
+                                        <a (click)="toShowResource(data)">详情</a>
+                                    </span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </nz-table>
+                </nz-card>
+
+                <nz-card *ngIf="tab.data; let tabData;" [nzNoHovering]="true" [nzBordered]="false" nzTitle="审批人信息">
+                    <nz-table #nzTable7 [nzDataSource]="tabData.approvers" [nzIsPagination]="false">
+                        <thead nz-thead>
+                            <tr>
+                                <th nz-th>
+                                    <span>审批人姓名</span>
+                                </th>
+                                <th nz-th>
+                                    <span>工号</span>
+                                </th>
+                                <th nz-th>
+                                    <span>部门</span>
+                                </th>
+                                <th nz-th>
+                                    <span>职位</span>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody nz-tbody>
+                            <tr nz-tbody-tr *ngFor="let data of nzTable7.data">
+                                <td nz-td>{{data.name}}</td>
+                                <td nz-td>{{data.jobNumber}}</td>
+                                <td nz-td>{{data.department}}</td>
+                                <td nz-td>{{data.job}}</td>
+                            </tr>
+                        </tbody>
+                    </nz-table>
+                </nz-card>
+
+            </span>
         </nz-tab>
 
     </nz-tabset>
