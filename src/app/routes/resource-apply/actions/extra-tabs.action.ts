@@ -7,8 +7,7 @@ import {
     Approver
 } from '@core/models/resource-apply.model'
 
-export const SWITCH_APPLY_TYPE =
-    '[Extra Tabs] Fetch Application Software Account'
+export const SWITCH_APPLY_TYPE = '[Extra Tabs] Switch Apply Type'
 
 export const FETCH_APPLY_INFO = '[Extra Tabs] Fetch Apply Info'
 export const FETCH_APPLY_INFO_SUCCESS = '[Extra Tabs] Fetch Apply Info Success'

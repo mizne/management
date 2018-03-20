@@ -16,7 +16,7 @@ import {
 export class ResourceApplyService {
     constructor() {}
     fetchApplyInfo(applyType: string): Observable<ApplyInfo> {
-        return Observable.of(ApplyInfo.generateFakeData()).delay(4e2)
+        return Observable.of(ApplyInfo.generateFakeData(applyType)).delay(4e2)
     }
 
     fetchApprovers(applyType: string): Observable<Approver[]> {

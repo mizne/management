@@ -48,8 +48,8 @@ const modals = [
         StoreModule.forFeature('fromResourceApply', reducers),
         EffectsModule.forFeature([
             RequirementApplyEffects,
-            SavedApplyEffects,
-            ExtraTabsEffects
+            SavedApplyEffects
+            // ExtraTabsEffects
         ])
     ],
     exports: [],

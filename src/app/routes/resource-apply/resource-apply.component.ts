@@ -290,8 +290,7 @@ export class ResourceApplyComponent implements OnInit {
             .takeUntil(this.destroyService)
             .filter(e => !!e)
             .subscribe(applyType => {
-                this.store.dispatch(new FetchApplyInfoAction(applyType))
-                this.store.dispatch(new FetchApproversAction(applyType))
+                this.store.dispatch(new SwitchApplyTypeAction(applyType))
             })
     }
 
@@ -301,7 +300,7 @@ export class ResourceApplyComponent implements OnInit {
             .takeUntil(this.destroyService)
             .subscribe(applyInfo => {
                 if (applyInfo) {
-                    this.applyForm.patchValue(applyInfo)
+                    this.applyForm.patchValue(applyInfo, { emitEvent: false })
                 } else {
                     this.applyForm.reset()
                 }

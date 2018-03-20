@@ -13,7 +13,9 @@ export class RequirementApply {
     static generateFakeDataItems(): RequirementApply[] {
         return Array.from({ length: 3 }, (_, i) => ({
             id: uuid.v4(),
-            applyInfo: ApplyInfo.generateFakeData(),
+            applyInfo: ApplyInfo.generateFakeData(
+                Math.random() > 0.5 ? '个人申请' : '部门申请'
+            ),
             resources: ApplyResource.generateFakeDataItems(),
             approvers: Approver.generateFakeDataItems(),
             createdAt: `createAt ${i}`
@@ -29,11 +31,9 @@ export class ApplyInfo {
     applicantPhone: string
     applyReason: string
 
-    static generateFakeData(): ApplyInfo {
+    static generateFakeData(applyType: string): ApplyInfo {
         return {
-            type: `fake type ${Math.random()
-                .toString()
-                .slice(0, 5)}`,
+            type: applyType,
             listNumber: `fake listNumber ${Math.random()
                 .toString()
                 .slice(0, 5)}`,
@@ -99,10 +99,18 @@ export class Approver {
 
     static generateFakeDataItems(): Approver[] {
         return Array.from({ length: 2 }, (_, i) => ({
-            name: `name ${i}`,
-            jobNumber: `jobNumber ${i}`,
-            department: `department ${i}`,
-            job: `job ${i}`
+            name: `name ${i} ${Math.random()
+                .toString()
+                .slice(0, 5)}`,
+            jobNumber: `jobNumber ${i} ${Math.random()
+                .toString()
+                .slice(0, 5)}`,
+            department: `department ${i} ${Math.random()
+                .toString()
+                .slice(0, 5)}`,
+            job: `job ${i} ${Math.random()
+                .toString()
+                .slice(0, 5)}`
         }))
     }
 }
