@@ -132,7 +132,7 @@ export class SoftwareAccountComponent implements OnInit {
             this.buttonText = '新建系统软件台账'
             this.searchText = '搜索系统软件名称、类型'
         } else if (tabIndex === 2) {
-            this.buttonText = '新建中间件'
+            this.buttonText = '新建中间件台账'
             this.searchText = '搜索中间件名称、类型'
         }
     }

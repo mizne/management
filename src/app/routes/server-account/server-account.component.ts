@@ -132,7 +132,7 @@ export class ServerAccountComponent implements OnInit {
             this.buttonText = '新建虚拟服务器台账'
             this.searchText = '搜索虚拟服务器名称、类型'
         } else if (tabIndex === 2) {
-            this.buttonText = '新建集群服务器'
+            this.buttonText = '新建集群服务器台账'
             this.searchText = '搜索集群服务器名称、类型'
         }
     }
