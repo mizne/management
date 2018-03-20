@@ -18,7 +18,8 @@ import {
     getFetchSavedAppliesLoading,
     getSavedApplies,
     getExtraTabs,
-    getActiveTabIndex
+    getNeedManualSetTabIndex,
+    getTabIndexToNeedManualSet,
 } from './reducers'
 import {
     SwitchApplyTypeAction,
@@ -50,7 +51,7 @@ import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms'
 import { ToEditApplicationSoftwareAccountComponent } from './modals/to-edit-application-software-account/to-edit-application-software-account.component'
 import { ToEditSystemSoftwareAccountComponent } from './modals/to-edit-system-software-account/to-edit-system-software-account.component'
 import { ToEditMiddlewareSoftwareAccountComponent } from './modals/to-edit-middleware-software-account/to-edit-middleware-software-account.component'
-import { ToShowApplicationSoftwareAccountComponent } from './modals/to-show-application-software-account/to-show-application-software-account.component'
+import { ToShowApplyResourceComponent } from './modals/to-show-apply-resource/to-show-apply-resource.component'
 import { ToShowSystemSoftwareAccountComponent } from './modals/to-show-system-software-account/to-show-system-software-account.component'
 import { ToShowMiddlewareSoftwareAccountComponent } from './modals/to-show-middleware-software-account/to-show-middleware-software-account.component'
 import {
@@ -60,7 +61,7 @@ import {
     RequirementApply,
     TabOptions
 } from '@core/models/resource-apply.model'
-import { CloseExtraTabAction } from './actions/extra-tabs.action'
+import { CloseExtraTabAction, ResetNeedManualSetTabIndexAction } from './actions/extra-tabs.action'
 
 @Component({
     selector: 'app-resource-apply',
@@ -100,16 +101,16 @@ export class ResourceApplyComponent implements OnInit {
     savedApplies$: Observable<RequirementApply[]>
     toEditSavedApplySub: Subject<RequirementApply> = new Subject<
         RequirementApply
-    >()
+        >()
     toDetailSavedApplySub: Subject<RequirementApply> = new Subject<
         RequirementApply
-    >()
+        >()
     toSubmitSavedApplySub: Subject<RequirementApply> = new Subject<
         RequirementApply
-    >()
+        >()
     toDeleteSavedApplySub: Subject<RequirementApply> = new Subject<
         RequirementApply
-    >()
+        >()
 
     // 额外的tabs
     extraTabs$: Observable<TabOptions[]>
@@ -142,7 +143,7 @@ export class ResourceApplyComponent implements OnInit {
         private store: Store<State>,
         private destroyService: DestroyService,
         private fb: FormBuilder
-    ) {}
+    ) { }
 
     ngOnInit() {
         this.buildForm()
@@ -252,7 +253,7 @@ export class ResourceApplyComponent implements OnInit {
         this.extraTabs$ = this.store.select(getExtraTabs)
     }
 
-    private initDispatcher(): void {}
+    private initDispatcher(): void { }
 
     private initSubscriber(): void {
         this.initFirstTabSubscriber()
@@ -270,6 +271,9 @@ export class ResourceApplyComponent implements OnInit {
 
         this.initCreateApplyResource()
         this.initAddApplyResources()
+        this.initShowApplyResource()
+        this.initEditTempApplyResource()
+        this.initDeleteApplyResource()
     }
 
     private initSecondTabSubscriber() {
@@ -281,8 +285,8 @@ export class ResourceApplyComponent implements OnInit {
     }
 
     private initExtraTabsSubscriber() {
-        this.initExtraTabActiveIndex()
         this.initCloseExtraTab()
+        this.initNeedManualResetTabIndex()
     }
 
     private initSwitchApplyType() {
@@ -359,6 +363,43 @@ export class ResourceApplyComponent implements OnInit {
         })
     }
 
+    private initShowApplyResource() {
+        this.toShowResourceSub.asObservable()
+            .mergeMap((resource) => {
+                return this.modalService.open({
+                    title: '查看资源信息',
+                    content: ToShowApplyResourceComponent,
+                    footer: false,
+                    width: 800,
+                    componentParams: { resource }
+                })
+            })
+            .takeUntil(this.destroyService)
+            .subscribe(() => {
+            })
+    }
+
+    private initEditTempApplyResource() {
+        this.toEditTempResourceSub.asObservable()
+            .subscribe((resource) => {
+                console.log(`to edit temp apply resource: `, resource)
+            })
+    }
+
+    private initDeleteApplyResource() {
+        this.toDeleteResourceSub.asObservable()
+            .takeUntil(this.destroyService)
+            .subscribe((index) => {
+                this.modalService.confirm({
+                    title: '删除资源信息',
+                    content: '确定删除这个资源信息?',
+                    onOk: () => {
+                        this.store.dispatch(new DeleteApplyResourceAction(index))
+                    }
+                })
+            })
+    }
+
     private initFetchSavedApplies() {
         this.tabChangeSub
             .asObservable()
@@ -418,27 +459,25 @@ export class ResourceApplyComponent implements OnInit {
             })
     }
 
-    private initExtraTabActiveIndex() {
-        this.store
-            .select(getActiveTabIndex)
-            .filter(index => index !== -1)
-            .takeUntil(this.destroyService)
-            .subscribe(index => {
-                this.tabIndex = index + 2
-            })
-    }
-
     private initCloseExtraTab() {
         this.toCloseExtraTabSub
             .asObservable()
             .takeUntil(this.destroyService)
             .subscribe(id => {
                 this.store.dispatch(
-                    new CloseExtraTabAction({
-                        tabId: id,
-                        activeTabIndex: this.tabIndex - 2
-                    })
+                    new CloseExtraTabAction(id)
                 )
+            })
+    }
+
+    private initNeedManualResetTabIndex() {
+        this.store.select(getNeedManualSetTabIndex)
+            .filter(e => e)
+            .withLatestFrom(this.store.select(getTabIndexToNeedManualSet))
+            .takeUntil(this.destroyService)
+            .subscribe(([_, tabIndex]) => {
+                this.tabIndex = tabIndex
+                this.store.dispatch(new ResetNeedManualSetTabIndexAction())
             })
     }
 }

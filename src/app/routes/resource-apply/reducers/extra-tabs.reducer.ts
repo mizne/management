@@ -11,13 +11,15 @@ import {
 import { ExtraTabsHelper } from './extra-tabs-helper'
 
 export interface State {
-    activeTabIndex: number
     tabs: TabOptions[]
+    needManualSetTabIndex: boolean
+    tabIndexNeedToManualSet: number
 }
 
 const initialState: State = {
-    activeTabIndex: -1,
-    tabs: []
+    tabs: [],
+    needManualSetTabIndex: false,
+    tabIndexNeedToManualSet: -1
 }
 
 type Actions = fromSavedApply.Actions | fromExtraTabs.Actions
@@ -40,9 +42,13 @@ export function reducer(state: State = initialState, action: Actions): State {
                 ...state,
                 ...ExtraTabsHelper.generateFromCloseTab(
                     state,
-                    action.payload.tabId,
-                    action.payload.activeTabIndex
+                    action.id,
                 )
+            }
+        case fromExtraTabs.RESET_NEED_MANUAL_SET_TAB_INDEX:
+            return {
+                ...state,
+                needManualSetTabIndex: false
             }
 
         default:
@@ -51,4 +57,5 @@ export function reducer(state: State = initialState, action: Actions): State {
 }
 
 export const getTabs = (state: State) => state.tabs
-export const getActiveTabIndex = (state: State) => state.activeTabIndex
+export const getNeedManualSetTabIndex = (state: State) => state.needManualSetTabIndex
+export const getTabIndexToNeedManualSet = (state: State) => state.tabIndexNeedToManualSet

@@ -495,7 +495,6 @@ export class ServerAccountComponent implements OnInit {
             })
             .takeUntil(this.destroyService)
             .subscribe(account => {
-                console.log(`to show physical server account success`)
             })
     }
 
@@ -513,7 +512,6 @@ export class ServerAccountComponent implements OnInit {
             })
             .takeUntil(this.destroyService)
             .subscribe(account => {
-                console.log(`to show virtual server account success`)
             })
     }
 
@@ -531,7 +529,6 @@ export class ServerAccountComponent implements OnInit {
             })
             .takeUntil(this.destroyService)
             .subscribe(account => {
-                console.log(`to show cluster server account success`)
             })
     }
 

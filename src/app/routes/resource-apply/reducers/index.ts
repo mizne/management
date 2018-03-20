@@ -23,7 +23,7 @@ export const reducers = {
 
 export const getResourceApplyModuleState = createFeatureSelector<
     ResourceApplyState
->('fromResourceApply')
+    >('fromResourceApply')
 
 export const getRequirementApplyState = createSelector(
     getResourceApplyModuleState,
@@ -87,7 +87,11 @@ export const getExtraTabs = createSelector(
     getExtraTabsState,
     fromExtraTabs.getTabs
 )
-export const getActiveTabIndex = createSelector(
+export const getNeedManualSetTabIndex = createSelector(
     getExtraTabsState,
-    fromExtraTabs.getActiveTabIndex
+    fromExtraTabs.getNeedManualSetTabIndex
+)
+export const getTabIndexToNeedManualSet = createSelector(
+    getExtraTabsState,
+    fromExtraTabs.getTabIndexToNeedManualSet
 )

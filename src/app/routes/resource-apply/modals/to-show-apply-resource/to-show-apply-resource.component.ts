@@ -5,21 +5,22 @@ import { Observable } from 'rxjs/Observable'
 
 import { DestroyService } from '@core/services/destroy.service'
 import { ApplicationSoftwareAccount } from '@core/models/software-account.model'
+import { ApplyResource } from '@core/models/resource-apply.model';
 
 @Component({
-    selector: 'app-to-show-application-software-account',
-    templateUrl: './to-show-application-software-account.component.html',
+    selector: 'app-to-show-apply-resource',
+    templateUrl: './to-show-apply-resource.component.html',
     providers: [DestroyService]
 })
-export class ToShowApplicationSoftwareAccountComponent implements OnInit {
+export class ToShowApplyResourceComponent implements OnInit {
     constructor(
         private subject: NzModalSubject,
         private destroyService: DestroyService
-    ) {}
+    ) { }
 
-    @Input() account: ApplicationSoftwareAccount
+    @Input() resource: ApplyResource
 
-    ngOnInit() {}
+    ngOnInit() { }
 
     toSave() {
         this.subject.destroy('onOk')
