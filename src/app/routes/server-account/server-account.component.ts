@@ -66,6 +66,8 @@ import { ToShowClusterServerAccountComponent } from './modals/to-show-cluster-se
 })
 export class ServerAccountComponent implements OnInit {
     tabIndex = 0
+    buttonText = '新建物理服务器台账'
+    searchText = '搜索物理服务器名称、类型'
     toCreateSub: Subject<void> = new Subject<void>()
     toSearchSub: Subject<void> = new Subject<void>()
     searchCtrl: FormControl = new FormControl()
@@ -120,6 +122,19 @@ export class ServerAccountComponent implements OnInit {
         this.intDataSource()
         this.initDispatcher()
         this.initSubscriber()
+    }
+
+    tabChange(tabIndex: number) {
+        if (tabIndex === 0) {
+            this.buttonText = '新建物理服务器台账'
+            this.searchText = '搜索物理服务器名称、类型'
+        } else if (tabIndex === 1) {
+            this.buttonText = '新建虚拟服务器台账'
+            this.searchText = '搜索虚拟服务器名称、类型'
+        } else if (tabIndex === 2) {
+            this.buttonText = '新建集群服务器'
+            this.searchText = '搜索集群服务器名称、类型'
+        }
     }
 
     toCreate() {

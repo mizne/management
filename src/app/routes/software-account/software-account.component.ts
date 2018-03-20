@@ -66,6 +66,8 @@ import { ToShowMiddlewareSoftwareAccountComponent } from './modals/to-show-middl
 })
 export class SoftwareAccountComponent implements OnInit {
     tabIndex = 0
+    buttonText = '新建应用软件台账'
+    searchText = '搜索应用软件名称、类型'
     toCreateSub: Subject<void> = new Subject<void>()
     toSearchSub: Subject<void> = new Subject<void>()
     searchCtrl: FormControl = new FormControl()
@@ -120,6 +122,19 @@ export class SoftwareAccountComponent implements OnInit {
         this.intDataSource()
         this.initDispatcher()
         this.initSubscriber()
+    }
+
+    tabChange(tabIndex: number) {
+        if (tabIndex === 0) {
+            this.buttonText = '新建应用软件台账'
+            this.searchText = '搜索应用软件名称、类型'
+        } else if (tabIndex === 1) {
+            this.buttonText = '新建系统软件台账'
+            this.searchText = '搜索系统软件名称、类型'
+        } else if (tabIndex === 2) {
+            this.buttonText = '新建中间件'
+            this.searchText = '搜索中间件名称、类型'
+        }
     }
 
     toCreate() {

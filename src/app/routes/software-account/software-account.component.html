@@ -5,17 +5,17 @@
         <div nz-col [nzSpan]="'6'">
             <button nz-button (click)="toCreate()" [nzType]="'primary'" [nzSize]="'large'">
                 <i class="anticon anticon-plus"></i>
-                <span>新建</span>
+                <span>{{buttonText}}</span>
             </button>
         </div>
 
         <div nz-col [nzSpan]="'18'" class="text-center">
-            <nz-input [nzType]="'search'" [formControl]="searchCtrl" [nzSize]="'large'" [nzPlaceHolder]="'搜索软件名称、类型'" style="width: 300px;"
+            <nz-input [nzType]="'search'" [formControl]="searchCtrl" [nzSize]="'large'" [nzPlaceHolder]="searchText" style="width: 300px;"
                 (nzOnSearch)="onSearch($event)"></nz-input>
         </div>
     </div>
 
-    <nz-tabset [nzType]="'card'" [(nzSelectedIndex)]="tabIndex">
+    <nz-tabset [nzType]="'card'" [(nzSelectedIndex)]="tabIndex" (nzSelectedIndexChange)="tabChange($event)">
         <nz-tab>
             <ng-template #nzTabHeading>
                 <i class="anticon anticon-apple"></i>
