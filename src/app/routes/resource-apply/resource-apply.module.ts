@@ -14,16 +14,11 @@ import { reducers } from './reducers'
 import { ResourceApplyService } from './services/resource-apply.service'
 
 import { ToCreateApplyResourceComponent } from './modals/to-create-apply-resource/to-create-apply-resource.component'
-import { ToCreateSystemSoftwareAccountComponent } from './modals/to-create-system-software-account/to-create-system-software-account.component'
 import { ToAddApplyResourceComponent } from './modals/to-add-apply-resource/to-add-apply-resource.component'
 
 import { ToEditApplyResourceComponent } from './modals/to-edit-apply-resource/to-edit-apply-resource.component'
-import { ToEditSystemSoftwareAccountComponent } from './modals/to-edit-system-software-account/to-edit-system-software-account.component'
-import { ToEditMiddlewareSoftwareAccountComponent } from './modals/to-edit-middleware-software-account/to-edit-middleware-software-account.component'
 
 import { ToShowApplyResourceComponent } from './modals/to-show-apply-resource/to-show-apply-resource.component'
-import { ToShowSystemSoftwareAccountComponent } from './modals/to-show-system-software-account/to-show-system-software-account.component'
-import { ToShowMiddlewareSoftwareAccountComponent } from './modals/to-show-middleware-software-account/to-show-middleware-software-account.component'
 
 export const routes: Routes = [
     {
@@ -33,14 +28,9 @@ export const routes: Routes = [
 ]
 const modals = [
     ToCreateApplyResourceComponent,
-    ToCreateSystemSoftwareAccountComponent,
     ToAddApplyResourceComponent,
     ToEditApplyResourceComponent,
-    ToEditSystemSoftwareAccountComponent,
-    ToEditMiddlewareSoftwareAccountComponent,
-    ToShowApplyResourceComponent,
-    ToShowSystemSoftwareAccountComponent,
-    ToShowMiddlewareSoftwareAccountComponent
+    ToShowApplyResourceComponent
 ]
 @NgModule({
     imports: [
