@@ -47,7 +47,7 @@ import { ToCreateApplyResourceComponent } from './modals/to-create-apply-resourc
 import { ToCreateSystemSoftwareAccountComponent } from './modals/to-create-system-software-account/to-create-system-software-account.component'
 import { ToAddApplyResourceComponent } from './modals/to-add-apply-resource/to-add-apply-resource.component'
 import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms'
-import { ToEditApplicationSoftwareAccountComponent } from './modals/to-edit-application-software-account/to-edit-application-software-account.component'
+import { ToEditApplyResourceComponent } from './modals/to-edit-apply-resource/to-edit-apply-resource.component'
 import { ToEditSystemSoftwareAccountComponent } from './modals/to-edit-system-software-account/to-edit-system-software-account.component'
 import { ToEditMiddlewareSoftwareAccountComponent } from './modals/to-edit-middleware-software-account/to-edit-middleware-software-account.component'
 import { ToShowApplyResourceComponent } from './modals/to-show-apply-resource/to-show-apply-resource.component'
@@ -372,7 +372,6 @@ export class ResourceApplyComponent implements OnInit {
             .filter(e => typeof e !== 'string')
             .takeUntil(this.destroyService)
             .subscribe(resources => {
-                console.log(`to add apply resources: `, resources)
                 this.store.dispatch(new AddApplyResourcesAction(resources))
             })
     }
@@ -382,7 +381,7 @@ export class ResourceApplyComponent implements OnInit {
             .asObservable()
             .mergeMap(resource => {
                 return this.modalService.open({
-                    title: '查看资源信息',
+                    title: `${resource.id ? '添加' : '新增'}的资源信息`,
                     content: ToShowApplyResourceComponent,
                     footer: false,
                     width: 800,
@@ -394,9 +393,22 @@ export class ResourceApplyComponent implements OnInit {
     }
 
     private initEditTempApplyResource() {
-        this.toEditTempResourceSub.asObservable().subscribe(resource => {
-            console.log(`to edit temp apply resource: `, resource)
-        })
+        this.toEditTempResourceSub
+            .asObservable()
+            .mergeMap(resource => {
+                return this.modalService.open({
+                    title: '新增的资源信息',
+                    content: ToEditApplyResourceComponent,
+                    footer: false,
+                    width: 1000,
+                    componentParams: { resource }
+                })
+            })
+            .filter(e => typeof e !== 'string')
+            .takeUntil(this.destroyService)
+            .subscribe(resource => {
+                this.store.dispatch(new EditTempApplyResourceAction(resource))
+            })
     }
 
     private initDeleteApplyResource() {

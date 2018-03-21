@@ -17,7 +17,7 @@ import { ToCreateApplyResourceComponent } from './modals/to-create-apply-resourc
 import { ToCreateSystemSoftwareAccountComponent } from './modals/to-create-system-software-account/to-create-system-software-account.component'
 import { ToAddApplyResourceComponent } from './modals/to-add-apply-resource/to-add-apply-resource.component'
 
-import { ToEditApplicationSoftwareAccountComponent } from './modals/to-edit-application-software-account/to-edit-application-software-account.component'
+import { ToEditApplyResourceComponent } from './modals/to-edit-apply-resource/to-edit-apply-resource.component'
 import { ToEditSystemSoftwareAccountComponent } from './modals/to-edit-system-software-account/to-edit-system-software-account.component'
 import { ToEditMiddlewareSoftwareAccountComponent } from './modals/to-edit-middleware-software-account/to-edit-middleware-software-account.component'
 
@@ -35,7 +35,7 @@ const modals = [
     ToCreateApplyResourceComponent,
     ToCreateSystemSoftwareAccountComponent,
     ToAddApplyResourceComponent,
-    ToEditApplicationSoftwareAccountComponent,
+    ToEditApplyResourceComponent,
     ToEditSystemSoftwareAccountComponent,
     ToEditMiddlewareSoftwareAccountComponent,
     ToShowApplyResourceComponent,
