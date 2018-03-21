@@ -41,6 +41,8 @@ import {
     DeleteSavedApplyAction
 } from './actions/saved-apply.action'
 
+import * as fromExtraTabs from './actions/extra-tabs.action'
+
 import { Subject } from 'rxjs/Subject'
 import { DestroyService } from '@core/services/destroy.service'
 import { ToCreateApplyResourceComponent } from './modals/to-create-apply-resource/to-create-apply-resource.component'
@@ -112,6 +114,8 @@ export class ResourceApplyComponent implements OnInit {
     // 额外的tabs
     extraTabs$: Observable<TabOptions[]>
     toCloseExtraTabSub: Subject<string> = new Subject<string>()
+    cancelEditSub: Subject<void> = new Subject<void>()
+    ensureEditSub: Subject<void> = new Subject<void>()
     EDIT_EXTRA_TAB_ACTION = TabAction.EDIT
     DETAIL_EXTRA_TAB_ACTION = TabAction.DETAIL
 
@@ -205,6 +209,14 @@ export class ResourceApplyComponent implements OnInit {
         this.toCloseExtraTabSub.next(id)
     }
 
+    toCancelEdit() {
+        this.cancelEditSub.next()
+    }
+
+    toEnsureEdit() {
+        this.ensureEditSub.next()
+    }
+
     private buildForm(): void {
         this.applyForm = this.fb.group({
             type: [null, Validators.required],
@@ -284,6 +296,15 @@ export class ResourceApplyComponent implements OnInit {
     private initExtraTabsSubscriber() {
         this.initCloseExtraTab()
         this.initNeedManualResetTabIndex()
+
+        this.initSwitchApplyTypeForExtra()
+        this.initCancelEdit()
+        this.initEnsureEdit()
+
+        this.initCreateApplyResourceForExtra()
+        this.initAddApplyResourcesForExtra()
+        this.initShowApplyResourceForExtra()
+        this.initDeleteApplyResourceForExtra()
     }
 
     private initSwitchApplyType() {
@@ -338,6 +359,7 @@ export class ResourceApplyComponent implements OnInit {
     private initCreateApplyResource() {
         this.toCreateResourceSub
             .asObservable()
+            .filter(() => this.tabIndex < 2)
             .mergeMap(() => {
                 return this.modalService.open({
                     title: '新建资源信息',
@@ -356,6 +378,7 @@ export class ResourceApplyComponent implements OnInit {
     private initAddApplyResources() {
         this.toAddResourcesSub
             .asObservable()
+            .filter(() => this.tabIndex < 2)
             .mergeMap(() => {
                 return this.modalService.open({
                     title: '添加资源信息',
@@ -374,6 +397,7 @@ export class ResourceApplyComponent implements OnInit {
     private initShowApplyResource() {
         this.toShowResourceSub
             .asObservable()
+            .filter(() => this.tabIndex < 2)
             .mergeMap(resource => {
                 return this.modalService.open({
                     title: `${resource.id ? '添加' : '新增'}的资源信息`,
@@ -390,6 +414,7 @@ export class ResourceApplyComponent implements OnInit {
     private initEditTempApplyResource() {
         this.toEditTempResourceSub
             .asObservable()
+            .filter(() => this.tabIndex < 2)
             .mergeMap(resource => {
                 return this.modalService.open({
                     title: '新增的资源信息',
@@ -409,6 +434,7 @@ export class ResourceApplyComponent implements OnInit {
     private initDeleteApplyResource() {
         this.toDeleteResourceSub
             .asObservable()
+            .filter(() => this.tabIndex < 2)
             .takeUntil(this.destroyService)
             .subscribe(index => {
                 this.modalService.confirm({
@@ -500,6 +526,154 @@ export class ResourceApplyComponent implements OnInit {
             .subscribe(([_, tabIndex]) => {
                 this.tabIndex = tabIndex
                 this.store.dispatch(new ResetNeedManualSetTabIndexAction())
+            })
+    }
+
+    private initSwitchApplyTypeForExtra() {
+        this.extraTabs$
+            .mergeMap(tabs => {
+                return Observable.merge(
+                    ...tabs.map((tab, i) =>
+                        tab.data.applyInfoForm
+                            .get('type')
+                            .valueChanges.map(e => ({
+                                applyType: e,
+                                tabIndex: i
+                            }))
+                    )
+                )
+            })
+            .distinctUntilChanged(
+                (prev, curr) =>
+                    prev.applyType === curr.applyType &&
+                    prev.tabIndex === curr.tabIndex
+            )
+            .takeUntil(this.destroyService)
+            .subscribe(payload => {
+                this.store.dispatch(
+                    new fromExtraTabs.SwitchApplyTypeAction({
+                        applyType: payload.applyType,
+                        tabIndex: payload.tabIndex
+                    })
+                )
+            })
+    }
+
+    private initCancelEdit() {
+        this.cancelEditSub
+            .asObservable()
+            .takeUntil(this.destroyService)
+            .subscribe(() => {
+                this.store.dispatch(
+                    new fromExtraTabs.CancelEditRequirementApplyAction(
+                        this.tabIndex - 2
+                    )
+                )
+            })
+    }
+
+    private initEnsureEdit() {
+        this.ensureEditSub
+            .asObservable()
+            .takeUntil(this.destroyService)
+            .subscribe(() => {
+                this.store.dispatch(
+                    new fromExtraTabs.EnsureEditRequirementApplyAction(
+                        this.tabIndex - 2
+                    )
+                )
+            })
+    }
+
+    private initCreateApplyResourceForExtra() {
+        this.toCreateResourceSub
+            .asObservable()
+            .filter(() => this.tabIndex >= 2)
+            .mergeMap(() => {
+                return this.modalService.open({
+                    title: '新建资源信息',
+                    content: ToCreateApplyResourceComponent,
+                    footer: false,
+                    width: 800
+                })
+            })
+            .filter(e => typeof e !== 'string')
+
+            .takeUntil(this.destroyService)
+            .subscribe(resource => {
+                this.store.dispatch(
+                    new fromExtraTabs.CreateApplyResourceAction({
+                        applyResource: resource,
+                        tabIndex: this.tabIndex - 2
+                    })
+                )
+            })
+    }
+
+    private initAddApplyResourcesForExtra() {
+        this.toAddResourcesSub
+            .asObservable()
+            .filter(() => this.tabIndex >= 2)
+            .mergeMap(() => {
+                return this.modalService.open({
+                    title: '添加资源信息',
+                    content: ToAddApplyResourceComponent,
+                    footer: false,
+                    width: 1000
+                })
+            })
+            .filter(e => typeof e !== 'string')
+            .takeUntil(this.destroyService)
+            .subscribe(resources => {
+                this.store.dispatch(
+                    new fromExtraTabs.AddApplyResourcesAction({
+                        tabIndex: this.tabIndex - 2,
+                        applyResources: resources
+                    })
+                )
+            })
+    }
+
+    private initShowApplyResourceForExtra() {
+        this.toShowResourceSub
+            .asObservable()
+            .filter(() => this.tabIndex >= 2)
+            .mergeMap(resource => {
+                return this.modalService.open({
+                    title: `${resource.id ? '添加' : '新增'}的资源信息`,
+                    content: ToShowApplyResourceComponent,
+                    footer: false,
+                    width: 800,
+                    componentParams: { resource }
+                })
+            })
+            .takeUntil(this.destroyService)
+            .subscribe(() => {})
+    }
+
+    private initDeleteApplyResourceForExtra() {
+        this.toDeleteResourceSub
+            .asObservable()
+            .filter(() => this.tabIndex >= 2)
+            .takeUntil(this.destroyService)
+            .subscribe(index => {
+                this.modalService.confirm({
+                    title: '删除资源信息',
+                    content: '确定删除这个资源信息?',
+                    onOk: () => {
+                        this.store.dispatch(
+                            new fromExtraTabs.DeleteApplyResourceAction({
+                                tabIndex: this.tabIndex - 2,
+                                resourceIndex: index
+                            })
+                        )
+                        console.log(
+                            `delete apply resource; tab index: ${
+                                this.tabIndex
+                            }; resource index: ${index}`
+                        )
+                    }
+                })
             })
     }
 }

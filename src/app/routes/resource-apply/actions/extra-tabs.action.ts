@@ -33,7 +33,8 @@ export const ENSURE_EDIT_REQUIREMENT_APPLY_FAILURE =
     '[Extra Tabs] Ensure Edit Requirement Apply Failure'
 
 export const CLOSE_EXTRA_TAB = '[Extra Tabs] Close Extra Tab'
-export const RESET_NEED_MANUAL_SET_TAB_INDEX = '[Extra Tabs] Reset Need Manual Set Tab Index'
+export const RESET_NEED_MANUAL_SET_TAB_INDEX =
+    '[Extra Tabs] Reset Need Manual Set Tab Index'
 
 export class SwitchApplyTypeAction implements Action {
     readonly type = SWITCH_APPLY_TYPE
@@ -42,7 +43,7 @@ export class SwitchApplyTypeAction implements Action {
             applyType: string
             tabIndex: number
         }
-    ) { }
+    ) {}
 }
 
 export class FetchApplyInfoAction implements Action {
@@ -52,7 +53,7 @@ export class FetchApplyInfoAction implements Action {
             applyType: string
             tabIndex: number
         }
-    ) { }
+    ) {}
 }
 export class FetchApplyInfoSuccessAction implements Action {
     readonly type = FETCH_APPLY_INFO_SUCCESS
@@ -61,11 +62,11 @@ export class FetchApplyInfoSuccessAction implements Action {
             applyInfo: ApplyInfo
             tabIndex: number
         }
-    ) { }
+    ) {}
 }
 export class FetchApplyInfoFailureAction implements Action {
     readonly type = FETCH_APPLY_INFO_FAILURE
-    constructor(public tabIndex: number) { }
+    constructor(public tabIndex: number) {}
 }
 
 export class FetchApproversAction implements Action {
@@ -75,7 +76,7 @@ export class FetchApproversAction implements Action {
             applyType: string
             tabIndex: number
         }
-    ) { }
+    ) {}
 }
 export class FetchApproversSuccessAction implements Action {
     readonly type = FETCH_APPROVERS_SUCCESS
@@ -84,11 +85,11 @@ export class FetchApproversSuccessAction implements Action {
             approvers: Approver[]
             tabIndex: number
         }
-    ) { }
+    ) {}
 }
 export class FetchApproversFailureAction implements Action {
     readonly type = FETCH_APPROVERS_FAILURE
-    constructor(public tabIndex: number) { }
+    constructor(public tabIndex: number) {}
 }
 
 export class AddApplyResourcesAction implements Action {
@@ -98,7 +99,7 @@ export class AddApplyResourcesAction implements Action {
             applyResources: ApplyResource[]
             tabIndex: number
         }
-    ) { }
+    ) {}
 }
 export class CreateApplyResourceAction implements Action {
     readonly type = CREATE_APPLY_RESOURCE
@@ -107,7 +108,7 @@ export class CreateApplyResourceAction implements Action {
             applyResource: ApplyResource
             tabIndex: number
         }
-    ) { }
+    ) {}
 }
 export class EditTempApplyResourceAction implements Action {
     readonly type = EDIT_TEMP_APPLY_RESOURCE
@@ -116,37 +117,33 @@ export class EditTempApplyResourceAction implements Action {
             resource: ApplyResource
             tabIndex: number
         }
-    ) { }
+    ) {}
 }
 export class DeleteApplyResourceAction implements Action {
     readonly type = DELETE_APPLY_RESOURCE
-    constructor(public payload: { tabIndex: number; resourceIndex: number }) { }
+    constructor(public payload: { tabIndex: number; resourceIndex: number }) {}
 }
 
 export class CancelEditRequirementApplyAction implements Action {
     readonly type = CANCEL_EDIT_REQUIREMENT_APPLY
-    constructor(public tabIndex: number) { }
+    constructor(public tabIndex: number) {}
 }
 export class EnsureEditRequirementApplyAction implements Action {
     readonly type = ENSURE_EDIT_REQUIREMENT_APPLY
-    constructor(
-        public payload: { tabIndex: number; apply: RequirementApply }
-    ) { }
+    constructor(public tabIndex: number) {}
 }
 export class EnsureEditRequirementApplySuccessAction implements Action {
     readonly type = ENSURE_EDIT_REQUIREMENT_APPLY_SUCCESS
-    constructor(public tabIndex: number) { }
+    constructor(public tabIndex: number) {}
 }
 export class EnsureEditRequirementApplyFailureAction implements Action {
     readonly type = ENSURE_EDIT_REQUIREMENT_APPLY_FAILURE
-    constructor(public tabIndex: number) { }
+    constructor(public tabIndex: number) {}
 }
 
 export class CloseExtraTabAction implements Action {
     readonly type = CLOSE_EXTRA_TAB
-    constructor(
-        public id: string
-    ) { }
+    constructor(public id: string) {}
 }
 
 export class ResetNeedManualSetTabIndexAction implements Action {

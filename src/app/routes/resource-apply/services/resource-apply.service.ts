@@ -53,15 +53,15 @@ export class ResourceApplyService {
         )
     }
 
-    submitApply(apply: RequirementApply): Observable<any> {
+    submitSavedApply(apply: RequirementApply): Observable<any> {
         return Observable.of(null).delay(4e2)
     }
 
-    deleteApply(apply: RequirementApply): Observable<any> {
+    deleteSavedApply(apply: RequirementApply): Observable<any> {
         return Observable.of(null).delay(4e2)
     }
 
-    editApply(apply: RequirementApply): Observable<any> {
+    editSavedApply(apply: RequirementApply): Observable<any> {
         return Observable.of(null).delay(4e2)
     }
 }

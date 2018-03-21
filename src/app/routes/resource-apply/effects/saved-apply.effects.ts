@@ -52,7 +52,7 @@ export class SavedApplyEffects {
         .map((action: fromSavedApply.SubmitSavedApplyAction) => action.apply)
         .switchMap(apply => {
             return this.resourceApplyService
-                .submitApply(apply)
+                .submitRequirementApply(apply)
                 .concatMap(() => [
                     new fromSavedApply.SubmitSavedApplySuccessAction(),
                     new fromSavedApply.FetchSavedAppliesAction()
@@ -84,7 +84,7 @@ export class SavedApplyEffects {
         .map((action: fromSavedApply.DeleteSavedApplyAction) => action.apply)
         .switchMap(apply => {
             return this.resourceApplyService
-                .deleteApply(apply)
+                .deleteSavedApply(apply)
                 .concatMap(() => [
                     new fromSavedApply.DeleteSavedApplySuccessAction(),
                     new fromSavedApply.FetchSavedAppliesAction()

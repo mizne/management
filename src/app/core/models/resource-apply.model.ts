@@ -1,5 +1,6 @@
 import * as uuid from 'uuid'
 import { PaginationParams } from './pagination.model'
+import { FormGroup, FormControl } from '@angular/forms'
 
 export class RequirementApply {
     id?: string
@@ -72,17 +73,39 @@ export class ApplyResource {
 
     static generateFakeDataItems(): ApplyResource[] {
         return Array.from({ length: 3 }, (_, i) => ({
-            id: `id ${i}`,
-            type: `type ${i}`,
-            softwareType: `softwareType ${i}`,
-            softwareName: `softwareName ${i}`,
-            version: `version ${i}`,
-            name: `name ${i}`,
-            environment: `environment ${i}`,
-            applyCount: `applyCount ${i}`,
-            applyTime: `applyTime ${i}`,
-            endTime: `endTime ${i}`,
-            remark: `remark ${i}`
+            id: `id ${Math.random()
+                .toString()
+                .slice(0, 5)}`,
+            type: `type ${Math.random()
+                .toString()
+                .slice(0, 5)}`,
+            softwareType: `softwareType ${Math.random()
+                .toString()
+                .slice(0, 5)}`,
+            softwareName: `softwareName ${Math.random()
+                .toString()
+                .slice(0, 5)}`,
+            version: `version ${Math.random()
+                .toString()
+                .slice(0, 5)}`,
+            name: `name ${Math.random()
+                .toString()
+                .slice(0, 5)}`,
+            environment: `environment ${Math.random()
+                .toString()
+                .slice(0, 5)}`,
+            applyCount: `applyCount ${Math.random()
+                .toString()
+                .slice(0, 5)}`,
+            applyTime: `applyTime ${Math.random()
+                .toString()
+                .slice(0, 5)}`,
+            endTime: `endTime ${Math.random()
+                .toString()
+                .slice(0, 5)}`,
+            remark: `remark ${Math.random()
+                .toString()
+                .slice(0, 5)}`
         }))
     }
 
@@ -173,10 +196,12 @@ export enum TabAction {
 export interface TabData {
     id: string
     fetchApplyInfoLoading: boolean
-    applyInfo: ApplyInfo
+    applyInfoForm: FormGroup
     fetchApproversLoading: boolean
     approvers: Approver[]
     addedApplyResources: ApplyResource[]
+    ensureEditLoading: boolean
+    ensureEditText: string
 }
 
 export class TabOptions {
@@ -193,10 +218,25 @@ export class TabOptions {
             data: {
                 id: apply.id,
                 fetchApplyInfoLoading: false,
-                applyInfo: apply.applyInfo,
+                applyInfoForm: new FormGroup({
+                    type: new FormControl(apply.applyInfo.type),
+                    listNumber: new FormControl(apply.applyInfo.listNumber),
+                    applicantName: new FormControl(
+                        apply.applyInfo.applicantName
+                    ),
+                    applicantDept: new FormControl(
+                        apply.applyInfo.applicantDept
+                    ),
+                    applicantPhone: new FormControl(
+                        apply.applyInfo.applicantPhone
+                    ),
+                    applyReason: new FormControl(apply.applyInfo.applyReason)
+                }),
                 fetchApproversLoading: false,
                 approvers: apply.approvers,
-                addedApplyResources: apply.resources
+                addedApplyResources: apply.resources,
+                ensureEditLoading: false,
+                ensureEditText: ''
             },
             action: TabAction.EDIT
         }
@@ -210,12 +250,36 @@ export class TabOptions {
             data: {
                 id: apply.id,
                 fetchApplyInfoLoading: false,
-                applyInfo: apply.applyInfo,
+                applyInfoForm: new FormGroup({
+                    type: new FormControl(apply.applyInfo.type),
+                    listNumber: new FormControl(apply.applyInfo.listNumber),
+                    applicantName: new FormControl(
+                        apply.applyInfo.applicantName
+                    ),
+                    applicantDept: new FormControl(
+                        apply.applyInfo.applicantDept
+                    ),
+                    applicantPhone: new FormControl(
+                        apply.applyInfo.applicantPhone
+                    ),
+                    applyReason: new FormControl(apply.applyInfo.applyReason)
+                }),
                 fetchApproversLoading: false,
                 approvers: apply.approvers,
-                addedApplyResources: apply.resources
+                addedApplyResources: apply.resources,
+                ensureEditLoading: false,
+                ensureEditText: ''
             },
             action: TabAction.DETAIL
+        }
+    }
+
+    static generateApply(tab: TabOptions): RequirementApply {
+        return {
+            id: tab.data.id,
+            applyInfo: tab.data.applyInfoForm.value,
+            resources: tab.data.addedApplyResources,
+            approvers: tab.data.approvers
         }
     }
 }

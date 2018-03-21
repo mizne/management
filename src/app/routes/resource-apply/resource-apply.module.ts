@@ -40,7 +40,7 @@ const modals = [
         EffectsModule.forFeature([
             RequirementApplyEffects,
             SavedApplyEffects,
-            // ExtraTabsEffects
+            ExtraTabsEffects,
             ToAddApplyResourceEffects
         ])
     ],
