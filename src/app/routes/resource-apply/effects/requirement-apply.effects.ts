@@ -88,25 +88,6 @@ export class RequirementApplyEffects {
         })
 
     @Effect()
-    fetchAddableApplyResources$ = this.actions$
-        .ofType(fromRequirementApply.FETCH_ADDABLE_APPLY_RESOURCE)
-        .switchMap(() => {
-            return this.resourceApplyService
-                .fetchAddableApplyResources()
-                .map(
-                    resources =>
-                        new fromRequirementApply.FetchAddableApplyResourceSuccessAction(
-                            resources
-                        )
-                )
-                .catch(() =>
-                    Observable.of(
-                        new fromRequirementApply.FetchAddableApplyResourceFailureAction()
-                    )
-                )
-        })
-
-    @Effect()
     saveRequirementApply$ = this.actions$
         .ofType(fromRequirementApply.SAVE_REQUIREMENT_APPLY)
         .withLatestFrom(

@@ -21,13 +21,6 @@ export const FETCH_APPROVERS_SUCCESS =
 export const FETCH_APPROVERS_FAILURE =
     '[Requirement Apply] Fetch Approver Failure'
 
-export const FETCH_ADDABLE_APPLY_RESOURCE =
-    '[Requirement Apply] Fetch Addable Apply Resource'
-export const FETCH_ADDABLE_APPLY_RESOURCE_SUCCESS =
-    '[Requirement Apply] Fetch Addable Apply Resource Success'
-export const FETCH_ADDABLE_APPLY_RESOURCE_FAILURE =
-    '[Requirement Apply] Fetch Addable Apply Resource Failure'
-
 export const ADD_APPLY_RESOURCES = '[Requirement Apply] Add Apply Resources'
 export const CREATE_APPLY_RESOURCE = '[Requirement Apply] Create Apply Resource'
 export const EDIT_TEMP_APPLY_RESOURCE =
@@ -80,17 +73,6 @@ export class FetchApproversFailureAction implements Action {
     readonly type = FETCH_APPROVERS_FAILURE
 }
 
-export class FetchAddableApplyResourceAction implements Action {
-    readonly type = FETCH_ADDABLE_APPLY_RESOURCE
-}
-export class FetchAddableApplyResourceSuccessAction implements Action {
-    readonly type = FETCH_ADDABLE_APPLY_RESOURCE_SUCCESS
-    constructor(public resources: ApplyResource[]) {}
-}
-export class FetchAddableApplyResourceFailureAction implements Action {
-    readonly type = FETCH_ADDABLE_APPLY_RESOURCE_FAILURE
-}
-
 export class AddApplyResourcesAction implements Action {
     readonly type = ADD_APPLY_RESOURCES
     constructor(public applyResources: ApplyResource[]) {}
@@ -140,9 +122,6 @@ export type Actions =
     | FetchApproversAction
     | FetchApproversSuccessAction
     | FetchApproversFailureAction
-    | FetchAddableApplyResourceAction
-    | FetchAddableApplyResourceSuccessAction
-    | FetchAddableApplyResourceFailureAction
     | AddApplyResourcesAction
     | CreateApplyResourceAction
     | EditTempApplyResourceAction

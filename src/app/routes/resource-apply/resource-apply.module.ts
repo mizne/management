@@ -9,12 +9,13 @@ import { EffectsModule } from '@ngrx/effects'
 import { RequirementApplyEffects } from './effects/requirement-apply.effects'
 import { SavedApplyEffects } from './effects/saved-apply.effects'
 import { ExtraTabsEffects } from './effects/extra-tabs.effects'
+import { ToAddApplyResourceEffects } from './effects/to-add-apply-resource.effects'
 import { reducers } from './reducers'
 import { ResourceApplyService } from './services/resource-apply.service'
 
 import { ToCreateApplyResourceComponent } from './modals/to-create-apply-resource/to-create-apply-resource.component'
 import { ToCreateSystemSoftwareAccountComponent } from './modals/to-create-system-software-account/to-create-system-software-account.component'
-import { ToCreateMiddlewareSoftwareAccountComponent } from './modals/to-create-middleware-software-account/to-create-middleware-software-account.component'
+import { ToAddApplyResourceComponent } from './modals/to-add-apply-resource/to-add-apply-resource.component'
 
 import { ToEditApplicationSoftwareAccountComponent } from './modals/to-edit-application-software-account/to-edit-application-software-account.component'
 import { ToEditSystemSoftwareAccountComponent } from './modals/to-edit-system-software-account/to-edit-system-software-account.component'
@@ -33,7 +34,7 @@ export const routes: Routes = [
 const modals = [
     ToCreateApplyResourceComponent,
     ToCreateSystemSoftwareAccountComponent,
-    ToCreateMiddlewareSoftwareAccountComponent,
+    ToAddApplyResourceComponent,
     ToEditApplicationSoftwareAccountComponent,
     ToEditSystemSoftwareAccountComponent,
     ToEditMiddlewareSoftwareAccountComponent,
@@ -48,8 +49,9 @@ const modals = [
         StoreModule.forFeature('fromResourceApply', reducers),
         EffectsModule.forFeature([
             RequirementApplyEffects,
-            SavedApplyEffects
+            SavedApplyEffects,
             // ExtraTabsEffects
+            ToAddApplyResourceEffects
         ])
     ],
     exports: [],
@@ -57,4 +59,4 @@ const modals = [
     providers: [ResourceApplyService],
     entryComponents: [...modals]
 })
-export class ResourceApplyModule { }
+export class ResourceApplyModule {}

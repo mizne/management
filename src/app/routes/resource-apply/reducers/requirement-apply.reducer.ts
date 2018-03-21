@@ -12,8 +12,6 @@ export interface State {
     fetchApproversLoading: boolean
     approvers: Approver[]
     addedApplyResources: ApplyResource[]
-    fetchAddableApplyResourcesLoading: boolean
-    addableApplyResources: ApplyResource[]
     saveOrSubmitLoading: boolean
     saveOrSubmitText: string
 }
@@ -24,8 +22,6 @@ const initialState: State = {
     fetchApproversLoading: false,
     approvers: [],
     addedApplyResources: [],
-    fetchAddableApplyResourcesLoading: false,
-    addableApplyResources: [],
     saveOrSubmitLoading: false,
     saveOrSubmitText: ''
 }
@@ -81,22 +77,6 @@ export function reducer(
                 addedApplyResources: state.addedApplyResources.concat(
                     action.applyResource
                 )
-            }
-        case fromRequirementApply.FETCH_ADDABLE_APPLY_RESOURCE:
-            return {
-                ...state,
-                fetchAddableApplyResourcesLoading: true
-            }
-        case fromRequirementApply.FETCH_ADDABLE_APPLY_RESOURCE_SUCCESS:
-            return {
-                ...state,
-                fetchAddableApplyResourcesLoading: false,
-                addableApplyResources: action.resources
-            }
-        case fromRequirementApply.FETCH_ADDABLE_APPLY_RESOURCE_FAILURE:
-            return {
-                ...state,
-                fetchAddableApplyResourcesLoading: false
             }
         case fromRequirementApply.EDIT_TEMP_APPLY_RESOURCE:
             return {
@@ -164,10 +144,6 @@ export const getFetchApproversLoading = (state: State) =>
 export const getApprovers = (state: State) => state.approvers
 export const getAddedApplyResources = (state: State) =>
     state.addedApplyResources
-export const getFetchAddableApplyResourcesLoading = (state: State) =>
-    state.fetchAddableApplyResourcesLoading
-export const getAddableApplyResources = (state: State) =>
-    state.addableApplyResources
 export const getSaveOrSubmitLoading = (state: State) =>
     state.saveOrSubmitLoading
 export const getSaveOrSubmitText = (state: State) => state.saveOrSubmitText

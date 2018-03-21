@@ -3,6 +3,7 @@ import { createFeatureSelector, createSelector } from '@ngrx/store'
 import * as fromRequirementApply from './requirement-apply.reducer'
 import * as fromSavedApply from './saved-apply.reducer'
 import * as fromExtraTabs from './extra-tabs.reducer'
+import * as fromToAppApplyResource from './to-add-apply-resource.reducer'
 
 import * as fromRoot from '../../../reducers'
 
@@ -10,6 +11,7 @@ export interface ResourceApplyState {
     requirementApply: fromRequirementApply.State
     savedApply: fromSavedApply.State
     extraTabs: fromExtraTabs.State
+    toAddApplyResource: fromToAppApplyResource.State
 }
 
 export interface State extends fromRoot.State {
@@ -18,12 +20,13 @@ export interface State extends fromRoot.State {
 export const reducers = {
     requirementApply: fromRequirementApply.reducer,
     savedApply: fromSavedApply.reducer,
-    extraTabs: fromExtraTabs.reducer
+    extraTabs: fromExtraTabs.reducer,
+    toAddApplyResource: fromToAppApplyResource.reducer
 }
 
 export const getResourceApplyModuleState = createFeatureSelector<
     ResourceApplyState
-    >('fromResourceApply')
+>('fromResourceApply')
 
 export const getRequirementApplyState = createSelector(
     getResourceApplyModuleState,
@@ -57,14 +60,6 @@ export const getAddedApplyResources = createSelector(
     getRequirementApplyState,
     fromRequirementApply.getAddedApplyResources
 )
-export const getFetchAddableApplyResourcesLoading = createSelector(
-    getRequirementApplyState,
-    fromRequirementApply.getFetchAddableApplyResourcesLoading
-)
-export const getAddableApplyResources = createSelector(
-    getRequirementApplyState,
-    fromRequirementApply.getAddableApplyResources
-)
 
 export const getSavedApplyState = createSelector(
     getResourceApplyModuleState,
@@ -94,4 +89,25 @@ export const getNeedManualSetTabIndex = createSelector(
 export const getTabIndexToNeedManualSet = createSelector(
     getExtraTabsState,
     fromExtraTabs.getTabIndexToNeedManualSet
+)
+
+export const getToAddApplyResourceState = createSelector(
+    getResourceApplyModuleState,
+    (state: ResourceApplyState) => state.toAddApplyResource
+)
+export const getFetchAddableApplyResourceLoading = createSelector(
+    getToAddApplyResourceState,
+    fromToAppApplyResource.getFetchAddableApplyResourcesLoading
+)
+export const getAddableApplyResources = createSelector(
+    getToAddApplyResourceState,
+    fromToAppApplyResource.getAddableApplyResources
+)
+export const getAddableApplyResourcesCount = createSelector(
+    getToAddApplyResourceState,
+    fromToAppApplyResource.getAddableApplyResourcesCount
+)
+export const getAddableApplyResourcesPageParams = createSelector(
+    getToAddApplyResourceState,
+    fromToAppApplyResource.getAddableApplyResourcesPageParams
 )

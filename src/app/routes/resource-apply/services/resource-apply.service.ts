@@ -5,7 +5,11 @@ import {
     ApplyInfo,
     ApplyResource,
     Approver,
-    RequirementApply
+    RequirementApply,
+    FetchAddableApplyResourceParams,
+    FetchAddableApplyResourceCountParams,
+    defaultFetchAddableApplyResourceParams,
+    defaultFetchAddableApplyResourceCountParams
 } from '@core/models/resource-apply.model'
 import {
     PaginationParams,
@@ -23,8 +27,16 @@ export class ResourceApplyService {
         return Observable.of(Approver.generateFakeDataItems()).delay(3e2)
     }
 
-    fetchAddableApplyResources(): Observable<ApplyResource[]> {
+    fetchAddableApplyResources(
+        params: FetchAddableApplyResourceParams
+    ): Observable<ApplyResource[]> {
         return Observable.of(ApplyResource.generateFakeDataItems()).delay(4e2)
+    }
+
+    fetchAddableApplyResourcesCount(
+        params: FetchAddableApplyResourceCountParams
+    ): Observable<number> {
+        return Observable.of(42).delay(4e2)
     }
 
     saveRequirementApply(apply: RequirementApply): Observable<any> {

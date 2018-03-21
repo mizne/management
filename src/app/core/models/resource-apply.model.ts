@@ -1,4 +1,5 @@
 import * as uuid from 'uuid'
+import { PaginationParams } from './pagination.model'
 
 export class RequirementApply {
     id?: string
@@ -67,6 +68,8 @@ export class ApplyResource {
     endTime: string
     remark: string
 
+    checked?: boolean
+
     static generateFakeDataItems(): ApplyResource[] {
         return Array.from({ length: 3 }, (_, i) => ({
             id: `id ${i}`,
@@ -119,6 +122,23 @@ export class ApplyResource {
         }
     }
 }
+
+export interface FetchAddableApplyResourceParams extends PaginationParams {
+    type?: string
+    name?: string
+    version?: string
+}
+export const defaultFetchAddableApplyResourceParams: FetchAddableApplyResourceParams = {
+    pageIndex: 1,
+    pageSize: 10
+}
+
+export interface FetchAddableApplyResourceCountParams {
+    type?: string
+    name?: string
+    version?: string
+}
+export const defaultFetchAddableApplyResourceCountParams: FetchAddableApplyResourceCountParams = {}
 
 export class Approver {
     id?: string

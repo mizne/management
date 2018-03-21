@@ -13,13 +13,12 @@ import {
     getFetchApproversLoading,
     getApprovers,
     getAddedApplyResources,
-    getFetchAddableApplyResourcesLoading,
     getAddableApplyResources,
     getFetchSavedAppliesLoading,
     getSavedApplies,
     getExtraTabs,
     getNeedManualSetTabIndex,
-    getTabIndexToNeedManualSet,
+    getTabIndexToNeedManualSet
 } from './reducers'
 import {
     SwitchApplyTypeAction,
@@ -46,7 +45,7 @@ import { Subject } from 'rxjs/Subject'
 import { DestroyService } from '@core/services/destroy.service'
 import { ToCreateApplyResourceComponent } from './modals/to-create-apply-resource/to-create-apply-resource.component'
 import { ToCreateSystemSoftwareAccountComponent } from './modals/to-create-system-software-account/to-create-system-software-account.component'
-import { ToCreateMiddlewareSoftwareAccountComponent } from './modals/to-create-middleware-software-account/to-create-middleware-software-account.component'
+import { ToAddApplyResourceComponent } from './modals/to-add-apply-resource/to-add-apply-resource.component'
 import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms'
 import { ToEditApplicationSoftwareAccountComponent } from './modals/to-edit-application-software-account/to-edit-application-software-account.component'
 import { ToEditSystemSoftwareAccountComponent } from './modals/to-edit-system-software-account/to-edit-system-software-account.component'
@@ -61,7 +60,10 @@ import {
     RequirementApply,
     TabOptions
 } from '@core/models/resource-apply.model'
-import { CloseExtraTabAction, ResetNeedManualSetTabIndexAction } from './actions/extra-tabs.action'
+import {
+    CloseExtraTabAction,
+    ResetNeedManualSetTabIndexAction
+} from './actions/extra-tabs.action'
 
 @Component({
     selector: 'app-resource-apply',
@@ -101,16 +103,16 @@ export class ResourceApplyComponent implements OnInit {
     savedApplies$: Observable<RequirementApply[]>
     toEditSavedApplySub: Subject<RequirementApply> = new Subject<
         RequirementApply
-        >()
+    >()
     toDetailSavedApplySub: Subject<RequirementApply> = new Subject<
         RequirementApply
-        >()
+    >()
     toSubmitSavedApplySub: Subject<RequirementApply> = new Subject<
         RequirementApply
-        >()
+    >()
     toDeleteSavedApplySub: Subject<RequirementApply> = new Subject<
         RequirementApply
-        >()
+    >()
 
     // 额外的tabs
     extraTabs$: Observable<TabOptions[]>
@@ -143,7 +145,7 @@ export class ResourceApplyComponent implements OnInit {
         private store: Store<State>,
         private destroyService: DestroyService,
         private fb: FormBuilder
-    ) { }
+    ) {}
 
     ngOnInit() {
         this.buildForm()
@@ -253,7 +255,7 @@ export class ResourceApplyComponent implements OnInit {
         this.extraTabs$ = this.store.select(getExtraTabs)
     }
 
-    private initDispatcher(): void { }
+    private initDispatcher(): void {}
 
     private initSubscriber(): void {
         this.initFirstTabSubscriber()
@@ -352,20 +354,33 @@ export class ResourceApplyComponent implements OnInit {
             .filter(e => typeof e !== 'string')
             .takeUntil(this.destroyService)
             .subscribe(resource => {
-                console.log(`to create apply resource: `, resource)
                 this.store.dispatch(new CreateApplyResourceAction(resource))
             })
     }
 
     private initAddApplyResources() {
-        this.toAddResourcesSub.asObservable().subscribe(() => {
-            console.log(`to add apply resources`)
-        })
+        this.toAddResourcesSub
+            .asObservable()
+            .mergeMap(() => {
+                return this.modalService.open({
+                    title: '添加资源信息',
+                    content: ToAddApplyResourceComponent,
+                    footer: false,
+                    width: 1000
+                })
+            })
+            .filter(e => typeof e !== 'string')
+            .takeUntil(this.destroyService)
+            .subscribe(resources => {
+                console.log(`to add apply resources: `, resources)
+                this.store.dispatch(new AddApplyResourcesAction(resources))
+            })
     }
 
     private initShowApplyResource() {
-        this.toShowResourceSub.asObservable()
-            .mergeMap((resource) => {
+        this.toShowResourceSub
+            .asObservable()
+            .mergeMap(resource => {
                 return this.modalService.open({
                     title: '查看资源信息',
                     content: ToShowApplyResourceComponent,
@@ -375,26 +390,27 @@ export class ResourceApplyComponent implements OnInit {
                 })
             })
             .takeUntil(this.destroyService)
-            .subscribe(() => {
-            })
+            .subscribe(() => {})
     }
 
     private initEditTempApplyResource() {
-        this.toEditTempResourceSub.asObservable()
-            .subscribe((resource) => {
-                console.log(`to edit temp apply resource: `, resource)
-            })
+        this.toEditTempResourceSub.asObservable().subscribe(resource => {
+            console.log(`to edit temp apply resource: `, resource)
+        })
     }
 
     private initDeleteApplyResource() {
-        this.toDeleteResourceSub.asObservable()
+        this.toDeleteResourceSub
+            .asObservable()
             .takeUntil(this.destroyService)
-            .subscribe((index) => {
+            .subscribe(index => {
                 this.modalService.confirm({
                     title: '删除资源信息',
                     content: '确定删除这个资源信息?',
                     onOk: () => {
-                        this.store.dispatch(new DeleteApplyResourceAction(index))
+                        this.store.dispatch(
+                            new DeleteApplyResourceAction(index)
+                        )
                     }
                 })
             })
@@ -464,14 +480,13 @@ export class ResourceApplyComponent implements OnInit {
             .asObservable()
             .takeUntil(this.destroyService)
             .subscribe(id => {
-                this.store.dispatch(
-                    new CloseExtraTabAction(id)
-                )
+                this.store.dispatch(new CloseExtraTabAction(id))
             })
     }
 
     private initNeedManualResetTabIndex() {
-        this.store.select(getNeedManualSetTabIndex)
+        this.store
+            .select(getNeedManualSetTabIndex)
             .filter(e => e)
             .withLatestFrom(this.store.select(getTabIndexToNeedManualSet))
             .takeUntil(this.destroyService)
