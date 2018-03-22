@@ -32,8 +32,7 @@ interface CheckRow {
 @Component({
     selector: 'app-to-add-apply-resource',
     templateUrl: './to-add-apply-resource.component.html',
-    providers: [DestroyService],
-    changeDetection: ChangeDetectionStrategy.OnPush
+    providers: [DestroyService]
 })
 export class ToAddApplyResourceComponent implements OnInit {
     addableResources$: Observable<ApplyResource[]>
