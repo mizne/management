@@ -12,6 +12,7 @@ import { LoginService } from './services/login.service'
 export const routes: Routes = [
     {
         path: '',
+        pathMatch: 'full',
         component: UserLoginComponent
     }
 ]

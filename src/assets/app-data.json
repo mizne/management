@@ -44,7 +44,7 @@
                 {
                     "text": "台帐管理",
                     "translate": "account-management",
-                    "link": "/account-management",
+                    "link": "/account-management/software-account",
                     "icon": "anticon anticon-message",
                     "acl": "user1",
                     "children": [
@@ -63,7 +63,7 @@
                 {
                     "text": "资产管理",
                     "translate": "assets-management",
-                    "link": "/assets-management",
+                    "link": "/assets-management/resource-apply",
                     "icon": "anticon anticon-hourglass",
                     "acl": "user1",
                     "children": [

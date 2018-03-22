@@ -21,6 +21,7 @@ import { Exception500Component } from './exception/500.component'
 const routes: Routes = [
     {
         path: '',
+        // pathMatch: 'full',
         component: LayoutDefaultComponent,
         canActivate: [AuthGuard],
         children: [
@@ -33,28 +34,31 @@ const routes: Routes = [
             { path: 'pages', loadChildren: './pages/pages.module#PagesModule' },
             {
                 path: 'account-management',
-                redirectTo: 'account-management/software-account',
-                pathMatch: 'full'
+                redirectTo: 'account-management/software-account'
             },
             {
                 path: 'account-management/software-account',
                 loadChildren:
-                    './software-account/software-account.module#SoftwareAccountModule'
+                    'app/routes/software-account/software-account.module#SoftwareAccountModule'
             },
             {
                 path: 'account-management/server-account',
                 loadChildren:
-                    './server-account/server-account.module#ServerAccountModule'
+                    'app/routes/server-account/server-account.module#ServerAccountModule'
             },
             {
                 path: 'assets-management',
-                redirectTo: 'assets-management/resource-application',
-                pathMatch: 'full'
+                redirectTo: 'assets-management/resource-apply'
             },
             {
                 path: 'assets-management/resource-apply',
                 loadChildren:
-                    './resource-apply/resource-apply.module#ResourceApplyModule'
+                    'app/routes/resource-apply/resource-apply.module#ResourceApplyModule'
+            },
+            {
+                path: 'assets-management/unified-apply',
+                loadChildren:
+                    'app/routes/unified-apply/unified-apply.module#UnifiedApplyModule'
             }
             // {
             //     path: 'assets-management/to-approve',
@@ -85,34 +89,34 @@ const routes: Routes = [
             //         './monitor-dashboard/monitor-dashboard.module#MonitorDashboardModule'
             // }
         ]
-    },
+    }
     // passport
-    {
-        path: 'passport',
-        component: LayoutPassportComponent,
-        children: [
-            {
-                path: 'login',
-                loadChildren: './passport/login/login.module#LoginModule',
-                data: { title: '登录' }
-            },
-            {
-                path: 'register',
-                loadChildren:
-                    './passport/register/register.module#RegisterModule',
-                data: { title: '注册' }
-            },
-            {
-                path: 'register-result',
-                component: UserRegisterResultComponent,
-                data: { title: '注册结果' }
-            }
-        ]
-    },
-    { path: '403', component: Exception403Component },
-    { path: '404', component: Exception404Component },
-    { path: '500', component: Exception500Component },
-    { path: '**', redirectTo: '404' }
+    // {
+    //     path: 'passport',
+    //     component: LayoutPassportComponent,
+    //     children: [
+    //         {
+    //             path: 'login',
+    //             loadChildren: './passport/login/login.module#LoginModule',
+    //             data: { title: '登录' }
+    //         },
+    //         {
+    //             path: 'register',
+    //             loadChildren:
+    //                 './passport/register/register.module#RegisterModule',
+    //             data: { title: '注册' }
+    //         },
+    //         {
+    //             path: 'register-result',
+    //             component: UserRegisterResultComponent,
+    //             data: { title: '注册结果' }
+    //         }
+    //     ]
+    // },
+    // { path: '403', component: Exception403Component },
+    // { path: '404', component: Exception404Component },
+    // { path: '500', component: Exception500Component },
+    // { path: '**', redirectTo: '404' }
 ]
 
 @NgModule({

@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core'
+import { Component, OnInit } from '@angular/core'
 import { FormGroup, FormBuilder, Validators } from '@angular/forms'
 import { NzModalSubject, NzMessageService } from 'ng-zorro-antd'
 import { Subject } from 'rxjs/Subject'
@@ -32,8 +32,7 @@ interface CheckRow {
 @Component({
     selector: 'app-to-add-apply-resource',
     templateUrl: './to-add-apply-resource.component.html',
-    providers: [DestroyService],
-    changeDetection: ChangeDetectionStrategy.OnPush
+    providers: [DestroyService]
 })
 export class ToAddApplyResourceComponent implements OnInit {
     addableResources$: Observable<ApplyResource[]>

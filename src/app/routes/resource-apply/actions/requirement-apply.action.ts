@@ -7,42 +7,46 @@ import {
     Approver
 } from '@core/models/resource-apply.model'
 
-export const SWITCH_APPLY_TYPE = '[Requirement Apply] Switch Apply Type'
+export const SWITCH_APPLY_TYPE =
+    '[Resource Requirement Apply] Switch Apply Type'
 
-export const FETCH_APPLY_INFO = '[Requirement Apply] Fetch Apply Info'
+export const FETCH_APPLY_INFO = '[Resource Requirement Apply] Fetch Apply Info'
 export const FETCH_APPLY_INFO_SUCCESS =
-    '[Requirement Apply] Fetch Apply Info Success'
+    '[Resource Requirement Apply] Fetch Apply Info Success'
 export const FETCH_APPLY_INFO_FAILURE =
-    '[Requirement Apply] Fetch Apply Info Failure'
+    '[Resource Requirement Apply] Fetch Apply Info Failure'
 
-export const FETCH_APPROVERS = '[Requirement Apply] Fetch Approver'
+export const FETCH_APPROVERS = '[Resource Requirement Apply] Fetch Approver'
 export const FETCH_APPROVERS_SUCCESS =
-    '[Requirement Apply] Fetch Approver Success'
+    '[Resource Requirement Apply] Fetch Approver Success'
 export const FETCH_APPROVERS_FAILURE =
-    '[Requirement Apply] Fetch Approver Failure'
+    '[Resource Requirement Apply] Fetch Approver Failure'
 
-export const ADD_APPLY_RESOURCES = '[Requirement Apply] Add Apply Resources'
-export const CREATE_APPLY_RESOURCE = '[Requirement Apply] Create Apply Resource'
+export const ADD_APPLY_RESOURCES =
+    '[Resource Requirement Apply] Add Apply Resources'
+export const CREATE_APPLY_RESOURCE =
+    '[Resource Requirement Apply] Create Apply Resource'
 export const EDIT_TEMP_APPLY_RESOURCE =
-    '[Requirement Apply] Edit Temp Apply Resource'
-export const DELETE_APPLY_RESOURCE = '[Requirement Apply] Delete Apply Resource'
+    '[Resource Requirement Apply] Edit Temp Apply Resource'
+export const DELETE_APPLY_RESOURCE =
+    '[Resource Requirement Apply] Delete Apply Resource'
 
 export const SAVE_REQUIREMENT_APPLY =
-    '[Requirement Apply] Save Requirement Apply'
+    '[Resource Requirement Apply] Save Requirement Apply'
 export const SAVE_REQUIREMENT_APPLY_SUCCESS =
-    '[Requirement Apply] Save Requirement Apply Success'
+    '[Resource Requirement Apply] Save Requirement Apply Success'
 export const SAVE_REQUIREMENT_APPLY_FAILURE =
-    '[Requirement Apply] Save Requirement Apply Failure'
+    '[Resource Requirement Apply] Save Requirement Apply Failure'
 
 export const SUBMIT_REQUIREMENT_APPLY =
-    '[Requirement Apply] Submit Requirement Apply'
+    '[Resource Requirement Apply] Submit Requirement Apply'
 export const SUBMIT_REQUIREMENT_APPLY_SUCCESS =
-    '[Requirement Apply] Submit Requirement Apply Success'
+    '[Resource Requirement Apply] Submit Requirement Apply Success'
 export const SUBMIT_REQUIREMENT_APPLY_FAILURE =
-    '[Requirement Apply] Submit Requirement Apply Failure'
+    '[Resource Requirement Apply] Submit Requirement Apply Failure'
 
 export const RESET_REQUIREMENT_APPLY =
-    '[Requirement Apply] Reset Requirement Apply'
+    '[Resource Requirement Apply] Reset Requirement Apply'
 
 export class SwitchApplyTypeAction implements Action {
     readonly type = SWITCH_APPLY_TYPE

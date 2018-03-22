@@ -1,0 +1,149 @@
+<form nz-form [formGroup]="form" [nzLayout]="'vertical'">
+    <nz-card [nzBordered]="false">
+        <div nz-row [nzGutter]="40">
+            <div nz-col [nzSpan]="12">
+                <div nz-form-item nz-row>
+                    <div nz-form-label nz-col>
+                        <label nz-form-item-required>资源类型</label>
+                    </div>
+                    <div nz-form-control nz-col nzHasFeedback [nzValidateStatus]="type">
+                        <nz-input formControlName="type" nzPlaceHolder="请输入资源类型" nzSize="large"></nz-input>
+                        <p nz-form-explain *ngIf="(type.dirty || type.touched) && type.errors?.required">
+                            请输入资源类型
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div nz-row [nzGutter]="40">
+            <div nz-col [nzSpan]="12">
+                <div nz-form-item nz-row>
+                    <div nz-form-label nz-col>
+                        <label nz-form-item-required>软件类型</label>
+                    </div>
+                    <div nz-form-control nz-col nzHasFeedback [nzValidateStatus]="softwareType">
+                        <nz-input formControlName="softwareType" nzPlaceHolder="请输入软件类型" nzSize="large"></nz-input>
+                        <p nz-form-explain *ngIf="(softwareType.dirty || softwareType.touched) && softwareType.errors?.required">
+                            请输入软件类型
+                        </p>
+                    </div>
+
+                </div>
+            </div>
+            <div nz-col [nzSpan]="12">
+                <div nz-form-item nz-row>
+                    <div nz-form-item nz-row>
+                        <div nz-form-label nz-col>
+                            <label nz-form-item-required>软件名称</label>
+                        </div>
+                        <div nz-form-control nz-col nzHasFeedback [nzValidateStatus]="softwareName">
+                            <nz-input formControlName="softwareName" nzPlaceHolder="请输入软件名称" nzSize="large"></nz-input>
+                            <p nz-form-explain *ngIf="(softwareName.dirty || softwareName.touched) && softwareName.errors?.required">
+                                请输入软件名称
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div nz-row [nzGutter]="40">
+            <div nz-col [nzSpan]="12">
+                <div nz-form-item nz-row>
+                    <div nz-form-label nz-col>
+                        <label nz-form-item-required>软件规格</label>
+                    </div>
+                    <div nz-form-control nz-col nzHasFeedback [nzValidateStatus]="version">
+                        <nz-input formControlName="version" nzPlaceHolder="请输入软件规格" nzSize="large"></nz-input>
+                        <p nz-form-explain *ngIf="(version.dirty || version.touched) && version.errors?.required">
+                            请输入软件规格
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div nz-col [nzSpan]="12">
+                <div nz-form-item nz-row>
+                    <div nz-form-label nz-col>
+                        <label nz-form-item-required>使用环境</label>
+                    </div>
+                    <div nz-form-control nz-col nzHasFeedback [nzValidateStatus]="environment">
+                        <nz-input formControlName="environment" nzPlaceHolder="请输入使用环境" nzSize="large"></nz-input>
+                        <p nz-form-explain *ngIf="(environment.dirty || environment.touched) && environment.errors?.required">
+                            请输入使用环境
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div nz-row [nzGutter]="40">
+            <div nz-col [nzSpan]="12">
+                <div nz-form-item nz-row>
+                    <div nz-form-label nz-col>
+                        <label nz-form-item-required>申请数量</label>
+                    </div>
+                    <div nz-form-control nz-col nzHasFeedback [nzValidateStatus]="applyCount">
+                        <nz-input formControlName="applyCount" nzPlaceHolder="请输入申请数量" nzSize="large"></nz-input>
+                        <p nz-form-explain *ngIf="(applyCount.dirty || applyCount.touched) && applyCount.errors?.required">
+                            请输入申请数量
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div nz-col [nzSpan]="12">
+                <div nz-form-item nz-row>
+                    <div nz-form-label nz-col>
+                        <label nz-form-item-required>申请时间</label>
+                    </div>
+                    <div nz-form-control nz-col nzHasFeedback [nzValidateStatus]="applyTime">
+                        <nz-input formControlName="applyTime" nzPlaceHolder="请输入申请时间" nzSize="large"></nz-input>
+                        <p nz-form-explain *ngIf="(applyTime.dirty || applyTime.touched) && applyTime.errors?.required">
+                            请输入申请时间
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div nz-row [nzGutter]="40">
+            <div nz-col [nzSpan]="12">
+                <div nz-form-item nz-row>
+                    <div nz-form-label nz-col>
+                        <label nz-form-item-required>预计需要时间</label>
+                    </div>
+                    <div nz-form-control nz-col nzHasFeedback [nzValidateStatus]="endTime">
+                        <nz-input formControlName="endTime" nzPlaceHolder="请输入预计需要时间" nzSize="large"></nz-input>
+                        <p nz-form-explain *ngIf="(endTime.dirty || endTime.touched) && endTime.errors?.required">
+                            请输入预计需要时间
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div nz-row [nzGutter]="40">
+            <div nz-col [nzSpan]="12">
+                <div nz-form-item nz-row>
+                    <div nz-form-label nz-col>
+                        <label>备注</label>
+                    </div>
+                    <div nz-form-control nz-col nzHasFeedback [nzValidateStatus]="remark">
+                        <nz-input [nzType]="'textarea'" formControlName="remark" nzPlaceHolder="请输入备注" nzSize="large"></nz-input>
+                        <p nz-form-explain *ngIf="(remark.dirty || remark.touched) && remark.errors?.required">
+                            请输入备注
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nz-card>
+
+    <div class="customize-footer d-flex justify-content-center">
+        <button nz-button nzSize="large" (click)="toCancel()">取消</button>
+        <button nz-button (click)="toSave()" [nzType]="'primary'" nzSize="large">保存</button>
+    </div>
+</form>

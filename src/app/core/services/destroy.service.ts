@@ -12,12 +12,11 @@ import { Injectable, OnDestroy } from '@angular/core'
  */
 @Injectable()
 export class DestroyService extends Subject<void> implements OnDestroy {
-  constructor() {
-    super()
-  }
+    constructor() {
+        super()
+    }
 
-  ngOnDestroy() {
-    this.next()
-    this.complete()
-  }
+    ngOnDestroy() {
+        this.complete()
+    }
 }

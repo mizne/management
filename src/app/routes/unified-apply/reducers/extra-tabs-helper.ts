@@ -1,18 +1,27 @@
 import { State } from './extra-tabs.reducer'
 import {
-    RequirementApply,
+    UnifiedApply,
+    SubPackageApply,
     TabOptions,
     TabAction,
     ApplyInfo,
     Approver,
     ApplyResource,
+    UnifiedTabData,
+    SubPackageInfo,
+    SubPackageTabData,
     MAX_TABS_COUNT
-} from '@core/models/resource-apply.model'
+} from '@core/models/unified-apply.model'
 
 export class ExtraTabsHelper {
-    static generateForToEdit(oldState: State, apply: RequirementApply): State {
+    static generateForToEditUnified(
+        oldState: State,
+        apply: UnifiedApply
+    ): State {
         const existTabIndex = oldState.tabs.findIndex(
-            e => e.action === TabAction.EDIT && e.data.id === apply.id
+            e =>
+                e.action === TabAction.EDIT_UNIFIED_APPLY &&
+                e.data.id === apply.id
         )
         if (existTabIndex > -1) {
             return {
@@ -26,7 +35,7 @@ export class ExtraTabsHelper {
             return oldState
         }
         const newTabs = oldState.tabs.concat(
-            TabOptions.convertFromApplyForEdit(apply)
+            TabOptions.convertFromApplyForEditUnified(apply)
         )
         return {
             ...oldState,
@@ -36,12 +45,14 @@ export class ExtraTabsHelper {
         }
     }
 
-    static generateForToDetail(
+    static generateForToDetailUnified(
         oldState: State,
-        apply: RequirementApply
+        apply: UnifiedApply
     ): State {
         const existTabIndex = oldState.tabs.findIndex(
-            e => e.action === TabAction.DETAIL && e.data.id === apply.id
+            e =>
+                e.action === TabAction.DETAIL_UNIFIED_APPLY &&
+                e.data.id === apply.id
         )
         if (existTabIndex > -1) {
             return {
@@ -55,7 +66,69 @@ export class ExtraTabsHelper {
             return oldState
         }
         const newTabs = oldState.tabs.concat(
-            TabOptions.convertFromApplyForDetail(apply)
+            TabOptions.convertFromApplyForDetailUnified(apply)
+        )
+        return {
+            ...oldState,
+            tabs: newTabs,
+            needManualSetTabIndex: true,
+            tabIndexNeedToManualSet: newTabs.length - 1
+        }
+    }
+
+    static generateForToEditSubPackage(
+        oldState: State,
+        apply: SubPackageApply
+    ): State {
+        const existTabIndex = oldState.tabs.findIndex(
+            e =>
+                e.action === TabAction.EDIT_SUBPACKAGE_APPLY &&
+                e.data.id === apply.id
+        )
+        if (existTabIndex > -1) {
+            return {
+                ...oldState,
+                tabs: oldState.tabs,
+                needManualSetTabIndex: true,
+                tabIndexNeedToManualSet: existTabIndex
+            }
+        }
+        if (oldState.tabs.length >= MAX_TABS_COUNT) {
+            return oldState
+        }
+        const newTabs = oldState.tabs.concat(
+            TabOptions.convertFromApplyForEditSubPackage(apply)
+        )
+        return {
+            ...oldState,
+            tabs: newTabs,
+            needManualSetTabIndex: true,
+            tabIndexNeedToManualSet: newTabs.length - 1
+        }
+    }
+
+    static generateForToDetailSubPackage(
+        oldState: State,
+        apply: SubPackageApply
+    ): State {
+        const existTabIndex = oldState.tabs.findIndex(
+            e =>
+                e.action === TabAction.DETAIL_SUBPACKAGE_APPLY &&
+                e.data.id === apply.id
+        )
+        if (existTabIndex > -1) {
+            return {
+                ...oldState,
+                tabs: oldState.tabs,
+                needManualSetTabIndex: true,
+                tabIndexNeedToManualSet: existTabIndex
+            }
+        }
+        if (oldState.tabs.length >= MAX_TABS_COUNT) {
+            return oldState
+        }
+        const newTabs = oldState.tabs.concat(
+            TabOptions.convertFromApplyForDetailSubPackage(apply)
         )
         return {
             ...oldState,
@@ -72,132 +145,6 @@ export class ExtraTabsHelper {
             tabs: oldState.tabs.filter((_, i) => i !== tabIndex),
             needManualSetTabIndex: false,
             tabIndexNeedToManualSet: -1
-        }
-    }
-
-    static generateForFetchApplyInfo(oldState: State, tabIndex: number): State {
-        return {
-            ...oldState,
-            tabs: oldState.tabs.map((e, i) => {
-                if (i === tabIndex) {
-                    return {
-                        ...e,
-                        data: {
-                            ...e.data,
-                            fetchApplyInfoLoading: true
-                        }
-                    }
-                }
-                return { ...e }
-            })
-        }
-    }
-
-    static generateForFetchApplyInfoSuccess(
-        oldState: State,
-        tabIndex: number,
-        applyInfo: ApplyInfo
-    ): State {
-        return {
-            ...oldState,
-            tabs: oldState.tabs.map((e, i) => {
-                if (i === tabIndex) {
-                    e.data.applyInfoForm.patchValue(applyInfo, {
-                        emitEvent: false
-                    })
-                    return {
-                        ...e,
-                        data: {
-                            ...e.data,
-                            fetchApplyInfoLoading: false
-                        }
-                    }
-                }
-                return { ...e }
-            })
-        }
-    }
-
-    static generateForFetchApplyInfoFailure(
-        oldState: State,
-        tabIndex: number
-    ): State {
-        return {
-            ...oldState,
-            tabs: oldState.tabs.map((e, i) => {
-                if (i === tabIndex) {
-                    return {
-                        ...e,
-                        data: {
-                            ...e.data,
-                            fetchApplyInfoLoading: false
-                        }
-                    }
-                }
-                return { ...e }
-            })
-        }
-    }
-
-    static generateForFetchApprovers(oldState: State, tabIndex: number): State {
-        return {
-            ...oldState,
-            tabs: oldState.tabs.map((e, i) => {
-                if (i === tabIndex) {
-                    return {
-                        ...e,
-                        data: {
-                            ...e.data,
-                            fetchApproversLoading: true
-                        }
-                    }
-                }
-                return { ...e }
-            })
-        }
-    }
-
-    static generateForFetchApproversSuccess(
-        oldState: State,
-        tabIndex: number,
-        approvers: Approver[]
-    ): State {
-        return {
-            ...oldState,
-            tabs: oldState.tabs.map((e, i) => {
-                if (i === tabIndex) {
-                    return {
-                        ...e,
-                        data: {
-                            ...e.data,
-                            fetchApproversLoading: false,
-                            approvers
-                        }
-                    }
-                }
-                return { ...e }
-            })
-        }
-    }
-
-    static generateForFetchApproversFailure(
-        oldState: State,
-        tabIndex: number
-    ): State {
-        return {
-            ...oldState,
-            tabs: oldState.tabs.map((e, i) => {
-                if (i === tabIndex) {
-                    return {
-                        ...e,
-                        data: {
-                            ...e.data,
-                            fetchApproversLoading: false
-                        }
-                    }
-                }
-                return { ...e }
-            })
         }
     }
 

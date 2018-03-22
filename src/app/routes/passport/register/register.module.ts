@@ -12,6 +12,7 @@ import { RegisterService } from './services/register.service'
 export const routes: Routes = [
     {
         path: '',
+        pathMatch: 'full',
         component: UserRegisterComponent
     }
 ]

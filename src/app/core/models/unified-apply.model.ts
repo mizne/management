@@ -2,7 +2,7 @@ import * as uuid from 'uuid'
 import { PaginationParams } from './pagination.model'
 import { FormGroup, FormControl } from '@angular/forms'
 
-export class RequirementApply {
+export class UnifiedApply {
     id?: string
     applyInfo: ApplyInfo
     resources: ApplyResource[]
@@ -12,12 +12,10 @@ export class RequirementApply {
     disabled?: boolean
     checked?: boolean
 
-    static generateFakeDataItems(): RequirementApply[] {
+    static generateFakeDataItems(): UnifiedApply[] {
         return Array.from({ length: 3 }, (_, i) => ({
             id: uuid.v4(),
-            applyInfo: ApplyInfo.generateFakeData(
-                Math.random() > 0.5 ? '个人申请' : '部门申请'
-            ),
+            applyInfo: ApplyInfo.generateFakeData(),
             resources: ApplyResource.generateFakeDataItems(),
             approvers: Approver.generateFakeDataItems(),
             createdAt: `createAt ${i}`
@@ -26,17 +24,62 @@ export class RequirementApply {
 }
 
 export class ApplyInfo {
-    type?: string
     listNumber: string
     applicantName: string
     applicantDept: string
     applicantPhone: string
     applyReason: string
 
-    static generateFakeData(applyType: string): ApplyInfo {
+    static generateFakeData(): ApplyInfo {
         return {
-            type: applyType,
             listNumber: `fake listNumber ${Math.random()
+                .toString()
+                .slice(0, 5)}`,
+            applicantName: `fake applicantName ${Math.random()
+                .toString()
+                .slice(0, 5)}`,
+            applicantDept: `fake applicantDept ${Math.random()
+                .toString()
+                .slice(0, 5)}`,
+            applicantPhone: `fake applicantPhone ${Math.random()
+                .toString()
+                .slice(0, 5)}`,
+            applyReason: `fake applyReason ${Math.random()
+                .toString()
+                .slice(0, 5)}`
+        }
+    }
+}
+
+export class SubPackageApply {
+    id?: string
+    subPackageInfo: SubPackageInfo
+    resources: ApplyResource[]
+    createdAt?: string
+
+    disabled?: boolean
+    checked?: boolean
+
+    static generateFakeDataItems(): SubPackageApply[] {
+        return Array.from({ length: 3 }, (_, i) => ({
+            id: uuid.v4(),
+            subPackageInfo: SubPackageInfo.generateFakeData(),
+            resources: ApplyResource.generateFakeDataItems(),
+            approvers: Approver.generateFakeDataItems(),
+            createdAt: `createAt ${i}`
+        }))
+    }
+}
+
+export class SubPackageInfo {
+    subPackageNumber: string
+    applicantName: string
+    applicantDept: string
+    applicantPhone: string
+    applyReason: string
+    static generateFakeData(): SubPackageInfo {
+        return {
+            subPackageNumber: `fake subPackageNumber ${Math.random()
                 .toString()
                 .slice(0, 5)}`,
             applicantName: `fake applicantName ${Math.random()
@@ -189,11 +232,13 @@ export class Approver {
 }
 
 export enum TabAction {
-    EDIT = 'EDIT',
-    DETAIL = 'DETAIL'
+    EDIT_UNIFIED_APPLY = 'EDIT_UNIFIED_APPLY',
+    DETAIL_UNIFIED_APPLY = 'DETAIL_UNIFIED_APPLY',
+    EDIT_SUBPACKAGE_APPLY = 'EDIT_SUBPACKAGE_APPLY',
+    DETAIL_SUBPACKAGE_APPLY = 'DETAIL_SUBPACKAGE_APPLY'
 }
 
-export interface TabData {
+export interface UnifiedTabData {
     id: string
     fetchApplyInfoLoading: boolean
     applyInfoForm: FormGroup
@@ -204,24 +249,31 @@ export interface TabData {
     ensureEditText: string
 }
 
+export interface SubPackageTabData {
+    id: string
+    fetchSubPackageInfoLoading: boolean
+    subPackageInfoForm: FormGroup
+    addedApplyResources: ApplyResource[]
+    ensureEditLoading: boolean
+    ensureEditText: string
+}
+
 export const MAX_TABS_COUNT = 5
 
 export class TabOptions {
     id: string
     name: string
-    data: TabData
+    data: UnifiedTabData | SubPackageTabData
     action: TabAction
 
-    static convertFromApplyForEdit(apply: RequirementApply): TabOptions {
+    static convertFromApplyForEditUnified(apply: UnifiedApply): TabOptions {
         return {
             id: uuid.v4(),
             name: `编辑 ${apply.applyInfo.listNumber}`,
-            // name: uuid.v4(),
             data: {
                 id: apply.id,
                 fetchApplyInfoLoading: false,
                 applyInfoForm: new FormGroup({
-                    type: new FormControl(apply.applyInfo.type),
                     listNumber: new FormControl(apply.applyInfo.listNumber),
                     applicantName: new FormControl(
                         apply.applyInfo.applicantName
@@ -240,20 +292,18 @@ export class TabOptions {
                 ensureEditLoading: false,
                 ensureEditText: ''
             },
-            action: TabAction.EDIT
+            action: TabAction.EDIT_UNIFIED_APPLY
         }
     }
 
-    static convertFromApplyForDetail(apply: RequirementApply): TabOptions {
+    static convertFromApplyForDetailUnified(apply: UnifiedApply): TabOptions {
         return {
             id: uuid.v4(),
             name: `查看 ${apply.applyInfo.listNumber}`,
-            // name: uuid.v4(),
             data: {
                 id: apply.id,
                 fetchApplyInfoLoading: false,
                 applyInfoForm: new FormGroup({
-                    type: new FormControl(apply.applyInfo.type),
                     listNumber: new FormControl(apply.applyInfo.listNumber),
                     applicantName: new FormControl(
                         apply.applyInfo.applicantName
@@ -272,16 +322,109 @@ export class TabOptions {
                 ensureEditLoading: false,
                 ensureEditText: ''
             },
-            action: TabAction.DETAIL
+            action: TabAction.DETAIL_UNIFIED_APPLY
         }
     }
 
-    static generateApply(tab: TabOptions): RequirementApply {
+    static convertFromApplyForEditSubPackage(
+        apply: SubPackageApply
+    ): TabOptions {
+        return {
+            id: uuid.v4(),
+            name: `编辑 ${apply.subPackageInfo.subPackageNumber}`,
+            data: {
+                id: apply.id,
+                fetchSubPackageInfoLoading: false,
+                subPackageInfoForm: new FormGroup({
+                    subPackageNumber: new FormControl(
+                        apply.subPackageInfo.subPackageNumber
+                    ),
+                    applicantName: new FormControl(
+                        apply.subPackageInfo.applicantName
+                    ),
+                    applicantDept: new FormControl(
+                        apply.subPackageInfo.applicantDept
+                    ),
+                    applicantPhone: new FormControl(
+                        apply.subPackageInfo.applicantPhone
+                    ),
+                    applyReason: new FormControl(
+                        apply.subPackageInfo.applyReason
+                    )
+                }),
+                addedApplyResources: apply.resources,
+                ensureEditLoading: false,
+                ensureEditText: ''
+            },
+            action: TabAction.EDIT_SUBPACKAGE_APPLY
+        }
+    }
+
+    static convertFromApplyForDetailSubPackage(
+        apply: SubPackageApply
+    ): TabOptions {
+        return {
+            id: uuid.v4(),
+            name: `查看 ${apply.subPackageInfo.subPackageNumber}`,
+            data: {
+                id: apply.id,
+                fetchSubPackageInfoLoading: false,
+                subPackageInfoForm: new FormGroup({
+                    subPackageNumber: new FormControl(
+                        apply.subPackageInfo.subPackageNumber
+                    ),
+                    applicantName: new FormControl(
+                        apply.subPackageInfo.applicantName
+                    ),
+                    applicantDept: new FormControl(
+                        apply.subPackageInfo.applicantDept
+                    ),
+                    applicantPhone: new FormControl(
+                        apply.subPackageInfo.applicantPhone
+                    ),
+                    applyReason: new FormControl(
+                        apply.subPackageInfo.applyReason
+                    )
+                }),
+                addedApplyResources: apply.resources,
+                ensureEditLoading: false,
+                ensureEditText: ''
+            },
+            action: TabAction.DETAIL_SUBPACKAGE_APPLY
+        }
+    }
+
+    static generateUnifiedApply(tab: TabOptions): UnifiedApply {
         return {
             id: tab.data.id,
-            applyInfo: tab.data.applyInfoForm.value,
+            applyInfo: (tab.data as UnifiedTabData).applyInfoForm.value,
             resources: tab.data.addedApplyResources,
-            approvers: tab.data.approvers
+            approvers: (tab.data as UnifiedTabData).approvers
         }
+    }
+
+    static generateSubPackageApply(tab: TabOptions): SubPackageApply {
+        return {
+            id: tab.data.id,
+            subPackageInfo: (tab.data as SubPackageTabData).subPackageInfoForm
+                .value,
+            resources: tab.data.addedApplyResources
+        }
+    }
+
+    static isUnifiedApply(tabs: TabOptions[], tabIndex: number): boolean {
+        const tab = tabs[tabIndex]
+        switch (tab.action) {
+            case TabAction.EDIT_SUBPACKAGE_APPLY:
+            case TabAction.DETAIL_SUBPACKAGE_APPLY:
+                return false
+            case TabAction.EDIT_UNIFIED_APPLY:
+            case TabAction.DETAIL_UNIFIED_APPLY:
+                return true
+        }
+    }
+
+    static isSubPackageApply(tabs: TabOptions[], tabIndex: number): boolean {
+        return !TabOptions.isUnifiedApply(tabs, tabIndex)
     }
 }

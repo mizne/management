@@ -15,6 +15,7 @@ import { ExhibitionDescPipe } from './pipes/exhibition-desc.pipe'
 export const routes: Routes = [
     {
         path: '',
+        pathMatch: 'full',
         component: DashboardWorkspaceComponent
     }
 ]

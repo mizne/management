@@ -2,7 +2,6 @@ import { Action } from '@ngrx/store'
 
 import { PaginationParams } from '@core/models/pagination.model'
 import {
-    RequirementApply,
     ApplyInfo,
     ApplyResource,
     Approver,
@@ -10,24 +9,23 @@ import {
     defaultFetchAddableApplyResourceParams,
     FetchAddableApplyResourceCountParams,
     defaultFetchAddableApplyResourceCountParams
-} from '@core/models/resource-apply.model'
+} from '@core/models/unified-apply.model'
 
 export const FETCH_ADDABLE_APPLY_RESOURCE =
-    '[Resource To Add Apply Resource] Fetch Addable Apply Resource'
+    '[Unified To Add Apply Resource] Fetch Addable Apply Resource'
 export const FETCH_ADDABLE_APPLY_RESOURCE_SUCCESS =
-    '[Resource To Add Apply Resource] Fetch Addable Apply Resource Success'
+    '[Unified To Add Apply Resource] Fetch Addable Apply Resource Success'
 export const FETCH_ADDABLE_APPLY_RESOURCE_FAILURE =
-    '[Resource To Add Apply Resource] Fetch Addable Apply Resource Failure'
+    '[Unified To Add Apply Resource] Fetch Addable Apply Resource Failure'
 
 export const FETCH_ADDABLE_APPLY_RESOURCE_COUNT =
-    '[Resource To Add Apply Resource] Fetch Addable Apply Resource Count'
+    '[Unified To Add Apply Resource] Fetch Addable Apply Resource Count'
 export const FETCH_ADDABLE_APPLY_RESOURCE_COUNT_SUCCESS =
-    '[Resource To Add Apply Resource] Fetch Addable Apply Resource Count Success'
+    '[Unified To Add Apply Resource] Fetch Addable Apply Resource Count Success'
 export const FETCH_ADDABLE_APPLY_RESOURCE_COUNT_FAILURE =
-    '[Resource To Add Apply Resource] Fetch Addable Apply Resource Count Failure'
+    '[Unified To Add Apply Resource] Fetch Addable Apply Resource Count Failure'
 
-export const ENSURE_PAGE_PARAMS =
-    '[Resource To Add Apply Resource] Ensure Page Params'
+export const ENSURE_PAGE_PARAMS = '[Unified To Add Apply Resource] Ensure Page Params'
 
 export class FetchAddableApplyResourceAction implements Action {
     readonly type = FETCH_ADDABLE_APPLY_RESOURCE

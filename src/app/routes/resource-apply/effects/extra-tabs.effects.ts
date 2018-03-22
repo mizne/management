@@ -8,10 +8,30 @@ import { ResourceApplyService } from '../services/resource-apply.service'
 import { NzNotificationService } from 'ng-zorro-antd'
 import { Store } from '@ngrx/store'
 import { State, getExtraTabs } from '../reducers'
-import { TabOptions } from '@core/models/resource-apply.model'
+import { TabOptions, MAX_TABS_COUNT } from '@core/models/resource-apply.model'
 
 @Injectable()
 export class ExtraTabsEffects {
+    @Effect()
+    preMaxTabsWarning$ = this.actions$
+        .ofType(
+            fromSavedApply.TO_DETAIL_SAVED_APPLY,
+            fromSavedApply.TO_EDIT_SAVED_APPLY
+        )
+        .withLatestFrom(this.store.select(getExtraTabs))
+        .filter(([_, tabs]) => tabs.length >= MAX_TABS_COUNT)
+        .map(() => new fromExtraTabs.MaxTabsWarningAction())
+
+    @Effect({ dispatch: false })
+    maxTabsWarning$ = this.actions$
+        .ofType(fromExtraTabs.MAX_TABS_WARNING)
+        .do(() => {
+            this.notify.warning(
+                `过多的标签页`,
+                `标签页最多额外打开 ${MAX_TABS_COUNT} 个`
+            )
+        })
+
     @Effect()
     switchApplyTypeForExtraTabs$ = this.actions$
         .ofType(fromExtraTabs.SWITCH_APPLY_TYPE)

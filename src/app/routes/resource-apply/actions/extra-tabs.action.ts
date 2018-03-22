@@ -7,35 +7,43 @@ import {
     Approver
 } from '@core/models/resource-apply.model'
 
-export const SWITCH_APPLY_TYPE = '[Extra Tabs] Switch Apply Type'
+export const SWITCH_APPLY_TYPE = '[Resource Extra Tabs] Switch Apply Type'
 
-export const FETCH_APPLY_INFO = '[Extra Tabs] Fetch Apply Info'
-export const FETCH_APPLY_INFO_SUCCESS = '[Extra Tabs] Fetch Apply Info Success'
-export const FETCH_APPLY_INFO_FAILURE = '[Extra Tabs] Fetch Apply Info Failure'
+export const FETCH_APPLY_INFO = '[Resource Extra Tabs] Fetch Apply Info'
+export const FETCH_APPLY_INFO_SUCCESS =
+    '[Resource Extra Tabs] Fetch Apply Info Success'
+export const FETCH_APPLY_INFO_FAILURE =
+    '[Resource Extra Tabs] Fetch Apply Info Failure'
 
-export const FETCH_APPROVERS = '[Extra Tabs] Fetch Approver'
-export const FETCH_APPROVERS_SUCCESS = '[Extra Tabs] Fetch Approver Success'
-export const FETCH_APPROVERS_FAILURE = '[Extra Tabs] Fetch Approver Failure'
+export const FETCH_APPROVERS = '[Resource Extra Tabs] Fetch Approver'
+export const FETCH_APPROVERS_SUCCESS =
+    '[Resource Extra Tabs] Fetch Approver Success'
+export const FETCH_APPROVERS_FAILURE =
+    '[Resource Extra Tabs] Fetch Approver Failure'
 
-export const ADD_APPLY_RESOURCES = '[Extra Tabs] Add Apply Resources'
-export const CREATE_APPLY_RESOURCE = '[Extra Tabs] Create Apply Resource'
-export const EDIT_TEMP_APPLY_RESOURCE = '[Extra Tabs] Edit Temp Apply Resource'
-export const DELETE_APPLY_RESOURCE = '[Extra Tabs] Delete Apply Resource'
+export const ADD_APPLY_RESOURCES = '[Resource Extra Tabs] Add Apply Resources'
+export const CREATE_APPLY_RESOURCE =
+    '[Resource Extra Tabs] Create Apply Resource'
+export const EDIT_TEMP_APPLY_RESOURCE =
+    '[Resource Extra Tabs] Edit Temp Apply Resource'
+export const DELETE_APPLY_RESOURCE =
+    '[Resource Extra Tabs] Delete Apply Resource'
 
 export const CANCEL_EDIT_REQUIREMENT_APPLY =
-    '[Extra Tabs] Cancel Edit Requirement Apply'
+    '[Resource Extra Tabs] Cancel Edit Requirement Apply'
 
 export const ENSURE_EDIT_REQUIREMENT_APPLY =
-    '[Extra Tabs] Ensure Edit Requirement Apply'
+    '[Resource Extra Tabs] Ensure Edit Requirement Apply'
 export const ENSURE_EDIT_REQUIREMENT_APPLY_SUCCESS =
-    '[Extra Tabs] Ensure Edit Requirement Apply Success'
+    '[Resource Extra Tabs] Ensure Edit Requirement Apply Success'
 export const ENSURE_EDIT_REQUIREMENT_APPLY_FAILURE =
-    '[Extra Tabs] Ensure Edit Requirement Apply Failure'
+    '[Resource Extra Tabs] Ensure Edit Requirement Apply Failure'
 
-export const CLOSE_EXTRA_TAB = '[Extra Tabs] Close Extra Tab'
+export const CLOSE_EXTRA_TAB = '[Resource Extra Tabs] Close Extra Tab'
 export const RESET_NEED_MANUAL_SET_TAB_INDEX =
-    '[Extra Tabs] Reset Need Manual Set Tab Index'
+    '[Resource Extra Tabs] Reset Need Manual Set Tab Index'
 
+export const MAX_TABS_WARNING = '[Resource Extra Tabs] Max Tabs Warning'
 export class SwitchApplyTypeAction implements Action {
     readonly type = SWITCH_APPLY_TYPE
     constructor(
@@ -150,6 +158,10 @@ export class ResetNeedManualSetTabIndexAction implements Action {
     readonly type = RESET_NEED_MANUAL_SET_TAB_INDEX
 }
 
+export class MaxTabsWarningAction implements Action {
+    readonly type = MAX_TABS_WARNING
+}
+
 export type Actions =
     | SwitchApplyTypeAction
     | FetchApplyInfoAction
@@ -169,3 +181,4 @@ export type Actions =
     | EnsureEditRequirementApplyFailureAction
     | CloseExtraTabAction
     | ResetNeedManualSetTabIndexAction
+    | MaxTabsWarningAction

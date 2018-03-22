@@ -524,7 +524,7 @@ export class ResourceApplyComponent implements OnInit {
             .withLatestFrom(this.store.select(getTabIndexToNeedManualSet))
             .takeUntil(this.destroyService)
             .subscribe(([_, tabIndex]) => {
-                this.tabIndex = tabIndex
+                this.tabIndex = tabIndex + 2
                 this.store.dispatch(new ResetNeedManualSetTabIndexAction())
             })
     }
