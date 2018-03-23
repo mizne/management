@@ -4,7 +4,7 @@ import { AssetsRecovery } from '@core/models/assets-recovery.model'
 export interface State {
     loading: boolean
     assetsRecoveries: AssetsRecovery[]
-    accountsCount: number
+    assetsRecoveriesCount: number
     pageIndex: number
     pageSize: number
 }
@@ -12,7 +12,7 @@ export interface State {
 const initialState: State = {
     loading: false,
     assetsRecoveries: [],
-    accountsCount: 0,
+    assetsRecoveriesCount: 0,
     pageIndex: 1,
     pageSize: 10
 }
@@ -42,7 +42,7 @@ export function reducer(
         case fromResourceEntry.FETCH_ASSETS_RECOVERIES_COUNT_SUCCESS:
             return {
                 ...state,
-                accountsCount: action.count
+                assetsRecoveriesCount: action.count
             }
 
         case fromResourceEntry.ENSURE_PAGE_PARAMS:
@@ -58,7 +58,8 @@ export function reducer(
 
 export const getLoading = (state: State) => state.loading
 export const getAssetsRecoveries = (state: State) => state.assetsRecoveries
-export const getAssetsRecoveriesCount = (state: State) => state.accountsCount
+export const getAssetsRecoveriesCount = (state: State) =>
+    state.assetsRecoveriesCount
 export const getPageParams = (state: State) => ({
     pageIndex: state.pageIndex,
     pageSize: state.pageSize

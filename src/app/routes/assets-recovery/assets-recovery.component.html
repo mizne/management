@@ -1,6 +1,6 @@
 <pro-header></pro-header>
 
-<nz-tabset [nzType]="'card'" [(nzSelectedIndex)]="tabIndex" (nzSelectedIndexChange)="tabChange($event)">
+<nz-tabset [nzType]="'card'">
     <nz-tab>
         <ng-template #nzTabHeading>
             <i class="anticon anticon-apple"></i>
@@ -37,9 +37,9 @@
                 </div>
             </form>
 
-            <nz-table #nzTable1 [nzAjaxData]="assetsRecoveries$ | async" [nzShowSizeChanger]="true" [nzLoading]="loading$ | async" [nzTotal]="assetsRecoveriesCount$ | async"
-                [(nzPageIndex)]="resourceInfoPageIndex" (nzPageIndexChange)="pageChage()" [(nzPageSize)]="resourceInfoPageSize"
-                (nzPageSizeChange)="pageChage()" [nzShowFooter]="true">
+            <nz-table #nzTable [nzAjaxData]="assetsRecoveries$ | async" [nzShowSizeChanger]="true" [nzLoading]="loading$ | async" [nzTotal]="assetsRecoveriesCount$ | async"
+                [(nzPageIndex)]="assetsRecoveryPageIndex" (nzPageIndexChange)="fetchAssetsRecoveries()" [(nzPageSize)]="assetsRecoveryPageSize"
+                (nzPageSizeChange)="fetchAssetsRecoveries()" [nzShowFooter]="true">
                 <thead nz-thead>
                     <tr>
                         <th nz-th>
@@ -69,7 +69,7 @@
                     </tr>
                 </thead>
                 <tbody nz-tbody>
-                    <tr nz-tbody-tr *ngFor="let data of nzTable1.data">
+                    <tr nz-tbody-tr *ngFor="let data of nzTable.data">
                         <td nz-td>{{data.resourceType}}</td>
                         <td nz-td>{{data.resourceName}}</td>
                         <td nz-td>{{data.version + '/' + data.modelNumber}}</td>

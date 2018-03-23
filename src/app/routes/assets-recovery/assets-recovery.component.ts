@@ -30,18 +30,16 @@ import { ToShowResourceInfoComponent } from './modals/to-show-resource-info/to-s
     selector: 'app-assets-recovery',
     templateUrl: './assets-recovery.component.html',
     styleUrls: ['./assets-recovery.component.less'],
-    providers: [DestroyService],
-    changeDetection: ChangeDetectionStrategy.OnPush
+    providers: [DestroyService]
+    // changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AssetsRecoveryComponent implements OnInit {
-    tabIndex = 0
-
     searchForm: FormGroup
     assetsRecoveries$: Observable<AssetsRecovery[]>
     assetsRecoveriesCount$: Observable<number>
     loading$: Observable<boolean>
-    pageIndex = 1
-    pageSize = 10
+    assetsRecoveryPageIndex = 1
+    assetsRecoveryPageSize = 10
     pageChangeSub: Subject<void> = new Subject<void>()
     toRecoverySub: Subject<AssetsRecovery> = new Subject<AssetsRecovery>()
     toShowSub: Subject<AssetsRecovery> = new Subject<AssetsRecovery>()
@@ -62,8 +60,6 @@ export class AssetsRecoveryComponent implements OnInit {
         this.initSubscriber()
     }
 
-    tabChange(tabIndex: number) {}
-
     queryForm() {
         this.resetSub.next()
     }
@@ -72,7 +68,7 @@ export class AssetsRecoveryComponent implements OnInit {
         this.searchForm.reset()
     }
 
-    pageChage() {
+    fetchAssetsRecoveries() {
         this.pageChangeSub.next()
     }
 
@@ -161,30 +157,30 @@ export class AssetsRecoveryComponent implements OnInit {
             this.pageChangeSub.asObservable(),
             this.resetSub
                 .do(() => {
-                    this.pageIndex = 1
-                    this.pageSize = 10
+                    this.assetsRecoveryPageIndex = 1
+                    this.assetsRecoveryPageSize = 10
                 })
                 .withLatestFrom(this.store.select(getAssetsRecoveryPageParams))
                 .filter(
                     ([_, { pageIndex, pageSize }]) =>
-                        pageIndex === this.pageIndex &&
-                        pageSize === this.pageSize
+                        pageIndex === this.assetsRecoveryPageIndex &&
+                        pageSize === this.assetsRecoveryPageSize
                 )
         )
             .takeUntil(this.destroyService)
             .subscribe(() => {
                 this.store.dispatch(
                     new EnsurePageParamsAction({
-                        pageIndex: this.pageIndex,
-                        pageSize: this.pageSize
+                        pageIndex: this.assetsRecoveryPageIndex,
+                        pageSize: this.assetsRecoveryPageSize
                     })
                 )
                 this.store.dispatch(
                     new FetchAssetsRecoveriesAction({
                         condition: this.searchForm.value,
                         options: {
-                            pageIndex: this.pageIndex,
-                            pageSize: this.pageSize
+                            pageIndex: this.assetsRecoveryPageIndex,
+                            pageSize: this.assetsRecoveryPageSize
                         }
                     })
                 )
