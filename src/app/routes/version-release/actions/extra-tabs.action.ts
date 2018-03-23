@@ -1,65 +1,53 @@
 import { Action } from '@ngrx/store'
 
 import {
-    SystemOnOffApply,
+    VersionReleaseApply,
     ApplyInfo,
     ApplyResource,
     Approver
-} from '@core/models/system-onoff.model'
+} from '@core/models/version-release.model'
 
-export const SWITCH_APPLY_TYPE = '[System OnOff Extra Tabs] Switch Apply Type'
-
-export const FETCH_APPLY_INFO = '[System OnOff Extra Tabs] Fetch Apply Info'
+export const FETCH_APPLY_INFO = '[Version Release Extra Tabs] Fetch Apply Info'
 export const FETCH_APPLY_INFO_SUCCESS =
-    '[System OnOff Extra Tabs] Fetch Apply Info Success'
+    '[Version Release Extra Tabs] Fetch Apply Info Success'
 export const FETCH_APPLY_INFO_FAILURE =
-    '[System OnOff Extra Tabs] Fetch Apply Info Failure'
+    '[Version Release Extra Tabs] Fetch Apply Info Failure'
 
-export const FETCH_APPROVERS = '[System OnOff Extra Tabs] Fetch Approver'
+export const FETCH_APPROVERS = '[Version Release Extra Tabs] Fetch Approver'
 export const FETCH_APPROVERS_SUCCESS =
-    '[System OnOff Extra Tabs] Fetch Approver Success'
+    '[Version Release Extra Tabs] Fetch Approver Success'
 export const FETCH_APPROVERS_FAILURE =
-    '[System OnOff Extra Tabs] Fetch Approver Failure'
+    '[Version Release Extra Tabs] Fetch Approver Failure'
 
 export const ADD_APPLY_RESOURCES =
-    '[System OnOff Extra Tabs] Add Apply Resources'
+    '[Version Release Extra Tabs] Add Apply Resources'
 export const CREATE_APPLY_RESOURCE =
-    '[System OnOff Extra Tabs] Create Apply Resource'
+    '[Version Release Extra Tabs] Create Apply Resource'
 export const EDIT_TEMP_APPLY_RESOURCE =
-    '[System OnOff Extra Tabs] Edit Temp Apply Resource'
+    '[Version Release Extra Tabs] Edit Temp Apply Resource'
 export const DELETE_APPLY_RESOURCE =
-    '[System OnOff Extra Tabs] Delete Apply Resource'
+    '[Version Release Extra Tabs] Delete Apply Resource'
 
-export const CANCEL_EDIT_SYSTEM_ONOFF_APPLY =
-    '[System OnOff Extra Tabs] Cancel Edit System OnOff Apply'
+export const CANCEL_EDIT_VERSION_RELEASE_APPLY =
+    '[Version Release Extra Tabs] Cancel Edit Version Release Apply'
 
-export const ENSURE_EDIT_SYSTEM_ONOFF_APPLY =
-    '[System OnOff Extra Tabs] Ensure Edit System OnOff Apply'
-export const ENSURE_EDIT_SYSTEM_ONOFF_APPLY_SUCCESS =
-    '[System OnOff Extra Tabs] Ensure Edit System OnOff Apply Success'
-export const ENSURE_EDIT_SYSTEM_ONOFF_APPLY_FAILURE =
-    '[System OnOff Extra Tabs] Ensure Edit System OnOff Apply Failure'
+export const ENSURE_EDIT_VERSION_RELEASE_APPLY =
+    '[Version Release Extra Tabs] Ensure Edit Version Release Apply'
+export const ENSURE_EDIT_VERSION_RELEASE_APPLY_SUCCESS =
+    '[Version Release Extra Tabs] Ensure Edit Version Release Apply Success'
+export const ENSURE_EDIT_VERSION_RELEASE_APPLY_FAILURE =
+    '[Version Release Extra Tabs] Ensure Edit Version Release Apply Failure'
 
-export const CLOSE_EXTRA_TAB = '[System OnOff Extra Tabs] Close Extra Tab'
+export const CLOSE_EXTRA_TAB = '[Version Release Extra Tabs] Close Extra Tab'
 export const RESET_NEED_MANUAL_SET_TAB_INDEX =
-    '[System OnOff Extra Tabs] Reset Need Manual Set Tab Index'
+    '[Version Release Extra Tabs] Reset Need Manual Set Tab Index'
 
-export const MAX_TABS_WARNING = '[System OnOff Extra Tabs] Max Tabs Warning'
-export class SwitchApplyTypeAction implements Action {
-    readonly type = SWITCH_APPLY_TYPE
-    constructor(
-        public payload: {
-            applyType: string
-            tabIndex: number
-        }
-    ) {}
-}
+export const MAX_TABS_WARNING = '[Version Release Extra Tabs] Max Tabs Warning'
 
 export class FetchApplyInfoAction implements Action {
     readonly type = FETCH_APPLY_INFO
     constructor(
         public payload: {
-            applyType: string
             tabIndex: number
         }
     ) {}
@@ -82,7 +70,6 @@ export class FetchApproversAction implements Action {
     readonly type = FETCH_APPROVERS
     constructor(
         public payload: {
-            applyType: string
             tabIndex: number
         }
     ) {}
@@ -133,20 +120,20 @@ export class DeleteApplyResourceAction implements Action {
     constructor(public payload: { tabIndex: number; resourceIndex: number }) {}
 }
 
-export class CancelEditSystemOnOffApplyAction implements Action {
-    readonly type = CANCEL_EDIT_SYSTEM_ONOFF_APPLY
+export class CancelEditVersionReleaseApplyAction implements Action {
+    readonly type = CANCEL_EDIT_VERSION_RELEASE_APPLY
     constructor(public tabIndex: number) {}
 }
-export class EnsureEditSystemOnOffApplyAction implements Action {
-    readonly type = ENSURE_EDIT_SYSTEM_ONOFF_APPLY
+export class EnsureEditVersionReleaseApplyAction implements Action {
+    readonly type = ENSURE_EDIT_VERSION_RELEASE_APPLY
     constructor(public tabIndex: number) {}
 }
-export class EnsureEditSystemOnOffApplySuccessAction implements Action {
-    readonly type = ENSURE_EDIT_SYSTEM_ONOFF_APPLY_SUCCESS
+export class EnsureEditVersionReleaseApplySuccessAction implements Action {
+    readonly type = ENSURE_EDIT_VERSION_RELEASE_APPLY_SUCCESS
     constructor(public tabIndex: number) {}
 }
-export class EnsureEditSystemOnOffApplyFailureAction implements Action {
-    readonly type = ENSURE_EDIT_SYSTEM_ONOFF_APPLY_FAILURE
+export class EnsureEditVersionReleaseApplyFailureAction implements Action {
+    readonly type = ENSURE_EDIT_VERSION_RELEASE_APPLY_FAILURE
     constructor(public tabIndex: number) {}
 }
 
@@ -164,7 +151,6 @@ export class MaxTabsWarningAction implements Action {
 }
 
 export type Actions =
-    | SwitchApplyTypeAction
     | FetchApplyInfoAction
     | FetchApplyInfoSuccessAction
     | FetchApplyInfoFailureAction
@@ -175,11 +161,11 @@ export type Actions =
     | CreateApplyResourceAction
     | EditTempApplyResourceAction
     | DeleteApplyResourceAction
-    | CancelEditSystemOnOffApplyAction
-    | CancelEditSystemOnOffApplyAction
-    | EnsureEditSystemOnOffApplyAction
-    | EnsureEditSystemOnOffApplySuccessAction
-    | EnsureEditSystemOnOffApplyFailureAction
+    | CancelEditVersionReleaseApplyAction
+    | CancelEditVersionReleaseApplyAction
+    | EnsureEditVersionReleaseApplyAction
+    | EnsureEditVersionReleaseApplySuccessAction
+    | EnsureEditVersionReleaseApplyFailureAction
     | CloseExtraTabAction
     | ResetNeedManualSetTabIndexAction
     | MaxTabsWarningAction

@@ -4,11 +4,11 @@ import { Observable } from 'rxjs/Observable'
 
 import * as fromExtraTabs from '../actions/extra-tabs.action'
 import * as fromSavedApply from '../actions/saved-apply.action'
-import { SystemOnOffService } from '../services/system-onoff.service'
+import { VersionReleaseService } from '../services/version-release.service'
 import { NzNotificationService } from 'ng-zorro-antd'
 import { Store } from '@ngrx/store'
 import { State, getExtraTabs } from '../reducers'
-import { TabOptions, MAX_TABS_COUNT } from '@core/models/system-onoff.model'
+import { TabOptions, MAX_TABS_COUNT } from '@core/models/version-release.model'
 
 @Injectable()
 export class ExtraTabsEffects {
@@ -33,21 +33,12 @@ export class ExtraTabsEffects {
         })
 
     @Effect()
-    switchApplyTypeForExtraTabs$ = this.actions$
-        .ofType(fromExtraTabs.SWITCH_APPLY_TYPE)
-        .map((action: fromExtraTabs.SwitchApplyTypeAction) => action.payload)
-        .mergeMap(payload => [
-            new fromExtraTabs.FetchApplyInfoAction(payload),
-            new fromExtraTabs.FetchApproversAction(payload)
-        ])
-
-    @Effect()
     fetchApplyInfoForExtraTabs$ = this.actions$
         .ofType(fromExtraTabs.FETCH_APPLY_INFO)
         .map((action: fromExtraTabs.FetchApplyInfoAction) => action.payload)
         .switchMap(payload => {
-            return this.systemOnOffApplyService
-                .fetchApplyInfo(payload.applyType)
+            return this.versionReleaseApplyService
+                .fetchApplyInfo()
                 .map(
                     applyInfo =>
                         new fromExtraTabs.FetchApplyInfoSuccessAction({
@@ -76,8 +67,8 @@ export class ExtraTabsEffects {
         .ofType(fromExtraTabs.FETCH_APPROVERS)
         .map((action: fromExtraTabs.FetchApproversAction) => action.payload)
         .switchMap(payload => {
-            return this.systemOnOffApplyService
-                .fetchApprovers(payload.applyType)
+            return this.versionReleaseApplyService
+                .fetchApprovers()
                 .map(
                     approvers =>
                         new fromExtraTabs.FetchApproversSuccessAction({
@@ -103,24 +94,24 @@ export class ExtraTabsEffects {
 
     @Effect()
     ensureRequirementApplyForExtraTabs$ = this.actions$
-        .ofType(fromExtraTabs.ENSURE_EDIT_SYSTEM_ONOFF_APPLY)
+        .ofType(fromExtraTabs.ENSURE_EDIT_VERSION_RELEASE_APPLY)
         .map(
-            (action: fromExtraTabs.EnsureEditSystemOnOffApplyAction) =>
+            (action: fromExtraTabs.EnsureEditVersionReleaseApplyAction) =>
                 action.tabIndex
         )
         .withLatestFrom(this.store.select(getExtraTabs))
         .switchMap(([tabIndex, tabs]) => {
-            return this.systemOnOffApplyService
+            return this.versionReleaseApplyService
                 .editSavedApply(TabOptions.generateApply(tabs[tabIndex]))
                 .concatMap(() => [
-                    new fromExtraTabs.EnsureEditSystemOnOffApplySuccessAction(
+                    new fromExtraTabs.EnsureEditVersionReleaseApplySuccessAction(
                         tabIndex
                     ),
                     new fromSavedApply.FetchSavedAppliesAction()
                 ])
                 .catch(() =>
                     Observable.of(
-                        new fromExtraTabs.EnsureEditSystemOnOffApplyFailureAction(
+                        new fromExtraTabs.EnsureEditVersionReleaseApplyFailureAction(
                             tabIndex
                         )
                     )
@@ -129,24 +120,21 @@ export class ExtraTabsEffects {
 
     @Effect({ dispatch: false })
     ensureEditRequirementApplySuccess$ = this.actions$
-        .ofType(fromExtraTabs.ENSURE_EDIT_SYSTEM_ONOFF_APPLY_SUCCESS)
+        .ofType(fromExtraTabs.ENSURE_EDIT_VERSION_RELEASE_APPLY_SUCCESS)
         .do(() => {
-            this.notify.success(
-                `编辑系统上下线`,
-                '恭喜您，编辑系统上下线成功！'
-            )
+            this.notify.success(`编辑版本发布申请`, '恭喜您，编辑版本发布申请成功！')
         })
 
     @Effect({ dispatch: false })
     ensureEditRequirementApplyFailure$ = this.actions$
-        .ofType(fromExtraTabs.ENSURE_EDIT_SYSTEM_ONOFF_APPLY_FAILURE)
+        .ofType(fromExtraTabs.ENSURE_EDIT_VERSION_RELEASE_APPLY_FAILURE)
         .do(() => {
-            this.notify.error(`编辑系统上下线`, '啊哦，编辑系统上下线失败！')
+            this.notify.error(`编辑版本发布申请`, '啊哦，编辑版本发布申请失败！')
         })
 
     constructor(
         private actions$: Actions,
-        private systemOnOffApplyService: SystemOnOffService,
+        private versionReleaseApplyService: VersionReleaseService,
         private notify: NzNotificationService,
         private store: Store<State>
     ) {}

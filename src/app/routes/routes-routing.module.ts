@@ -69,6 +69,11 @@ const routes: Routes = [
                 path: 'assets-management/system-onoff',
                 loadChildren:
                     './system-onoff/system-onoff.module#SystemOnOffModule'
+            },
+            {
+                path: 'assets-management/version-release',
+                loadChildren:
+                    './version-release/version-release.module#VersionReleaseModule'
             }
             // {
             //     path: 'assets-management/my-apply',

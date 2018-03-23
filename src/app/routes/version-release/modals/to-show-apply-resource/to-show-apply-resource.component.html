@@ -1,0 +1,25 @@
+<nz-card [nzNoHovering]="true" [nzBordered]="false">
+    <ng-template #body>
+        <desc-list size="large" title="基本信息" class="mb-lg">
+            <desc-list-item term="资源类型">{{resource.type}}</desc-list-item>
+            <desc-list-item term="软件类型">{{resource.softwareType}}</desc-list-item>
+            <desc-list-item term="软件名称">{{resource.softwareName}}</desc-list-item>
+            <desc-list-item term="软件规格">{{resource.version}}</desc-list-item>
+        </desc-list>
+        <nz-divider class="mb-lg"></nz-divider>
+        <desc-list size="large" title="使用信息" class="mb-lg">
+            <desc-list-item term="使用环境">{{resource.environment}}</desc-list-item>
+            <desc-list-item term="申请数量">{{resource.applyCount}}</desc-list-item>
+            <desc-list-item term="申请时间">{{resource.applyTime}}</desc-list-item>
+            <desc-list-item term="预计需要时间">{{resource.endTime}}</desc-list-item>
+        </desc-list>
+        <nz-divider class="mb-lg"></nz-divider>
+        <desc-list size="large" title="更多" class="mb-lg">
+            <desc-list-item term="备注">{{resource.remark}}</desc-list-item>
+        </desc-list>
+        <nz-divider class="mb-lg"></nz-divider>
+    </ng-template>
+</nz-card>
+<div class="customize-footer text-center">
+    <button nz-button [nzSize]="'large'" (click)="toSave()" [nzType]="'primary'" nzSize="large">我知道了</button>
+</div>

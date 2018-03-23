@@ -4,10 +4,10 @@ import {
     ApplyInfo,
     ApplyResource,
     Approver,
-    SystemOnOffApply,
+    VersionReleaseApply,
     TabOptions,
     TabAction
-} from '@core/models/system-onoff.model'
+} from '@core/models/version-release.model'
 import { ExtraTabsHelper } from './extra-tabs-helper'
 
 export interface State {
@@ -99,16 +99,16 @@ export function reducer(state: State = initialState, action: Actions): State {
                 action.payload.tabIndex,
                 action.payload.resourceIndex
             )
-        case fromExtraTabs.CANCEL_EDIT_SYSTEM_ONOFF_APPLY:
+        case fromExtraTabs.CANCEL_EDIT_VERSION_RELEASE_APPLY:
             return ExtraTabsHelper.generateForCancelEdit(state, action.tabIndex)
-        case fromExtraTabs.ENSURE_EDIT_SYSTEM_ONOFF_APPLY:
+        case fromExtraTabs.ENSURE_EDIT_VERSION_RELEASE_APPLY:
             return ExtraTabsHelper.generateForEnsureEdit(state, action.tabIndex)
-        case fromExtraTabs.ENSURE_EDIT_SYSTEM_ONOFF_APPLY_SUCCESS:
+        case fromExtraTabs.ENSURE_EDIT_VERSION_RELEASE_APPLY_SUCCESS:
             return ExtraTabsHelper.generateForEnsureEditSuccess(
                 state,
                 action.tabIndex
             )
-        case fromExtraTabs.ENSURE_EDIT_SYSTEM_ONOFF_APPLY_FAILURE:
+        case fromExtraTabs.ENSURE_EDIT_VERSION_RELEASE_APPLY_FAILURE:
             return ExtraTabsHelper.generateForEnsureEditFailure(
                 state,
                 action.tabIndex

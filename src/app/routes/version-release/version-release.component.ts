@@ -2,7 +2,6 @@ import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core'
 import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms'
 import { NzMessageService, NzModalService } from 'ng-zorro-antd'
 
-import { TabAction } from '@core/models/system-onoff.model'
 import { Observable } from 'rxjs/Observable'
 import { Store } from '@ngrx/store'
 import {
@@ -22,18 +21,17 @@ import {
     getTabIndexToNeedManualSet
 } from './reducers'
 import {
-    SwitchApplyTypeAction,
     AddApplyResourcesAction,
     CreateApplyResourceAction,
     EditTempApplyResourceAction,
     DeleteApplyResourceAction,
-    SaveSystemOnOffApplyAction,
-    SubmitSystemOnOffApplySuccessAction,
-    ResetSystemOnOffApplyAction,
+    SaveVersionReleaseApplyAction,
+    SubmitVersionReleaseApplySuccessAction,
+    ResetVersionReleaseApplyAction,
     FetchApplyInfoAction,
     FetchApproversAction,
-    SubmitSystemOnOffApplyAction
-} from './actions/system-onoff.action'
+    SubmitVersionReleaseApplyAction
+} from './actions/version-release.action'
 import {
     FetchSavedAppliesAction,
     ToDetailSavedApplyAction,
@@ -54,22 +52,23 @@ import {
     ApplyInfo,
     Approver,
     ApplyResource,
-    SystemOnOffApply,
-    TabOptions
-} from '@core/models/system-onoff.model'
+    VersionReleaseApply,
+    TabOptions,
+    TabAction
+} from '@core/models/version-release.model'
 import {
     CloseExtraTabAction,
     ResetNeedManualSetTabIndexAction
 } from './actions/extra-tabs.action'
 
 @Component({
-    selector: 'app-system-onoff',
-    templateUrl: './system-onoff.component.html',
-    styleUrls: ['./system-onoff.component.less'],
+    selector: 'app-version-release',
+    templateUrl: './version-release.component.html',
+    styleUrls: ['./version-release.component.less'],
     providers: [DestroyService],
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class SystemOnOffComponent implements OnInit {
+export class VersionReleaseComponent implements OnInit {
     tabIndex = 0
     tabChangeSub: Subject<number> = new Subject<number>()
 
@@ -78,9 +77,13 @@ export class SystemOnOffComponent implements OnInit {
 
     saveOrSubmitText$: Observable<string>
     saveOrSubmitLoading$: Observable<boolean>
-    toSaveSub: Subject<SystemOnOffApply> = new Subject<SystemOnOffApply>()
-    toSubmitSub: Subject<SystemOnOffApply> = new Subject<SystemOnOffApply>()
-    toResetSub: Subject<SystemOnOffApply> = new Subject<SystemOnOffApply>()
+    toSaveSub: Subject<VersionReleaseApply> = new Subject<VersionReleaseApply>()
+    toSubmitSub: Subject<VersionReleaseApply> = new Subject<
+        VersionReleaseApply
+    >()
+    toResetSub: Subject<VersionReleaseApply> = new Subject<
+        VersionReleaseApply
+    >()
 
     fetchApplyInfoLoading$: Observable<boolean>
     applyInfo$: Observable<ApplyInfo>
@@ -97,18 +100,18 @@ export class SystemOnOffComponent implements OnInit {
 
     // 第二个tab
     fetchSavedAppliesLoading$: Observable<boolean>
-    savedApplies$: Observable<SystemOnOffApply[]>
-    toEditSavedApplySub: Subject<SystemOnOffApply> = new Subject<
-        SystemOnOffApply
+    savedApplies$: Observable<VersionReleaseApply[]>
+    toEditSavedApplySub: Subject<VersionReleaseApply> = new Subject<
+        VersionReleaseApply
     >()
-    toDetailSavedApplySub: Subject<SystemOnOffApply> = new Subject<
-        SystemOnOffApply
+    toDetailSavedApplySub: Subject<VersionReleaseApply> = new Subject<
+        VersionReleaseApply
     >()
-    toSubmitSavedApplySub: Subject<SystemOnOffApply> = new Subject<
-        SystemOnOffApply
+    toSubmitSavedApplySub: Subject<VersionReleaseApply> = new Subject<
+        VersionReleaseApply
     >()
-    toDeleteSavedApplySub: Subject<SystemOnOffApply> = new Subject<
-        SystemOnOffApply
+    toDeleteSavedApplySub: Subject<VersionReleaseApply> = new Subject<
+        VersionReleaseApply
     >()
 
     // 额外的tabs
@@ -119,41 +122,38 @@ export class SystemOnOffComponent implements OnInit {
     EDIT_EXTRA_TAB_ACTION = TabAction.EDIT
     DETAIL_EXTRA_TAB_ACTION = TabAction.DETAIL
 
-    get type() {
-        return this.applyForm.controls.type
+    get applicantName() {
+        return this.applyForm.controls.applicantName
     }
-    get listNumber() {
-        return this.applyForm.controls.listNumber
+    get applicantDept() {
+        return this.applyForm.controls.applicantDept
     }
-    get systemName() {
-        return this.applyForm.controls.systemName
-    }
-    get version() {
-        return this.applyForm.controls.version
-    }
-    get onlineTime() {
-        return this.applyForm.controls.onlineTime
-    }
-    get devDept() {
-        return this.applyForm.controls.devDept
+    get applicantTime() {
+        return this.applyForm.controls.applicantTime
     }
     get projectName() {
         return this.applyForm.controls.projectName
     }
-    get projectOwner() {
-        return this.applyForm.controls.projectOwner
+    get onlineVersion() {
+        return this.applyForm.controls.onlineVersion
     }
-    get projectOwnerPhone() {
-        return this.applyForm.controls.projectOwnerPhone
+    get releaseVersion() {
+        return this.applyForm.controls.releaseVersion
     }
-    get techOwner() {
-        return this.applyForm.controls.techOwner
+    get versionCompatibility() {
+        return this.applyForm.controls.versionCompatibility
     }
-    get techOwnerPhone() {
-        return this.applyForm.controls.techOwnerPhone
+    get hardwareChange() {
+        return this.applyForm.controls.hardwareChange
     }
-    get description() {
-        return this.applyForm.controls.description
+    get upgradeMode() {
+        return this.applyForm.controls.upgradeMode
+    }
+    get expectedReleaseTime() {
+        return this.applyForm.controls.expectedReleaseTime
+    }
+    get versionUpdateDesc() {
+        return this.applyForm.controls.versionUpdateDesc
     }
     get remark() {
         return this.applyForm.controls.remark
@@ -210,19 +210,19 @@ export class SystemOnOffComponent implements OnInit {
         this.toResetSub.next()
     }
 
-    toShowSavedApply(apply: SystemOnOffApply) {
+    toShowSavedApply(apply: VersionReleaseApply) {
         this.toDetailSavedApplySub.next(apply)
     }
 
-    toEditSavedApply(apply: SystemOnOffApply) {
+    toEditSavedApply(apply: VersionReleaseApply) {
         this.toEditSavedApplySub.next(apply)
     }
 
-    toSubmitSavedApply(apply: SystemOnOffApply) {
+    toSubmitSavedApply(apply: VersionReleaseApply) {
         this.toSubmitSavedApplySub.next(apply)
     }
 
-    toDeleteSavedApply(apply: SystemOnOffApply) {
+    toDeleteSavedApply(apply: VersionReleaseApply) {
         this.toDeleteSavedApplySub.next(apply)
     }
 
@@ -240,18 +240,17 @@ export class SystemOnOffComponent implements OnInit {
 
     private buildForm(): void {
         this.applyForm = this.fb.group({
-            type: [null, Validators.required],
-            listNumber: [null, Validators.required],
-            systemName: [null, Validators.required],
-            version: [null, Validators.required],
-            onlineTime: [null, Validators.required],
-            devDept: [null, Validators.required],
+            applicantName: [null, Validators.required],
+            applicantDept: [null, Validators.required],
+            applicantTime: [null, Validators.required],
             projectName: [null, Validators.required],
-            projectOwner: [null, Validators.required],
-            projectOwnerPhone: [null, Validators.required],
-            techOwner: [null, Validators.required],
-            techOwnerPhone: [null, Validators.required],
-            description: [null, Validators.required],
+            onlineVersion: [null, Validators.required],
+            releaseVersion: [null, Validators.required],
+            versionCompatibility: [null, Validators.required],
+            hardwareChange: [null, Validators.required],
+            upgradeMode: [null, Validators.required],
+            expectedReleaseTime: [null, Validators.required],
+            versionUpdateDesc: [null, Validators.required],
             remark: [null, Validators.required]
         })
     }
@@ -290,7 +289,10 @@ export class SystemOnOffComponent implements OnInit {
         this.extraTabs$ = this.store.select(getExtraTabs)
     }
 
-    private initDispatcher(): void {}
+    private initDispatcher(): void {
+        this.store.dispatch(new FetchApplyInfoAction())
+        this.store.dispatch(new FetchApproversAction())
+    }
 
     private initSubscriber(): void {
         this.initFirstTabSubscriber()
@@ -299,7 +301,6 @@ export class SystemOnOffComponent implements OnInit {
     }
 
     private initFirstTabSubscriber() {
-        this.initSwitchApplyType()
         this.initPatchApplyInfo()
 
         this.initSaveRequirementApply()
@@ -325,7 +326,6 @@ export class SystemOnOffComponent implements OnInit {
         this.initCloseExtraTab()
         this.initNeedManualResetTabIndex()
 
-        this.initSwitchApplyTypeForExtra()
         this.initCancelEdit()
         this.initEnsureEdit()
 
@@ -334,15 +334,6 @@ export class SystemOnOffComponent implements OnInit {
         this.initEditTempApplyResourceForExtra()
         this.initShowApplyResourceForExtra()
         this.initDeleteApplyResourceForExtra()
-    }
-
-    private initSwitchApplyType() {
-        this.type.valueChanges
-            .takeUntil(this.destroyService)
-            .filter(e => !!e)
-            .subscribe(applyType => {
-                this.store.dispatch(new SwitchApplyTypeAction(applyType))
-            })
     }
 
     private initPatchApplyInfo() {
@@ -363,7 +354,7 @@ export class SystemOnOffComponent implements OnInit {
             .asObservable()
             .takeUntil(this.destroyService)
             .subscribe(() => {
-                this.store.dispatch(new SaveSystemOnOffApplyAction())
+                this.store.dispatch(new SaveVersionReleaseApplyAction())
             })
     }
 
@@ -372,7 +363,7 @@ export class SystemOnOffComponent implements OnInit {
             .asObservable()
             .takeUntil(this.destroyService)
             .subscribe(() => {
-                this.store.dispatch(new SubmitSystemOnOffApplyAction())
+                this.store.dispatch(new SubmitVersionReleaseApplyAction())
             })
     }
 
@@ -381,7 +372,7 @@ export class SystemOnOffComponent implements OnInit {
             .asObservable()
             .takeUntil(this.destroyService)
             .subscribe(() => {
-                this.store.dispatch(new ResetSystemOnOffApplyAction())
+                this.store.dispatch(new ResetVersionReleaseApplyAction())
             })
     }
 
@@ -558,43 +549,13 @@ export class SystemOnOffComponent implements OnInit {
             })
     }
 
-    private initSwitchApplyTypeForExtra() {
-        this.extraTabs$
-            .mergeMap(tabs => {
-                return Observable.merge(
-                    ...tabs.map((tab, i) =>
-                        tab.data.applyInfoForm
-                            .get('type')
-                            .valueChanges.map(e => ({
-                                applyType: e,
-                                tabIndex: i
-                            }))
-                    )
-                )
-            })
-            .distinctUntilChanged(
-                (prev, curr) =>
-                    prev.applyType === curr.applyType &&
-                    prev.tabIndex === curr.tabIndex
-            )
-            .takeUntil(this.destroyService)
-            .subscribe(payload => {
-                this.store.dispatch(
-                    new fromExtraTabs.SwitchApplyTypeAction({
-                        applyType: payload.applyType,
-                        tabIndex: payload.tabIndex
-                    })
-                )
-            })
-    }
-
     private initCancelEdit() {
         this.cancelEditSub
             .asObservable()
             .takeUntil(this.destroyService)
             .subscribe(() => {
                 this.store.dispatch(
-                    new fromExtraTabs.CancelEditSystemOnOffApplyAction(
+                    new fromExtraTabs.CancelEditVersionReleaseApplyAction(
                         this.tabIndex - 2
                     )
                 )
@@ -607,7 +568,7 @@ export class SystemOnOffComponent implements OnInit {
             .takeUntil(this.destroyService)
             .subscribe(() => {
                 this.store.dispatch(
-                    new fromExtraTabs.EnsureEditSystemOnOffApplyAction(
+                    new fromExtraTabs.EnsureEditVersionReleaseApplyAction(
                         this.tabIndex - 2
                     )
                 )
