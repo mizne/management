@@ -59,11 +59,12 @@ const routes: Routes = [
                 path: 'assets-management/unified-apply',
                 loadChildren:
                     'app/routes/unified-apply/unified-apply.module#UnifiedApplyModule'
+            },
+            {
+                path: 'assets-management/distribution-treasury',
+                loadChildren:
+                    './distribution-treasury/distribution-treasury.module#DistributionTreasuryModule'
             }
-            // {
-            //     path: 'assets-management/to-approve',
-            //     loadChildren: './to-approve/to-approve.module#ToApproveModule'
-            // },
             // {
             //     path: 'assets-management/my-apply',
             //     loadChildren: './my-apply/my-apply.module#MyApplyModule'

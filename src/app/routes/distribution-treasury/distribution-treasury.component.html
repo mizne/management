@@ -1,0 +1,339 @@
+<pro-header></pro-header>
+
+<nz-tabset [nzType]="'card'" [(nzSelectedIndex)]="tabIndex" (nzSelectedIndexChange)="tabChange($event)">
+    <nz-tab>
+        <ng-template #nzTabHeading>
+            <i class="anticon anticon-apple"></i>
+            资源入库
+        </ng-template>
+        <nz-card nzTitle="入库信息列表" [nzBordered]="false">
+            <form nz-form [formGroup]="resourceInfoSearchForm" (ngSubmit)="queryResourceInfoForm()" [nzLayout]="'inline'">
+                <div nz-row [nzGutter]="24">
+                    <div nz-col [nzSpan]="6" class="mb-md">
+                        <div nz-form-item class="d-flex">
+                            <div nz-form-label>
+                                <label>资源类型</label>
+                            </div>
+                            <div nz-form-control class="flex-1">
+                                <nz-input formControlName="resourceType" nzPlaceHolder="请输入资源类型" nzSize="large"></nz-input>
+                            </div>
+                        </div>
+                    </div>
+                    <div nz-col [nzSpan]="6" class="mb-md">
+                        <div nz-form-item class="d-flex">
+                            <div nz-form-label>
+                                <label>软件类型</label>
+                            </div>
+                            <div nz-form-control class="flex-1">
+                                <nz-input formControlName="softwareType" nzPlaceHolder="请输入软件类型" nzSize="large"></nz-input>
+                            </div>
+                        </div>
+                    </div>
+                    <div nz-col [nzSpan]="6" class="mb-md">
+                        <div nz-form-item class="d-flex">
+                            <div nz-form-label>
+                                <label>软件名称</label>
+                            </div>
+                            <div nz-form-control class="flex-1">
+                                <nz-input formControlName="softwareName" nzPlaceHolder="请输入软件名称" nzSize="large"></nz-input>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div nz-col [nzSpan]="6" class="mb-md">
+                        <button nz-button type="submit" [nzType]="'primary'" [nzSize]="'large'">查询</button>
+                        <button nz-button (click)="resetResourceInfoForm()" [nzSize]="'large'" class="mx-sm">重置</button>
+                    </div>
+                </div>
+            </form>
+
+            <div class="mb-md">
+                <ng-container>
+                    <button nz-button [nzSize]="'large'" class="ml-sm" (click)="toCreateResourceInfo()">新增入库</button>
+                </ng-container>
+            </div>
+
+            <nz-table #nzTable1 [nzAjaxData]="resourceInfoes$ | async" [nzShowSizeChanger]="true" [nzLoading]="resourceInfoesLoading$ | async"
+                [nzTotal]="resourceInfoesCount$ | async" [(nzPageIndex)]="resourceInfoPageIndex" (nzPageIndexChange)="resourceInfoPageChage()"
+                [(nzPageSize)]="resourceInfoPageSize" (nzPageSizeChange)="resourceInfoPageChage()" [nzShowFooter]="true">
+                <thead nz-thead>
+                    <tr>
+                        <th nz-th>
+                            <span>资产编号</span>
+                        </th>
+                        <th nz-th>
+                            <span>资产类型</span>
+                        </th>
+                        <th nz-th>
+                            <span>版本类型</span>
+                        </th>
+                        <th nz-th>
+                            <span>软件名称</span>
+                        </th>
+                        <th nz-th>
+                            <span>软件版本</span>
+                        </th>
+                        <th nz-th>
+                            <span>入库数量</span>
+                        </th>
+                        <th nz-th>
+                            <span>数量单位</span>
+                        </th>
+                        <th nz-th>
+                            <span>入口时间</span>
+                        </th>
+                        <th nz-th>
+                            <span>单价</span>
+                        </th>
+                        <th nz-th>
+                            <span>操作</span>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody nz-tbody>
+                    <tr nz-tbody-tr *ngFor="let data of nzTable1.data">
+                        <td nz-td>{{data.assetsNumber}}</td>
+                        <td nz-td>{{data.assetsType}}</td>
+                        <td nz-td>{{data.softwareType}}</td>
+                        <td nz-td>{{data.softwareName}}</td>
+                        <td nz-td>{{data.softwareVersion}}</td>
+                        <td nz-td>{{data.entryCount}}</td>
+                        <td nz-td>{{data.countUnit}}</td>
+                        <td nz-td>{{data.entryTime}}</td>
+                        <td nz-td>{{data.entryLocation}}</td>
+                        <td nz-td>
+                            <span>
+                                <a (click)="toEditResourceInfo(data)">编辑</a>
+                                <span nz-table-divider></span>
+                                <a (click)="toShowResourceInfo(data)">详情</a>
+                            </span>
+                        </td>
+                    </tr>
+                </tbody>
+                <span nz-table-footer>
+                    <i class="anticon anticon-database"></i>
+                    {{'共 ' + (resourceInfoesCount$ | async) + ' 条'}}
+                </span>
+            </nz-table>
+        </nz-card>
+    </nz-tab>
+
+    <nz-tab>
+        <ng-template #nzTabHeading>
+            <i class="anticon anticon-android"></i>
+            资源分配
+        </ng-template>
+        <form nz-form [formGroup]="resourceUseInfoEditForm" [nzLayout]="'vertical'">
+            <nz-card nzTitle="资源分配" [nzBordered]="false">
+                <div nz-row [nzGutter]="40">
+                    <div nz-col [nzSpan]="8">
+                        <div nz-form-item nz-row>
+                            <div nz-form-label nz-col>
+                                <label nz-form-item-required>软件类型</label>
+                            </div>
+                            <div nz-form-control nz-col nzHasFeedback [nzValidateStatus]="softwareType">
+                                <nz-input formControlName="softwareType" nzPlaceHolder="请输入软件类型" nzSize="large"></nz-input>
+                                <p nz-form-explain *ngIf="(resourceUseInfoEditForm.get('softwareType').dirty || resourceUseInfoEditForm.get('softwareType').touched) && resourceUseInfoEditForm.get('softwareType').errors?.required">
+                                    请输入软件类型
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div nz-col [nzSpan]="8">
+                        <div nz-form-item nz-row>
+                            <div nz-form-label nz-col>
+                                <label nz-form-item-required>软件名称</label>
+                            </div>
+                            <div nz-form-control nz-col nzHasFeedback [nzValidateStatus]="softwareName">
+                                <nz-input formControlName="softwareName" nzPlaceHolder="请输入软件名称" nzSize="large"></nz-input>
+                                <p nz-form-explain *ngIf="(resourceUseInfoEditForm.get('softwareName').dirty || resourceUseInfoEditForm.get('softwareName').touched) && resourceUseInfoEditForm.get('softwareName').errors?.required">
+                                    请输入软件名称
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div nz-col [nzSpan]="8">
+                        <div nz-form-item nz-row>
+                            <div nz-form-label nz-col>
+                                <label nz-form-item-required>软件版本</label>
+                            </div>
+                            <div nz-form-control nz-col nzHasFeedback [nzValidateStatus]="softwareVersion">
+                                <nz-input formControlName="softwareVersion" nzPlaceHolder="请输入软件版本" nzSize="large"></nz-input>
+                                <p nz-form-explain *ngIf="(resourceUseInfoEditForm.get('softwareVersion').dirty || resourceUseInfoEditForm.get('softwareVersion').touched) && resourceUseInfoEditForm.get('softwareVersion').errors?.required">
+                                    请输入软件版本
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div nz-row [nzGutter]="40">
+                    <div nz-col [nzSpan]="8">
+                        <div nz-form-item nz-row>
+                            <div nz-form-label nz-col>
+                                <label nz-form-item-required>分配对象</label>
+                            </div>
+                            <div nz-form-control nz-col nzHasFeedback [nzValidateStatus]="whoUse">
+                                <nz-input formControlName="whoUse" nzPlaceHolder="请输入分配对象" nzSize="large"></nz-input>
+                                <p nz-form-explain *ngIf="(resourceUseInfoEditForm.get('whoUse').dirty || resourceUseInfoEditForm.get('whoUse').touched) && resourceUseInfoEditForm.get('whoUse').errors?.required">
+                                    请输入分配对象
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div nz-col [nzSpan]="8">
+                        <div nz-form-item nz-row>
+                            <div nz-form-label nz-col>
+                                <label nz-form-item-required>分配数量</label>
+                            </div>
+                            <div nz-form-control nz-col nzHasFeedback [nzValidateStatus]="useCount">
+                                <nz-input formControlName="useCount" nzPlaceHolder="请输入分配数量" nzSize="large"></nz-input>
+                                <p nz-form-explain *ngIf="(resourceUseInfoEditForm.get('useCount').dirty || resourceUseInfoEditForm.get('useCount').touched) && resourceUseInfoEditForm.get('useCount').errors?.required">
+                                    请输入分配数量
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div nz-col [nzSpan]="8">
+                        <div nz-form-item nz-row>
+                            <div nz-form-label nz-col>
+                                <label nz-form-item-required>数量单位</label>
+                            </div>
+                            <div nz-form-control nz-col nzHasFeedback [nzValidateStatus]="countUnit">
+                                <nz-input formControlName="countUnit" nzPlaceHolder="请输入数量单位" nzSize="large"></nz-input>
+                                <p nz-form-explain *ngIf="(resourceUseInfoEditForm.get('countUnit').dirty || resourceUseInfoEditForm.get('countUnit').touched) && resourceUseInfoEditForm.get('countUnit').errors?.required">
+                                    请输入数量单位
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div nz-row [nzGutter]="40">
+                    <div nz-col [nzSpan]="8">
+                        <div nz-form-item nz-row>
+                            <div nz-form-label nz-col>
+                                <label nz-form-item-required>分配时间</label>
+                            </div>
+                            <div nz-form-control nz-col nzHasFeedback [nzValidateStatus]="useStartTime">
+                                <nz-input formControlName="useStartTime" nzPlaceHolder="请输入分配时间" nzSize="large"></nz-input>
+                                <p nz-form-explain *ngIf="(resourceUseInfoEditForm.get('useStartTime').dirty || resourceUseInfoEditForm.get('useStartTime').touched) && resourceUseInfoEditForm.get('useStartTime').errors?.required">
+                                    请输入分配时间
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div nz-col [nzSpan]="8">
+                        <div nz-form-item nz-row>
+                            <div nz-form-label nz-col>
+                                <label nz-form-item-required>操作员</label>
+                            </div>
+                            <div nz-form-control nz-col nzHasFeedback [nzValidateStatus]="operator">
+                                <nz-input formControlName="operator" nzPlaceHolder="请输入操作员" nzSize="large"></nz-input>
+                                <p nz-form-explain *ngIf="(resourceUseInfoEditForm.get('operator').dirty || resourceUseInfoEditForm.get('operator').touched) && resourceUseInfoEditForm.get('operator').errors?.required">
+                                    请输入操作员
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="customize-footer d-flex justify-content-center">
+                    <button nz-button (click)="toEditResourceUseInfo()" [nzType]="'primary'" nzSize="large">确认提交</button>
+                </div>
+            </nz-card>
+        </form>
+
+
+        <nz-card nzTitle="可分配资源信息" [nzBordered]="false">
+            <form nz-form [formGroup]="resourceUseInfoSearchForm" (ngSubmit)="queryResourceUseInfoForm()" [nzLayout]="'inline'">
+                <div nz-row [nzGutter]="24">
+                    <div nz-col [nzSpan]="6" class="mb-md">
+                        <div nz-form-item class="d-flex">
+                            <div nz-form-label>
+                                <label>资源类型</label>
+                            </div>
+                            <div nz-form-control class="flex-1">
+                                <nz-input formControlName="resourceType" nzPlaceHolder="请输入资源类型" nzSize="large"></nz-input>
+                            </div>
+                        </div>
+                    </div>
+                    <div nz-col [nzSpan]="6" class="mb-md">
+                        <div nz-form-item class="d-flex">
+                            <div nz-form-label>
+                                <label>软件类型</label>
+                            </div>
+                            <div nz-form-control class="flex-1">
+                                <nz-input formControlName="softwareType" nzPlaceHolder="请输入软件类型" nzSize="large"></nz-input>
+                            </div>
+                        </div>
+                    </div>
+                    <div nz-col [nzSpan]="6" class="mb-md">
+                        <div nz-form-item class="d-flex">
+                            <div nz-form-label>
+                                <label>软件名称</label>
+                            </div>
+                            <div nz-form-control class="flex-1">
+                                <nz-input formControlName="softwareName" nzPlaceHolder="请输入软件名称" nzSize="large"></nz-input>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div nz-col [nzSpan]="6" class="mb-md">
+                        <button nz-button type="submit" [nzType]="'primary'" [nzSize]="'large'">查询</button>
+                        <button nz-button (click)="resetResourceUseInfoForm()" [nzSize]="'large'" class="mx-sm">重置</button>
+                    </div>
+                </div>
+            </form>
+
+
+            <nz-table #nzTable2 [nzAjaxData]="resourceUseInfoes$ | async" [nzShowSizeChanger]="true" [nzLoading]="resourceUseInfoesLoading$ | async"
+                [nzTotal]="resourceUseInfoesCount$ | async" [(nzPageIndex)]="resourceUseInfoPageIndex" (nzPageIndexChange)="resourceUseInfoPageChage()"
+                [(nzPageSize)]="resourceUseInfoPageSize" (nzPageSizeChange)="resourceUseInfoPageChage()" [nzShowFooter]="true">
+                <thead nz-thead>
+                    <tr>
+                        <th nz-th>
+                            <span>资产编号</span>
+                        </th>
+                        <th nz-th>
+                            <span>资产类型</span>
+                        </th>
+                        <th nz-th>
+                            <span>版本类型</span>
+                        </th>
+                        <th nz-th>
+                            <span>软件名称</span>
+                        </th>
+                        <th nz-th>
+                            <span>软件版本</span>
+                        </th>
+                        <th nz-th>
+                            <span>使用状态</span>
+                        </th>
+                        <th nz-th>
+                            <span>使用对象</span>
+                        </th>
+                        <th nz-th>
+                            <span>使用年限</span>
+                        </th>
+                </thead>
+                <tbody nz-tbody>
+                    <tr nz-tbody-tr *ngFor="let data of nzTable2.data" (click)="selectdResourceUseInfo(data)">
+                        <td nz-td>{{data.resource.assetsNumber}}</td>
+                        <td nz-td>{{data.resource.assetsType}}</td>
+                        <td nz-td>{{data.resource.softwareType}}</td>
+                        <td nz-td>{{data.resource.softwareName}}</td>
+                        <td nz-td>{{data.resource.softwareVersion}}</td>
+                        <td nz-td>{{data.useState}}</td>
+                        <td nz-td>{{data.whoUse}}</td>
+                        <td nz-td>{{data.limitYearsUse}}</td>
+                    </tr>
+                </tbody>
+                <span nz-table-footer>
+                    <i class="anticon anticon-database"></i>
+                    {{'共 ' + (resourceUseInfoesCount$ | async) + ' 条'}}
+                </span>
+            </nz-table>
+        </nz-card>
+    </nz-tab>
+</nz-tabset>
