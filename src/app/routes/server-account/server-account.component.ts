@@ -80,10 +80,10 @@ export class ServerAccountComponent implements OnInit {
     physicalPageChangeSub: Subject<void> = new Subject<void>()
     toEditPhysicalSub: Subject<PhysicalServerAccount> = new Subject<
         PhysicalServerAccount
-        >()
+    >()
     toShowPhysicalSub: Subject<PhysicalServerAccount> = new Subject<
         PhysicalServerAccount
-        >()
+    >()
 
     virtuals$: Observable<VirtualServerAccount[]>
     virtualsCount$: Observable<number>
@@ -93,10 +93,10 @@ export class ServerAccountComponent implements OnInit {
     virtualPageChangeSub: Subject<void> = new Subject<void>()
     toEditVirtualSub: Subject<VirtualServerAccount> = new Subject<
         VirtualServerAccount
-        >()
+    >()
     toShowVirtualSub: Subject<VirtualServerAccount> = new Subject<
         VirtualServerAccount
-        >()
+    >()
 
     clusters$: Observable<ClusterServerAccount[]>
     clustersCount$: Observable<number>
@@ -106,17 +106,17 @@ export class ServerAccountComponent implements OnInit {
     clusterPageChangeSub: Subject<void> = new Subject<void>()
     toEditClusterSub: Subject<ClusterServerAccount> = new Subject<
         ClusterServerAccount
-        >()
+    >()
     toShowClusterSub: Subject<ClusterServerAccount> = new Subject<
         ClusterServerAccount
-        >()
+    >()
 
     constructor(
         private messageService: NzMessageService,
         private modalService: NzModalService,
         private store: Store<State>,
         private destroyService: DestroyService
-    ) { }
+    ) {}
 
     ngOnInit() {
         this.intDataSource()
@@ -509,8 +509,7 @@ export class ServerAccountComponent implements OnInit {
                 })
             })
             .takeUntil(this.destroyService)
-            .subscribe(account => {
-            })
+            .subscribe(account => {})
     }
 
     private initShowVirtual() {
@@ -526,8 +525,7 @@ export class ServerAccountComponent implements OnInit {
                 })
             })
             .takeUntil(this.destroyService)
-            .subscribe(account => {
-            })
+            .subscribe(account => {})
     }
 
     private initShowCluster() {
@@ -543,8 +541,7 @@ export class ServerAccountComponent implements OnInit {
                 })
             })
             .takeUntil(this.destroyService)
-            .subscribe(account => {
-            })
+            .subscribe(account => {})
     }
 
     private isPhysicalTab(): boolean {

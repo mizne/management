@@ -17,7 +17,7 @@ export interface State extends fromRoot.State {
 export const reducers = {
     physicalServerAccount: fromPhysicalServerAccount.reducer,
     virtualServerAccount: fromVirtualServerAccount.reducer,
-    clusterServerAccount: fromVirtualServerAccount.reducer
+    clusterServerAccount: fromClusterServerAccount.reducer
 }
 
 export const getServerAccountModuleState = createFeatureSelector<
