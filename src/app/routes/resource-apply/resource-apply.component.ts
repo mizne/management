@@ -303,6 +303,7 @@ export class ResourceApplyComponent implements OnInit {
 
         this.initCreateApplyResourceForExtra()
         this.initAddApplyResourcesForExtra()
+        this.initEditTempApplyResourceForExtra()
         this.initShowApplyResourceForExtra()
         this.initDeleteApplyResourceForExtra()
     }
@@ -629,6 +630,31 @@ export class ResourceApplyComponent implements OnInit {
                     new fromExtraTabs.AddApplyResourcesAction({
                         tabIndex: this.tabIndex - 2,
                         applyResources: resources
+                    })
+                )
+            })
+    }
+
+    private initEditTempApplyResourceForExtra() {
+        this.toEditTempResourceSub
+            .asObservable()
+            .filter(() => this.tabIndex >= 2)
+            .mergeMap(resource => {
+                return this.modalService.open({
+                    title: '新增的资源信息',
+                    content: ToEditApplyResourceComponent,
+                    footer: false,
+                    width: 1000,
+                    componentParams: { resource }
+                })
+            })
+            .filter(e => typeof e !== 'string')
+            .takeUntil(this.destroyService)
+            .subscribe(resource => {
+                this.store.dispatch(
+                    new fromExtraTabs.EditTempApplyResourceAction({
+                        tabIndex: this.tabIndex - 2,
+                        resource
                     })
                 )
             })

@@ -457,6 +457,7 @@ export class UnifiedApplyComponent implements OnInit {
 
         this.initCreateApplyResourceForExtra()
         this.initAddApplyResourcesForExtra()
+        this.initEditTempApplyResourceForExtra()
         this.initShowApplyResourceForExtra()
         this.initDeleteApplyResourceForExtra()
     }
@@ -891,6 +892,31 @@ export class UnifiedApplyComponent implements OnInit {
                     new fromExtraTabs.AddApplyResourcesAction({
                         tabIndex: this.tabIndex - 3,
                         applyResources: resources
+                    })
+                )
+            })
+    }
+
+    private initEditTempApplyResourceForExtra() {
+        this.toEditTempResourceSub
+            .asObservable()
+            .filter(() => this.tabIndex >= 0)
+            .mergeMap(resource => {
+                return this.modalService.open({
+                    title: '新增的资源信息',
+                    content: ToEditApplyResourceComponent,
+                    footer: false,
+                    width: 1000,
+                    componentParams: { resource }
+                })
+            })
+            .filter(e => typeof e !== 'string')
+            .takeUntil(this.destroyService)
+            .subscribe(resource => {
+                this.store.dispatch(
+                    new fromExtraTabs.EditTempApplyResourceAction({
+                        tabIndex: this.tabIndex - 3,
+                        resource
                     })
                 )
             })
