@@ -2,7 +2,7 @@ import * as uuid from 'uuid'
 import { PaginationParams } from './pagination.model'
 import { FormGroup, FormControl } from '@angular/forms'
 
-export class RequirementApply {
+export class SystemOnOffApply {
     id?: string
     applyInfo: ApplyInfo
     resources: ApplyResource[]
@@ -12,11 +12,11 @@ export class RequirementApply {
     disabled?: boolean
     checked?: boolean
 
-    static generateFakeDataItems(): RequirementApply[] {
+    static generateFakeDataItems(): SystemOnOffApply[] {
         return Array.from({ length: 3 }, (_, i) => ({
             id: uuid.v4(),
             applyInfo: ApplyInfo.generateFakeData(
-                Math.random() > 0.5 ? '个人申请' : '部门申请'
+                Math.random() > 0.5 ? '上线' : '下线'
             ),
             resources: ApplyResource.generateFakeDataItems(),
             approvers: Approver.generateFakeDataItems(),
@@ -28,25 +28,53 @@ export class RequirementApply {
 export class ApplyInfo {
     type?: string
     listNumber: string
-    applicantName: string
-    applicantDept: string
-    applicantPhone: string
-    applyReason: string
+    systemName: string
+    version: string
+    onlineTime: string
+    devDept: string
+    projectName: string
+    projectOwner: string
+    projectOwnerPhone: string
+    techOwner: string
+    techOwnerPhone: string
+    description: string
+    remark: string
 
     static generateFakeData(applyType: string): ApplyInfo {
         return {
             type: applyType,
             listNumber: uuid.v4(),
-            applicantName: `fake applicantName ${Math.random()
+            systemName: `fake systemName ${Math.random()
                 .toString()
                 .slice(0, 5)}`,
-            applicantDept: `fake applicantDept ${Math.random()
+            version: `fake version ${Math.random()
                 .toString()
                 .slice(0, 5)}`,
-            applicantPhone: `fake applicantPhone ${Math.random()
+            onlineTime: `fake onlineTime ${Math.random()
                 .toString()
                 .slice(0, 5)}`,
-            applyReason: `fake applyReason ${Math.random()
+            devDept: `fake devDept ${Math.random()
+                .toString()
+                .slice(0, 5)}`,
+            projectName: `fake projectName ${Math.random()
+                .toString()
+                .slice(0, 5)}`,
+            projectOwner: `fake projectOwner ${Math.random()
+                .toString()
+                .slice(0, 5)}`,
+            projectOwnerPhone: `fake projectOwnerPhone ${Math.random()
+                .toString()
+                .slice(0, 5)}`,
+            techOwner: `fake techOwner ${Math.random()
+                .toString()
+                .slice(0, 5)}`,
+            techOwnerPhone: `fake techOwnerPhone ${Math.random()
+                .toString()
+                .slice(0, 5)}`,
+            description: `fake description ${Math.random()
+                .toString()
+                .slice(0, 5)}`,
+            remark: `fake remark ${Math.random()
                 .toString()
                 .slice(0, 5)}`
         }
@@ -208,7 +236,7 @@ export class TabOptions {
     data: TabData
     action: TabAction
 
-    static convertFromApplyForEdit(apply: RequirementApply): TabOptions {
+    static convertFromApplyForEdit(apply: SystemOnOffApply): TabOptions {
         return {
             id: uuid.v4(),
             name: `编辑 ${apply.applyInfo.listNumber}`,
@@ -219,16 +247,21 @@ export class TabOptions {
                 applyInfoForm: new FormGroup({
                     type: new FormControl(apply.applyInfo.type),
                     listNumber: new FormControl(apply.applyInfo.listNumber),
-                    applicantName: new FormControl(
-                        apply.applyInfo.applicantName
+                    systemName: new FormControl(apply.applyInfo.systemName),
+                    version: new FormControl(apply.applyInfo.version),
+                    onlineTime: new FormControl(apply.applyInfo.onlineTime),
+                    devDept: new FormControl(apply.applyInfo.devDept),
+                    projectName: new FormControl(apply.applyInfo.projectName),
+                    projectOwner: new FormControl(apply.applyInfo.projectOwner),
+                    projectOwnerPhone: new FormControl(
+                        apply.applyInfo.projectOwnerPhone
                     ),
-                    applicantDept: new FormControl(
-                        apply.applyInfo.applicantDept
+                    techOwner: new FormControl(apply.applyInfo.techOwner),
+                    techOwnerPhone: new FormControl(
+                        apply.applyInfo.techOwnerPhone
                     ),
-                    applicantPhone: new FormControl(
-                        apply.applyInfo.applicantPhone
-                    ),
-                    applyReason: new FormControl(apply.applyInfo.applyReason)
+                    description: new FormControl(apply.applyInfo.description),
+                    remark: new FormControl(apply.applyInfo.remark)
                 }),
                 fetchApproversLoading: false,
                 approvers: apply.approvers,
@@ -240,7 +273,7 @@ export class TabOptions {
         }
     }
 
-    static convertFromApplyForDetail(apply: RequirementApply): TabOptions {
+    static convertFromApplyForDetail(apply: SystemOnOffApply): TabOptions {
         return {
             id: uuid.v4(),
             name: `查看 ${apply.applyInfo.listNumber}`,
@@ -251,16 +284,21 @@ export class TabOptions {
                 applyInfoForm: new FormGroup({
                     type: new FormControl(apply.applyInfo.type),
                     listNumber: new FormControl(apply.applyInfo.listNumber),
-                    applicantName: new FormControl(
-                        apply.applyInfo.applicantName
+                    systemName: new FormControl(apply.applyInfo.systemName),
+                    version: new FormControl(apply.applyInfo.version),
+                    onlineTime: new FormControl(apply.applyInfo.onlineTime),
+                    devDept: new FormControl(apply.applyInfo.devDept),
+                    projectName: new FormControl(apply.applyInfo.projectName),
+                    projectOwner: new FormControl(apply.applyInfo.projectOwner),
+                    projectOwnerPhone: new FormControl(
+                        apply.applyInfo.projectOwnerPhone
                     ),
-                    applicantDept: new FormControl(
-                        apply.applyInfo.applicantDept
+                    techOwner: new FormControl(apply.applyInfo.techOwner),
+                    techOwnerPhone: new FormControl(
+                        apply.applyInfo.techOwnerPhone
                     ),
-                    applicantPhone: new FormControl(
-                        apply.applyInfo.applicantPhone
-                    ),
-                    applyReason: new FormControl(apply.applyInfo.applyReason)
+                    description: new FormControl(apply.applyInfo.description),
+                    remark: new FormControl(apply.applyInfo.remark)
                 }),
                 fetchApproversLoading: false,
                 approvers: apply.approvers,
@@ -272,7 +310,7 @@ export class TabOptions {
         }
     }
 
-    static generateApply(tab: TabOptions): RequirementApply {
+    static generateApply(tab: TabOptions): SystemOnOffApply {
         return {
             id: tab.data.id,
             applyInfo: tab.data.applyInfoForm.value,

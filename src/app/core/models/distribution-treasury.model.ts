@@ -1,3 +1,5 @@
+import * as uuid from 'uuid'
+
 export class ResourceInfo {
     id?: string
     resourceType: string
@@ -20,7 +22,7 @@ export class ResourceInfo {
 
     static generateFakeDataItems({ pageIndex, pageSize }): ResourceInfo[] {
         return Array.from({ length: pageSize }, (_, i) => ({
-            id: `id ${i + (pageIndex - 1) * pageSize}`,
+            id: uuid.v4(),
             resourceType: `resourceType ${i + (pageIndex - 1) * pageSize}`,
             assetsNumber: `assetsNumber ${i + (pageIndex - 1) * pageSize}`,
             assetsType: `assetsType ${i + (pageIndex - 1) * pageSize}`,
@@ -41,9 +43,7 @@ export class ResourceInfo {
 
     static generateFakeData(): ResourceInfo {
         return {
-            id: `id ${Math.random()
-                .toString()
-                .slice(0, 5)}`,
+            id: uuid.v4(),
             resourceType: `resourceType ${Math.random()
                 .toString()
                 .slice(0, 5)}`,
@@ -106,7 +106,7 @@ export class ResourceUseInfo {
 
     static generateFakeDataItems({ pageIndex, pageSize }): ResourceUseInfo[] {
         return Array.from({ length: pageSize }, (_, i) => ({
-            id: `id ${i + (pageIndex - 1) * pageSize}`,
+            id: uuid.v4(),
             resource: ResourceInfo.generateFakeData(),
             useState: `useState ${i + (pageIndex - 1) * pageSize}`,
             whoUse: `whoUse ${i + (pageIndex - 1) * pageSize}`,

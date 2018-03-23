@@ -32,9 +32,7 @@ export class ApplyInfo {
 
     static generateFakeData(): ApplyInfo {
         return {
-            listNumber: `fake listNumber ${Math.random()
-                .toString()
-                .slice(0, 5)}`,
+            listNumber: uuid.v4(),
             applicantName: `fake applicantName ${Math.random()
                 .toString()
                 .slice(0, 5)}`,
@@ -79,9 +77,7 @@ export class SubPackageInfo {
     applyReason: string
     static generateFakeData(): SubPackageInfo {
         return {
-            subPackageNumber: `fake subPackageNumber ${Math.random()
-                .toString()
-                .slice(0, 5)}`,
+            subPackageNumber: uuid.v4(),
             applicantName: `fake applicantName ${Math.random()
                 .toString()
                 .slice(0, 5)}`,
@@ -116,9 +112,7 @@ export class ApplyResource {
 
     static generateFakeDataItems(): ApplyResource[] {
         return Array.from({ length: 3 }, (_, i) => ({
-            id: `id ${Math.random()
-                .toString()
-                .slice(0, 5)}`,
+            id: uuid.v4(),
             type: `type ${Math.random()
                 .toString()
                 .slice(0, 5)}`,

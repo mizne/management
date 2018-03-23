@@ -1,3 +1,5 @@
+import * as uuid from 'uuid'
+
 export class PhysicalServerAccount {
     id?: string
     name: string
@@ -25,7 +27,7 @@ export class PhysicalServerAccount {
         pageSize
     }): PhysicalServerAccount[] {
         return Array.from({ length: pageSize }, (_, i) => ({
-            id: `id ${i + (pageIndex - 1) * pageSize}`,
+            id: uuid.v4(),
             name: `name ${i + (pageIndex - 1) * pageSize}`,
             type: `type ${i + (pageIndex - 1) * pageSize}`,
             purpose: `purpose ${i + (pageIndex - 1) * pageSize}`,
@@ -72,7 +74,7 @@ export class VirtualServerAccount {
         pageSize
     }): VirtualServerAccount[] {
         return Array.from({ length: pageSize }, (_, i) => ({
-            id: `id ${i + (pageIndex - 1) * pageSize}`,
+            id: uuid.v4(),
             name: `name ${i + (pageIndex - 1) * pageSize}`,
             purpose: `purpose ${i + (pageIndex - 1) * pageSize}`,
             workStatus: `workStatus ${i + (pageIndex - 1) * pageSize}`,
@@ -114,7 +116,7 @@ export class ClusterServerAccount {
         pageSize
     }): ClusterServerAccount[] {
         return Array.from({ length: pageSize }, (_, i) => ({
-            id: `id ${i + (pageIndex - 1) * pageSize}`,
+            id: uuid.v4(),
             name: `name ${i + (pageIndex - 1) * pageSize}`,
             purpose: `purpose ${i + (pageIndex - 1) * pageSize}`,
             workStatus: `workStatus ${i + (pageIndex - 1) * pageSize}`,

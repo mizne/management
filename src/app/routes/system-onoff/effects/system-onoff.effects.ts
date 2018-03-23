@@ -1,0 +1,189 @@
+import { Injectable } from '@angular/core'
+import { Effect, Actions } from '@ngrx/effects'
+import { Observable } from 'rxjs/Observable'
+
+import * as fromSystemOnOff from '../actions/system-onoff.action'
+import { SystemOnOffService } from '../services/system-onoff.service'
+import { NzNotificationService } from 'ng-zorro-antd'
+import { Store } from '@ngrx/store'
+import {
+    State,
+    getApplyInfo,
+    getAddedApplyResources,
+    getApprovers
+} from '../reducers'
+
+@Injectable()
+export class SystemOnOffEffects {
+    @Effect()
+    switchApplyType$ = this.actions$
+        .ofType(fromSystemOnOff.SWITCH_APPLY_TYPE)
+        .map(
+            (action: fromSystemOnOff.SwitchApplyTypeAction) => action.applyType
+        )
+        .mergeMap(applyType => [
+            new fromSystemOnOff.FetchApplyInfoAction(applyType),
+            new fromSystemOnOff.FetchApproversAction(applyType)
+        ])
+
+    @Effect()
+    fetchApplyInfo$ = this.actions$
+        .ofType(fromSystemOnOff.FETCH_APPLY_INFO)
+        .map((action: fromSystemOnOff.FetchApplyInfoAction) => action.applyType)
+        .switchMap(applyType => {
+            return this.resourceApplyService
+                .fetchApplyInfo(applyType)
+                .map(
+                    applyInfo =>
+                        new fromSystemOnOff.FetchApplyInfoSuccessAction(
+                            applyInfo
+                        )
+                )
+                .catch(e =>
+                    Observable.of(
+                        new fromSystemOnOff.FetchApplyInfoFailureAction()
+                    )
+                )
+        })
+
+    @Effect({ dispatch: false })
+    fetchApplyInfoFailure$ = this.actions$
+        .ofType(fromSystemOnOff.FETCH_APPLY_INFO_FAILURE)
+        .do(() => {
+            this.notify.error(`获取申请信息`, '啊哦，获取申请信息失败！')
+        })
+
+    @Effect()
+    fetchApprovers$ = this.actions$
+        .ofType(fromSystemOnOff.FETCH_APPROVERS)
+        .map((action: fromSystemOnOff.FetchApproversAction) => action.applyType)
+        .switchMap(applyType => {
+            return this.resourceApplyService
+                .fetchApprovers(applyType)
+                .map(
+                    approvers =>
+                        new fromSystemOnOff.FetchApproversSuccessAction(
+                            approvers
+                        )
+                )
+                .catch(e =>
+                    Observable.of(
+                        new fromSystemOnOff.FetchApproversFailureAction()
+                    )
+                )
+        })
+
+    @Effect({ dispatch: false })
+    fetchApproversFailure$ = this.actions$
+        .ofType(fromSystemOnOff.FETCH_APPROVERS_FAILURE)
+        .do(() => {
+            this.notify.error(`获取审批人信息`, '啊哦，获取审批人信息失败！')
+        })
+
+    @Effect()
+    saveSystemOnOffApply$ = this.actions$
+        .ofType(fromSystemOnOff.SAVE_SYSTEM_ONOFF_APPLY)
+        .withLatestFrom(
+            this.store.select(getApplyInfo),
+            (_, applyInfo) => applyInfo
+        )
+        .withLatestFrom(
+            this.store.select(getAddedApplyResources),
+            (applyInfo, resources) => ({
+                applyInfo,
+                resources
+            })
+        )
+        .withLatestFrom(
+            this.store.select(getApprovers),
+            ({ applyInfo, resources }, approvers) => ({
+                applyInfo,
+                resources,
+                approvers
+            })
+        )
+        .switchMap(apply => {
+            return this.resourceApplyService
+                .saveSystemOnOffApply(apply)
+                .map(
+                    () =>
+                        new fromSystemOnOff.SaveSystemOnOffApplySuccessAction()
+                )
+                .catch(() =>
+                    Observable.of(
+                        new fromSystemOnOff.SaveSystemOnOffApplyFailureAction()
+                    )
+                )
+        })
+
+    @Effect({ dispatch: false })
+    saveSystemOnOffApplySuccess$ = this.actions$
+        .ofType(fromSystemOnOff.SAVE_SYSTEM_ONOFF_APPLY_SUCCESS)
+        .do(() => {
+            this.notify.success(`保存申请信息`, '恭喜您，保存申请信息成功！')
+        })
+
+    @Effect({ dispatch: false })
+    saveSystemOnOffApplyFailure$ = this.actions$
+        .ofType(fromSystemOnOff.SAVE_SYSTEM_ONOFF_APPLY_FAILURE)
+        .do(() => {
+            this.notify.error(`保存申请信息`, '啊哦，保存申请信息失败！')
+        })
+
+    @Effect()
+    submitSystemOnOffApply$ = this.actions$
+        .ofType(fromSystemOnOff.SUBMIT_SYSTEM_ONOFF_APPLY)
+        .withLatestFrom(
+            this.store.select(getApplyInfo),
+            (_, applyInfo) => applyInfo
+        )
+        .withLatestFrom(
+            this.store.select(getAddedApplyResources),
+            (applyInfo, resources) => ({
+                applyInfo,
+                resources
+            })
+        )
+        .withLatestFrom(
+            this.store.select(getApprovers),
+            ({ applyInfo, resources }, approvers) => ({
+                applyInfo,
+                resources,
+                approvers
+            })
+        )
+        .switchMap(apply => {
+            return this.resourceApplyService
+                .submitSystemOnOffApply(apply)
+                .map(
+                    () =>
+                        new fromSystemOnOff.SubmitSystemOnOffApplySuccessAction()
+                )
+                .catch(() =>
+                    Observable.of(
+                        new fromSystemOnOff.SumitSystemOnOffApplyFailureAction()
+                    )
+                )
+        })
+
+    @Effect({ dispatch: false })
+    submitSystemOnOffApplySuccess$ = this.actions$
+        .ofType(fromSystemOnOff.SUBMIT_SYSTEM_ONOFF_APPLY_SUCCESS)
+        .do(() => {
+            this.notify.success(`提交申请信息`, '恭喜您，提交申请信息成功！')
+        })
+
+    @Effect({ dispatch: false })
+    submitSystemOnOffApplyFailure$ = this.actions$
+        .ofType(fromSystemOnOff.SUBMIT_SYSTEM_ONOFF_APPLY_FAILURE)
+        .do(() => {
+            this.notify.error(`提交申请信息`, '啊哦，提交申请信息失败！')
+        })
+
+    constructor(
+        private actions$: Actions,
+        private resourceApplyService: SystemOnOffService,
+        private notify: NzNotificationService,
+        private store: Store<State>
+    ) {}
+}

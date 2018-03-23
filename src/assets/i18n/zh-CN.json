@@ -7,7 +7,7 @@
     "resource-apply": "资源申请管理",
     "unified-apply": "统一申请管理",
     "distribution-treasury": "入库分配管理",
-    "system-up-and-down": "系统上、下线管理",
+    "system-onoff": "系统上、下线管理",
     "version-release": "版本发布管理",
     "assets-recovery": "资产回收管理",
     "to-approve": "待我审批(演示)",

@@ -1,0 +1,759 @@
+<pro-header></pro-header>
+
+<nz-spin [nzTip]="saveOrSubmitText$ | async" [nzSpinning]="saveOrSubmitLoading$ | async">
+    <nz-tabset [nzType]="'card'" [(nzSelectedIndex)]="tabIndex" (nzSelectedIndexChange)="tabChange($event)">
+        <nz-tab>
+            <ng-template #nzTabHeading>
+                <i class="anticon anticon-apple"></i>
+                系统上/下线申请
+            </ng-template>
+            <nz-spin [nzTip]="'获取申请信息中...'" [nzSpinning]="fetchApplyInfoLoading$ | async">
+                <nz-card [nzTitle]="'申请信息'" [nzBordered]="false">
+                    <form nz-form [formGroup]="applyForm" [nzLayout]="'vertical'">
+                        <nz-card [nzBordered]="false">
+                            <div nz-row [nzGutter]="40">
+                                <div nz-col [nzSpan]="6">
+                                    <div nz-form-item nz-row>
+                                        <div nz-form-label nz-col>
+                                            <label nz-form-item-required>申请类型</label>
+                                        </div>
+                                        <div nz-form-control nz-col nzHasFeedback [nzValidateStatus]="type">
+                                            <nz-select formControlName="type" nzPlaceHolder="请选择申请类型" nzAllowClear>
+                                                <nz-option [nzLabel]="'上线'" [nzValue]="'上线'">
+                                                </nz-option>
+                                                <nz-option [nzLabel]="'下线'" [nzValue]="'下线'">
+                                                </nz-option>
+                                            </nz-select>
+                                            <p nz-form-explain *ngIf="(type.dirty || type.touched) && type.errors?.required">
+                                                请选择申请类型
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div nz-col [nzSpan]="6">
+                                    <div nz-form-item nz-row>
+                                        <div nz-form-label nz-col>
+                                            <label nz-form-item-required>申请单号</label>
+                                        </div>
+                                        <div nz-form-control nz-col nzHasFeedback [nzValidateStatus]="listNumber">
+                                            <nz-input formControlName="listNumber" [nzDisabled]="true" nzPlaceHolder="请输入申请单号" nzSize="large"></nz-input>
+                                            <p nz-form-explain *ngIf="(listNumber.dirty || listNumber.touched) && listNumber.errors?.required">
+                                                请输入申请单号
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div nz-col [nzSpan]="6">
+                                    <div nz-form-item nz-row>
+                                        <div nz-form-item nz-row>
+                                            <div nz-form-label nz-col>
+                                                <label nz-form-item-required>系统名称</label>
+                                            </div>
+                                            <div nz-form-control nz-col nzHasFeedback [nzValidateStatus]="systemName">
+                                                <nz-input formControlName="systemName" [nzDisabled]="true" nzPlaceHolder="请输入系统名称" nzSize="large"></nz-input>
+                                                <p nz-form-explain *ngIf="(systemName.dirty || systemName.touched) && systemName.errors?.required">
+                                                    请输入系统名称
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div nz-col [nzSpan]="6">
+                                    <div nz-form-item nz-row>
+                                        <div nz-form-label nz-col>
+                                            <label nz-form-item-required>版本号</label>
+                                        </div>
+                                        <div nz-form-control nz-col nzHasFeedback [nzValidateStatus]="version">
+                                            <nz-input formControlName="version" [nzDisabled]="true" nzPlaceHolder="请输入版本号" nzSize="large"></nz-input>
+                                            <p nz-form-explain *ngIf="(version.dirty || version.touched) && version.errors?.required">
+                                                请输入版本号
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div nz-row [nzGutter]="40">
+                                <div nz-col [nzSpan]="6">
+                                    <div nz-form-item nz-row>
+                                        <div nz-form-label nz-col>
+                                            <label nz-form-item-required>上线年度</label>
+                                        </div>
+                                        <div nz-form-control nz-col nzHasFeedback [nzValidateStatus]="onlineTime">
+                                            <nz-input formControlName="onlineTime" [nzDisabled]="true" nzPlaceHolder="请输入上线年度" nzSize="large"></nz-input>
+                                            <p nz-form-explain *ngIf="(onlineTime.dirty || onlineTime.touched) && onlineTime.errors?.required">
+                                                请输入上线年度
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div nz-col [nzSpan]="6">
+                                    <div nz-form-item nz-row>
+                                        <div nz-form-item nz-row>
+                                            <div nz-form-label nz-col>
+                                                <label nz-form-item-required>开发部门</label>
+                                            </div>
+                                            <div nz-form-control nz-col nzHasFeedback [nzValidateStatus]="devDept">
+                                                <nz-input formControlName="devDept" [nzDisabled]="true" nzPlaceHolder="请输入开发部门" nzSize="large"></nz-input>
+                                                <p nz-form-explain *ngIf="(devDept.dirty || devDept.touched) && devDept.errors?.required">
+                                                    请输入开发部门
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div nz-col [nzSpan]="6">
+                                    <div nz-form-item nz-row>
+                                        <div nz-form-label nz-col>
+                                            <label nz-form-item-required>对应项目名称</label>
+                                        </div>
+                                        <div nz-form-control nz-col nzHasFeedback [nzValidateStatus]="projectName">
+                                            <nz-input formControlName="projectName" [nzDisabled]="true" nzPlaceHolder="请输入对应项目名称" nzSize="large"></nz-input>
+                                            <p nz-form-explain *ngIf="(projectName.dirty || projectName.touched) && projectName.errors?.required">
+                                                请输入对应项目名称
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div nz-row [nzGutter]="40">
+                                <div nz-col [nzSpan]="12">
+                                    <div nz-form-item nz-row>
+                                        <div nz-form-label nz-col>
+                                            <label nz-form-item-required>项目负责人</label>
+                                        </div>
+                                        <div nz-form-control nz-col nzHasFeedback [nzValidateStatus]="projectOwner">
+                                            <nz-input formControlName="projectOwner" nzPlaceHolder="请输入项目负责人" nzSize="large"></nz-input>
+                                            <p nz-form-explain *ngIf="(projectOwner.dirty || projectOwner.touched) && projectOwner.errors?.required">
+                                                请输入项目负责人
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div nz-col [nzSpan]="12">
+                                    <div nz-form-item nz-row>
+                                        <div nz-form-label nz-col>
+                                            <label nz-form-item-required>项目负责人联系方式</label>
+                                        </div>
+                                        <div nz-form-control nz-col nzHasFeedback [nzValidateStatus]="projectOwnerPhone">
+                                            <nz-input formControlName="projectOwnerPhone" nzPlaceHolder="请输入项目负责人联系方式" nzSize="large"></nz-input>
+                                            <p nz-form-explain *ngIf="(projectOwnerPhone.dirty || projectOwnerPhone.touched) && projectOwnerPhone.errors?.required">
+                                                请输入项目负责人联系方式
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div nz-col [nzSpan]="12">
+                                    <div nz-form-item nz-row>
+                                        <div nz-form-label nz-col>
+                                            <label nz-form-item-required>技术联系人</label>
+                                        </div>
+                                        <div nz-form-control nz-col nzHasFeedback [nzValidateStatus]="techOwner">
+                                            <nz-input formControlName="techOwner" nzPlaceHolder="请输入技术联系人" nzSize="large"></nz-input>
+                                            <p nz-form-explain *ngIf="(techOwner.dirty || techOwner.touched) && techOwner.errors?.required">
+                                                请输入技术联系人
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div nz-col [nzSpan]="12">
+                                    <div nz-form-item nz-row>
+                                        <div nz-form-label nz-col>
+                                            <label nz-form-item-required>技术联系人联系方式</label>
+                                        </div>
+                                        <div nz-form-control nz-col nzHasFeedback [nzValidateStatus]="techOwnerPhone">
+                                            <nz-input formControlName="techOwnerPhone" nzPlaceHolder="请输入技术联系人联系方式" nzSize="large"></nz-input>
+                                            <p nz-form-explain *ngIf="(techOwnerPhone.dirty || techOwnerPhone.touched) && techOwnerPhone.errors?.required">
+                                                请输入技术联系人联系方式
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div nz-row [nzGutter]="40">
+                                <div nz-col [nzSpan]="12">
+                                    <div nz-form-item nz-row>
+                                        <div nz-form-label nz-col>
+                                            <label>概述</label>
+                                        </div>
+                                        <div nz-form-control nz-col nzHasFeedback [nzValidateStatus]="description">
+                                            <nz-input [nzType]="'textarea'" [nzRows]="3" formControlName="description" nzPlaceHolder="请输入概述" nzSize="large"></nz-input>
+                                            <p nz-form-explain *ngIf="(description.dirty || description.touched) && description.errors?.required">
+                                                请输入概述
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div nz-col [nzSpan]="12">
+                                    <div nz-form-item nz-row>
+                                        <div nz-form-label nz-col>
+                                            <label>备注</label>
+                                        </div>
+                                        <div nz-form-control nz-col nzHasFeedback [nzValidateStatus]="remark">
+                                            <nz-input [nzType]="'textarea'" [nzRows]="3" formControlName="remark" nzPlaceHolder="请输入备注" nzSize="large"></nz-input>
+                                            <p nz-form-explain *ngIf="(remark.dirty || remark.touched) && remark.errors?.required">
+                                                请输入备注
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </nz-card>
+                    </form>
+                </nz-card>
+            </nz-spin>
+
+            <nz-card [nzTitle]="'资源信息'" [nzBordered]="false">
+                <ng-template #extra>
+                    <button nz-button class="mx-sm" nzSize="large" (click)="toCreateResource()">新增资源信息</button>
+                    <button nz-button class="mx-sm" nzSize="large" [nzType]="'primary'" (click)="toAddResources()">添加资源信息</button>
+                </ng-template>
+                <nz-table #nzTable1 [nzAjaxData]="addedApplyResources$ | async" [nzIsPagination]="false">
+                    <thead nz-thead>
+                        <tr>
+                            <th nz-th>
+                                <span>资源类型</span>
+                            </th>
+                            <th nz-th>
+                                <span>资源名称</span>
+                            </th>
+                            <th nz-th>
+                                <span>使用环境</span>
+                            </th>
+                            <th nz-th>
+                                <span>申请数量</span>
+                            </th>
+                            <th nz-th>
+                                <span>申请时间</span>
+                            </th>
+                            <th nz-th>
+                                <span>预计需要时间</span>
+                            </th>
+                            <th nz-th>
+                                <span>操作</span>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody nz-tbody>
+                        <tr nz-tbody-tr *ngFor="let data of nzTable1.data; let i = index;">
+                            <td nz-td>{{data.type}}</td>
+                            <td nz-td>{{data.name}}</td>
+                            <td nz-td>{{data.environment}}</td>
+                            <td nz-td>{{data.applyCount}}</td>
+                            <td nz-td>{{data.applyTime}}</td>
+                            <td nz-td>{{data.endTime}}</td>
+                            <td nz-td>
+                                <span>
+                                    <a (click)="toShowResource(data)">详情</a>
+                                    <span nz-table-divider></span>
+                                    <a *ngIf="data.tempID" (click)="toEditTempResource(data)">编辑</a>
+                                    <span *ngIf="data.tempID" nz-table-divider></span>
+                                    <a (click)="toDeleteResource(i)">删除</a>
+                                </span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </nz-table>
+            </nz-card>
+
+
+            <div class="my-md text-center">
+                <button nz-button class="mx-sm" nzSize="large" (click)="toSave()">保存信息</button>
+                <button nz-button class="mx-sm" nzSize="large" [nzType]="'primary'" (click)="toSubmit()">确认提交</button>
+                <button nz-button class="mx-sm" nzSize="large" (click)="toCancel()">取消创建</button>
+            </div>
+
+            <nz-spin [nzTip]="'获取审批人信息中...'" [nzSpinning]="fetchApproversLoading$ | async">
+                <nz-card [nzTitle]="'审批人信息'" [nzBordered]="false">
+                    <nz-table #nzTable2 [nzAjaxData]="approvers$ | async" [nzIsPagination]="false">
+                        <thead nz-thead>
+                            <tr>
+                                <th nz-th>
+                                    <span>审批人姓名</span>
+                                </th>
+                                <th nz-th>
+                                    <span>工号</span>
+                                </th>
+                                <th nz-th>
+                                    <span>部门</span>
+                                </th>
+                                <th nz-th>
+                                    <span>职位</span>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody nz-tbody>
+                            <tr nz-tbody-tr *ngFor="let data of nzTable2.data">
+                                <td nz-td>{{data.name}}</td>
+                                <td nz-td>{{data.jobNumber}}</td>
+                                <td nz-td>{{data.department}}</td>
+                                <td nz-td>{{data.job}}</td>
+                            </tr>
+                        </tbody>
+                    </nz-table>
+                </nz-card>
+            </nz-spin>
+        </nz-tab>
+
+        <nz-tab>
+            <ng-template #nzTabHeading>
+                <i class="anticon anticon-android"></i>
+                已保存的申请
+            </ng-template>
+            <nz-card [nzBordered]="false">
+                <nz-table #nzTable3 [nzAjaxData]="savedApplies$ | async" [nzIsPagination]="false" [nzLoading]="fetchSavedAppliesLoading$ | async">
+                    <thead nz-thead>
+                        <tr>
+                            <th nz-th>
+                                <span>申请单号</span>
+                            </th>
+                            <th nz-th>
+                                <span>申请人</span>
+                            </th>
+                            <th nz-th>
+                                <span>申请人部门</span>
+                            </th>
+                            <th nz-th>
+                                <span>资源数量</span>
+                            </th>
+                            <th nz-th>
+                                <span>创建时间</span>
+                            </th>
+                            <th nz-th>
+                                <span>操作</span>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody nz-tbody>
+                        <tr nz-tbody-tr *ngFor="let data of nzTable3.data">
+                            <td nz-td>{{data.applyInfo?.listNumber}}</td>
+                            <td nz-td>{{data.applyInfo?.applicantName}}</td>
+                            <td nz-td>{{data.applyInfo?.applicantDept}}</td>
+                            <td nz-td>{{data.resources.length}}</td>
+                            <td nz-td>{{data.createdAt}}</td>
+                            <td nz-td>
+                                <span>
+                                    <a (click)="toShowSavedApply(data)">详情</a>
+                                    <span nz-table-divider></span>
+                                    <a (click)="toEditSavedApply(data)">编辑</a>
+                                    <span nz-table-divider></span>
+                                    <a (click)="toSubmitSavedApply(data)">提交</a>
+                                    <span nz-table-divider></span>
+                                    <a (click)="toDeleteSavedApply(data)">删除</a>
+                                </span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </nz-table>
+            </nz-card>
+        </nz-tab>
+        <nz-tab *ngFor="let tab of extraTabs$ | async">
+            <nz-spin [nzTip]="tab.data.ensureEditText" [nzSpinning]="tab.data.ensureEditLoading">
+                <ng-template #nzTabHeading>
+                    <div>
+                        {{tab.name}}
+                        <i class="anticon anticon-cross" (click)="closeTab(tab.id)"></i>
+                    </div>
+                </ng-template>
+                <span *ngIf="tab.action === DETAIL_EXTRA_TAB_ACTION; else editBlock;">
+                    <nz-card *ngIf="tab.data; let tabData;" [nzNoHovering]="true" [nzBordered]="false">
+                        <ng-template *ngIf="tabData.applyInfoForm; let applyInfoForm;" #body>
+                            <desc-list *ngIf="tabData.applyInfoForm; let applyInfoForm;" size="large" title="申请信息" class="mb-lg">
+                                <desc-list-item term="申请类别">{{applyInfoForm.value.type}}</desc-list-item>
+                                <desc-list-item term="申请单号">{{applyInfoForm.value.listNumber}}</desc-list-item>
+                                <desc-list-item term="系统名称">{{applyInfoForm.value.systemName}}</desc-list-item>
+                                <desc-list-item term="版本号">{{applyInfoForm.value.version}}</desc-list-item>
+                                <desc-list-item term="上线年度">{{applyInfoForm.value.onlineTime}}</desc-list-item>
+                                <desc-list-item term="开发部门">{{applyInfoForm.value.devDept}}</desc-list-item>
+                                <desc-list-item term="对应项目名称">{{applyInfoForm.value.projectName}}</desc-list-item>
+                                <desc-list-item term="项目负责人">{{applyInfoForm.value.projectOwner}}</desc-list-item>
+                                <desc-list-item term="项目负责人联系方式">{{applyInfoForm.value.projectOwnerPhone}}</desc-list-item>
+                                <desc-list-item term="技术联系人">{{applyInfoForm.value.techOwner}}</desc-list-item>
+                                <desc-list-item term="技术联系人联系方式">{{applyInfoForm.value.techOwnerPhone}}</desc-list-item>
+                                <desc-list-item term="概述">{{applyInfoForm.value.description}}</desc-list-item>
+                                <desc-list-item term="备注">{{applyInfoForm.value.remark}}</desc-list-item>
+                            </desc-list>
+                        </ng-template>
+                    </nz-card>
+
+                    <nz-card *ngIf="tab.data; let tabData;" [nzNoHovering]="true" [nzBordered]="false" nzTitle="资源信息">
+                        <nz-table #nzTable6 [nzDataSource]="tabData.addedApplyResources" [nzIsPagination]="false">
+                            <thead nz-thead>
+                                <tr>
+                                    <th nz-th>
+                                        <span>资源类型</span>
+                                    </th>
+                                    <th nz-th>
+                                        <span>资源名称</span>
+                                    </th>
+                                    <th nz-th>
+                                        <span>使用环境</span>
+                                    </th>
+                                    <th nz-th>
+                                        <span>申请数量</span>
+                                    </th>
+                                    <th nz-th>
+                                        <span>申请时间</span>
+                                    </th>
+                                    <th nz-th>
+                                        <span>预计需要时间</span>
+                                    </th>
+                                    <th nz-th>
+                                        <span>操作</span>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody nz-tbody>
+                                <tr nz-tbody-tr *ngFor="let data of nzTable6.data; let i = index;">
+                                    <td nz-td>{{data.type}}</td>
+                                    <td nz-td>{{data.name}}</td>
+                                    <td nz-td>{{data.environment}}</td>
+                                    <td nz-td>{{data.applyCount}}</td>
+                                    <td nz-td>{{data.applyTime}}</td>
+                                    <td nz-td>{{data.endTime}}</td>
+                                    <td nz-td>
+                                        <span>
+                                            <a (click)="toShowResource(data)">详情</a>
+                                        </span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </nz-table>
+                    </nz-card>
+
+                    <nz-card *ngIf="tab.data; let tabData;" [nzNoHovering]="true" [nzBordered]="false" nzTitle="审批人信息">
+                        <nz-table #nzTable7 [nzDataSource]="tabData.approvers" [nzIsPagination]="false">
+                            <thead nz-thead>
+                                <tr>
+                                    <th nz-th>
+                                        <span>审批人姓名</span>
+                                    </th>
+                                    <th nz-th>
+                                        <span>工号</span>
+                                    </th>
+                                    <th nz-th>
+                                        <span>部门</span>
+                                    </th>
+                                    <th nz-th>
+                                        <span>职位</span>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody nz-tbody>
+                                <tr nz-tbody-tr *ngFor="let data of nzTable7.data">
+                                    <td nz-td>{{data.name}}</td>
+                                    <td nz-td>{{data.jobNumber}}</td>
+                                    <td nz-td>{{data.department}}</td>
+                                    <td nz-td>{{data.job}}</td>
+                                </tr>
+                            </tbody>
+                        </nz-table>
+                    </nz-card>
+
+                </span>
+
+                <ng-template #editBlock>
+                    <nz-spin *ngIf="tab.data; let tabData;" [nzTip]="'获取申请信息中...'" [nzSpinning]="tabData.fetchApplyInfoLoading">
+                        <nz-card [nzTitle]="'申请信息'" [nzBordered]="false">
+                            <form nz-form [formGroup]="tabData.applyInfoForm" [nzLayout]="'vertical'">
+                                <nz-card [nzBordered]="false">
+                                    <div nz-row [nzGutter]="40">
+                                        <div nz-col [nzSpan]="6">
+                                            <div nz-form-item nz-row>
+                                                <div nz-form-label nz-col>
+                                                    <label nz-form-item-required>申请类型</label>
+                                                </div>
+                                                <div nz-form-control nz-col nzHasFeedback [nzValidateStatus]="type">
+                                                    <nz-select formControlName="type" nzPlaceHolder="请选择申请类型" nzAllowClear>
+                                                        <nz-option [nzLabel]="'上线'" [nzValue]="'上线'">
+                                                        </nz-option>
+                                                        <nz-option [nzLabel]="'下线'" [nzValue]="'下线'">
+                                                        </nz-option>
+                                                    </nz-select>
+                                                    <p nz-form-explain *ngIf="(type.dirty || type.touched) && type.errors?.required">
+                                                        请选择申请类型
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div nz-col [nzSpan]="6">
+                                            <div nz-form-item nz-row>
+                                                <div nz-form-label nz-col>
+                                                    <label nz-form-item-required>申请单号</label>
+                                                </div>
+                                                <div nz-form-control nz-col nzHasFeedback [nzValidateStatus]="listNumber">
+                                                    <nz-input formControlName="listNumber" [nzDisabled]="true" nzPlaceHolder="请输入申请单号" nzSize="large"></nz-input>
+                                                    <p nz-form-explain *ngIf="(listNumber.dirty || listNumber.touched) && listNumber.errors?.required">
+                                                        请输入申请单号
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div nz-col [nzSpan]="6">
+                                            <div nz-form-item nz-row>
+                                                <div nz-form-item nz-row>
+                                                    <div nz-form-label nz-col>
+                                                        <label nz-form-item-required>系统名称</label>
+                                                    </div>
+                                                    <div nz-form-control nz-col nzHasFeedback [nzValidateStatus]="systemName">
+                                                        <nz-input formControlName="systemName" [nzDisabled]="true" nzPlaceHolder="请输入系统名称" nzSize="large"></nz-input>
+                                                        <p nz-form-explain *ngIf="(systemName.dirty || systemName.touched) && systemName.errors?.required">
+                                                            请输入系统名称
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div nz-col [nzSpan]="6">
+                                            <div nz-form-item nz-row>
+                                                <div nz-form-label nz-col>
+                                                    <label nz-form-item-required>版本号</label>
+                                                </div>
+                                                <div nz-form-control nz-col nzHasFeedback [nzValidateStatus]="version">
+                                                    <nz-input formControlName="version" [nzDisabled]="true" nzPlaceHolder="请输入版本号" nzSize="large"></nz-input>
+                                                    <p nz-form-explain *ngIf="(version.dirty || version.touched) && version.errors?.required">
+                                                        请输入版本号
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                    <div nz-row [nzGutter]="40">
+                                        <div nz-col [nzSpan]="6">
+                                            <div nz-form-item nz-row>
+                                                <div nz-form-label nz-col>
+                                                    <label nz-form-item-required>上线年度</label>
+                                                </div>
+                                                <div nz-form-control nz-col nzHasFeedback [nzValidateStatus]="onlineTime">
+                                                    <nz-input formControlName="onlineTime" [nzDisabled]="true" nzPlaceHolder="请输入上线年度" nzSize="large"></nz-input>
+                                                    <p nz-form-explain *ngIf="(onlineTime.dirty || onlineTime.touched) && onlineTime.errors?.required">
+                                                        请输入上线年度
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div nz-col [nzSpan]="6">
+                                            <div nz-form-item nz-row>
+                                                <div nz-form-item nz-row>
+                                                    <div nz-form-label nz-col>
+                                                        <label nz-form-item-required>开发部门</label>
+                                                    </div>
+                                                    <div nz-form-control nz-col nzHasFeedback [nzValidateStatus]="devDept">
+                                                        <nz-input formControlName="devDept" [nzDisabled]="true" nzPlaceHolder="请输入开发部门" nzSize="large"></nz-input>
+                                                        <p nz-form-explain *ngIf="(devDept.dirty || devDept.touched) && devDept.errors?.required">
+                                                            请输入开发部门
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div nz-col [nzSpan]="6">
+                                            <div nz-form-item nz-row>
+                                                <div nz-form-label nz-col>
+                                                    <label nz-form-item-required>对应项目名称</label>
+                                                </div>
+                                                <div nz-form-control nz-col nzHasFeedback [nzValidateStatus]="projectName">
+                                                    <nz-input formControlName="projectName" [nzDisabled]="true" nzPlaceHolder="请输入对应项目名称" nzSize="large"></nz-input>
+                                                    <p nz-form-explain *ngIf="(projectName.dirty || projectName.touched) && projectName.errors?.required">
+                                                        请输入对应项目名称
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div nz-row [nzGutter]="40">
+                                        <div nz-col [nzSpan]="12">
+                                            <div nz-form-item nz-row>
+                                                <div nz-form-label nz-col>
+                                                    <label nz-form-item-required>项目负责人</label>
+                                                </div>
+                                                <div nz-form-control nz-col nzHasFeedback [nzValidateStatus]="projectOwner">
+                                                    <nz-input formControlName="projectOwner" nzPlaceHolder="请输入项目负责人" nzSize="large"></nz-input>
+                                                    <p nz-form-explain *ngIf="(projectOwner.dirty || projectOwner.touched) && projectOwner.errors?.required">
+                                                        请输入项目负责人
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div nz-col [nzSpan]="12">
+                                            <div nz-form-item nz-row>
+                                                <div nz-form-label nz-col>
+                                                    <label nz-form-item-required>项目负责人联系方式</label>
+                                                </div>
+                                                <div nz-form-control nz-col nzHasFeedback [nzValidateStatus]="projectOwnerPhone">
+                                                    <nz-input formControlName="projectOwnerPhone" nzPlaceHolder="请输入项目负责人联系方式" nzSize="large"></nz-input>
+                                                    <p nz-form-explain *ngIf="(projectOwnerPhone.dirty || projectOwnerPhone.touched) && projectOwnerPhone.errors?.required">
+                                                        请输入项目负责人联系方式
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div nz-col [nzSpan]="12">
+                                            <div nz-form-item nz-row>
+                                                <div nz-form-label nz-col>
+                                                    <label nz-form-item-required>技术联系人</label>
+                                                </div>
+                                                <div nz-form-control nz-col nzHasFeedback [nzValidateStatus]="techOwner">
+                                                    <nz-input formControlName="techOwner" nzPlaceHolder="请输入技术联系人" nzSize="large"></nz-input>
+                                                    <p nz-form-explain *ngIf="(techOwner.dirty || techOwner.touched) && techOwner.errors?.required">
+                                                        请输入技术联系人
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div nz-col [nzSpan]="12">
+                                            <div nz-form-item nz-row>
+                                                <div nz-form-label nz-col>
+                                                    <label nz-form-item-required>技术联系人联系方式</label>
+                                                </div>
+                                                <div nz-form-control nz-col nzHasFeedback [nzValidateStatus]="techOwnerPhone">
+                                                    <nz-input formControlName="techOwnerPhone" nzPlaceHolder="请输入技术联系人联系方式" nzSize="large"></nz-input>
+                                                    <p nz-form-explain *ngIf="(techOwnerPhone.dirty || techOwnerPhone.touched) && techOwnerPhone.errors?.required">
+                                                        请输入技术联系人联系方式
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div nz-row [nzGutter]="40">
+                                        <div nz-col [nzSpan]="12">
+                                            <div nz-form-item nz-row>
+                                                <div nz-form-label nz-col>
+                                                    <label>概述</label>
+                                                </div>
+                                                <div nz-form-control nz-col nzHasFeedback [nzValidateStatus]="description">
+                                                    <nz-input [nzType]="'textarea'" [nzRows]="3" formControlName="description" nzPlaceHolder="请输入概述" nzSize="large"></nz-input>
+                                                    <p nz-form-explain *ngIf="(description.dirty || description.touched) && description.errors?.required">
+                                                        请输入概述
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div nz-col [nzSpan]="12">
+                                            <div nz-form-item nz-row>
+                                                <div nz-form-label nz-col>
+                                                    <label>备注</label>
+                                                </div>
+                                                <div nz-form-control nz-col nzHasFeedback [nzValidateStatus]="remark">
+                                                    <nz-input [nzType]="'textarea'" [nzRows]="3" formControlName="remark" nzPlaceHolder="请输入备注" nzSize="large"></nz-input>
+                                                    <p nz-form-explain *ngIf="(remark.dirty || remark.touched) && remark.errors?.required">
+                                                        请输入备注
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </nz-card>
+                            </form>
+                        </nz-card>
+                    </nz-spin>
+
+                    <nz-card *ngIf="tab.data; let tabData;" [nzTitle]="'资源信息'" [nzBordered]="false">
+                        <ng-template #extra>
+                            <button nz-button class="mx-sm" nzSize="large" (click)="toCreateResource()">新增资源信息</button>
+                            <button nz-button class="mx-sm" nzSize="large" [nzType]="'primary'" (click)="toAddResources()">添加资源信息</button>
+                        </ng-template>
+                        <nz-table #nzTable4 [nzDataSource]="tabData.addedApplyResources" [nzIsPagination]="false">
+                            <thead nz-thead>
+                                <tr>
+                                    <th nz-th>
+                                        <span>资源类型</span>
+                                    </th>
+                                    <th nz-th>
+                                        <span>资源名称</span>
+                                    </th>
+                                    <th nz-th>
+                                        <span>使用环境</span>
+                                    </th>
+                                    <th nz-th>
+                                        <span>申请数量</span>
+                                    </th>
+                                    <th nz-th>
+                                        <span>申请时间</span>
+                                    </th>
+                                    <th nz-th>
+                                        <span>预计需要时间</span>
+                                    </th>
+                                    <th nz-th>
+                                        <span>操作</span>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody nz-tbody>
+                                <tr nz-tbody-tr *ngFor="let data of nzTable4.data; let i = index;">
+                                    <td nz-td>{{data.type}}</td>
+                                    <td nz-td>{{data.name}}</td>
+                                    <td nz-td>{{data.environment}}</td>
+                                    <td nz-td>{{data.applyCount}}</td>
+                                    <td nz-td>{{data.applyTime}}</td>
+                                    <td nz-td>{{data.endTime}}</td>
+                                    <td nz-td>
+                                        <span>
+                                            <a (click)="toShowResource(data)">详情</a>
+                                            <span nz-table-divider></span>
+                                            <a *ngIf="data.tempID" (click)="toEditTempResource(data)">编辑</a>
+                                            <span *ngIf="data.tempID" nz-table-divider></span>
+                                            <a (click)="toDeleteResource(i)">删除</a>
+                                        </span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </nz-table>
+                    </nz-card>
+
+
+                    <div class="my-md text-center">
+                        <button nz-button class="mx-sm" nzSize="large" (click)="toCancelEdit()">取消</button>
+                        <button nz-button class="mx-sm" nzSize="large" [nzType]="'primary'" (click)="toEnsureEdit()">保存</button>
+                    </div>
+
+                    <nz-spin *ngIf="tab.data; let tabData;" [nzTip]="'获取审批人信息中...'" [nzSpinning]="tabData.fetchApproversLoading">
+                        <nz-card [nzTitle]="'审批人信息'" [nzBordered]="false">
+                            <nz-table #nzTable5 [nzDataSource]="tabData.approvers" [nzIsPagination]="false">
+                                <thead nz-thead>
+                                    <tr>
+                                        <th nz-th>
+                                            <span>审批人姓名</span>
+                                        </th>
+                                        <th nz-th>
+                                            <span>工号</span>
+                                        </th>
+                                        <th nz-th>
+                                            <span>部门</span>
+                                        </th>
+                                        <th nz-th>
+                                            <span>职位</span>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody nz-tbody>
+                                    <tr nz-tbody-tr *ngFor="let data of nzTable5.data">
+                                        <td nz-td>{{data.name}}</td>
+                                        <td nz-td>{{data.jobNumber}}</td>
+                                        <td nz-td>{{data.department}}</td>
+                                        <td nz-td>{{data.job}}</td>
+                                    </tr>
+                                </tbody>
+                            </nz-table>
+                        </nz-card>
+                    </nz-spin>
+                </ng-template>
+            </nz-spin>
+        </nz-tab>
+    </nz-tabset>
+</nz-spin>

@@ -84,8 +84,8 @@
                         },
                         {
                             "text": "系统上、下线管理",
-                            "link": "/assets-management/system-up-and-down",
-                            "translate": "system-up-and-down"
+                            "link": "/assets-management/system-onoff",
+                            "translate": "system-onoff"
                         },
                         {
                             "text": "版本发布管理",

@@ -1,3 +1,5 @@
+import * as uuid from 'uuid'
+
 import { PaginationParams, defaultPaginationParams } from './pagination.model'
 
 export class SoftwareAccount {
@@ -21,7 +23,7 @@ export class ApplicationSoftwareAccount extends SoftwareAccount {
         pageSize
     }): ApplicationSoftwareAccount[] {
         return Array.from({ length: pageSize }, (_, i) => ({
-            id: `id ${i + (pageIndex - 1) * pageSize}`,
+            id: uuid.v4(),
             name: `app softwareName ${i + (pageIndex - 1) * pageSize}`,
             type: `app softwareType ${i + (pageIndex - 1) * pageSize}`,
             version: `app softwareVersion ${i + (pageIndex - 1) * pageSize}`,
@@ -40,7 +42,7 @@ export class SystemSoftwareAccount extends SoftwareAccount {
         pageSize
     }): SystemSoftwareAccount[] {
         return Array.from({ length: pageSize }, (_, i) => ({
-            id: `id ${i + (pageIndex - 1) * pageSize}`,
+            id: uuid.v4(),
             name: `system softwareName ${i + (pageIndex - 1) * pageSize}`,
             type: `system softwareType ${i + (pageIndex - 1) * pageSize}`,
             version: `system softwareVersion ${i + (pageIndex - 1) * pageSize}`,
@@ -66,7 +68,7 @@ export class MiddlewareSoftwareAccount {
         pageSize
     }): MiddlewareSoftwareAccount[] {
         return Array.from({ length: pageSize }, (_, i) => ({
-            id: `id ${i + (pageIndex - 1) * pageSize}`,
+            id: uuid.v4(),
             name: `middleware softwareName ${i + (pageIndex - 1) * pageSize}`,
             version: `middleware softwareVersion ${i +
                 (pageIndex - 1) * pageSize}`,

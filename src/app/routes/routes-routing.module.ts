@@ -64,6 +64,11 @@ const routes: Routes = [
                 path: 'assets-management/distribution-treasury',
                 loadChildren:
                     './distribution-treasury/distribution-treasury.module#DistributionTreasuryModule'
+            },
+            {
+                path: 'assets-management/system-onoff',
+                loadChildren:
+                    './system-onoff/system-onoff.module#SystemOnOffModule'
             }
             // {
             //     path: 'assets-management/my-apply',
