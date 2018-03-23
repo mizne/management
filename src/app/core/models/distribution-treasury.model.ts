@@ -1,7 +1,7 @@
 import * as uuid from 'uuid'
 
 export class ResourceInfo {
-    id?: string
+    id: string
     resourceType: string
 
     assetsNumber: string
@@ -86,13 +86,13 @@ export class ResourceInfo {
 }
 
 export interface FetchResourceInfoesCountParams {
-    resourceType?: string
-    softwareType?: string
-    softwareName?: string
+    resourceType: string
+    softwareType: string
+    softwareName: string
 }
 
 export class ResourceUseInfo {
-    id?: string
+    id: string
     resource: ResourceInfo
 
     useState: string
@@ -120,7 +120,7 @@ export class ResourceUseInfo {
 }
 
 export interface FetchResourceUseInfoesCountParams {
-    resourceType?: string
-    softwareType?: string
-    softwareName?: string
+    resourceType: string
+    softwareType: string
+    softwareName: string
 }

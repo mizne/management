@@ -3,7 +3,7 @@ import * as uuid from 'uuid'
 import { PaginationParams, defaultPaginationParams } from './pagination.model'
 
 export class SoftwareAccount {
-    id?: string
+    id: string
     name: string
     type: string
     version: string
@@ -56,7 +56,7 @@ export class SystemSoftwareAccount extends SoftwareAccount {
 }
 
 export class MiddlewareSoftwareAccount {
-    id?: string
+    id: string
     name: string
     version: string
     alias: string

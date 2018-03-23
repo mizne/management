@@ -34,11 +34,11 @@ export const ENSURE_PAGE_PARAMS = '[Resource Assign] Ensure Page Params'
 
 export class FetchResourceUseInfoesAction implements Action {
     readonly type = FETCH_RESOURCE_USE_INFOES
-    constructor(public payload: FetchItemsParams = defaultFetchItemsParams) {}
+    constructor(public payload: FetchItemsParams = defaultFetchItemsParams) { }
 }
 export class FetchResourceUseInfoesSuccessAction implements Action {
     readonly type = FETCH_RESOURCE_USE_INFOES_SUCCESS
-    constructor(public resourceUseInfoes: ResourceUseInfo[]) {}
+    constructor(public resourceUseInfoes: ResourceUseInfo[]) { }
 }
 export class FetchResourceUseInfoesFailureAction implements Action {
     readonly type = FETCH_RESOURCE_USE_INFOES_FAILURE
@@ -46,11 +46,11 @@ export class FetchResourceUseInfoesFailureAction implements Action {
 
 export class FetchResourceUseInfoesCountAction implements Action {
     readonly type = FETCH_RESOURCE_USE_INFOES_COUNT
-    constructor(public params: FetchResourceUseInfoesCountParams = {}) {}
+    constructor(public params: Partial<FetchResourceUseInfoesCountParams> = {}) { }
 }
 export class FetchResourceUseInfoesCountSuccessAction implements Action {
     readonly type = FETCH_RESOURCE_USE_INFOES_COUNT_SUCCESS
-    constructor(public count: number) {}
+    constructor(public count: number) { }
 }
 export class FetchResourceUseInfoesCountFailureAction implements Action {
     readonly type = FETCH_RESOURCE_USE_INFOES_COUNT_FAILURE
@@ -58,7 +58,7 @@ export class FetchResourceUseInfoesCountFailureAction implements Action {
 
 export class EditResourceUseInfoAction implements Action {
     readonly type = EDIT_RESOURCE_USE_INFO
-    constructor(public resourceUseInfo: ResourceUseInfo) {}
+    constructor(public resourceUseInfo: ResourceUseInfo) { }
 }
 export class EditResourceUseInfouccessAction implements Action {
     readonly type = EDIT_RESOURCE_USE_INFO_SUCCESS
@@ -69,7 +69,7 @@ export class EditResourceUseInfoFailureAction implements Action {
 
 export class EnsurePageParamsAction implements Action {
     readonly type = ENSURE_PAGE_PARAMS
-    constructor(public params: PaginationParams) {}
+    constructor(public params: PaginationParams) { }
 }
 
 export type Actions =

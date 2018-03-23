@@ -1,7 +1,7 @@
 import * as uuid from 'uuid'
 
 export class PhysicalServerAccount {
-    id?: string
+    id: string
     name: string
     type: string
     purpose: string
@@ -19,8 +19,8 @@ export class PhysicalServerAccount {
     durationUse: string
     physicalLocation: string
 
-    disabled?: boolean
-    checked?: boolean
+    disabled: boolean
+    checked: boolean
 
     static generateFakeDataItems({
         pageIndex,
@@ -47,13 +47,15 @@ export class PhysicalServerAccount {
             endTimeUse: `endTimeUse ${i + (pageIndex - 1) * pageSize}`,
             durationUse: `durationUse ${i + (pageIndex - 1) * pageSize}`,
             physicalLocation: `physicalLocation ${i +
-                (pageIndex - 1) * pageSize}`
+                (pageIndex - 1) * pageSize}`,
+            checked: false,
+            disabled: false
         }))
     }
 }
 
 export class VirtualServerAccount {
-    id?: string
+    id: string
     name: string
     purpose: string
     workStatus: string
@@ -101,7 +103,7 @@ export class VirtualServerAccount {
 }
 
 export class ClusterServerAccount {
-    id?: string
+    id: string
     name: string
     purpose: string
     workStatus: string

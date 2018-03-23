@@ -20,7 +20,7 @@ import {
 
 @Injectable()
 export class UnifiedApplyService {
-    constructor() {}
+    constructor() { }
     fetchApplyInfo(): Observable<ApplyInfo> {
         return Observable.of(ApplyInfo.generateFakeData()).delay(4e2)
     }
@@ -45,11 +45,11 @@ export class UnifiedApplyService {
         return Observable.of(42).delay(4e2)
     }
 
-    saveUnifiedApply(apply: UnifiedApply): Observable<any> {
+    saveUnifiedApply(apply: Partial<UnifiedApply>): Observable<any> {
         return Observable.of(null).delay(4e2)
     }
 
-    submitUnifiedApply(apply: UnifiedApply): Observable<any> {
+    submitUnifiedApply(apply: Partial<UnifiedApply>): Observable<any> {
         return Observable.of(null).delay(4e2)
     }
 

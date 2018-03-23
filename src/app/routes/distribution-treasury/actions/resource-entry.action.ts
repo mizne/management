@@ -39,11 +39,11 @@ export const ENSURE_PAGE_PARAMS = '[Resource Entry] Ensure Page Params'
 
 export class FetchResourceInfoesAction implements Action {
     readonly type = FETCH_RESOURCE_INFOES
-    constructor(public payload: FetchItemsParams = defaultFetchItemsParams) {}
+    constructor(public payload: FetchItemsParams = defaultFetchItemsParams) { }
 }
 export class FetchResourceInfoesSuccessAction implements Action {
     readonly type = FETCH_RESOURCE_INFOES_SUCCESS
-    constructor(public resourceInfoes: ResourceInfo[]) {}
+    constructor(public resourceInfoes: ResourceInfo[]) { }
 }
 export class FetchResourceInfoesFailureAction implements Action {
     readonly type = FETCH_RESOURCE_INFOES_FAILURE
@@ -51,11 +51,11 @@ export class FetchResourceInfoesFailureAction implements Action {
 
 export class FetchResourceInfoesCountAction implements Action {
     readonly type = FETCH_RESOURCE_INFOES_COUNT
-    constructor(public params: FetchResourceInfoesCountParams = {}) {}
+    constructor(public params: Partial<FetchResourceInfoesCountParams> = {}) { }
 }
 export class FetchResourceInfoesCountSuccessAction implements Action {
     readonly type = FETCH_RESOURCE_INFOES_COUNT_SUCCESS
-    constructor(public count: number) {}
+    constructor(public count: number) { }
 }
 export class FetchResourceInfoesCountFailureAction implements Action {
     readonly type = FETCH_RESOURCE_INFOES_COUNT_FAILURE
@@ -63,7 +63,7 @@ export class FetchResourceInfoesCountFailureAction implements Action {
 
 export class CreateResourceInfoAction implements Action {
     readonly type = CREATE_RESOURCE_INFO
-    constructor(public resourceInfo: ResourceInfo) {}
+    constructor(public resourceInfo: ResourceInfo) { }
 }
 export class CreateResourceInfouccessAction implements Action {
     readonly type = CREATE_RESOURCE_INFO_SUCCESS
@@ -74,7 +74,7 @@ export class CreateResourceInfoFailureAction implements Action {
 
 export class EditResourceInfoAction implements Action {
     readonly type = EDIT_RESOURCE_INFO
-    constructor(public resourceInfo: ResourceInfo) {}
+    constructor(public resourceInfo: ResourceInfo) { }
 }
 export class EditResourceInfouccessAction implements Action {
     readonly type = EDIT_RESOURCE_INFO_SUCCESS
@@ -85,7 +85,7 @@ export class EditResourceInfoFailureAction implements Action {
 
 export class EnsurePageParamsAction implements Action {
     readonly type = ENSURE_PAGE_PARAMS
-    constructor(public params: PaginationParams) {}
+    constructor(public params: PaginationParams) { }
 }
 
 export type Actions =

@@ -12,9 +12,9 @@ import {
 
 @Injectable()
 export class AssetsRecoveryService {
-    constructor() {}
+    constructor() { }
     fetchAssetsRecoveries(
-        params: FetchItemsParams
+        params: Partial<FetchItemsParams>
     ): Observable<AssetsRecovery[]> {
         if (params.condition.searchText) {
             console.log(
@@ -27,7 +27,7 @@ export class AssetsRecoveryService {
     }
 
     fetchAssetsRecoveriesCount(
-        params: FetchAssetsRecoveriesCountParams
+        params: Partial<FetchAssetsRecoveriesCountParams>
     ): Observable<number> {
         console.log(`search assets recovery count with `, params)
         return Observable.of(42).delay(3e2)

@@ -18,7 +18,7 @@ import {
 
 @Injectable()
 export class VersionReleaseService {
-    constructor() {}
+    constructor() { }
     fetchApplyInfo(): Observable<ApplyInfo> {
         return Observable.of(ApplyInfo.generateFakeData()).delay(4e2)
     }
@@ -28,22 +28,22 @@ export class VersionReleaseService {
     }
 
     fetchAddableApplyResources(
-        params: FetchAddableApplyResourceParams
+        params: Partial<FetchAddableApplyResourceParams>
     ): Observable<ApplyResource[]> {
         return Observable.of(ApplyResource.generateFakeDataItems()).delay(4e2)
     }
 
     fetchAddableApplyResourcesCount(
-        params: FetchAddableApplyResourceCountParams
+        params: Partial<FetchAddableApplyResourceCountParams>
     ): Observable<number> {
         return Observable.of(42).delay(4e2)
     }
 
-    saveVersionReleaseApply(apply: VersionReleaseApply): Observable<any> {
+    saveVersionReleaseApply(apply: Partial<VersionReleaseApply>): Observable<any> {
         return Observable.of(null).delay(4e2)
     }
 
-    submitVersionReleaseApply(apply: VersionReleaseApply): Observable<any> {
+    submitVersionReleaseApply(apply: Partial<VersionReleaseApply>): Observable<any> {
         return Observable.of(null).delay(4e2)
     }
 

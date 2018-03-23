@@ -34,11 +34,11 @@ export const ENSURE_PAGE_PARAMS = '[Assets Recovery] Ensure Page Params'
 
 export class FetchAssetsRecoveriesAction implements Action {
     readonly type = FETCH_ASSETS_RECOVERIES
-    constructor(public payload: FetchItemsParams = defaultFetchItemsParams) {}
+    constructor(public payload: Partial<FetchItemsParams> = defaultFetchItemsParams) { }
 }
 export class FetchAssetsRecoveriesSuccessAction implements Action {
     readonly type = FETCH_ASSETS_RECOVERIES_SUCCESS
-    constructor(public assetsRecoveries: AssetsRecovery[]) {}
+    constructor(public assetsRecoveries: AssetsRecovery[]) { }
 }
 export class FetchAssetsRecoveriesFailureAction implements Action {
     readonly type = FETCH_ASSETS_RECOVERIES_FAILURE
@@ -46,11 +46,11 @@ export class FetchAssetsRecoveriesFailureAction implements Action {
 
 export class FetchAssetsRecoveriesCountAction implements Action {
     readonly type = FETCH_ASSETS_RECOVERIES_COUNT
-    constructor(public params: FetchAssetsRecoveriesCountParams = {}) {}
+    constructor(public params: Partial<FetchAssetsRecoveriesCountParams> = {}) { }
 }
 export class FetchAssetsRecoveriesCountSuccessAction implements Action {
     readonly type = FETCH_ASSETS_RECOVERIES_COUNT_SUCCESS
-    constructor(public count: number) {}
+    constructor(public count: number) { }
 }
 export class FetchAssetsRecoveriesCountFailureAction implements Action {
     readonly type = FETCH_ASSETS_RECOVERIES_COUNT_FAILURE
@@ -58,7 +58,7 @@ export class FetchAssetsRecoveriesCountFailureAction implements Action {
 
 export class EnsureRecoveryAction implements Action {
     readonly type = ENSURE_RECOVERY
-    constructor(public assetsRecovery: AssetsRecovery) {}
+    constructor(public assetsRecovery: AssetsRecovery) { }
 }
 export class EnsureRecoverySuccessAction implements Action {
     readonly type = ENSURE_RECOVERY_SUCCESS
@@ -69,7 +69,7 @@ export class EnsureRecoveryFailureAction implements Action {
 
 export class EnsurePageParamsAction implements Action {
     readonly type = ENSURE_PAGE_PARAMS
-    constructor(public params: PaginationParams) {}
+    constructor(public params: PaginationParams) { }
 }
 
 export type Actions =

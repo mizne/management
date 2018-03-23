@@ -18,7 +18,7 @@ import {
 
 @Injectable()
 export class SystemOnOffService {
-    constructor() {}
+    constructor() { }
     fetchApplyInfo(applyType: string): Observable<ApplyInfo> {
         return Observable.of(ApplyInfo.generateFakeData(applyType)).delay(4e2)
     }
@@ -28,22 +28,22 @@ export class SystemOnOffService {
     }
 
     fetchAddableApplyResources(
-        params: FetchAddableApplyResourceParams
+        params: Partial<FetchAddableApplyResourceParams>
     ): Observable<ApplyResource[]> {
         return Observable.of(ApplyResource.generateFakeDataItems()).delay(4e2)
     }
 
     fetchAddableApplyResourcesCount(
-        params: FetchAddableApplyResourceCountParams
+        params: Partial<FetchAddableApplyResourceCountParams>
     ): Observable<number> {
         return Observable.of(42).delay(4e2)
     }
 
-    saveSystemOnOffApply(apply: SystemOnOffApply): Observable<any> {
+    saveSystemOnOffApply(apply: Partial<SystemOnOffApply>): Observable<any> {
         return Observable.of(null).delay(4e2)
     }
 
-    submitSystemOnOffApply(apply: SystemOnOffApply): Observable<any> {
+    submitSystemOnOffApply(apply: Partial<SystemOnOffApply>): Observable<any> {
         return Observable.of(null).delay(4e2)
     }
 

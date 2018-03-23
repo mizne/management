@@ -1,7 +1,7 @@
 import * as uuid from 'uuid'
 
 export class AssetsRecovery {
-    id?: string
+    id: string
     resourceType: string
     computeResourceType: string
 
@@ -54,7 +54,7 @@ export class AssetsRecovery {
         }))
     }
 
-    static generateFakeData(): AssetsRecovery {
+    static generateFakeData(): Partial<AssetsRecovery> {
         return {
             id: uuid.v4(),
             resourceType: `resourceType ${Math.random()
@@ -123,6 +123,6 @@ export class AssetsRecovery {
 }
 
 export interface FetchAssetsRecoveriesCountParams {
-    resourceType?: string
-    computeResourceType?: string
+    resourceType: string
+    computeResourceType: string
 }

@@ -14,7 +14,7 @@ import {
 
 @Injectable()
 export class DistributionTreasuryService {
-    constructor() {}
+    constructor() { }
     fetchResourceInfoes(params: FetchItemsParams): Observable<ResourceInfo[]> {
         if (params.condition.searchText) {
             console.log(
@@ -27,7 +27,7 @@ export class DistributionTreasuryService {
     }
 
     fetchResourceInfoesCount(
-        params: FetchResourceInfoesCountParams
+        params: Partial<FetchResourceInfoesCountParams>
     ): Observable<number> {
         console.log(`search resource info count with `, params)
         return Observable.of(42).delay(3e2)
@@ -55,7 +55,7 @@ export class DistributionTreasuryService {
     }
 
     fetchResourceUseInfoesCount(
-        params: FetchResourceUseInfoesCountParams
+        params: Partial<FetchResourceUseInfoesCountParams>
     ): Observable<number> {
         console.log(`search resource use info count with `, params)
         return Observable.of(42).delay(3e2)

@@ -3,14 +3,14 @@ import { PaginationParams } from './pagination.model'
 import { FormGroup, FormControl } from '@angular/forms'
 
 export class SystemOnOffApply {
-    id?: string
+    id: string
     applyInfo: ApplyInfo
     resources: ApplyResource[]
     approvers: Approver[]
-    createdAt?: string
+    createdAt: string
 
-    disabled?: boolean
-    checked?: boolean
+    disabled: boolean
+    checked: boolean
 
     static generateFakeDataItems(): SystemOnOffApply[] {
         return Array.from({ length: 3 }, (_, i) => ({
@@ -20,13 +20,15 @@ export class SystemOnOffApply {
             ),
             resources: ApplyResource.generateFakeDataItems(),
             approvers: Approver.generateFakeDataItems(),
-            createdAt: `createAt ${i}`
+            createdAt: `createAt ${i}`,
+            disabled: false,
+            checked: false
         }))
     }
 }
 
 export class ApplyInfo {
-    type?: string
+    type: string
     listNumber: string
     systemName: string
     version: string
@@ -95,7 +97,7 @@ export class ApplyResource {
     endTime: string
     remark: string
 
-    checked?: boolean
+    checked: boolean
 
     static generateFakeDataItems(): ApplyResource[] {
         return Array.from({ length: 3 }, (_, i) => ({
@@ -129,7 +131,8 @@ export class ApplyResource {
                 .slice(0, 5)}`,
             remark: `remark ${Math.random()
                 .toString()
-                .slice(0, 5)}`
+                .slice(0, 5)}`,
+            checked: false
         }))
     }
 
@@ -165,30 +168,31 @@ export class ApplyResource {
                 .slice(0, 5)}`,
             remark: `remark ${Math.random()
                 .toString()
-                .slice(0, 5)}`
+                .slice(0, 5)}`,
+            checked: false
         }
     }
 }
 
 export interface FetchAddableApplyResourceParams extends PaginationParams {
-    type?: string
-    name?: string
-    version?: string
+    type: string
+    name: string
+    version: string
 }
-export const defaultFetchAddableApplyResourceParams: FetchAddableApplyResourceParams = {
+export const defaultFetchAddableApplyResourceParams: Partial<FetchAddableApplyResourceParams> = {
     pageIndex: 1,
     pageSize: 10
 }
 
 export interface FetchAddableApplyResourceCountParams {
-    type?: string
-    name?: string
-    version?: string
+    type: string
+    name: string
+    version: string
 }
-export const defaultFetchAddableApplyResourceCountParams: FetchAddableApplyResourceCountParams = {}
+export const defaultFetchAddableApplyResourceCountParams: Partial<FetchAddableApplyResourceCountParams> = {}
 
 export class Approver {
-    id?: string
+    id: string
     name: string
     jobNumber: string
     department: string
@@ -196,6 +200,7 @@ export class Approver {
 
     static generateFakeDataItems(): Approver[] {
         return Array.from({ length: 2 }, (_, i) => ({
+            id: uuid.v4(),
             name: `name ${i} ${Math.random()
                 .toString()
                 .slice(0, 5)}`,
@@ -315,7 +320,10 @@ export class TabOptions {
             id: tab.data.id,
             applyInfo: tab.data.applyInfoForm.value,
             resources: tab.data.addedApplyResources,
-            approvers: tab.data.approvers
+            approvers: tab.data.approvers,
+            createdAt: 'fake createdAt',
+            disabled: false,
+            checked: false
         }
     }
 }

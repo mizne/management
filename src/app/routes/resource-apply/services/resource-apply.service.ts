@@ -18,7 +18,7 @@ import {
 
 @Injectable()
 export class ResourceApplyService {
-    constructor() {}
+    constructor() { }
     fetchApplyInfo(applyType: string): Observable<ApplyInfo> {
         return Observable.of(ApplyInfo.generateFakeData(applyType)).delay(4e2)
     }
@@ -28,22 +28,22 @@ export class ResourceApplyService {
     }
 
     fetchAddableApplyResources(
-        params: FetchAddableApplyResourceParams
+        params: Partial<FetchAddableApplyResourceParams>
     ): Observable<ApplyResource[]> {
         return Observable.of(ApplyResource.generateFakeDataItems()).delay(4e2)
     }
 
     fetchAddableApplyResourcesCount(
-        params: FetchAddableApplyResourceCountParams
+        params: Partial<FetchAddableApplyResourceCountParams>
     ): Observable<number> {
         return Observable.of(42).delay(4e2)
     }
 
-    saveRequirementApply(apply: RequirementApply): Observable<any> {
+    saveRequirementApply(apply: Partial<RequirementApply>): Observable<any> {
         return Observable.of(null).delay(4e2)
     }
 
-    submitRequirementApply(apply: RequirementApply): Observable<any> {
+    submitRequirementApply(apply: Partial<RequirementApply>): Observable<any> {
         return Observable.of(null).delay(4e2)
     }
 

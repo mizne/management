@@ -10,7 +10,7 @@ export const defaultPaginationParams: PaginationParams = {
 
 export interface FetchItemsParams {
     condition: { [key: string]: any }
-    options?: PaginationParams
+    options: PaginationParams
 }
 export const defaultFetchItemsParams: FetchItemsParams = {
     condition: {},

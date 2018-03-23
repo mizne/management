@@ -3,14 +3,14 @@ import { PaginationParams } from './pagination.model'
 import { FormGroup, FormControl } from '@angular/forms'
 
 export class UnifiedApply {
-    id?: string
+    id: string
     applyInfo: ApplyInfo
     resources: ApplyResource[]
     approvers: Approver[]
-    createdAt?: string
+    createdAt: string
 
-    disabled?: boolean
-    checked?: boolean
+    disabled: boolean
+    checked: boolean
 
     static generateFakeDataItems(): UnifiedApply[] {
         return Array.from({ length: 3 }, (_, i) => ({
@@ -18,7 +18,9 @@ export class UnifiedApply {
             applyInfo: ApplyInfo.generateFakeData(),
             resources: ApplyResource.generateFakeDataItems(),
             approvers: Approver.generateFakeDataItems(),
-            createdAt: `createAt ${i}`
+            createdAt: `createAt ${i}`,
+            disabled: false,
+            checked: false
         }))
     }
 }
@@ -32,7 +34,9 @@ export class ApplyInfo {
 
     static generateFakeData(): ApplyInfo {
         return {
-            listNumber: uuid.v4(),
+            listNumber: `fake listNumber ${Math.random()
+                .toString()
+                .slice(0, 5)}`,
             applicantName: `fake applicantName ${Math.random()
                 .toString()
                 .slice(0, 5)}`,
@@ -77,7 +81,9 @@ export class SubPackageInfo {
     applyReason: string
     static generateFakeData(): SubPackageInfo {
         return {
-            subPackageNumber: uuid.v4(),
+            subPackageNumber: `fake subPackageNumber ${Math.random()
+                .toString()
+                .slice(0, 5)}`,
             applicantName: `fake applicantName ${Math.random()
                 .toString()
                 .slice(0, 5)}`,
@@ -108,11 +114,13 @@ export class ApplyResource {
     endTime: string
     remark: string
 
-    checked?: boolean
+    checked: boolean
 
     static generateFakeDataItems(): ApplyResource[] {
         return Array.from({ length: 3 }, (_, i) => ({
-            id: uuid.v4(),
+            id: `id ${Math.random()
+                .toString()
+                .slice(0, 5)}`,
             type: `type ${Math.random()
                 .toString()
                 .slice(0, 5)}`,
@@ -142,7 +150,8 @@ export class ApplyResource {
                 .slice(0, 5)}`,
             remark: `remark ${Math.random()
                 .toString()
-                .slice(0, 5)}`
+                .slice(0, 5)}`,
+            checked: false
         }))
     }
 
@@ -178,7 +187,8 @@ export class ApplyResource {
                 .slice(0, 5)}`,
             remark: `remark ${Math.random()
                 .toString()
-                .slice(0, 5)}`
+                .slice(0, 5)}`,
+            checked: false
         }
     }
 }
@@ -393,7 +403,10 @@ export class TabOptions {
             id: tab.data.id,
             applyInfo: (tab.data as UnifiedTabData).applyInfoForm.value,
             resources: tab.data.addedApplyResources,
-            approvers: (tab.data as UnifiedTabData).approvers
+            approvers: (tab.data as UnifiedTabData).approvers,
+            createdAt: 'fake createdAt',
+            checked: false,
+            disabled: false
         }
     }
 

@@ -32,12 +32,12 @@ export const ENSURE_PAGE_PARAMS =
 export class FetchAddableApplyResourceAction implements Action {
     readonly type = FETCH_ADDABLE_APPLY_RESOURCE
     constructor(
-        public payload: FetchAddableApplyResourceParams = defaultFetchAddableApplyResourceParams
-    ) {}
+        public payload: Partial<FetchAddableApplyResourceParams> = defaultFetchAddableApplyResourceParams
+    ) { }
 }
 export class FetchAddableApplyResourceSuccessAction implements Action {
     readonly type = FETCH_ADDABLE_APPLY_RESOURCE_SUCCESS
-    constructor(public resources: ApplyResource[]) {}
+    constructor(public resources: ApplyResource[]) { }
 }
 export class FetchAddableApplyResourceFailureAction implements Action {
     readonly type = FETCH_ADDABLE_APPLY_RESOURCE_FAILURE
@@ -46,12 +46,12 @@ export class FetchAddableApplyResourceFailureAction implements Action {
 export class FetchAddableApplyResourceCountAction implements Action {
     readonly type = FETCH_ADDABLE_APPLY_RESOURCE_COUNT
     constructor(
-        public payload: FetchAddableApplyResourceCountParams = defaultFetchAddableApplyResourceCountParams
-    ) {}
+        public payload: Partial<FetchAddableApplyResourceCountParams> = defaultFetchAddableApplyResourceCountParams
+    ) { }
 }
 export class FetchAddableApplyResourceCountSuccessAction implements Action {
     readonly type = FETCH_ADDABLE_APPLY_RESOURCE_COUNT_SUCCESS
-    constructor(public count: number) {}
+    constructor(public count: number) { }
 }
 export class FetchAddableApplyResourceCountFailureAction implements Action {
     readonly type = FETCH_ADDABLE_APPLY_RESOURCE_COUNT_FAILURE
@@ -59,7 +59,7 @@ export class FetchAddableApplyResourceCountFailureAction implements Action {
 
 export class EnsurePageParamsAction implements Action {
     readonly type = ENSURE_PAGE_PARAMS
-    constructor(public params: PaginationParams) {}
+    constructor(public params: PaginationParams) { }
 }
 
 export type Actions =
