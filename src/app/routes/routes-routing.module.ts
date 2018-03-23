@@ -74,6 +74,11 @@ const routes: Routes = [
                 path: 'assets-management/version-release',
                 loadChildren:
                     './version-release/version-release.module#VersionReleaseModule'
+            },
+            {
+                path: 'assets-management/assets-recovery',
+                loadChildren:
+                    './assets-recovery/assets-recovery.module#AssetsRecoveryModule'
             }
             // {
             //     path: 'assets-management/my-apply',

@@ -1,0 +1,30 @@
+<nz-card [nzNoHovering]="true" [nzBordered]="false">
+    <ng-template #body>
+        <desc-list size="large" title="基本信息" class="mb-lg">
+            <desc-list-item term="资源类型">{{assetsRecovery.resourceType}}</desc-list-item>
+            <desc-list-item term="计算资源类别">{{assetsRecovery.computeResourceType}}</desc-list-item>
+            <desc-list-item term="服务器名称">{{assetsRecovery.serverName}}</desc-list-item>
+            <desc-list-item term="服务器用途">{{assetsRecovery.serverPurpose}}</desc-list-item>
+            <desc-list-item term="工作状态">{{assetsRecovery.workStatus}}</desc-list-item>
+            <desc-list-item term="管理IP">{{assetsRecovery.managementIP}}</desc-list-item>
+        </desc-list>
+        <nz-divider class="mb-lg"></nz-divider>
+        <desc-list size="large" title="详细信息" class="mb-lg">
+            <desc-list-item term="操作系统">{{assetsRecovery.operationSystem}}</desc-list-item>
+            <desc-list-item term="CPU参数">{{assetsRecovery.cpuCoreCount}}</desc-list-item>
+            <desc-list-item term="内存参数">{{assetsRecovery.memorySize}}</desc-list-item>
+            <desc-list-item term="存储空间">{{assetsRecovery.storageSize}}</desc-list-item>
+        </desc-list>
+        <nz-divider class="mb-lg"></nz-divider>
+        <desc-list size="large" title="使用信息" class="mb-lg">
+            <desc-list-item term="使用对象">{{assetsRecovery.whoUse}}</desc-list-item>
+            <desc-list-item term="起始使用时间">{{assetsRecovery.useStartTime}}</desc-list-item>
+            <desc-list-item term="使用周期">{{assetsRecovery.useDuration}}</desc-list-item>
+            <desc-list-item term="备注">{{assetsRecovery.remark}}</desc-list-item>
+        </desc-list>
+        <nz-divider class="mb-lg"></nz-divider>
+    </ng-template>
+</nz-card>
+<div class="customize-footer text-center">
+    <button nz-button [nzSize]="'large'" (click)="toSave()" [nzType]="'primary'" nzSize="large">我知道了</button>
+</div>

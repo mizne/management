@@ -1,0 +1,96 @@
+<pro-header></pro-header>
+
+<nz-tabset [nzType]="'card'" [(nzSelectedIndex)]="tabIndex" (nzSelectedIndexChange)="tabChange($event)">
+    <nz-tab>
+        <ng-template #nzTabHeading>
+            <i class="anticon anticon-apple"></i>
+            资产回收
+        </ng-template>
+        <nz-card nzTitle="可回收资源信息" [nzBordered]="false">
+            <form nz-form [formGroup]="searchForm" (ngSubmit)="queryForm()" [nzLayout]="'inline'">
+                <div nz-row [nzGutter]="24">
+                    <div nz-col [nzSpan]="6" class="mb-md">
+                        <div nz-form-item class="d-flex">
+                            <div nz-form-label>
+                                <label>资源类型</label>
+                            </div>
+                            <div nz-form-control class="flex-1">
+                                <nz-input formControlName="resourceType" nzPlaceHolder="请输入资源类型" nzSize="large"></nz-input>
+                            </div>
+                        </div>
+                    </div>
+                    <div nz-col [nzSpan]="6" class="mb-md">
+                        <div nz-form-item class="d-flex">
+                            <div nz-form-label>
+                                <label>计算资源类型</label>
+                            </div>
+                            <div nz-form-control class="flex-1">
+                                <nz-input formControlName="computeResourceType" nzPlaceHolder="请输入软件类型" nzSize="large"></nz-input>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div nz-col [nzSpan]="6" class="mb-md">
+                        <button nz-button type="submit" [nzType]="'primary'" [nzSize]="'large'">查询</button>
+                        <button nz-button (click)="resetForm()" [nzSize]="'large'" class="mx-sm">重置</button>
+                    </div>
+                </div>
+            </form>
+
+            <nz-table #nzTable1 [nzAjaxData]="assetsRecoveries$ | async" [nzShowSizeChanger]="true" [nzLoading]="loading$ | async" [nzTotal]="assetsRecoveriesCount$ | async"
+                [(nzPageIndex)]="resourceInfoPageIndex" (nzPageIndexChange)="pageChage()" [(nzPageSize)]="resourceInfoPageSize"
+                (nzPageSizeChange)="pageChage()" [nzShowFooter]="true">
+                <thead nz-thead>
+                    <tr>
+                        <th nz-th>
+                            <span>资源类型</span>
+                        </th>
+                        <th nz-th>
+                            <span>资源名称</span>
+                        </th>
+                        <th nz-th>
+                            <span>版本/型号</span>
+                        </th>
+                        <th nz-th>
+                            <span>数量</span>
+                        </th>
+                        <th nz-th>
+                            <span>使用环境</span>
+                        </th>
+                        <th nz-th>
+                            <span>使用状态</span>
+                        </th>
+                        <th nz-th>
+                            <span>使用对象</span>
+                        </th>
+                        <th nz-th>
+                            <span>操作</span>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody nz-tbody>
+                    <tr nz-tbody-tr *ngFor="let data of nzTable1.data">
+                        <td nz-td>{{data.resourceType}}</td>
+                        <td nz-td>{{data.resourceName}}</td>
+                        <td nz-td>{{data.version + '/' + data.modelNumber}}</td>
+                        <td nz-td>{{data.count}}</td>
+                        <td nz-td>{{data.useEnvironment}}</td>
+                        <td nz-td>{{data.useState}}</td>
+                        <td nz-td>{{data.whoUse}}</td>
+                        <td nz-td>
+                            <span>
+                                <a (click)="toRecovery(data)">回收</a>
+                                <span nz-table-divider></span>
+                                <a (click)="toShow(data)">详情</a>
+                            </span>
+                        </td>
+                    </tr>
+                </tbody>
+                <span nz-table-footer>
+                    <i class="anticon anticon-database"></i>
+                    {{'共 ' + (assetsRecoveriesCount$ | async) + ' 条'}}
+                </span>
+            </nz-table>
+        </nz-card>
+    </nz-tab>
+</nz-tabset>
