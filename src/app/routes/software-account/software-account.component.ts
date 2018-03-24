@@ -7,6 +7,7 @@ import {
     MiddlewareSoftwareAccount
 } from '@core/models/software-account.model'
 import { Observable } from 'rxjs/Observable'
+import { merge } from 'rxjs/observable/merge'
 import { Store } from '@ngrx/store'
 import {
     State,
@@ -56,6 +57,7 @@ import { ToEditMiddlewareSoftwareAccountComponent } from './modals/to-edit-middl
 import { ToShowApplicationSoftwareAccountComponent } from './modals/to-show-application-software-account/to-show-application-software-account.component'
 import { ToShowSystemSoftwareAccountComponent } from './modals/to-show-system-software-account/to-show-system-software-account.component'
 import { ToShowMiddlewareSoftwareAccountComponent } from './modals/to-show-middleware-software-account/to-show-middleware-software-account.component'
+import { mergeMap, takeUntil, filter, tap, withLatestFrom } from 'rxjs/operators';
 
 @Component({
     selector: 'app-software-account',
@@ -231,17 +233,18 @@ export class SoftwareAccountComponent implements OnInit {
     private initCreateApplication(): void {
         this.toCreateSub
             .asObservable()
-            .filter(() => this.isApplicationTab())
-            .mergeMap(() => {
-                return this.modalService.open({
-                    title: '新建应用软件台帐',
-                    content: ToCreateApplicationSoftwareAccountComponent,
-                    footer: false,
-                    width: 800
-                })
-            })
-            .filter(e => typeof e !== 'string')
-            .takeUntil(this.destroyService)
+            .pipe(
+                filter(() => this.isApplicationTab()),
+                mergeMap(() => {
+                    return this.modalService.open({
+                        title: '新建应用软件台帐',
+                        content: ToCreateApplicationSoftwareAccountComponent,
+                        footer: false,
+                        width: 800
+                    })
+                }),
+                filter(e => typeof e !== 'string'),
+                takeUntil(this.destroyService))
             .subscribe(account => {
                 this.store.dispatch(
                     new CreateApplicationSoftwareAccountAction(account)
@@ -252,17 +255,19 @@ export class SoftwareAccountComponent implements OnInit {
     private initCreateSystem(): void {
         this.toCreateSub
             .asObservable()
-            .filter(() => this.isSystemTab())
-            .mergeMap(() => {
-                return this.modalService.open({
-                    title: '新建系统软件台帐',
-                    content: ToCreateSystemSoftwareAccountComponent,
-                    footer: false,
-                    width: 800
-                })
-            })
-            .filter(e => typeof e !== 'string')
-            .takeUntil(this.destroyService)
+            .pipe(
+                filter(() => this.isSystemTab()),
+                mergeMap(() => {
+                    return this.modalService.open({
+                        title: '新建系统软件台帐',
+                        content: ToCreateSystemSoftwareAccountComponent,
+                        footer: false,
+                        width: 800
+                    })
+                }),
+                filter(e => typeof e !== 'string'),
+                takeUntil(this.destroyService)
+            )
             .subscribe(account => {
                 this.store.dispatch(
                     new CreateSystemSoftwareAccountAction(account)
@@ -273,17 +278,19 @@ export class SoftwareAccountComponent implements OnInit {
     private initCreateMiddleware(): void {
         this.toCreateSub
             .asObservable()
-            .filter(() => this.isMiddlewareTab())
-            .mergeMap(() => {
-                return this.modalService.open({
-                    title: '新建中间件台帐',
-                    content: ToCreateMiddlewareSoftwareAccountComponent,
-                    footer: false,
-                    width: 800
-                })
-            })
-            .filter(e => typeof e !== 'string')
-            .takeUntil(this.destroyService)
+            .pipe(
+                filter(() => this.isMiddlewareTab()),
+                mergeMap(() => {
+                    return this.modalService.open({
+                        title: '新建中间件台帐',
+                        content: ToCreateMiddlewareSoftwareAccountComponent,
+                        footer: false,
+                        width: 800
+                    })
+                }),
+                filter(e => typeof e !== 'string'),
+                takeUntil(this.destroyService)
+            )
             .subscribe(account => {
                 this.store.dispatch(
                     new CreateMiddlewareSoftwareAccountAction(account)
@@ -294,8 +301,10 @@ export class SoftwareAccountComponent implements OnInit {
     private initSearchApplicationAndPageChange(): void {
         this.toSearchSub
             .asObservable()
-            .filter(() => this.isApplicationTab())
-            .takeUntil(this.destroyService)
+            .pipe(
+                filter(() => this.isApplicationTab()),
+                takeUntil(this.destroyService)
+            )
             .subscribe(() => {
                 this.store.dispatch(
                     new FetchApplicationSoftwareAccountsCountAction(
@@ -304,24 +313,26 @@ export class SoftwareAccountComponent implements OnInit {
                 )
             })
 
-        Observable.merge(
+        merge(
             this.applicationPageChangeSub.asObservable(),
             this.toSearchSub
-                .filter(() => this.isApplicationTab())
-                .do(() => {
-                    this.applicationPageIndex = 1
-                    this.applicationPageSize = 10
-                })
-                .withLatestFrom(
-                    this.store.select(getApplicationSoftwareAccountsPageParams)
-                )
-                .filter(
-                    ([_, { pageIndex, pageSize }]) =>
-                        pageIndex === this.applicationPageIndex &&
-                        pageSize === this.applicationPageSize
+                .pipe(
+                    filter(() => this.isApplicationTab()),
+                    tap(() => {
+                        this.applicationPageIndex = 1
+                        this.applicationPageSize = 10
+                    }),
+                    withLatestFrom(
+                        this.store.select(getApplicationSoftwareAccountsPageParams)
+                    ),
+                    filter(
+                        ([_, { pageIndex, pageSize }]) =>
+                            pageIndex === this.applicationPageIndex &&
+                            pageSize === this.applicationPageSize
+                    )
                 )
         )
-            .takeUntil(this.destroyService)
+            .pipe(takeUntil(this.destroyService))
             .subscribe(() => {
                 this.store.dispatch(
                     new EnsureApplicationPageParamsAction({
@@ -344,8 +355,10 @@ export class SoftwareAccountComponent implements OnInit {
     private initSearchSystemAndPageChange(): void {
         this.toSearchSub
             .asObservable()
-            .filter(() => this.isSystemTab())
-            .takeUntil(this.destroyService)
+            .pipe(
+                filter(() => this.isSystemTab()),
+                takeUntil(this.destroyService)
+            )
             .subscribe(() => {
                 console.log(
                     `to search system software accounts; search text: ${
@@ -359,24 +372,26 @@ export class SoftwareAccountComponent implements OnInit {
                 )
             })
 
-        Observable.merge(
+        merge(
             this.systemPageChangeSub.asObservable(),
             this.toSearchSub
-                .filter(() => this.isSystemTab())
-                .do(() => {
-                    this.systemPageIndex = 1
-                    this.systemPageSize = 10
-                })
-                .withLatestFrom(
-                    this.store.select(getSystemSoftwareAccountsPageParams)
-                )
-                .filter(
-                    ([_, { pageIndex, pageSize }]) =>
-                        pageIndex === this.systemPageIndex &&
-                        pageSize === this.systemPageSize
+                .pipe(
+                    filter(() => this.isSystemTab()),
+                    tap(() => {
+                        this.systemPageIndex = 1
+                        this.systemPageSize = 10
+                    }),
+                    withLatestFrom(
+                        this.store.select(getSystemSoftwareAccountsPageParams)
+                    ),
+                    filter(
+                        ([_, { pageIndex, pageSize }]) =>
+                            pageIndex === this.systemPageIndex &&
+                            pageSize === this.systemPageSize
+                    )
                 )
         )
-            .takeUntil(this.destroyService)
+            .pipe(takeUntil(this.destroyService))
             .subscribe(() => {
                 this.store.dispatch(
                     new EnsureSystemPageParamsAction({
@@ -399,8 +414,10 @@ export class SoftwareAccountComponent implements OnInit {
     private initSearchMiddlewareAndPageChange(): void {
         this.toSearchSub
             .asObservable()
-            .filter(() => this.isMiddlewareTab())
-            .takeUntil(this.destroyService)
+            .pipe(
+                filter(() => this.isMiddlewareTab()),
+                takeUntil(this.destroyService)
+            )
             .subscribe(() => {
                 console.log(
                     `to search middleware software accounts; search text: ${
@@ -414,24 +431,26 @@ export class SoftwareAccountComponent implements OnInit {
                 )
             })
 
-        Observable.merge(
+        merge(
             this.middlewarePageChangeSub.asObservable(),
             this.toSearchSub
-                .filter(() => this.isMiddlewareTab())
-                .do(() => {
-                    this.middlewarePageIndex = 1
-                    this.middlewarePageSize = 10
-                })
-                .withLatestFrom(
-                    this.store.select(getMiddlewareSoftwareAccountsPageParams)
-                )
-                .filter(
-                    ([_, { pageIndex, pageSize }]) =>
-                        pageIndex === this.middlewarePageIndex &&
-                        pageSize === this.middlewarePageSize
+                .pipe(
+                    filter(() => this.isMiddlewareTab()),
+                    tap(() => {
+                        this.middlewarePageIndex = 1
+                        this.middlewarePageSize = 10
+                    }),
+                    withLatestFrom(
+                        this.store.select(getMiddlewareSoftwareAccountsPageParams)
+                    ),
+                    filter(
+                        ([_, { pageIndex, pageSize }]) =>
+                            pageIndex === this.middlewarePageIndex &&
+                            pageSize === this.middlewarePageSize
+                    )
                 )
         )
-            .takeUntil(this.destroyService)
+            .pipe(takeUntil(this.destroyService))
             .subscribe(() => {
                 this.store.dispatch(
                     new EnsureMiddlewarePageParamsAction({
@@ -454,17 +473,19 @@ export class SoftwareAccountComponent implements OnInit {
     private initEditApplication(): void {
         this.toEditApplicationSub
             .asObservable()
-            .mergeMap(account => {
-                return this.modalService.open({
-                    title: '编辑应用软件台帐',
-                    content: ToEditApplicationSoftwareAccountComponent,
-                    footer: false,
-                    width: 800,
-                    componentParams: { account }
-                })
-            })
-            .filter(e => typeof e !== 'string')
-            .takeUntil(this.destroyService)
+            .pipe(
+                mergeMap(account => {
+                    return this.modalService.open({
+                        title: '编辑应用软件台帐',
+                        content: ToEditApplicationSoftwareAccountComponent,
+                        footer: false,
+                        width: 800,
+                        componentParams: { account }
+                    })
+                }),
+                filter(e => typeof e !== 'string'),
+                takeUntil(this.destroyService)
+            )
             .subscribe(account => {
                 this.store.dispatch(
                     new EditApplicationSoftwareAccountAction(account)
@@ -475,17 +496,19 @@ export class SoftwareAccountComponent implements OnInit {
     private initEditSystem() {
         this.toEditSystemSub
             .asObservable()
-            .mergeMap(account => {
-                return this.modalService.open({
-                    title: '编辑系统软件台帐',
-                    content: ToEditSystemSoftwareAccountComponent,
-                    footer: false,
-                    width: 800,
-                    componentParams: { account }
-                })
-            })
-            .filter(e => typeof e !== 'string')
-            .takeUntil(this.destroyService)
+            .pipe(
+                mergeMap(account => {
+                    return this.modalService.open({
+                        title: '编辑系统软件台帐',
+                        content: ToEditSystemSoftwareAccountComponent,
+                        footer: false,
+                        width: 800,
+                        componentParams: { account }
+                    })
+                }),
+                filter(e => typeof e !== 'string'),
+                takeUntil(this.destroyService)
+            )
             .subscribe(account => {
                 this.store.dispatch(
                     new EditSystemSoftwareAccountAction(account)
@@ -496,17 +519,19 @@ export class SoftwareAccountComponent implements OnInit {
     private initEditMiddleware() {
         this.toEditMiddlewareSub
             .asObservable()
-            .mergeMap(account => {
-                return this.modalService.open({
-                    title: '编辑中间件台帐',
-                    content: ToEditMiddlewareSoftwareAccountComponent,
-                    footer: false,
-                    width: 800,
-                    componentParams: { account }
-                })
-            })
-            .filter(e => typeof e !== 'string')
-            .takeUntil(this.destroyService)
+            .pipe(
+                mergeMap(account => {
+                    return this.modalService.open({
+                        title: '编辑中间件台帐',
+                        content: ToEditMiddlewareSoftwareAccountComponent,
+                        footer: false,
+                        width: 800,
+                        componentParams: { account }
+                    })
+                }),
+                filter(e => typeof e !== 'string'),
+                takeUntil(this.destroyService)
+            )
             .subscribe(account => {
                 this.store.dispatch(
                     new EditMiddlewareSoftwareAccountAction(account)
@@ -517,16 +542,18 @@ export class SoftwareAccountComponent implements OnInit {
     private initShowApplication() {
         this.toShowApplicationSub
             .asObservable()
-            .mergeMap(account => {
-                return this.modalService.open({
-                    title: '查看应用软件台帐',
-                    content: ToShowApplicationSoftwareAccountComponent,
-                    footer: false,
-                    width: 800,
-                    componentParams: { account }
-                })
-            })
-            .takeUntil(this.destroyService)
+            .pipe(
+                mergeMap(account => {
+                    return this.modalService.open({
+                        title: '查看应用软件台帐',
+                        content: ToShowApplicationSoftwareAccountComponent,
+                        footer: false,
+                        width: 800,
+                        componentParams: { account }
+                    })
+                }),
+                takeUntil(this.destroyService)
+            )
             .subscribe(account => {
             })
     }
@@ -534,16 +561,18 @@ export class SoftwareAccountComponent implements OnInit {
     private initShowSystem() {
         this.toShowSystemSub
             .asObservable()
-            .mergeMap(account => {
-                return this.modalService.open({
-                    title: '查看系统软件台帐',
-                    content: ToShowSystemSoftwareAccountComponent,
-                    footer: false,
-                    width: 800,
-                    componentParams: { account }
-                })
-            })
-            .takeUntil(this.destroyService)
+            .pipe(
+                mergeMap(account => {
+                    return this.modalService.open({
+                        title: '查看系统软件台帐',
+                        content: ToShowSystemSoftwareAccountComponent,
+                        footer: false,
+                        width: 800,
+                        componentParams: { account }
+                    })
+                }),
+                takeUntil(this.destroyService)
+            )
             .subscribe(account => {
             })
     }
@@ -551,16 +580,18 @@ export class SoftwareAccountComponent implements OnInit {
     private initShowMiddleware() {
         this.toShowMiddlewareSub
             .asObservable()
-            .mergeMap(account => {
-                return this.modalService.open({
-                    title: '查看中间台帐',
-                    content: ToShowMiddlewareSoftwareAccountComponent,
-                    footer: false,
-                    width: 800,
-                    componentParams: { account }
-                })
-            })
-            .takeUntil(this.destroyService)
+            .pipe(
+                mergeMap(account => {
+                    return this.modalService.open({
+                        title: '查看中间台帐',
+                        content: ToShowMiddlewareSoftwareAccountComponent,
+                        footer: false,
+                        width: 800,
+                        componentParams: { account }
+                    })
+                }),
+                takeUntil(this.destroyService)
+            )
             .subscribe(account => {
             })
     }

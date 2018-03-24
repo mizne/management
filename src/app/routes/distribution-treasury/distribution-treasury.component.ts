@@ -6,6 +6,7 @@ import {
     ResourceUseInfo
 } from '@core/models/distribution-treasury.model'
 import { Observable } from 'rxjs/Observable'
+import { merge } from 'rxjs/observable/merge'
 import { Store } from '@ngrx/store'
 import {
     State,
@@ -38,6 +39,7 @@ import { DestroyService } from '@core/services/destroy.service'
 import { ToCreateResourceInfoComponent } from './modals/to-create-resource-info/to-create-resource-info.component'
 import { ToEditResourceInfoComponent } from './modals/to-edit-resource-info/to-edit-resource-info.component'
 import { ToShowResourceInfoComponent } from './modals/to-show-resource-info/to-show-resource-info.component'
+import { mergeMap, filter, takeUntil, tap, withLatestFrom } from 'rxjs/operators';
 
 @Component({
     selector: 'app-distribution-treasury',
@@ -72,7 +74,7 @@ export class DistributionTreasuryComponent implements OnInit {
     resourceAssignPageChangeSub: Subject<void> = new Subject<void>()
     selectResourceUseInfoSub: Subject<ResourceUseInfo> = new Subject<
         ResourceUseInfo
-    >()
+        >()
     toEditResourceUseInfoSub: Subject<void> = new Subject<void>()
     resourceUseInfoPageChangeSub: Subject<void> = new Subject<void>()
     resourceUseInfoResetSub: Subject<void> = new Subject<void>()
@@ -83,7 +85,7 @@ export class DistributionTreasuryComponent implements OnInit {
         private store: Store<State>,
         private destroyService: DestroyService,
         private fb: FormBuilder
-    ) {}
+    ) { }
 
     ngOnInit() {
         this.buildForm()
@@ -92,7 +94,7 @@ export class DistributionTreasuryComponent implements OnInit {
         this.initSubscriber()
     }
 
-    tabChange(tabIndex: number) {}
+    tabChange(tabIndex: number) { }
 
     toCreateResourceInfo() {
         this.toCreateResourceInfoSub.next()
@@ -207,16 +209,18 @@ export class DistributionTreasuryComponent implements OnInit {
     private initCreateResourceInfo() {
         this.toCreateResourceInfoSub
             .asObservable()
-            .mergeMap(() => {
-                return this.modalService.open({
-                    title: '新增资源信息',
-                    content: ToCreateResourceInfoComponent,
-                    footer: false,
-                    width: 800
-                })
-            })
-            .filter(e => typeof e !== 'string')
-            .takeUntil(this.destroyService)
+            .pipe(
+                mergeMap(() => {
+                    return this.modalService.open({
+                        title: '新增资源信息',
+                        content: ToCreateResourceInfoComponent,
+                        footer: false,
+                        width: 800
+                    })
+                }),
+                filter(e => typeof e !== 'string'),
+                takeUntil(this.destroyService)
+            )
             .subscribe(resourceInfo => {
                 this.store.dispatch(new CreateResourceInfoAction(resourceInfo))
             })
@@ -225,17 +229,19 @@ export class DistributionTreasuryComponent implements OnInit {
     private initEditResourceInfo() {
         this.toEditResourceInfoSub
             .asObservable()
-            .mergeMap(resourceInfo => {
-                return this.modalService.open({
-                    title: '编辑资源信息',
-                    content: ToEditResourceInfoComponent,
-                    footer: false,
-                    componentParams: { resourceInfo },
-                    width: 800
-                })
-            })
-            .filter(e => typeof e !== 'string')
-            .takeUntil(this.destroyService)
+            .pipe(
+                mergeMap(resourceInfo => {
+                    return this.modalService.open({
+                        title: '编辑资源信息',
+                        content: ToEditResourceInfoComponent,
+                        footer: false,
+                        componentParams: { resourceInfo },
+                        width: 800
+                    })
+                }),
+                filter(e => typeof e !== 'string'),
+                takeUntil(this.destroyService)
+            )
             .subscribe(resourceInfo => {
                 this.store.dispatch(new EditResourceInfoAction(resourceInfo))
             })
@@ -244,17 +250,19 @@ export class DistributionTreasuryComponent implements OnInit {
     private initShowResourceInfo() {
         this.toShowResourceInfoSub
             .asObservable()
-            .mergeMap(resourceInfo => {
-                return this.modalService.open({
-                    title: '查看资源信息',
-                    content: ToShowResourceInfoComponent,
-                    footer: false,
-                    componentParams: { resourceInfo },
-                    width: 800
-                })
-            })
-            .filter(e => typeof e !== 'string')
-            .takeUntil(this.destroyService)
+            .pipe(
+                mergeMap(resourceInfo => {
+                    return this.modalService.open({
+                        title: '查看资源信息',
+                        content: ToShowResourceInfoComponent,
+                        footer: false,
+                        componentParams: { resourceInfo },
+                        width: 800
+                    })
+                }),
+                filter(e => typeof e !== 'string'),
+                takeUntil(this.destroyService)
+            )
             .subscribe(resourceInfo => {
                 console.log(`show resource info success`)
             })
@@ -263,7 +271,7 @@ export class DistributionTreasuryComponent implements OnInit {
     private initSearchResourceInfoAndPageChange(): void {
         this.resourceInfoResetSub
             .asObservable()
-            .takeUntil(this.destroyService)
+            .pipe(takeUntil(this.destroyService))
             .subscribe(() => {
                 this.store.dispatch(
                     new FetchResourceInfoesCountAction(
@@ -272,21 +280,22 @@ export class DistributionTreasuryComponent implements OnInit {
                 )
             })
 
-        Observable.merge(
+        merge(
             this.resourceEntryPageChangeSub.asObservable(),
             this.resourceInfoResetSub
-                .do(() => {
-                    this.resourceUseInfoPageIndex = 1
-                    this.resourceInfoPageSize = 10
-                })
-                .withLatestFrom(this.store.select(getResourceInfoPageParams))
-                .filter(
-                    ([_, { pageIndex, pageSize }]) =>
+                .asObservable()
+                .pipe(
+                    tap(() => {
+                        this.resourceUseInfoPageIndex = 1
+                        this.resourceInfoPageSize = 10
+                    }),
+                    withLatestFrom(this.store.select(getResourceInfoPageParams)),
+                    filter(([_, { pageIndex, pageSize }]) =>
                         pageIndex === this.resourceUseInfoPageIndex &&
-                        pageSize === this.resourceInfoPageSize
+                        pageSize === this.resourceInfoPageSize)
                 )
         )
-            .takeUntil(this.destroyService)
+            .pipe(takeUntil(this.destroyService))
             .subscribe(() => {
                 this.store.dispatch(
                     new EnsureResourceInfoPageParamsAction({
@@ -309,7 +318,7 @@ export class DistributionTreasuryComponent implements OnInit {
     private initPatchResourceUseInfoToEdit() {
         this.selectResourceUseInfoSub
             .asObservable()
-            .takeUntil(this.destroyService)
+            .pipe(takeUntil(this.destroyService))
             .subscribe(resourceUseInfo => {
                 this.resourceUseInfoEditForm.patchValue({
                     softwareType: resourceUseInfo.resource.softwareType,
@@ -327,7 +336,7 @@ export class DistributionTreasuryComponent implements OnInit {
     private initEditResourceUseInfo() {
         this.toEditResourceUseInfoSub
             .asObservable()
-            .takeUntil(this.destroyService)
+            .pipe(takeUntil(this.destroyService))
             .subscribe(() => {
                 console.log(
                     `to edit resource use info: `,
@@ -344,7 +353,7 @@ export class DistributionTreasuryComponent implements OnInit {
     private initSearchResourceUseInfoAndPageChange(): void {
         this.resourceUseInfoResetSub
             .asObservable()
-            .takeUntil(this.destroyService)
+            .pipe(takeUntil(this.destroyService))
             .subscribe(() => {
                 this.store.dispatch(
                     new FetchResourceUseInfoesCountAction(
@@ -353,21 +362,23 @@ export class DistributionTreasuryComponent implements OnInit {
                 )
             })
 
-        Observable.merge(
+        merge(
             this.resourceAssignPageChangeSub.asObservable(),
             this.resourceUseInfoResetSub
-                .do(() => {
-                    this.resourceUseInfoPageIndex = 1
-                    this.resourceUseInfoPageSize = 10
-                })
-                .withLatestFrom(this.store.select(getResourceUseInfoPageParams))
-                .filter(
-                    ([_, { pageIndex, pageSize }]) =>
-                        pageIndex === this.resourceUseInfoPageIndex &&
-                        pageSize === this.resourceUseInfoPageSize
+                .pipe(
+                    tap(() => {
+                        this.resourceUseInfoPageIndex = 1
+                        this.resourceUseInfoPageSize = 10
+                    }),
+                    withLatestFrom(this.store.select(getResourceUseInfoPageParams)),
+                    filter(
+                        ([_, { pageIndex, pageSize }]) =>
+                            pageIndex === this.resourceUseInfoPageIndex &&
+                            pageSize === this.resourceUseInfoPageSize
+                    )
                 )
         )
-            .takeUntil(this.destroyService)
+            .pipe(takeUntil(this.destroyService))
             .subscribe(() => {
                 this.store.dispatch(
                     new EnsureResourceUseInfoPageParamsAction({

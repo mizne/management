@@ -60,6 +60,7 @@ import {
     CloseExtraTabAction,
     ResetNeedManualSetTabIndexAction
 } from './actions/extra-tabs.action'
+import { takeUntil, filter, mergeMap, withLatestFrom, first } from 'rxjs/operators';
 
 @Component({
     selector: 'app-version-release',
@@ -80,10 +81,10 @@ export class VersionReleaseComponent implements OnInit {
     toSaveSub: Subject<VersionReleaseApply> = new Subject<VersionReleaseApply>()
     toSubmitSub: Subject<VersionReleaseApply> = new Subject<
         VersionReleaseApply
-    >()
+        >()
     toResetSub: Subject<VersionReleaseApply> = new Subject<
         VersionReleaseApply
-    >()
+        >()
 
     fetchApplyInfoLoading$: Observable<boolean>
     applyInfo$: Observable<ApplyInfo>
@@ -103,16 +104,16 @@ export class VersionReleaseComponent implements OnInit {
     savedApplies$: Observable<VersionReleaseApply[]>
     toEditSavedApplySub: Subject<VersionReleaseApply> = new Subject<
         VersionReleaseApply
-    >()
+        >()
     toDetailSavedApplySub: Subject<VersionReleaseApply> = new Subject<
         VersionReleaseApply
-    >()
+        >()
     toSubmitSavedApplySub: Subject<VersionReleaseApply> = new Subject<
         VersionReleaseApply
-    >()
+        >()
     toDeleteSavedApplySub: Subject<VersionReleaseApply> = new Subject<
         VersionReleaseApply
-    >()
+        >()
 
     // 额外的tabs
     extraTabs$: Observable<TabOptions[]>
@@ -165,7 +166,7 @@ export class VersionReleaseComponent implements OnInit {
         private store: Store<State>,
         private destroyService: DestroyService,
         private fb: FormBuilder
-    ) {}
+    ) { }
 
     ngOnInit() {
         this.buildForm()
@@ -339,7 +340,7 @@ export class VersionReleaseComponent implements OnInit {
     private initPatchApplyInfo() {
         this.store
             .select(getApplyInfo)
-            .takeUntil(this.destroyService)
+            .pipe(takeUntil(this.destroyService))
             .subscribe(applyInfo => {
                 if (applyInfo) {
                     this.applyForm.patchValue(applyInfo, { emitEvent: false })
@@ -352,7 +353,7 @@ export class VersionReleaseComponent implements OnInit {
     private initSaveRequirementApply() {
         this.toSaveSub
             .asObservable()
-            .takeUntil(this.destroyService)
+            .pipe(takeUntil(this.destroyService))
             .subscribe(() => {
                 this.store.dispatch(new SaveVersionReleaseApplyAction())
             })
@@ -361,7 +362,7 @@ export class VersionReleaseComponent implements OnInit {
     private initSubmitRequirementApply() {
         this.toSubmitSub
             .asObservable()
-            .takeUntil(this.destroyService)
+            .pipe(takeUntil(this.destroyService))
             .subscribe(() => {
                 this.store.dispatch(new SubmitVersionReleaseApplyAction())
             })
@@ -370,7 +371,7 @@ export class VersionReleaseComponent implements OnInit {
     private initResetRequirementApply() {
         this.toResetSub
             .asObservable()
-            .takeUntil(this.destroyService)
+            .pipe(takeUntil(this.destroyService))
             .subscribe(() => {
                 this.store.dispatch(new ResetVersionReleaseApplyAction())
             })
@@ -379,17 +380,19 @@ export class VersionReleaseComponent implements OnInit {
     private initCreateApplyResource() {
         this.toCreateResourceSub
             .asObservable()
-            .filter(() => this.tabIndex < 2)
-            .mergeMap(() => {
-                return this.modalService.open({
-                    title: '新建资源信息',
-                    content: ToCreateApplyResourceComponent,
-                    footer: false,
-                    width: 800
-                })
-            })
-            .filter(e => typeof e !== 'string')
-            .takeUntil(this.destroyService)
+            .pipe(
+                filter(() => this.tabIndex < 2),
+                mergeMap(() => {
+                    return this.modalService.open({
+                        title: '新建资源信息',
+                        content: ToCreateApplyResourceComponent,
+                        footer: false,
+                        width: 800
+                    })
+                }),
+                filter(e => typeof e !== 'string'),
+                takeUntil(this.destroyService)
+            )
             .subscribe(resource => {
                 this.store.dispatch(new CreateApplyResourceAction(resource))
             })
@@ -398,17 +401,19 @@ export class VersionReleaseComponent implements OnInit {
     private initAddApplyResources() {
         this.toAddResourcesSub
             .asObservable()
-            .filter(() => this.tabIndex < 2)
-            .mergeMap(() => {
-                return this.modalService.open({
-                    title: '添加资源信息',
-                    content: ToAddApplyResourceComponent,
-                    footer: false,
-                    width: 1000
-                })
-            })
-            .filter(e => typeof e !== 'string')
-            .takeUntil(this.destroyService)
+            .pipe(
+                filter(() => this.tabIndex < 2),
+                mergeMap(() => {
+                    return this.modalService.open({
+                        title: '添加资源信息',
+                        content: ToAddApplyResourceComponent,
+                        footer: false,
+                        width: 1000
+                    })
+                }),
+                filter(e => typeof e !== 'string'),
+                takeUntil(this.destroyService)
+            )
             .subscribe(resources => {
                 this.store.dispatch(new AddApplyResourcesAction(resources))
             })
@@ -417,35 +422,39 @@ export class VersionReleaseComponent implements OnInit {
     private initShowApplyResource() {
         this.toShowResourceSub
             .asObservable()
-            .filter(() => this.tabIndex < 2)
-            .mergeMap(resource => {
-                return this.modalService.open({
-                    title: `${resource.id ? '添加' : '新增'}的资源信息`,
-                    content: ToShowApplyResourceComponent,
-                    footer: false,
-                    width: 800,
-                    componentParams: { resource }
-                })
-            })
-            .takeUntil(this.destroyService)
-            .subscribe(() => {})
+            .pipe(
+                filter(() => this.tabIndex < 2),
+                mergeMap(resource => {
+                    return this.modalService.open({
+                        title: `${resource.id ? '添加' : '新增'}的资源信息`,
+                        content: ToShowApplyResourceComponent,
+                        footer: false,
+                        width: 800,
+                        componentParams: { resource }
+                    })
+                }),
+                takeUntil(this.destroyService)
+            )
+            .subscribe(() => { })
     }
 
     private initEditTempApplyResource() {
         this.toEditTempResourceSub
             .asObservable()
-            .filter(() => this.tabIndex < 2)
-            .mergeMap(resource => {
-                return this.modalService.open({
-                    title: '新增的资源信息',
-                    content: ToEditApplyResourceComponent,
-                    footer: false,
-                    width: 1000,
-                    componentParams: { resource }
-                })
-            })
-            .filter(e => typeof e !== 'string')
-            .takeUntil(this.destroyService)
+            .pipe(
+                filter(() => this.tabIndex < 2),
+                mergeMap(resource => {
+                    return this.modalService.open({
+                        title: '新增的资源信息',
+                        content: ToEditApplyResourceComponent,
+                        footer: false,
+                        width: 1000,
+                        componentParams: { resource }
+                    })
+                }),
+                filter(e => typeof e !== 'string'),
+                takeUntil(this.destroyService)
+            )
             .subscribe(resource => {
                 this.store.dispatch(new EditTempApplyResourceAction(resource))
             })
@@ -454,8 +463,10 @@ export class VersionReleaseComponent implements OnInit {
     private initDeleteApplyResource() {
         this.toDeleteResourceSub
             .asObservable()
-            .filter(() => this.tabIndex < 2)
-            .takeUntil(this.destroyService)
+            .pipe(
+                filter(() => this.tabIndex < 2),
+                takeUntil(this.destroyService)
+            )
             .subscribe(index => {
                 this.modalService.confirm({
                     title: '删除资源信息',
@@ -472,9 +483,11 @@ export class VersionReleaseComponent implements OnInit {
     private initFetchSavedApplies() {
         this.tabChangeSub
             .asObservable()
-            .takeUntil(this.destroyService)
-            .filter(tabIndex => tabIndex === 1)
-            .first()
+            .pipe(
+                filter(tabIndex => tabIndex === 1),
+                first(),
+                takeUntil(this.destroyService)
+            )
             .subscribe(tabIndex => {
                 this.store.dispatch(new FetchSavedAppliesAction())
             })
@@ -483,7 +496,7 @@ export class VersionReleaseComponent implements OnInit {
     private initToShowSavedApply() {
         this.toDetailSavedApplySub
             .asObservable()
-            .takeUntil(this.destroyService)
+            .pipe(takeUntil(this.destroyService))
             .subscribe(apply => {
                 this.store.dispatch(new ToDetailSavedApplyAction(apply))
             })
@@ -492,7 +505,7 @@ export class VersionReleaseComponent implements OnInit {
     private initToEditSavedApply() {
         this.toEditSavedApplySub
             .asObservable()
-            .takeUntil(this.destroyService)
+            .pipe(takeUntil(this.destroyService))
             .subscribe(apply => {
                 this.store.dispatch(new ToEditSavedApplyAction(apply))
             })
@@ -501,7 +514,7 @@ export class VersionReleaseComponent implements OnInit {
     private initToSubmitSavedApply() {
         this.toSubmitSavedApplySub
             .asObservable()
-            .takeUntil(this.destroyService)
+            .pipe(takeUntil(this.destroyService))
             .subscribe(apply => {
                 this.modalService.confirm({
                     title: '提交申请',
@@ -516,7 +529,7 @@ export class VersionReleaseComponent implements OnInit {
     private initToDeleteSavedApply() {
         this.toDeleteSavedApplySub
             .asObservable()
-            .takeUntil(this.destroyService)
+            .pipe(takeUntil(this.destroyService))
             .subscribe(apply => {
                 this.modalService.confirm({
                     title: '删除申请',
@@ -531,7 +544,7 @@ export class VersionReleaseComponent implements OnInit {
     private initCloseExtraTab() {
         this.toCloseExtraTabSub
             .asObservable()
-            .takeUntil(this.destroyService)
+            .pipe(takeUntil(this.destroyService))
             .subscribe(id => {
                 this.store.dispatch(new CloseExtraTabAction(id))
             })
@@ -540,9 +553,11 @@ export class VersionReleaseComponent implements OnInit {
     private initNeedManualResetTabIndex() {
         this.store
             .select(getNeedManualSetTabIndex)
-            .filter(e => e)
-            .withLatestFrom(this.store.select(getTabIndexToNeedManualSet))
-            .takeUntil(this.destroyService)
+            .pipe(
+                filter(e => e),
+                withLatestFrom(this.store.select(getTabIndexToNeedManualSet)),
+                takeUntil(this.destroyService)
+            )
             .subscribe(([_, tabIndex]) => {
                 this.tabIndex = tabIndex + 2
                 this.store.dispatch(new ResetNeedManualSetTabIndexAction())
@@ -552,7 +567,7 @@ export class VersionReleaseComponent implements OnInit {
     private initCancelEdit() {
         this.cancelEditSub
             .asObservable()
-            .takeUntil(this.destroyService)
+            .pipe(takeUntil(this.destroyService))
             .subscribe(() => {
                 this.store.dispatch(
                     new fromExtraTabs.CancelEditVersionReleaseApplyAction(
@@ -565,7 +580,7 @@ export class VersionReleaseComponent implements OnInit {
     private initEnsureEdit() {
         this.ensureEditSub
             .asObservable()
-            .takeUntil(this.destroyService)
+            .pipe(takeUntil(this.destroyService))
             .subscribe(() => {
                 this.store.dispatch(
                     new fromExtraTabs.EnsureEditVersionReleaseApplyAction(
@@ -578,18 +593,20 @@ export class VersionReleaseComponent implements OnInit {
     private initCreateApplyResourceForExtra() {
         this.toCreateResourceSub
             .asObservable()
-            .filter(() => this.tabIndex >= 2)
-            .mergeMap(() => {
-                return this.modalService.open({
-                    title: '新建资源信息',
-                    content: ToCreateApplyResourceComponent,
-                    footer: false,
-                    width: 800
-                })
-            })
-            .filter(e => typeof e !== 'string')
+            .pipe(
+                filter(() => this.tabIndex >= 2),
+                mergeMap(() => {
+                    return this.modalService.open({
+                        title: '新建资源信息',
+                        content: ToCreateApplyResourceComponent,
+                        footer: false,
+                        width: 800
+                    })
+                }),
+                filter(e => typeof e !== 'string'),
 
-            .takeUntil(this.destroyService)
+                takeUntil(this.destroyService)
+            )
             .subscribe(resource => {
                 this.store.dispatch(
                     new fromExtraTabs.CreateApplyResourceAction({
@@ -603,17 +620,19 @@ export class VersionReleaseComponent implements OnInit {
     private initAddApplyResourcesForExtra() {
         this.toAddResourcesSub
             .asObservable()
-            .filter(() => this.tabIndex >= 2)
-            .mergeMap(() => {
-                return this.modalService.open({
-                    title: '添加资源信息',
-                    content: ToAddApplyResourceComponent,
-                    footer: false,
-                    width: 1000
-                })
-            })
-            .filter(e => typeof e !== 'string')
-            .takeUntil(this.destroyService)
+            .pipe(
+                filter(() => this.tabIndex >= 2),
+                mergeMap(() => {
+                    return this.modalService.open({
+                        title: '添加资源信息',
+                        content: ToAddApplyResourceComponent,
+                        footer: false,
+                        width: 1000
+                    })
+                }),
+                filter(e => typeof e !== 'string'),
+                takeUntil(this.destroyService)
+            )
             .subscribe(resources => {
                 this.store.dispatch(
                     new fromExtraTabs.AddApplyResourcesAction({
@@ -627,18 +646,20 @@ export class VersionReleaseComponent implements OnInit {
     private initEditTempApplyResourceForExtra() {
         this.toEditTempResourceSub
             .asObservable()
-            .filter(() => this.tabIndex >= 2)
-            .mergeMap(resource => {
-                return this.modalService.open({
-                    title: '新增的资源信息',
-                    content: ToEditApplyResourceComponent,
-                    footer: false,
-                    width: 1000,
-                    componentParams: { resource }
-                })
-            })
-            .filter(e => typeof e !== 'string')
-            .takeUntil(this.destroyService)
+            .pipe(
+                filter(() => this.tabIndex >= 2),
+                mergeMap(resource => {
+                    return this.modalService.open({
+                        title: '新增的资源信息',
+                        content: ToEditApplyResourceComponent,
+                        footer: false,
+                        width: 1000,
+                        componentParams: { resource }
+                    })
+                }),
+                filter(e => typeof e !== 'string'),
+                takeUntil(this.destroyService)
+            )
             .subscribe(resource => {
                 this.store.dispatch(
                     new fromExtraTabs.EditTempApplyResourceAction({
@@ -652,25 +673,29 @@ export class VersionReleaseComponent implements OnInit {
     private initShowApplyResourceForExtra() {
         this.toShowResourceSub
             .asObservable()
-            .filter(() => this.tabIndex >= 2)
-            .mergeMap(resource => {
-                return this.modalService.open({
-                    title: `${resource.id ? '添加' : '新增'}的资源信息`,
-                    content: ToShowApplyResourceComponent,
-                    footer: false,
-                    width: 800,
-                    componentParams: { resource }
-                })
-            })
-            .takeUntil(this.destroyService)
-            .subscribe(() => {})
+            .pipe(
+                filter(() => this.tabIndex >= 2),
+                mergeMap(resource => {
+                    return this.modalService.open({
+                        title: `${resource.id ? '添加' : '新增'}的资源信息`,
+                        content: ToShowApplyResourceComponent,
+                        footer: false,
+                        width: 800,
+                        componentParams: { resource }
+                    })
+                }),
+                takeUntil(this.destroyService)
+            )
+            .subscribe(() => { })
     }
 
     private initDeleteApplyResourceForExtra() {
         this.toDeleteResourceSub
             .asObservable()
-            .filter(() => this.tabIndex >= 2)
-            .takeUntil(this.destroyService)
+            .pipe(
+                filter(() => this.tabIndex >= 2),
+                takeUntil(this.destroyService)
+            )
             .subscribe(index => {
                 this.modalService.confirm({
                     title: '删除资源信息',
@@ -684,7 +709,7 @@ export class VersionReleaseComponent implements OnInit {
                         )
                         console.log(
                             `delete apply resource; tab index: ${
-                                this.tabIndex
+                            this.tabIndex
                             }; resource index: ${index}`
                         )
                     }

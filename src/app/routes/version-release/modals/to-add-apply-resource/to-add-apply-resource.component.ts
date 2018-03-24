@@ -3,6 +3,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms'
 import { NzModalSubject, NzMessageService } from 'ng-zorro-antd'
 import { Subject } from 'rxjs/Subject'
 import { Observable } from 'rxjs/Observable'
+import { merge } from 'rxjs/observable/merge'
 
 import { DestroyService } from '@core/services/destroy.service'
 import {
@@ -23,6 +24,7 @@ import {
     FetchAddableApplyResourceCountAction,
     EnsurePageParamsAction
 } from '../../actions/to-add-apply-resource.action'
+import { withLatestFrom, takeUntil, tap, filter, map } from 'rxjs/operators';
 
 interface CheckRow {
     id: string
@@ -58,7 +60,7 @@ export class ToAddApplyResourceComponent implements OnInit {
         private destroyService: DestroyService,
         private messageService: NzMessageService,
         private store: Store<State>
-    ) {}
+    ) { }
 
     ngOnInit() {
         this.buildForm()
@@ -128,8 +130,10 @@ export class ToAddApplyResourceComponent implements OnInit {
     private initCheckboxStatus() {
         this.checkAllStatusSub
             .asObservable()
-            .withLatestFrom(this.addableResources$)
-            .takeUntil(this.destroyService)
+            .pipe(
+                withLatestFrom(this.addableResources$),
+                takeUntil(this.destroyService)
+            )
             .subscribe(([checkAll, invitations]) => {
                 invitations.forEach(e => {
                     e.checked = checkAll
@@ -141,8 +145,10 @@ export class ToAddApplyResourceComponent implements OnInit {
 
         this.refreshStatusSub
             .asObservable()
-            .withLatestFrom(this.addableResources$)
-            .takeUntil(this.destroyService)
+            .pipe(
+                withLatestFrom(this.addableResources$),
+                takeUntil(this.destroyService)
+            )
             .subscribe(([{ id, checked }, terminals]) => {
                 terminals.forEach(e => {
                     if (e.id === id) {
@@ -160,7 +166,7 @@ export class ToAddApplyResourceComponent implements OnInit {
     private initResetAndPageChange() {
         this.resetSub
             .asObservable()
-            .takeUntil(this.destroyService)
+            .pipe(takeUntil(this.destroyService))
             .subscribe(() => {
                 this.store.dispatch(
                     new FetchAddableApplyResourceCountAction({
@@ -169,44 +175,51 @@ export class ToAddApplyResourceComponent implements OnInit {
                 )
             })
 
-        Observable.merge(
+        merge(
             this.pageChangeSub.asObservable(),
             this.resetSub
-                .do(() => {
-                    this.pageIndex = 1
-                    this.pageSize = 10
-                })
-                .withLatestFrom(
-                    this.store.select(getAddableApplyResourcesPageParams)
+                .pipe(
+                    tap(() => {
+                        this.pageIndex = 1
+                        this.pageSize = 10
+                    }),
+                    withLatestFrom(
+                        this.store.select(getAddableApplyResourcesPageParams)
+                    ),
+                    filter(
+                        ([_, { pageIndex, pageSize }]) =>
+                            pageIndex === this.pageIndex &&
+                            pageSize === this.pageSize
+                    )
                 )
-                .filter(
-                    ([_, { pageIndex, pageSize }]) =>
-                        pageIndex === this.pageIndex &&
-                        pageSize === this.pageSize
+
+        )
+            .pipe(takeUntil(this.destroyService))
+            .subscribe(() => {
+                this.store.dispatch(
+                    new EnsurePageParamsAction({
+                        pageIndex: this.pageIndex,
+                        pageSize: this.pageSize
+                    })
                 )
-        ).subscribe(() => {
-            this.store.dispatch(
-                new EnsurePageParamsAction({
-                    pageIndex: this.pageIndex,
-                    pageSize: this.pageSize
-                })
-            )
-            this.store.dispatch(
-                new FetchAddableApplyResourceAction({
-                    ...this.convertFormValue(),
-                    pageIndex: this.pageIndex,
-                    pageSize: this.pageSize
-                })
-            )
-        })
+                this.store.dispatch(
+                    new FetchAddableApplyResourceAction({
+                        ...this.convertFormValue(),
+                        pageIndex: this.pageIndex,
+                        pageSize: this.pageSize
+                    })
+                )
+            })
     }
 
     private initEnsureAddResources() {
         this.ensureSaveSub
             .asObservable()
-            .withLatestFrom(this.addableResources$)
-            .map(([_, resources]) => resources.filter(e => e.checked))
-            .takeUntil(this.destroyService)
+            .pipe(
+                withLatestFrom(this.addableResources$),
+                map(([_, resources]) => resources.filter(e => e.checked)),
+                takeUntil(this.destroyService)
+            )
             .subscribe(selectedResources => {
                 if (selectedResources.length === 0) {
                     this.messageService.info(`还没有选择资源信息呢`)

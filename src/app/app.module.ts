@@ -89,8 +89,9 @@ export function StartupServiceFactory(
         environment.production
             ? []
             : StoreDevtoolsModule.instrument({
-                  maxAge: 42
-              }),
+                maxAge: 42,
+                logOnly: true
+            }),
         AngularWebStoreModule.forRoot()
     ],
     providers: [
@@ -115,4 +116,4 @@ export function StartupServiceFactory(
     ],
     bootstrap: [AppComponent]
 })
-export class AppModule {}
+export class AppModule { }

@@ -1,6 +1,8 @@
 import { HttpClient, HttpParams } from '@angular/common/http'
 import { Injectable } from '@angular/core'
 import { Observable } from 'rxjs/Observable'
+import { of } from 'rxjs/observable/of'
+import { delay } from 'rxjs/operators'
 import {
     PhysicalServerAccount,
     VirtualServerAccount,
@@ -20,26 +22,26 @@ export class ServerAccountService {
         if (params.condition.searchText) {
             console.log(`search physical with ${params.condition.searchText}`)
         }
-        return Observable.of(
+        return of(
             PhysicalServerAccount.generateFakeDataItems(params.options)
-        ).delay(4e2)
+        ).pipe(delay(4e2))
     }
 
     fetchPhysicalServerAccountsCount(searchText: string): Observable<number> {
         if (searchText) {
             console.log(`search physical count with ${searchText}`)
         }
-        return Observable.of(42).delay(3e2)
+        return of(42).pipe(delay(3e2))
     }
 
     createPhysicalServerAccount(
         account: PhysicalServerAccount
     ): Observable<any> {
-        return Observable.of(null).delay(4e2)
+        return of(null).pipe(delay(4e2))
     }
 
     editPhysicalServerAccount(account: PhysicalServerAccount): Observable<any> {
-        return Observable.of(null).delay(4e2)
+        return of(null).pipe(delay(4e2))
     }
 
     fetchVirtualServerAccounts(
@@ -48,24 +50,24 @@ export class ServerAccountService {
         if (params.condition.searchText) {
             console.log(`search virtual with ${params.condition.searchText}`)
         }
-        return Observable.of(
+        return of(
             VirtualServerAccount.generateFakeDataItems(params.options)
-        ).delay(4e2)
+        ).pipe(delay(4e2))
     }
 
     fetchVirtualServerAccountsCount(searchText: string): Observable<number> {
         if (searchText) {
             console.log(`search virtual count with ${searchText}`)
         }
-        return Observable.of(42).delay(3e2)
+        return of(42).pipe(delay(3e2))
     }
 
     createVirtualServerAccount(account: VirtualServerAccount): Observable<any> {
-        return Observable.of(null).delay(4e2)
+        return of(null).pipe(delay(4e2))
     }
 
     editVirtualServerAccount(account: VirtualServerAccount): Observable<any> {
-        return Observable.of(null).delay(4e2)
+        return of(null).pipe(delay(4e2))
     }
 
     fetchClusterServerAccounts(
@@ -74,23 +76,23 @@ export class ServerAccountService {
         if (params.condition.searchText) {
             console.log(`search cluster with ${params.condition.searchText}`)
         }
-        return Observable.of(
+        return of(
             ClusterServerAccount.generateFakeDataItems(params.options)
-        ).delay(4e2)
+        ).pipe(delay(4e2))
     }
 
     fetchClusterServerAccountsCount(searchText: string): Observable<number> {
         if (searchText) {
             console.log(`search cluster count with ${searchText}`)
         }
-        return Observable.of(42).delay(3e2)
+        return of(42).pipe(delay(3e2))
     }
 
     createClusterServerAccount(account: ClusterServerAccount): Observable<any> {
-        return Observable.of(null).delay(4e2)
+        return of(null).pipe(delay(4e2))
     }
 
     editClusterServerAccount(account: ClusterServerAccount): Observable<any> {
-        return Observable.of(null).delay(4e2)
+        return of(null).pipe(delay(4e2))
     }
 }

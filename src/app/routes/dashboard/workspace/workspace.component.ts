@@ -15,6 +15,7 @@ import {
     FetchInvitationActivitiesAction
 } from './actions/workspace.action'
 import { InvitationActivity } from './models/workspace.model'
+import { filter } from 'rxjs/operators';
 
 // {
 //     "text": "短信设置",
@@ -174,7 +175,7 @@ export class DashboardWorkspaceComponent implements OnInit, OnDestroy {
         public msg: NzMessageService,
         private router: Router,
         private store: Store<State>
-    ) {}
+    ) { }
 
     ngOnInit() {
         this.initDataSource()
@@ -195,13 +196,15 @@ export class DashboardWorkspaceComponent implements OnInit, OnDestroy {
         this.store.dispatch(new FetchInvitationActivitiesAction())
     }
 
-    ngOnDestroy(): void {}
+    ngOnDestroy(): void { }
 
     private initDataSource() {
         this.activities$ = this.store.select(getInvitationActivities)
         this.statistics$ = this.store
             .select(getExhibitionStatistics)
-            .filter(e => !!e)
+            .pipe(
+                filter(e => !!e)
+            )
 
         this.activitiesLoading$ = this.store.select(getActivitiesLoading)
     }

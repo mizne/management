@@ -80,6 +80,7 @@ import {
     SubmitSubPackageApplyAction,
     ResetSubPackageApplyAction
 } from './actions/subpackage-apply.action'
+import { filter, takeUntil, mergeMap, withLatestFrom, first } from 'rxjs/operators';
 
 @Component({
     selector: 'app-unified-apply',
@@ -121,13 +122,13 @@ export class UnifiedApplyComponent implements OnInit {
     saveOrSubmitSubPackageLoading$: Observable<boolean>
     toSaveSubPackageSub: Subject<SubPackageApply> = new Subject<
         SubPackageApply
-    >()
+        >()
     toSubmitSubPackageSub: Subject<SubPackageApply> = new Subject<
         SubPackageApply
-    >()
+        >()
     toResetSubPackageSub: Subject<SubPackageApply> = new Subject<
         SubPackageApply
-    >()
+        >()
 
     fetchSubPackageInfoLoading$: Observable<boolean>
     subPackageInfo$: Observable<SubPackageInfo>
@@ -139,30 +140,30 @@ export class UnifiedApplyComponent implements OnInit {
     savedUnifiedApplies$: Observable<UnifiedApply[]>
     toEditSavedUnifiedApplySub: Subject<UnifiedApply> = new Subject<
         UnifiedApply
-    >()
+        >()
     toDetailSavedUnifiedApplySub: Subject<UnifiedApply> = new Subject<
         UnifiedApply
-    >()
+        >()
     toSubmitSavedUnifiedApplySub: Subject<UnifiedApply> = new Subject<
         UnifiedApply
-    >()
+        >()
     toDeleteSavedUnifiedApplySub: Subject<UnifiedApply> = new Subject<
         UnifiedApply
-    >()
+        >()
     fetchSavedSubPackageAppliesLoading$: Observable<boolean>
     savedSubPackageApplies$: Observable<SubPackageApply[]>
     toEditSavedSubPackageApplySub: Subject<SubPackageApply> = new Subject<
         SubPackageApply
-    >()
+        >()
     toDetailSavedSubPackageApplySub: Subject<SubPackageApply> = new Subject<
         SubPackageApply
-    >()
+        >()
     toSubmitSavedSubPackageApplySub: Subject<SubPackageApply> = new Subject<
         SubPackageApply
-    >()
+        >()
     toDeleteSavedSubPackageApplySub: Subject<SubPackageApply> = new Subject<
         SubPackageApply
-    >()
+        >()
 
     // 额外的tabs
     extraTabs$: Observable<TabOptions[]>
@@ -212,7 +213,7 @@ export class UnifiedApplyComponent implements OnInit {
         private store: Store<State>,
         private destroyService: DestroyService,
         private fb: FormBuilder
-    ) {}
+    ) { }
 
     ngOnInit() {
         this.buildForm()
@@ -465,7 +466,7 @@ export class UnifiedApplyComponent implements OnInit {
     private initPatchApplyInfo() {
         this.store
             .select(getApplyInfo)
-            .takeUntil(this.destroyService)
+            .pipe(takeUntil(this.destroyService))
             .subscribe(applyInfo => {
                 if (applyInfo) {
                     this.applyInfoForm.patchValue(applyInfo, {
@@ -480,7 +481,7 @@ export class UnifiedApplyComponent implements OnInit {
     private initSaveUnifiedApply() {
         this.toSaveUnifiedSub
             .asObservable()
-            .takeUntil(this.destroyService)
+            .pipe(takeUntil(this.destroyService))
             .subscribe(() => {
                 this.store.dispatch(new SaveUnifiedApplyAction())
             })
@@ -489,7 +490,7 @@ export class UnifiedApplyComponent implements OnInit {
     private initSubmitUnifiedApply() {
         this.toSubmitUnifiedSub
             .asObservable()
-            .takeUntil(this.destroyService)
+            .pipe(takeUntil(this.destroyService))
             .subscribe(() => {
                 this.store.dispatch(new SubmitUnifiedApplyAction())
             })
@@ -498,7 +499,7 @@ export class UnifiedApplyComponent implements OnInit {
     private initResetUnifiedApply() {
         this.toResetUnifiedSub
             .asObservable()
-            .takeUntil(this.destroyService)
+            .pipe(takeUntil(this.destroyService))
             .subscribe(() => {
                 this.store.dispatch(new ResetUnifiedApplyAction())
             })
@@ -507,17 +508,19 @@ export class UnifiedApplyComponent implements OnInit {
     private initCreateApplyResourceForUnified() {
         this.toCreateResourceSub
             .asObservable()
-            .filter(() => this.tabIndex === 0)
-            .mergeMap(() => {
-                return this.modalService.open({
-                    title: '新建资源信息',
-                    content: ToCreateApplyResourceComponent,
-                    footer: false,
-                    width: 800
-                })
-            })
-            .filter(e => typeof e !== 'string')
-            .takeUntil(this.destroyService)
+            .pipe(
+                filter(() => this.tabIndex === 0),
+                mergeMap(() => {
+                    return this.modalService.open({
+                        title: '新建资源信息',
+                        content: ToCreateApplyResourceComponent,
+                        footer: false,
+                        width: 800
+                    })
+                }),
+                filter(e => typeof e !== 'string'),
+                takeUntil(this.destroyService)
+            )
             .subscribe(resource => {
                 this.store.dispatch(new CreateApplyResourceAction(resource))
             })
@@ -526,17 +529,19 @@ export class UnifiedApplyComponent implements OnInit {
     private initAddApplyResourcesForUnified() {
         this.toAddResourcesSub
             .asObservable()
-            .filter(() => this.tabIndex === 0)
-            .mergeMap(() => {
-                return this.modalService.open({
-                    title: '添加资源信息',
-                    content: ToAddApplyResourceComponent,
-                    footer: false,
-                    width: 1000
-                })
-            })
-            .filter(e => typeof e !== 'string')
-            .takeUntil(this.destroyService)
+            .pipe(
+                filter(() => this.tabIndex === 0),
+                mergeMap(() => {
+                    return this.modalService.open({
+                        title: '添加资源信息',
+                        content: ToAddApplyResourceComponent,
+                        footer: false,
+                        width: 1000
+                    })
+                }),
+                filter(e => typeof e !== 'string'),
+                takeUntil(this.destroyService)
+            )
             .subscribe(resources => {
                 this.store.dispatch(new AddApplyResourcesAction(resources))
             })
@@ -545,35 +550,39 @@ export class UnifiedApplyComponent implements OnInit {
     private initShowApplyResourceForUnified() {
         this.toShowResourceSub
             .asObservable()
-            .filter(() => this.tabIndex === 0)
-            .mergeMap(resource => {
-                return this.modalService.open({
-                    title: `${resource.id ? '添加' : '新增'}的资源信息`,
-                    content: ToShowApplyResourceComponent,
-                    footer: false,
-                    width: 800,
-                    componentParams: { resource }
-                })
-            })
-            .takeUntil(this.destroyService)
-            .subscribe(() => {})
+            .pipe(
+                filter(() => this.tabIndex === 0),
+                mergeMap(resource => {
+                    return this.modalService.open({
+                        title: `${resource.id ? '添加' : '新增'}的资源信息`,
+                        content: ToShowApplyResourceComponent,
+                        footer: false,
+                        width: 800,
+                        componentParams: { resource }
+                    })
+                }),
+                takeUntil(this.destroyService)
+            )
+            .subscribe(() => { })
     }
 
     private initEditTempApplyResourceForUnified() {
         this.toEditTempResourceSub
             .asObservable()
-            .filter(() => this.tabIndex === 0)
-            .mergeMap(resource => {
-                return this.modalService.open({
-                    title: '新增的资源信息',
-                    content: ToEditApplyResourceComponent,
-                    footer: false,
-                    width: 1000,
-                    componentParams: { resource }
-                })
-            })
-            .filter(e => typeof e !== 'string')
-            .takeUntil(this.destroyService)
+            .pipe(
+                filter(() => this.tabIndex === 0),
+                mergeMap(resource => {
+                    return this.modalService.open({
+                        title: '新增的资源信息',
+                        content: ToEditApplyResourceComponent,
+                        footer: false,
+                        width: 1000,
+                        componentParams: { resource }
+                    })
+                }),
+                filter(e => typeof e !== 'string'),
+                takeUntil(this.destroyService)
+            )
             .subscribe(resource => {
                 this.store.dispatch(new EditTempApplyResourceAction(resource))
             })
@@ -582,8 +591,10 @@ export class UnifiedApplyComponent implements OnInit {
     private initDeleteApplyResourceForUnified() {
         this.toDeleteResourceSub
             .asObservable()
-            .filter(() => this.tabIndex === 0)
-            .takeUntil(this.destroyService)
+            .pipe(
+                filter(() => this.tabIndex === 0),
+                takeUntil(this.destroyService)
+            )
             .subscribe(index => {
                 this.modalService.confirm({
                     title: '删除资源信息',
@@ -600,7 +611,7 @@ export class UnifiedApplyComponent implements OnInit {
     private initPatchSubPackageInfo() {
         this.store
             .select(getSubPackageInfo)
-            .takeUntil(this.destroyService)
+            .pipe(takeUntil(this.destroyService))
             .subscribe(subPackageInfo => {
                 if (subPackageInfo) {
                     this.subPackageInfoForm.patchValue(subPackageInfo, {
@@ -615,7 +626,7 @@ export class UnifiedApplyComponent implements OnInit {
     private initSaveSubPackageApply() {
         this.toSaveSubPackageSub
             .asObservable()
-            .takeUntil(this.destroyService)
+            .pipe(takeUntil(this.destroyService))
             .subscribe(() => {
                 this.store.dispatch(new SaveSubPackageApplyAction())
             })
@@ -624,7 +635,7 @@ export class UnifiedApplyComponent implements OnInit {
     private initSubmitSubPackageApply() {
         this.toSubmitSubPackageSub
             .asObservable()
-            .takeUntil(this.destroyService)
+            .pipe(takeUntil(this.destroyService))
             .subscribe(() => {
                 this.store.dispatch(new SubmitSubPackageApplyAction())
             })
@@ -633,7 +644,7 @@ export class UnifiedApplyComponent implements OnInit {
     private initResetSubPackageApply() {
         this.toResetSubPackageSub
             .asObservable()
-            .takeUntil(this.destroyService)
+            .pipe(takeUntil(this.destroyService))
             .subscribe(() => {
                 this.store.dispatch(new ResetSubPackageApplyAction())
             })
@@ -642,17 +653,19 @@ export class UnifiedApplyComponent implements OnInit {
     private initAddApplyResourcesForSubPackage() {
         this.toAddResourcesSub
             .asObservable()
-            .filter(() => this.tabIndex === 1)
-            .mergeMap(() => {
-                return this.modalService.open({
-                    title: '添加资源信息',
-                    content: ToAddApplyResourceComponent,
-                    footer: false,
-                    width: 1000
-                })
-            })
-            .filter(e => typeof e !== 'string')
-            .takeUntil(this.destroyService)
+            .pipe(
+                filter(() => this.tabIndex === 1),
+                mergeMap(() => {
+                    return this.modalService.open({
+                        title: '添加资源信息',
+                        content: ToAddApplyResourceComponent,
+                        footer: false,
+                        width: 1000
+                    })
+                }),
+                filter(e => typeof e !== 'string'),
+                takeUntil(this.destroyService)
+            )
             .subscribe(resources => {
                 this.store.dispatch(
                     new fromSubPackage.AddApplyResourcesAction(resources)
@@ -663,25 +676,29 @@ export class UnifiedApplyComponent implements OnInit {
     private initShowApplyResourceForSubPackage() {
         this.toShowResourceSub
             .asObservable()
-            .filter(() => this.tabIndex === 1)
-            .mergeMap(resource => {
-                return this.modalService.open({
-                    title: `${resource.id ? '添加' : '新增'}的资源信息`,
-                    content: ToShowApplyResourceComponent,
-                    footer: false,
-                    width: 800,
-                    componentParams: { resource }
-                })
-            })
-            .takeUntil(this.destroyService)
-            .subscribe(() => {})
+            .pipe(
+                filter(() => this.tabIndex === 1),
+                mergeMap(resource => {
+                    return this.modalService.open({
+                        title: `${resource.id ? '添加' : '新增'}的资源信息`,
+                        content: ToShowApplyResourceComponent,
+                        footer: false,
+                        width: 800,
+                        componentParams: { resource }
+                    })
+                }),
+                takeUntil(this.destroyService)
+            )
+            .subscribe(() => { })
     }
 
     private initDeleteApplyResourceForSubPackage() {
         this.toDeleteResourceSub
             .asObservable()
-            .filter(() => this.tabIndex === 1)
-            .takeUntil(this.destroyService)
+            .pipe(
+                filter(() => this.tabIndex === 1),
+                takeUntil(this.destroyService)
+            )
             .subscribe(index => {
                 this.modalService.confirm({
                     title: '删除资源信息',
@@ -698,9 +715,11 @@ export class UnifiedApplyComponent implements OnInit {
     private initFetchSavedApplies() {
         this.tabChangeSub
             .asObservable()
-            .takeUntil(this.destroyService)
-            .filter(tabIndex => tabIndex === 2)
-            .first()
+            .pipe(
+                filter(tabIndex => tabIndex === 2),
+                first(),
+                takeUntil(this.destroyService)
+            )
             .subscribe(tabIndex => {
                 this.store.dispatch(new FetchSavedUnifiedAppliesAction())
                 this.store.dispatch(new FetchSavedSubPackageAppliesAction())
@@ -710,14 +729,14 @@ export class UnifiedApplyComponent implements OnInit {
     private initToShowSavedApply() {
         this.toDetailSavedUnifiedApplySub
             .asObservable()
-            .takeUntil(this.destroyService)
+            .pipe(takeUntil(this.destroyService))
             .subscribe(apply => {
                 this.store.dispatch(new ToDetailSavedUnifiedApplyAction(apply))
             })
 
         this.toDetailSavedSubPackageApplySub
             .asObservable()
-            .takeUntil(this.destroyService)
+            .pipe(takeUntil(this.destroyService))
             .subscribe(apply => {
                 this.store.dispatch(
                     new ToDetailSavedSubPackageApplyAction(apply)
@@ -728,14 +747,14 @@ export class UnifiedApplyComponent implements OnInit {
     private initToEditSavedApply() {
         this.toEditSavedUnifiedApplySub
             .asObservable()
-            .takeUntil(this.destroyService)
+            .pipe(takeUntil(this.destroyService))
             .subscribe(apply => {
                 this.store.dispatch(new ToEditSavedUnifiedApplyAction(apply))
             })
 
         this.toEditSavedSubPackageApplySub
             .asObservable()
-            .takeUntil(this.destroyService)
+            .pipe(takeUntil(this.destroyService))
             .subscribe(apply => {
                 this.store.dispatch(new ToEditSavedSubPackageApplyAction(apply))
             })
@@ -744,7 +763,7 @@ export class UnifiedApplyComponent implements OnInit {
     private initToSubmitSavedApply() {
         this.toSubmitSavedUnifiedApplySub
             .asObservable()
-            .takeUntil(this.destroyService)
+            .pipe(takeUntil(this.destroyService))
             .subscribe(apply => {
                 this.modalService.confirm({
                     title: '提交统一申请',
@@ -759,7 +778,7 @@ export class UnifiedApplyComponent implements OnInit {
 
         this.toSubmitSavedSubPackageApplySub
             .asObservable()
-            .takeUntil(this.destroyService)
+            .pipe(takeUntil(this.destroyService))
             .subscribe(apply => {
                 this.modalService.confirm({
                     title: '提交分包申请',
@@ -776,7 +795,7 @@ export class UnifiedApplyComponent implements OnInit {
     private initToDeleteSavedApply() {
         this.toDeleteSavedUnifiedApplySub
             .asObservable()
-            .takeUntil(this.destroyService)
+            .pipe(takeUntil(this.destroyService))
             .subscribe(apply => {
                 this.modalService.confirm({
                     title: '删除统一申请',
@@ -791,7 +810,7 @@ export class UnifiedApplyComponent implements OnInit {
 
         this.toDeleteSavedSubPackageApplySub
             .asObservable()
-            .takeUntil(this.destroyService)
+            .pipe(takeUntil(this.destroyService))
             .subscribe(apply => {
                 this.modalService.confirm({
                     title: '删除分包申请',
@@ -808,7 +827,7 @@ export class UnifiedApplyComponent implements OnInit {
     private initCloseExtraTab() {
         this.toCloseExtraTabSub
             .asObservable()
-            .takeUntil(this.destroyService)
+            .pipe(takeUntil(this.destroyService))
             .subscribe(id => {
                 this.store.dispatch(new CloseExtraTabAction(id))
             })
@@ -817,9 +836,11 @@ export class UnifiedApplyComponent implements OnInit {
     private initNeedManualResetTabIndex() {
         this.store
             .select(getNeedManualSetTabIndex)
-            .filter(e => e)
-            .withLatestFrom(this.store.select(getTabIndexToNeedManualSet))
-            .takeUntil(this.destroyService)
+            .pipe(
+                filter(e => e),
+                withLatestFrom(this.store.select(getTabIndexToNeedManualSet)),
+                takeUntil(this.destroyService)
+            )
             .subscribe(([_, tabIndex]) => {
                 this.tabIndex = tabIndex + 3
                 this.store.dispatch(new ResetNeedManualSetTabIndexAction())
@@ -829,7 +850,7 @@ export class UnifiedApplyComponent implements OnInit {
     private initCancelEdit() {
         this.cancelEditSub
             .asObservable()
-            .takeUntil(this.destroyService)
+            .pipe(takeUntil(this.destroyService))
             .subscribe(() => {
                 this.store.dispatch(
                     new fromExtraTabs.CancelEditApplyAction(this.tabIndex - 3)
@@ -840,7 +861,7 @@ export class UnifiedApplyComponent implements OnInit {
     private initEnsureEdit() {
         this.ensureEditSub
             .asObservable()
-            .takeUntil(this.destroyService)
+            .pipe(takeUntil(this.destroyService))
             .subscribe(() => {
                 this.store.dispatch(
                     new fromExtraTabs.EnsureEditApplyAction(this.tabIndex - 3)
@@ -851,18 +872,19 @@ export class UnifiedApplyComponent implements OnInit {
     private initCreateApplyResourceForExtra() {
         this.toCreateResourceSub
             .asObservable()
-            .filter(() => this.tabIndex >= 3)
-            .mergeMap(() => {
-                return this.modalService.open({
-                    title: '新建资源信息',
-                    content: ToCreateApplyResourceComponent,
-                    footer: false,
-                    width: 800
-                })
-            })
-            .filter(e => typeof e !== 'string')
-
-            .takeUntil(this.destroyService)
+            .pipe(
+                filter(() => this.tabIndex >= 3),
+                mergeMap(() => {
+                    return this.modalService.open({
+                        title: '新建资源信息',
+                        content: ToCreateApplyResourceComponent,
+                        footer: false,
+                        width: 800
+                    })
+                }),
+                filter(e => typeof e !== 'string'),
+                takeUntil(this.destroyService)
+            )
             .subscribe(resource => {
                 this.store.dispatch(
                     new fromExtraTabs.CreateApplyResourceAction({
@@ -876,17 +898,19 @@ export class UnifiedApplyComponent implements OnInit {
     private initAddApplyResourcesForExtra() {
         this.toAddResourcesSub
             .asObservable()
-            .filter(() => this.tabIndex >= 3)
-            .mergeMap(() => {
-                return this.modalService.open({
-                    title: '添加资源信息',
-                    content: ToAddApplyResourceComponent,
-                    footer: false,
-                    width: 1000
-                })
-            })
-            .filter(e => typeof e !== 'string')
-            .takeUntil(this.destroyService)
+            .pipe(
+                filter(() => this.tabIndex >= 3),
+                mergeMap(() => {
+                    return this.modalService.open({
+                        title: '添加资源信息',
+                        content: ToAddApplyResourceComponent,
+                        footer: false,
+                        width: 1000
+                    })
+                }),
+                filter(e => typeof e !== 'string'),
+                takeUntil(this.destroyService)
+            )
             .subscribe(resources => {
                 this.store.dispatch(
                     new fromExtraTabs.AddApplyResourcesAction({
@@ -900,18 +924,20 @@ export class UnifiedApplyComponent implements OnInit {
     private initEditTempApplyResourceForExtra() {
         this.toEditTempResourceSub
             .asObservable()
-            .filter(() => this.tabIndex >= 0)
-            .mergeMap(resource => {
-                return this.modalService.open({
-                    title: '新增的资源信息',
-                    content: ToEditApplyResourceComponent,
-                    footer: false,
-                    width: 1000,
-                    componentParams: { resource }
-                })
-            })
-            .filter(e => typeof e !== 'string')
-            .takeUntil(this.destroyService)
+            .pipe(
+                filter(() => this.tabIndex >= 0),
+                mergeMap(resource => {
+                    return this.modalService.open({
+                        title: '新增的资源信息',
+                        content: ToEditApplyResourceComponent,
+                        footer: false,
+                        width: 1000,
+                        componentParams: { resource }
+                    })
+                }),
+                filter(e => typeof e !== 'string'),
+                takeUntil(this.destroyService)
+            )
             .subscribe(resource => {
                 this.store.dispatch(
                     new fromExtraTabs.EditTempApplyResourceAction({
@@ -925,25 +951,29 @@ export class UnifiedApplyComponent implements OnInit {
     private initShowApplyResourceForExtra() {
         this.toShowResourceSub
             .asObservable()
-            .filter(() => this.tabIndex >= 3)
-            .mergeMap(resource => {
-                return this.modalService.open({
-                    title: `${resource.id ? '添加' : '新增'}的资源信息`,
-                    content: ToShowApplyResourceComponent,
-                    footer: false,
-                    width: 800,
-                    componentParams: { resource }
-                })
-            })
-            .takeUntil(this.destroyService)
-            .subscribe(() => {})
+            .pipe(
+                filter(() => this.tabIndex >= 3),
+                mergeMap(resource => {
+                    return this.modalService.open({
+                        title: `${resource.id ? '添加' : '新增'}的资源信息`,
+                        content: ToShowApplyResourceComponent,
+                        footer: false,
+                        width: 800,
+                        componentParams: { resource }
+                    })
+                }),
+                takeUntil(this.destroyService)
+            )
+            .subscribe(() => { })
     }
 
     private initDeleteApplyResourceForExtra() {
         this.toDeleteResourceSub
             .asObservable()
-            .filter(() => this.tabIndex >= 3)
-            .takeUntil(this.destroyService)
+            .pipe(
+                filter(() => this.tabIndex >= 3),
+                takeUntil(this.destroyService)
+            )
             .subscribe(index => {
                 this.modalService.confirm({
                     title: '删除资源信息',
@@ -957,7 +987,7 @@ export class UnifiedApplyComponent implements OnInit {
                         )
                         console.log(
                             `delete apply resource; tab index: ${
-                                this.tabIndex
+                            this.tabIndex
                             }; resource index: ${index}`
                         )
                     }

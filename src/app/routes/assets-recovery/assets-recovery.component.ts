@@ -22,6 +22,8 @@ import {
 } from './actions/assets-recovery.action'
 
 import { Subject } from 'rxjs/Subject'
+import { takeUntil, mergeMap, filter, tap, withLatestFrom } from 'rxjs/operators'
+import { merge } from 'rxjs/observable/merge'
 import { DestroyService } from '@core/services/destroy.service'
 
 import { ToShowResourceInfoComponent } from './modals/to-show-resource-info/to-show-resource-info.component'
@@ -51,7 +53,7 @@ export class AssetsRecoveryComponent implements OnInit {
         private store: Store<State>,
         private destroyService: DestroyService,
         private fb: FormBuilder
-    ) {}
+    ) { }
 
     ngOnInit() {
         this.buildForm()
@@ -109,7 +111,7 @@ export class AssetsRecoveryComponent implements OnInit {
     private initEnsureRecovery() {
         this.toRecoverySub
             .asObservable()
-            .takeUntil(this.destroyService)
+            .pipe(takeUntil(this.destroyService))
             .subscribe(assetsRecovery => {
                 this.modalService.confirm({
                     title: '回收资产信息',
@@ -127,17 +129,19 @@ export class AssetsRecoveryComponent implements OnInit {
     private initShowAssetsRecovery() {
         this.toShowSub
             .asObservable()
-            .mergeMap(assetsRecovery => {
-                return this.modalService.open({
-                    title: '可回收资源详情',
-                    content: ToShowResourceInfoComponent,
-                    footer: false,
-                    componentParams: { assetsRecovery },
-                    width: 800
-                })
-            })
-            .filter(e => typeof e !== 'string')
-            .takeUntil(this.destroyService)
+            .pipe(
+                mergeMap(assetsRecovery => {
+                    return this.modalService.open({
+                        title: '可回收资源详情',
+                        content: ToShowResourceInfoComponent,
+                        footer: false,
+                        componentParams: { assetsRecovery },
+                        width: 800
+                    })
+                }),
+                filter(e => typeof e !== 'string'),
+                takeUntil(this.destroyService)
+            )
             .subscribe(resourceInfo => {
                 console.log(`show asset recovery detail success`)
             })
@@ -146,28 +150,29 @@ export class AssetsRecoveryComponent implements OnInit {
     private initSearchResourceInfoAndPageChange(): void {
         this.resetSub
             .asObservable()
-            .takeUntil(this.destroyService)
+            .pipe(takeUntil(this.destroyService))
             .subscribe(() => {
                 this.store.dispatch(
                     new FetchAssetsRecoveriesCountAction(this.searchForm.value)
                 )
             })
 
-        Observable.merge(
+        merge(
             this.pageChangeSub.asObservable(),
             this.resetSub
-                .do(() => {
-                    this.assetsRecoveryPageIndex = 1
-                    this.assetsRecoveryPageSize = 10
-                })
-                .withLatestFrom(this.store.select(getAssetsRecoveryPageParams))
-                .filter(
-                    ([_, { pageIndex, pageSize }]) =>
+                .asObservable()
+                .pipe(
+                    tap(() => {
+                        this.assetsRecoveryPageIndex = 1
+                        this.assetsRecoveryPageSize = 10
+                    }),
+                    withLatestFrom(this.store.select(getAssetsRecoveryPageParams)),
+                    filter(([_, { pageIndex, pageSize }]) =>
                         pageIndex === this.assetsRecoveryPageIndex &&
                         pageSize === this.assetsRecoveryPageSize
-                )
-        )
-            .takeUntil(this.destroyService)
+                    ),
+            ))
+            .pipe(takeUntil(this.destroyService))
             .subscribe(() => {
                 this.store.dispatch(
                     new EnsurePageParamsAction({

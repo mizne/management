@@ -1,22 +1,28 @@
 import { Injectable } from '@angular/core'
 import { Observable } from 'rxjs/Observable'
+import { of } from 'rxjs/observable/of'
+import { forkJoin } from 'rxjs/observable/forkJoin'
+import { map, delay } from 'rxjs/operators';
+
 
 @Injectable()
 export class HeaderService {
-    constructor() {}
+    constructor() { }
 
     fetchApprovalsCount(): Observable<number> {
-        return Observable.forkJoin(
+        return forkJoin(
             this.fetchVisitorApprovalsCount(),
             this.fetchExhibitorApprovalsCount()
-        ).map(([count1, count2]) => count1 + count2)
+        ).pipe(
+            map(([count1, count2]) => count1 + count2)
+        )
     }
 
     fetchVisitorApprovalsCount(): Observable<number> {
-        return Observable.of(11).delay(4e2)
+        return of(11).pipe(delay(4e2))
     }
 
     fetchExhibitorApprovalsCount(): Observable<number> {
-        return Observable.of(13).delay(4e2)
+        return of(13).pipe(delay(4e2))
     }
 }

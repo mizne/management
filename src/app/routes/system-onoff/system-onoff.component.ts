@@ -4,6 +4,7 @@ import { NzMessageService, NzModalService } from 'ng-zorro-antd'
 
 import { TabAction } from '@core/models/system-onoff.model'
 import { Observable } from 'rxjs/Observable'
+import { merge } from 'rxjs/observable/merge'
 import { Store } from '@ngrx/store'
 import {
     State,
@@ -61,6 +62,7 @@ import {
     CloseExtraTabAction,
     ResetNeedManualSetTabIndexAction
 } from './actions/extra-tabs.action'
+import { filter, takeUntil, mergeMap, distinctUntilChanged, map, withLatestFrom, first } from 'rxjs/operators';
 
 @Component({
     selector: 'app-system-onoff',
@@ -100,16 +102,16 @@ export class SystemOnOffComponent implements OnInit {
     savedApplies$: Observable<SystemOnOffApply[]>
     toEditSavedApplySub: Subject<SystemOnOffApply> = new Subject<
         SystemOnOffApply
-    >()
+        >()
     toDetailSavedApplySub: Subject<SystemOnOffApply> = new Subject<
         SystemOnOffApply
-    >()
+        >()
     toSubmitSavedApplySub: Subject<SystemOnOffApply> = new Subject<
         SystemOnOffApply
-    >()
+        >()
     toDeleteSavedApplySub: Subject<SystemOnOffApply> = new Subject<
         SystemOnOffApply
-    >()
+        >()
 
     // 额外的tabs
     extraTabs$: Observable<TabOptions[]>
@@ -165,7 +167,7 @@ export class SystemOnOffComponent implements OnInit {
         private store: Store<State>,
         private destroyService: DestroyService,
         private fb: FormBuilder
-    ) {}
+    ) { }
 
     ngOnInit() {
         this.buildForm()
@@ -290,7 +292,7 @@ export class SystemOnOffComponent implements OnInit {
         this.extraTabs$ = this.store.select(getExtraTabs)
     }
 
-    private initDispatcher(): void {}
+    private initDispatcher(): void { }
 
     private initSubscriber(): void {
         this.initFirstTabSubscriber()
@@ -338,8 +340,10 @@ export class SystemOnOffComponent implements OnInit {
 
     private initSwitchApplyType() {
         this.type.valueChanges
-            .takeUntil(this.destroyService)
-            .filter(e => !!e)
+            .pipe(
+                filter(e => !!e),
+                takeUntil(this.destroyService)
+            )
             .subscribe(applyType => {
                 this.store.dispatch(new SwitchApplyTypeAction(applyType))
             })
@@ -348,7 +352,7 @@ export class SystemOnOffComponent implements OnInit {
     private initPatchApplyInfo() {
         this.store
             .select(getApplyInfo)
-            .takeUntil(this.destroyService)
+            .pipe(takeUntil(this.destroyService))
             .subscribe(applyInfo => {
                 if (applyInfo) {
                     this.applyForm.patchValue(applyInfo, { emitEvent: false })
@@ -361,7 +365,7 @@ export class SystemOnOffComponent implements OnInit {
     private initSaveRequirementApply() {
         this.toSaveSub
             .asObservable()
-            .takeUntil(this.destroyService)
+            .pipe(takeUntil(this.destroyService))
             .subscribe(() => {
                 this.store.dispatch(new SaveSystemOnOffApplyAction())
             })
@@ -370,7 +374,7 @@ export class SystemOnOffComponent implements OnInit {
     private initSubmitRequirementApply() {
         this.toSubmitSub
             .asObservable()
-            .takeUntil(this.destroyService)
+            .pipe(takeUntil(this.destroyService))
             .subscribe(() => {
                 this.store.dispatch(new SubmitSystemOnOffApplyAction())
             })
@@ -379,7 +383,7 @@ export class SystemOnOffComponent implements OnInit {
     private initResetRequirementApply() {
         this.toResetSub
             .asObservable()
-            .takeUntil(this.destroyService)
+            .pipe(takeUntil(this.destroyService))
             .subscribe(() => {
                 this.store.dispatch(new ResetSystemOnOffApplyAction())
             })
@@ -388,17 +392,19 @@ export class SystemOnOffComponent implements OnInit {
     private initCreateApplyResource() {
         this.toCreateResourceSub
             .asObservable()
-            .filter(() => this.tabIndex < 2)
-            .mergeMap(() => {
-                return this.modalService.open({
-                    title: '新建资源信息',
-                    content: ToCreateApplyResourceComponent,
-                    footer: false,
-                    width: 800
-                })
-            })
-            .filter(e => typeof e !== 'string')
-            .takeUntil(this.destroyService)
+            .pipe(
+                filter(() => this.tabIndex < 2),
+                mergeMap(() => {
+                    return this.modalService.open({
+                        title: '新建资源信息',
+                        content: ToCreateApplyResourceComponent,
+                        footer: false,
+                        width: 800
+                    })
+                }),
+                filter(e => typeof e !== 'string'),
+                takeUntil(this.destroyService)
+            )
             .subscribe(resource => {
                 this.store.dispatch(new CreateApplyResourceAction(resource))
             })
@@ -407,17 +413,19 @@ export class SystemOnOffComponent implements OnInit {
     private initAddApplyResources() {
         this.toAddResourcesSub
             .asObservable()
-            .filter(() => this.tabIndex < 2)
-            .mergeMap(() => {
-                return this.modalService.open({
-                    title: '添加资源信息',
-                    content: ToAddApplyResourceComponent,
-                    footer: false,
-                    width: 1000
-                })
-            })
-            .filter(e => typeof e !== 'string')
-            .takeUntil(this.destroyService)
+            .pipe(
+                filter(() => this.tabIndex < 2),
+                mergeMap(() => {
+                    return this.modalService.open({
+                        title: '添加资源信息',
+                        content: ToAddApplyResourceComponent,
+                        footer: false,
+                        width: 1000
+                    })
+                }),
+                filter(e => typeof e !== 'string'),
+                takeUntil(this.destroyService)
+            )
             .subscribe(resources => {
                 this.store.dispatch(new AddApplyResourcesAction(resources))
             })
@@ -426,35 +434,39 @@ export class SystemOnOffComponent implements OnInit {
     private initShowApplyResource() {
         this.toShowResourceSub
             .asObservable()
-            .filter(() => this.tabIndex < 2)
-            .mergeMap(resource => {
-                return this.modalService.open({
-                    title: `${resource.id ? '添加' : '新增'}的资源信息`,
-                    content: ToShowApplyResourceComponent,
-                    footer: false,
-                    width: 800,
-                    componentParams: { resource }
-                })
-            })
-            .takeUntil(this.destroyService)
-            .subscribe(() => {})
+            .pipe(
+                filter(() => this.tabIndex < 2),
+                mergeMap(resource => {
+                    return this.modalService.open({
+                        title: `${resource.id ? '添加' : '新增'}的资源信息`,
+                        content: ToShowApplyResourceComponent,
+                        footer: false,
+                        width: 800,
+                        componentParams: { resource }
+                    })
+                }),
+                takeUntil(this.destroyService)
+            )
+            .subscribe(() => { })
     }
 
     private initEditTempApplyResource() {
         this.toEditTempResourceSub
             .asObservable()
-            .filter(() => this.tabIndex < 2)
-            .mergeMap(resource => {
-                return this.modalService.open({
-                    title: '新增的资源信息',
-                    content: ToEditApplyResourceComponent,
-                    footer: false,
-                    width: 1000,
-                    componentParams: { resource }
-                })
-            })
-            .filter(e => typeof e !== 'string')
-            .takeUntil(this.destroyService)
+            .pipe(
+                filter(() => this.tabIndex < 2),
+                mergeMap(resource => {
+                    return this.modalService.open({
+                        title: '新增的资源信息',
+                        content: ToEditApplyResourceComponent,
+                        footer: false,
+                        width: 1000,
+                        componentParams: { resource }
+                    })
+                }),
+                filter(e => typeof e !== 'string'),
+                takeUntil(this.destroyService)
+            )
             .subscribe(resource => {
                 this.store.dispatch(new EditTempApplyResourceAction(resource))
             })
@@ -463,8 +475,10 @@ export class SystemOnOffComponent implements OnInit {
     private initDeleteApplyResource() {
         this.toDeleteResourceSub
             .asObservable()
-            .filter(() => this.tabIndex < 2)
-            .takeUntil(this.destroyService)
+            .pipe(
+                filter(() => this.tabIndex < 2),
+                takeUntil(this.destroyService)
+            )
             .subscribe(index => {
                 this.modalService.confirm({
                     title: '删除资源信息',
@@ -481,9 +495,11 @@ export class SystemOnOffComponent implements OnInit {
     private initFetchSavedApplies() {
         this.tabChangeSub
             .asObservable()
-            .takeUntil(this.destroyService)
-            .filter(tabIndex => tabIndex === 1)
-            .first()
+            .pipe(
+                filter(tabIndex => tabIndex === 1),
+                first(),
+                takeUntil(this.destroyService)
+            )
             .subscribe(tabIndex => {
                 this.store.dispatch(new FetchSavedAppliesAction())
             })
@@ -492,7 +508,7 @@ export class SystemOnOffComponent implements OnInit {
     private initToShowSavedApply() {
         this.toDetailSavedApplySub
             .asObservable()
-            .takeUntil(this.destroyService)
+            .pipe(takeUntil(this.destroyService))
             .subscribe(apply => {
                 this.store.dispatch(new ToDetailSavedApplyAction(apply))
             })
@@ -501,7 +517,7 @@ export class SystemOnOffComponent implements OnInit {
     private initToEditSavedApply() {
         this.toEditSavedApplySub
             .asObservable()
-            .takeUntil(this.destroyService)
+            .pipe(takeUntil(this.destroyService))
             .subscribe(apply => {
                 this.store.dispatch(new ToEditSavedApplyAction(apply))
             })
@@ -510,7 +526,7 @@ export class SystemOnOffComponent implements OnInit {
     private initToSubmitSavedApply() {
         this.toSubmitSavedApplySub
             .asObservable()
-            .takeUntil(this.destroyService)
+            .pipe(takeUntil(this.destroyService))
             .subscribe(apply => {
                 this.modalService.confirm({
                     title: '提交申请',
@@ -525,7 +541,7 @@ export class SystemOnOffComponent implements OnInit {
     private initToDeleteSavedApply() {
         this.toDeleteSavedApplySub
             .asObservable()
-            .takeUntil(this.destroyService)
+            .pipe(takeUntil(this.destroyService))
             .subscribe(apply => {
                 this.modalService.confirm({
                     title: '删除申请',
@@ -540,7 +556,7 @@ export class SystemOnOffComponent implements OnInit {
     private initCloseExtraTab() {
         this.toCloseExtraTabSub
             .asObservable()
-            .takeUntil(this.destroyService)
+            .pipe(takeUntil(this.destroyService))
             .subscribe(id => {
                 this.store.dispatch(new CloseExtraTabAction(id))
             })
@@ -549,9 +565,11 @@ export class SystemOnOffComponent implements OnInit {
     private initNeedManualResetTabIndex() {
         this.store
             .select(getNeedManualSetTabIndex)
-            .filter(e => e)
-            .withLatestFrom(this.store.select(getTabIndexToNeedManualSet))
-            .takeUntil(this.destroyService)
+            .pipe(
+                filter(e => e),
+                withLatestFrom(this.store.select(getTabIndexToNeedManualSet)),
+                takeUntil(this.destroyService)
+            )
             .subscribe(([_, tabIndex]) => {
                 this.tabIndex = tabIndex + 2
                 this.store.dispatch(new ResetNeedManualSetTabIndexAction())
@@ -560,24 +578,28 @@ export class SystemOnOffComponent implements OnInit {
 
     private initSwitchApplyTypeForExtra() {
         this.extraTabs$
-            .mergeMap(tabs => {
-                return Observable.merge(
-                    ...tabs.map((tab, i) =>
-                        tab.data.applyInfoForm
-                            .get('type')
-                            .valueChanges.map(e => ({
-                                applyType: e,
-                                tabIndex: i
-                            }))
+            .pipe(
+                mergeMap(tabs => {
+                    return merge(
+                        ...tabs.map((tab, i) =>
+                            tab.data.applyInfoForm
+                                .get('type')
+                                .valueChanges.pipe(
+                                    map(e => ({
+                                        applyType: e,
+                                        tabIndex: i
+                                    }))
+                                )
+                        )
                     )
-                )
-            })
-            .distinctUntilChanged(
-                (prev, curr) =>
-                    prev.applyType === curr.applyType &&
-                    prev.tabIndex === curr.tabIndex
+                }),
+                distinctUntilChanged(
+                    (prev, curr) =>
+                        prev.applyType === curr.applyType &&
+                        prev.tabIndex === curr.tabIndex
+                ),
+                takeUntil(this.destroyService)
             )
-            .takeUntil(this.destroyService)
             .subscribe(payload => {
                 this.store.dispatch(
                     new fromExtraTabs.SwitchApplyTypeAction({
@@ -591,7 +613,7 @@ export class SystemOnOffComponent implements OnInit {
     private initCancelEdit() {
         this.cancelEditSub
             .asObservable()
-            .takeUntil(this.destroyService)
+            .pipe(takeUntil(this.destroyService))
             .subscribe(() => {
                 this.store.dispatch(
                     new fromExtraTabs.CancelEditSystemOnOffApplyAction(
@@ -604,7 +626,7 @@ export class SystemOnOffComponent implements OnInit {
     private initEnsureEdit() {
         this.ensureEditSub
             .asObservable()
-            .takeUntil(this.destroyService)
+            .pipe(takeUntil(this.destroyService))
             .subscribe(() => {
                 this.store.dispatch(
                     new fromExtraTabs.EnsureEditSystemOnOffApplyAction(
@@ -617,18 +639,19 @@ export class SystemOnOffComponent implements OnInit {
     private initCreateApplyResourceForExtra() {
         this.toCreateResourceSub
             .asObservable()
-            .filter(() => this.tabIndex >= 2)
-            .mergeMap(() => {
-                return this.modalService.open({
-                    title: '新建资源信息',
-                    content: ToCreateApplyResourceComponent,
-                    footer: false,
-                    width: 800
-                })
-            })
-            .filter(e => typeof e !== 'string')
-
-            .takeUntil(this.destroyService)
+            .pipe(
+                filter(() => this.tabIndex >= 2),
+                mergeMap(() => {
+                    return this.modalService.open({
+                        title: '新建资源信息',
+                        content: ToCreateApplyResourceComponent,
+                        footer: false,
+                        width: 800
+                    })
+                }),
+                filter(e => typeof e !== 'string'),
+                takeUntil(this.destroyService)
+            )
             .subscribe(resource => {
                 this.store.dispatch(
                     new fromExtraTabs.CreateApplyResourceAction({
@@ -642,17 +665,19 @@ export class SystemOnOffComponent implements OnInit {
     private initAddApplyResourcesForExtra() {
         this.toAddResourcesSub
             .asObservable()
-            .filter(() => this.tabIndex >= 2)
-            .mergeMap(() => {
-                return this.modalService.open({
-                    title: '添加资源信息',
-                    content: ToAddApplyResourceComponent,
-                    footer: false,
-                    width: 1000
-                })
-            })
-            .filter(e => typeof e !== 'string')
-            .takeUntil(this.destroyService)
+            .pipe(
+                filter(() => this.tabIndex >= 2),
+                mergeMap(() => {
+                    return this.modalService.open({
+                        title: '添加资源信息',
+                        content: ToAddApplyResourceComponent,
+                        footer: false,
+                        width: 1000
+                    })
+                }),
+                filter(e => typeof e !== 'string'),
+                takeUntil(this.destroyService)
+            )
             .subscribe(resources => {
                 this.store.dispatch(
                     new fromExtraTabs.AddApplyResourcesAction({
@@ -666,18 +691,20 @@ export class SystemOnOffComponent implements OnInit {
     private initEditTempApplyResourceForExtra() {
         this.toEditTempResourceSub
             .asObservable()
-            .filter(() => this.tabIndex >= 2)
-            .mergeMap(resource => {
-                return this.modalService.open({
-                    title: '新增的资源信息',
-                    content: ToEditApplyResourceComponent,
-                    footer: false,
-                    width: 1000,
-                    componentParams: { resource }
-                })
-            })
-            .filter(e => typeof e !== 'string')
-            .takeUntil(this.destroyService)
+            .pipe(
+                filter(() => this.tabIndex >= 2),
+                mergeMap(resource => {
+                    return this.modalService.open({
+                        title: '新增的资源信息',
+                        content: ToEditApplyResourceComponent,
+                        footer: false,
+                        width: 1000,
+                        componentParams: { resource }
+                    })
+                }),
+                filter(e => typeof e !== 'string'),
+                takeUntil(this.destroyService)
+            )
             .subscribe(resource => {
                 this.store.dispatch(
                     new fromExtraTabs.EditTempApplyResourceAction({
@@ -691,25 +718,29 @@ export class SystemOnOffComponent implements OnInit {
     private initShowApplyResourceForExtra() {
         this.toShowResourceSub
             .asObservable()
-            .filter(() => this.tabIndex >= 2)
-            .mergeMap(resource => {
-                return this.modalService.open({
-                    title: `${resource.id ? '添加' : '新增'}的资源信息`,
-                    content: ToShowApplyResourceComponent,
-                    footer: false,
-                    width: 800,
-                    componentParams: { resource }
-                })
-            })
-            .takeUntil(this.destroyService)
-            .subscribe(() => {})
+            .pipe(
+                filter(() => this.tabIndex >= 2),
+                mergeMap(resource => {
+                    return this.modalService.open({
+                        title: `${resource.id ? '添加' : '新增'}的资源信息`,
+                        content: ToShowApplyResourceComponent,
+                        footer: false,
+                        width: 800,
+                        componentParams: { resource }
+                    })
+                }),
+                takeUntil(this.destroyService)
+            )
+            .subscribe(() => { })
     }
 
     private initDeleteApplyResourceForExtra() {
         this.toDeleteResourceSub
             .asObservable()
-            .filter(() => this.tabIndex >= 2)
-            .takeUntil(this.destroyService)
+            .pipe(
+                filter(() => this.tabIndex >= 2),
+                takeUntil(this.destroyService)
+            )
             .subscribe(index => {
                 this.modalService.confirm({
                     title: '删除资源信息',
@@ -723,7 +754,7 @@ export class SystemOnOffComponent implements OnInit {
                         )
                         console.log(
                             `delete apply resource; tab index: ${
-                                this.tabIndex
+                            this.tabIndex
                             }; resource index: ${index}`
                         )
                     }

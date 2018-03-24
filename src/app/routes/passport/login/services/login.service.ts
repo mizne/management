@@ -1,6 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http'
 import { Injectable } from '@angular/core'
 import { Observable } from 'rxjs/Observable'
+import { of } from 'rxjs/observable/of'
 import { LoginParams, LoginResult } from '../models/login.model'
 import { ErrorLoggerService } from '@core/services/error-logger.service'
 import { environment } from '@env/environment'
@@ -11,11 +12,11 @@ export class LoginService {
     constructor(
         private http: HttpClient,
         private errorLogger: ErrorLoggerService
-    ) {}
+    ) { }
     login(
         params: LoginParams
     ): Observable<{ login: LoginResult; exhibition: any }> {
-        return Observable.of({
+        return of({
             login: {
                 tenantId: `string`,
                 userId: `string`,

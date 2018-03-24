@@ -1,6 +1,8 @@
 import { HttpClient, HttpParams } from '@angular/common/http'
 import { Injectable } from '@angular/core'
 import { Observable } from 'rxjs/Observable'
+import { of } from 'rxjs/observable/of'
+import { delay } from 'rxjs/operators'
 import {
     ResourceInfo,
     ResourceUseInfo,
@@ -21,24 +23,24 @@ export class DistributionTreasuryService {
                 `search resource info with ${params.condition.searchText}`
             )
         }
-        return Observable.of(
+        return of(
             ResourceInfo.generateFakeDataItems(params.options)
-        ).delay(4e2)
+        ).pipe(delay(4e2))
     }
 
     fetchResourceInfoesCount(
         params: Partial<FetchResourceInfoesCountParams>
     ): Observable<number> {
         console.log(`search resource info count with `, params)
-        return Observable.of(42).delay(3e2)
+        return of(42).pipe(delay(3e2))
     }
 
     createResourceInfo(account: ResourceInfo): Observable<any> {
-        return Observable.of(null).delay(4e2)
+        return of(null).pipe(delay(4e2))
     }
 
     editResourceInfo(resourceInfo: ResourceInfo): Observable<any> {
-        return Observable.of(null).delay(4e2)
+        return of(null).pipe(delay(4e2))
     }
 
     fetchResourceUseInfoes(
@@ -49,19 +51,19 @@ export class DistributionTreasuryService {
                 `search resource use info with ${params.condition.searchText}`
             )
         }
-        return Observable.of(
+        return of(
             ResourceUseInfo.generateFakeDataItems(params.options)
-        ).delay(4e2)
+        ).pipe(delay(4e2))
     }
 
     fetchResourceUseInfoesCount(
         params: Partial<FetchResourceUseInfoesCountParams>
     ): Observable<number> {
         console.log(`search resource use info count with `, params)
-        return Observable.of(42).delay(3e2)
+        return of(42).pipe(delay(3e2))
     }
 
     editResourceUseInfo(resourceUseInfo: ResourceUseInfo): Observable<any> {
-        return Observable.of(null).delay(4e2)
+        return of(null).pipe(delay(4e2))
     }
 }

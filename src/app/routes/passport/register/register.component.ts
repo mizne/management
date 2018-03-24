@@ -4,6 +4,8 @@ import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms'
 import { NzMessageService } from 'ng-zorro-antd'
 
 import { Observable } from 'rxjs/Observable'
+import { of } from 'rxjs/observable/of'
+import { timer } from 'rxjs/observable/timer'
 import { Store } from '@ngrx/store'
 import { State, getRegisterLoading, getFetchCaptchaSuccess } from './reducers'
 import { DestroyService } from '@core/services/destroy.service'
@@ -11,6 +13,7 @@ import {
     FetchCaptchaAction,
     UserRegisterAction
 } from './actions/register.action'
+import { skip, concatMap, startWith, take, map, concat } from 'rxjs/operators';
 
 @Component({
     selector: 'passport-register',
@@ -35,7 +38,7 @@ export class UserRegisterComponent implements OnInit {
         public msg: NzMessageService,
         private store: Store<State>,
         private destroyService: DestroyService
-    ) {}
+    ) { }
 
     static checkPassword(control: FormControl) {
         if (!control) return null
@@ -146,17 +149,21 @@ export class UserRegisterComponent implements OnInit {
         this.loading$ = this.store.select(getRegisterLoading)
         this.captchaText$ = this.store
             .select(getFetchCaptchaSuccess)
-            .skip(1)
-            .concatMap(isSuccess => {
-                return isSuccess
-                    ? Observable.timer(0, 1e3)
-                          .take(60)
-                          .map(e => `${60 - e} 秒`)
-                          .concat(Observable.of(label))
-                    : Observable.of(label)
-            })
-            .startWith(label)
+            .pipe(
+                skip(1),
+                concatMap(isSuccess => {
+                    return isSuccess
+                        ? timer(0, 1e3)
+                            .pipe(
+                                take(totalRestTime),
+                                map(e => `${totalRestTime - e} 秒`),
+                                concat(of(label))
+                            )
+                        : of(label)
+                }),
+                startWith(label)
+            )
 
-        this.disabledCaptcha$ = this.captchaText$.map(e => e !== label)
+        this.disabledCaptcha$ = this.captchaText$.pipe(map(e => e !== label))
     }
 }

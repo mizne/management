@@ -3,8 +3,10 @@ import { SettingsService } from '@delon/theme'
 import { Router } from '@angular/router'
 import { Store } from '@ngrx/store'
 import { Observable } from 'rxjs/Observable'
+import { combineLatest } from 'rxjs/observable/combineLatest'
 import { State, getVisitorApprovalsCount, getExhibitorApprovalsCount } from '../reducers'
 import { FetchVisitorApprovalsCountAction, FetchExhibitorApprovalsCountAction } from '../actions/header.action'
+import { map } from 'rxjs/operators';
 
 @Component({
     selector: 'app-header',
@@ -44,12 +46,13 @@ export class HeaderComponent implements OnInit {
     }
 
     private initDataSource() {
-        this.approvalsCount$ = Observable.combineLatest(
+        this.approvalsCount$ = combineLatest(
             this.store.select(getVisitorApprovalsCount),
             this.store.select(getExhibitorApprovalsCount)
         )
-            .map(([count1, count2]) => count1 + count2)
-
+            .pipe(
+                map(([count1, count2]) => count1 + count2)
+            )
     }
 
     private initDispatcher() {
