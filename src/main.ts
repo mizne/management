@@ -8,12 +8,10 @@ import { hmrBootstrap } from './hmr';
 
 import { preloaderFinished } from '@delon/theme';
 
-import './rxjs-imports.ts';
-
 preloaderFinished();
 
 if (environment.production) {
-  enableProdMode();
+    enableProdMode();
 }
 
 const bootstrap = () => {
@@ -24,16 +22,16 @@ const bootstrap = () => {
 };
 
 if (environment.hmr) {
-  if (module['hot']) {
-      hmrBootstrap(module, bootstrap);
-  } else {
-      console.error('HMR is not enabled for webpack-dev-server!');
-      console.log('Are you using the --hmr flag for ng serve?');
-  }
-} else {
-  bootstrap().then(() => {
-    if ((<any>window).appBootstrap) {
-      (<any>window).appBootstrap();
+    if (module['hot']) {
+        hmrBootstrap(module, bootstrap);
+    } else {
+        console.error('HMR is not enabled for webpack-dev-server!');
+        console.log('Are you using the --hmr flag for ng serve?');
     }
-  });
+} else {
+    bootstrap().then(() => {
+        if ((<any>window).appBootstrap) {
+            (<any>window).appBootstrap();
+        }
+    });
 }
