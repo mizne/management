@@ -3,7 +3,7 @@ import { Effect, Actions } from '@ngrx/effects'
 import { Observable } from 'rxjs/Observable'
 import { of } from 'rxjs/observable/of'
 
-import * as fromApplicationSoftwareAccount from '../actions/application-software-account.action'
+import { fromApplicationSoftwareAccount } from '../actions'
 import { SoftwareAccountService } from '../services/software-account.service'
 import { NzNotificationService } from 'ng-zorro-antd'
 import { Store } from '@ngrx/store'

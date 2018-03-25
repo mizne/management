@@ -1,22 +1,14 @@
 import { NgModule } from '@angular/core'
 import { Routes, RouterModule } from '@angular/router'
 import { SharedModule } from '../../shared/shared.module'
-
 import { ResourceApplyComponent } from './resource-apply.component'
-
 import { StoreModule } from '@ngrx/store'
 import { EffectsModule } from '@ngrx/effects'
-import { RequirementApplyEffects } from './effects/requirement-apply.effects'
-import { SavedApplyEffects } from './effects/saved-apply.effects'
-import { ExtraTabsEffects } from './effects/extra-tabs.effects'
-import { ToAddApplyResourceEffects } from './effects/to-add-apply-resource.effects'
+import { effects } from './effects'
 import { reducers } from './reducers'
-import { ResourceApplyService } from './services/resource-apply.service'
+import { services } from './services'
 
-import { ToCreateApplyResourceComponent } from './modals/to-create-apply-resource/to-create-apply-resource.component'
-import { ToAddApplyResourceComponent } from './modals/to-add-apply-resource/to-add-apply-resource.component'
-import { ToEditApplyResourceComponent } from './modals/to-edit-apply-resource/to-edit-apply-resource.component'
-import { ToShowApplyResourceComponent } from './modals/to-show-apply-resource/to-show-apply-resource.component'
+import { modals } from './modals'
 
 export const routes: Routes = [
     {
@@ -24,27 +16,17 @@ export const routes: Routes = [
         component: ResourceApplyComponent
     }
 ]
-const modals = [
-    ToCreateApplyResourceComponent,
-    ToAddApplyResourceComponent,
-    ToEditApplyResourceComponent,
-    ToShowApplyResourceComponent
-]
+
 @NgModule({
     imports: [
         SharedModule,
         RouterModule.forChild(routes),
         StoreModule.forFeature('fromResourceApply', reducers),
-        EffectsModule.forFeature([
-            RequirementApplyEffects,
-            SavedApplyEffects,
-            ExtraTabsEffects,
-            ToAddApplyResourceEffects
-        ])
+        EffectsModule.forFeature(effects)
     ],
     exports: [],
     declarations: [ResourceApplyComponent, ...modals],
-    providers: [ResourceApplyService],
+    providers: [...services],
     entryComponents: [...modals]
 })
-export class ResourceApplyModule {}
+export class ResourceApplyModule { }

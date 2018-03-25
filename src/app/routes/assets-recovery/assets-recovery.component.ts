@@ -15,18 +15,15 @@ import {
     getAssetsRecoveryPageParams
 } from './reducers'
 import {
-    FetchAssetsRecoveriesAction,
-    FetchAssetsRecoveriesCountAction,
-    EnsureRecoveryAction,
-    EnsurePageParamsAction
-} from './actions/assets-recovery.action'
+    fromAssetsRecovery
+} from './actions'
 
 import { Subject } from 'rxjs/Subject'
 import { takeUntil, mergeMap, filter, tap, withLatestFrom } from 'rxjs/operators'
 import { merge } from 'rxjs/observable/merge'
 import { DestroyService } from '@core/services/destroy.service'
 
-import { ToShowResourceInfoComponent } from './modals/to-show-resource-info/to-show-resource-info.component'
+import { ToShowResourceInfoComponent } from './modals'
 
 @Component({
     selector: 'app-assets-recovery',
@@ -98,8 +95,8 @@ export class AssetsRecoveryComponent implements OnInit {
     }
 
     private initDispatcher(): void {
-        this.store.dispatch(new FetchAssetsRecoveriesAction())
-        this.store.dispatch(new FetchAssetsRecoveriesCountAction())
+        this.store.dispatch(new fromAssetsRecovery.FetchAssetsRecoveriesAction())
+        this.store.dispatch(new fromAssetsRecovery.FetchAssetsRecoveriesCountAction())
     }
 
     private initSubscriber(): void {
@@ -118,7 +115,7 @@ export class AssetsRecoveryComponent implements OnInit {
                     content: '确定回收这个资产信息?',
                     onOk: () => {
                         this.store.dispatch(
-                            new EnsureRecoveryAction(assetsRecovery)
+                            new fromAssetsRecovery.EnsureRecoveryAction(assetsRecovery)
                         )
                         console.log('ensure recovery, ', assetsRecovery)
                     }
@@ -153,7 +150,7 @@ export class AssetsRecoveryComponent implements OnInit {
             .pipe(takeUntil(this.destroyService))
             .subscribe(() => {
                 this.store.dispatch(
-                    new FetchAssetsRecoveriesCountAction(this.searchForm.value)
+                    new fromAssetsRecovery.FetchAssetsRecoveriesCountAction(this.searchForm.value)
                 )
             })
 
@@ -175,13 +172,13 @@ export class AssetsRecoveryComponent implements OnInit {
             .pipe(takeUntil(this.destroyService))
             .subscribe(() => {
                 this.store.dispatch(
-                    new EnsurePageParamsAction({
+                    new fromAssetsRecovery.EnsurePageParamsAction({
                         pageIndex: this.assetsRecoveryPageIndex,
                         pageSize: this.assetsRecoveryPageSize
                     })
                 )
                 this.store.dispatch(
-                    new FetchAssetsRecoveriesAction({
+                    new fromAssetsRecovery.FetchAssetsRecoveriesAction({
                         condition: this.searchForm.value,
                         options: {
                             pageIndex: this.assetsRecoveryPageIndex,

@@ -3,8 +3,8 @@ import { Effect, Actions } from '@ngrx/effects'
 import { Observable } from 'rxjs/Observable'
 import { of } from 'rxjs/observable/of'
 
-import * as fromRequirementApply from '../actions/requirement-apply.action'
-import { ResourceApplyService } from '../services/resource-apply.service'
+import { fromRequirementApply } from '../actions'
+import { ResourceApplyService } from '../services'
 import { NzNotificationService } from 'ng-zorro-antd'
 import { Store } from '@ngrx/store'
 import {

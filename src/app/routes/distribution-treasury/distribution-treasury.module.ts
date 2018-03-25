@@ -6,14 +6,10 @@ import { DistributionTreasuryComponent } from './distribution-treasury.component
 
 import { StoreModule } from '@ngrx/store'
 import { EffectsModule } from '@ngrx/effects'
-import { ResourceEntryEffects } from './effects/resource-entry.effects'
-import { ResourceAssignEffects } from './effects/resource-assign.effects'
+import { effects } from './effects'
 import { reducers } from './reducers'
-import { DistributionTreasuryService } from './services/distribution-treasury.service'
-
-import { ToCreateResourceInfoComponent } from './modals/to-create-resource-info/to-create-resource-info.component'
-import { ToEditResourceInfoComponent } from './modals/to-edit-resource-info/to-edit-resource-info.component'
-import { ToShowResourceInfoComponent } from './modals/to-show-resource-info/to-show-resource-info.component'
+import { services } from './services'
+import { modals } from './modals'
 
 export const routes: Routes = [
     {
@@ -22,22 +18,16 @@ export const routes: Routes = [
     }
 ]
 
-const modals = [
-    ToCreateResourceInfoComponent,
-    ToEditResourceInfoComponent,
-    ToShowResourceInfoComponent
-]
-
 @NgModule({
     imports: [
         SharedModule,
         RouterModule.forChild(routes),
         StoreModule.forFeature('fromDistributionTreasury', reducers),
-        EffectsModule.forFeature([ResourceEntryEffects, ResourceAssignEffects])
+        EffectsModule.forFeature(effects)
     ],
     exports: [],
     declarations: [DistributionTreasuryComponent, ...modals],
-    providers: [DistributionTreasuryService],
+    providers: [...services],
     entryComponents: [...modals]
 })
-export class DistributionTreasuryModule {}
+export class DistributionTreasuryModule { }

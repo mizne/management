@@ -1,4 +1,5 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core'
+import { FormControl } from '@angular/forms'
 import { NzMessageService, NzModalService } from 'ng-zorro-antd'
 
 import {
@@ -47,16 +48,17 @@ import {
 } from './actions/middleware-software-account.action'
 import { Subject } from 'rxjs/Subject'
 import { DestroyService } from '@core/services/destroy.service'
-import { ToCreateApplicationSoftwareAccountComponent } from './modals/to-create-application-software-account/to-create-application-software-account.component'
-import { ToCreateSystemSoftwareAccountComponent } from './modals/to-create-system-software-account/to-create-system-software-account.component'
-import { ToCreateMiddlewareSoftwareAccountComponent } from './modals/to-create-middleware-software-account/to-create-middleware-software-account.component'
-import { FormControl } from '@angular/forms'
-import { ToEditApplicationSoftwareAccountComponent } from './modals/to-edit-application-software-account/to-edit-application-software-account.component'
-import { ToEditSystemSoftwareAccountComponent } from './modals/to-edit-system-software-account/to-edit-system-software-account.component'
-import { ToEditMiddlewareSoftwareAccountComponent } from './modals/to-edit-middleware-software-account/to-edit-middleware-software-account.component'
-import { ToShowApplicationSoftwareAccountComponent } from './modals/to-show-application-software-account/to-show-application-software-account.component'
-import { ToShowSystemSoftwareAccountComponent } from './modals/to-show-system-software-account/to-show-system-software-account.component'
-import { ToShowMiddlewareSoftwareAccountComponent } from './modals/to-show-middleware-software-account/to-show-middleware-software-account.component'
+import {
+    ToCreateApplicationSoftwareAccountComponent,
+    ToCreateSystemSoftwareAccountComponent,
+    ToCreateMiddlewareSoftwareAccountComponent,
+    ToEditApplicationSoftwareAccountComponent,
+    ToEditSystemSoftwareAccountComponent,
+    ToEditMiddlewareSoftwareAccountComponent,
+    ToShowApplicationSoftwareAccountComponent,
+    ToShowSystemSoftwareAccountComponent,
+    ToShowMiddlewareSoftwareAccountComponent
+} from './modals'
 import { mergeMap, takeUntil, filter, tap, withLatestFrom } from 'rxjs/operators';
 
 @Component({

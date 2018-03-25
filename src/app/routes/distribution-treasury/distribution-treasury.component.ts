@@ -19,19 +19,8 @@ import {
     getResourceInfoPageParams,
     getResourceUseInfoPageParams
 } from './reducers'
-import {
-    FetchResourceInfoesAction,
-    FetchResourceInfoesCountAction,
-    CreateResourceInfoAction,
-    EditResourceInfoAction,
-    EnsurePageParamsAction as EnsureResourceInfoPageParamsAction
-} from './actions/resource-entry.action'
-import {
-    FetchResourceUseInfoesAction,
-    FetchResourceUseInfoesCountAction,
-    EditResourceUseInfoAction,
-    EnsurePageParamsAction as EnsureResourceUseInfoPageParamsAction
-} from './actions/resource-assign.action'
+
+import { fromResourceAssign, fromResourceEntry } from './actions'
 
 import { Subject } from 'rxjs/Subject'
 import { DestroyService } from '@core/services/destroy.service'
@@ -180,11 +169,11 @@ export class DistributionTreasuryComponent implements OnInit {
     }
 
     private initDispatcher(): void {
-        this.store.dispatch(new FetchResourceInfoesAction())
-        this.store.dispatch(new FetchResourceInfoesCountAction())
+        this.store.dispatch(new fromResourceEntry.FetchResourceInfoesAction())
+        this.store.dispatch(new fromResourceEntry.FetchResourceInfoesCountAction())
 
-        this.store.dispatch(new FetchResourceUseInfoesAction())
-        this.store.dispatch(new FetchResourceUseInfoesCountAction())
+        this.store.dispatch(new fromResourceAssign.FetchResourceUseInfoesAction())
+        this.store.dispatch(new fromResourceAssign.FetchResourceUseInfoesCountAction())
     }
 
     private initSubscriber(): void {
@@ -222,7 +211,7 @@ export class DistributionTreasuryComponent implements OnInit {
                 takeUntil(this.destroyService)
             )
             .subscribe(resourceInfo => {
-                this.store.dispatch(new CreateResourceInfoAction(resourceInfo))
+                this.store.dispatch(new fromResourceEntry.CreateResourceInfoAction(resourceInfo))
             })
     }
 
@@ -243,7 +232,7 @@ export class DistributionTreasuryComponent implements OnInit {
                 takeUntil(this.destroyService)
             )
             .subscribe(resourceInfo => {
-                this.store.dispatch(new EditResourceInfoAction(resourceInfo))
+                this.store.dispatch(new fromResourceEntry.EditResourceInfoAction(resourceInfo))
             })
     }
 
@@ -274,7 +263,7 @@ export class DistributionTreasuryComponent implements OnInit {
             .pipe(takeUntil(this.destroyService))
             .subscribe(() => {
                 this.store.dispatch(
-                    new FetchResourceInfoesCountAction(
+                    new fromResourceEntry.FetchResourceInfoesCountAction(
                         this.resourceInfoSearchForm.value
                     )
                 )
@@ -298,13 +287,13 @@ export class DistributionTreasuryComponent implements OnInit {
             .pipe(takeUntil(this.destroyService))
             .subscribe(() => {
                 this.store.dispatch(
-                    new EnsureResourceInfoPageParamsAction({
+                    new fromResourceEntry.EnsurePageParamsAction({
                         pageIndex: this.resourceUseInfoPageIndex,
                         pageSize: this.resourceInfoPageSize
                     })
                 )
                 this.store.dispatch(
-                    new FetchResourceInfoesAction({
+                    new fromResourceEntry.FetchResourceInfoesAction({
                         condition: this.resourceInfoSearchForm.value,
                         options: {
                             pageIndex: this.resourceUseInfoPageIndex,
@@ -343,7 +332,7 @@ export class DistributionTreasuryComponent implements OnInit {
                     this.resourceUseInfoSearchForm.value
                 )
                 this.store.dispatch(
-                    new EditResourceUseInfoAction(
+                    new fromResourceAssign.EditResourceUseInfoAction(
                         this.resourceUseInfoSearchForm.value
                     )
                 )
@@ -356,7 +345,7 @@ export class DistributionTreasuryComponent implements OnInit {
             .pipe(takeUntil(this.destroyService))
             .subscribe(() => {
                 this.store.dispatch(
-                    new FetchResourceUseInfoesCountAction(
+                    new fromResourceAssign.FetchResourceUseInfoesCountAction(
                         this.resourceUseInfoSearchForm.value
                     )
                 )
@@ -381,13 +370,13 @@ export class DistributionTreasuryComponent implements OnInit {
             .pipe(takeUntil(this.destroyService))
             .subscribe(() => {
                 this.store.dispatch(
-                    new EnsureResourceUseInfoPageParamsAction({
+                    new fromResourceAssign.EnsurePageParamsAction({
                         pageIndex: this.resourceUseInfoPageIndex,
                         pageSize: this.resourceUseInfoPageSize
                     })
                 )
                 this.store.dispatch(
-                    new FetchResourceUseInfoesAction({
+                    new fromResourceAssign.FetchResourceUseInfoesAction({
                         condition: this.resourceUseInfoSearchForm.value,
                         options: {
                             pageIndex: this.resourceUseInfoPageIndex,

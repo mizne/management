@@ -6,11 +6,11 @@ import { AssetsRecoveryComponent } from './assets-recovery.component'
 
 import { StoreModule } from '@ngrx/store'
 import { EffectsModule } from '@ngrx/effects'
-import { AssetsRecoveryEffects } from './effects/assets-recovery.effects'
 import { reducers } from './reducers'
-import { AssetsRecoveryService } from './services/assets-recovery.service'
+import { effects } from './effects'
+import { services } from './services'
 
-import { ToShowResourceInfoComponent } from './modals/to-show-resource-info/to-show-resource-info.component'
+import { modals } from './modals'
 
 export const routes: Routes = [
     {
@@ -19,18 +19,16 @@ export const routes: Routes = [
     }
 ]
 
-const modals = [ToShowResourceInfoComponent]
-
 @NgModule({
     imports: [
         SharedModule,
         RouterModule.forChild(routes),
         StoreModule.forFeature('fromAssetsRecovery', reducers),
-        EffectsModule.forFeature([AssetsRecoveryEffects])
+        EffectsModule.forFeature(effects)
     ],
     exports: [],
     declarations: [AssetsRecoveryComponent, ...modals],
-    providers: [AssetsRecoveryService],
+    providers: [...services],
     entryComponents: [...modals]
 })
-export class AssetsRecoveryModule {}
+export class AssetsRecoveryModule { }
