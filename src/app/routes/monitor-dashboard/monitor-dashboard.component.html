@@ -1,0 +1,52 @@
+<pro-header></pro-header>
+
+
+<nz-card [nzBordered]="false">
+    <nz-tabset [nzType]="'card'" [(nzSelectedIndex)]="tabIndex" (nzSelectedIndexChange)="tabChange($event)">
+        <nz-tab>
+            <ng-template #nzTabHeading>
+                <i class="anticon anticon-apple"></i>
+                服务器负载信息
+            </ng-template>
+            <nz-card [nzTitle]="'服务器平均负载信息'" [nzBordered]="false">
+                <div nz-row [nzGutter]="24" class="pt-lg">
+                    <div nz-col nzXs="24" nzSm="12" nzMd="12" nzLg="6">
+                        <gauge [height]="180" [percent]="27" [format]="couponFormat"></gauge>
+                        <div class="text-center mt-md">CPU使用率</div>
+                    </div>
+                    <div nz-col nzXs="24" nzSm="12" nzMd="12" nzLg="6">
+                        <gauge [height]="180" [percent]="47" [format]="couponFormat"></gauge>
+                        <div class="text-center mt-md">内存使用率</div>
+                    </div>
+                    <div nz-col nzXs="24" nzSm="12" nzMd="12" nzLg="6">
+                        <gauge [height]="180" [percent]="67" [format]="couponFormat"></gauge>
+                        <div class="text-center mt-md">硬盘使用率</div>
+                    </div>
+                    <div nz-col nzXs="24" nzSm="12" nzMd="12" nzLg="6">
+                        <gauge [height]="180" [percent]="87" [format]="couponFormat"></gauge>
+                        <div class="text-center mt-md">网络使用率</div>
+                    </div>
+                </div>
+
+            </nz-card>
+            <nz-card [nzTitle]="'服务器实时平均负载信息'" [nzBordered]="false">
+            </nz-card>
+        </nz-tab>
+
+        <nz-tab>
+            <ng-template #nzTabHeading>
+                <i class="anticon anticon-android"></i>
+                服务器运行状态
+            </ng-template>
+            <nz-card [nzTitle]="'物理服务器状态'" [nzBordered]="false">
+            </nz-card>
+            <nz-card [nzTitle]="'虚拟服务器状态'" [nzBordered]="false">
+            </nz-card>
+            <nz-card [nzTitle]="'服务器集群状态'" [nzBordered]="false">
+            </nz-card>
+            <nz-card [nzTitle]="'进程总数处于前十位的服务器'" [nzBordered]="false">
+            </nz-card>
+        </nz-tab>
+
+    </nz-tabset>
+</nz-card>

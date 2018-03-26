@@ -79,6 +79,11 @@ const routes: Routes = [
                 path: 'assets-management/assets-recovery',
                 loadChildren:
                     './assets-recovery/assets-recovery.module#AssetsRecoveryModule'
+            },
+            {
+                path: 'monitor-management/monitor-dashboard',
+                loadChildren:
+                    './monitor-dashboard/monitor-dashboard.module#MonitorDashboardModule'
             }
             // {
             //     path: 'assets-management/my-apply',
