@@ -28,8 +28,8 @@ interface NetWorkAndIOUseInfo {
       <v-tooltip></v-tooltip>
       <v-axis></v-axis>
       <v-legend></v-legend>
-      <v-smooth-line [position]="['时间', '使用率']" color="city" shape="smooth"></v-smooth-line>
-      <v-point [position]="['时间', '使用率']" color="city" shape="circle"></v-point>
+      <v-smooth-line [position]="['时间', '使用率']" color="resourceType" shape="smooth"></v-smooth-line>
+      <v-point [position]="['时间', '使用率']" color="resourceType" shape="circle"></v-point>
     </v-chart>
   </div>`
 })
@@ -85,7 +85,7 @@ export class NetWorkAndIOTimelineComponent implements OnInit {
                 dv1.transform({
                     type: 'fold',
                     fields: ['网络速率', '磁盘读写速率'],
-                    key: 'city',
+                    key: 'resourceType',
                     value: '使用率'
                 })
                 return dv1.rows

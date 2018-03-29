@@ -28,8 +28,8 @@ interface CPUAndMemoryUseInfo {
       <v-tooltip></v-tooltip>
       <v-axis></v-axis>
       <v-legend></v-legend>
-      <v-smooth-line [position]="['时间', '使用率']" color="city" shape="smooth"></v-smooth-line>
-      <v-point [position]="['时间', '使用率']" color="city" shape="circle"></v-point>
+      <v-smooth-line [position]="['时间', '使用率']" color="resourctType" shape="smooth"></v-smooth-line>
+      <v-point [position]="['时间', '使用率']" color="resourctType" shape="circle"></v-point>
     </v-chart>
   </div>`
 })
@@ -85,7 +85,7 @@ export class CPUAndMemoryTimelineComponent implements OnInit {
                 dv1.transform({
                     type: 'fold',
                     fields: ['CPU使用', '内存使用'],
-                    key: 'city',
+                    key: 'resourctType',
                     value: '使用率'
                 })
                 return dv1.rows
