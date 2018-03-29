@@ -1,0 +1,14 @@
+<pro-header></pro-header>
+
+
+<nz-card [nzBordered]="false">
+    <nz-tabset [nzType]="'card'" [(nzSelectedIndex)]="tabIndex" (nzSelectedIndexChange)="tabChange($event)">
+        <nz-tab>
+            <ng-template #nzTabHeading>
+                <i class="anticon anticon-apple"></i>
+                服务器拓扑信息
+            </ng-template>
+            服务器拓扑信息
+        </nz-tab>
+    </nz-tabset>
+</nz-card>

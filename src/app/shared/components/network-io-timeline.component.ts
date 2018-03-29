@@ -81,7 +81,7 @@ export class NetWorkAndIOTimelineComponent implements OnInit {
                 return t
             }, sourceData),
             map(src => {
-                const dv1 = new DataSet.View().source(src)
+                const dv1 = new (DataSet as any).View().source(src)
                 dv1.transform({
                     type: 'fold',
                     fields: ['网络速率', '磁盘读写速率'],

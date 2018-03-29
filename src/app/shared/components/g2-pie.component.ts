@@ -15,7 +15,7 @@ const scale = [
     }
 ]
 
-const dv = new DataSet.View().source(sourceData)
+const dv = new (DataSet as any).View().source(sourceData)
 dv.transform({
     type: 'percent',
     field: 'count',

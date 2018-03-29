@@ -81,7 +81,7 @@ export class CPUAndMemoryTimelineComponent implements OnInit {
                 return t
             }, sourceData),
             map(src => {
-                const dv1 = new DataSet.View().source(src)
+                const dv1 = new (DataSet as any).View().source(src)
                 dv1.transform({
                     type: 'fold',
                     fields: ['CPU使用', '内存使用'],

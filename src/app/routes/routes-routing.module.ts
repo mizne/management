@@ -84,6 +84,11 @@ const routes: Routes = [
                 path: 'monitor-management/monitor-dashboard',
                 loadChildren:
                     './monitor-dashboard/monitor-dashboard.module#MonitorDashboardModule'
+            },
+            {
+                path: 'monitor-management/server-topology',
+                loadChildren:
+                    './server-topology/server-topology.module#ServerTopologyModule'
             }
             // {
             //     path: 'assets-management/my-apply',
