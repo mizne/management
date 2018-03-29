@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core'
+import { Component, OnInit, ChangeDetectionStrategy, AfterViewInit } from '@angular/core'
 import { NzMessageService, NzModalService } from 'ng-zorro-antd'
 import * as moment from 'moment'
 import {
@@ -30,6 +30,203 @@ import {
     map
 } from 'rxjs/operators'
 
+const data = {
+    'source': {
+        'nodes': [
+            {
+                'shape': 'clusterNode',
+                'x': 790,
+                'y': 110,
+                'id': 'group3',
+                'label': '集群3'
+            },
+            {
+                'shape': 'serverNode',
+                'x': 760,
+                'y': 60,
+                'id': 'server6',
+                'label': '服务器6',
+                'color': '#a5d69c'
+            },
+            {
+                'shape': 'serverNode',
+                'x': 820,
+                'y': 150,
+                'id': 'server5',
+                'label': '服务器5',
+                'color': '#a5d69c'
+            },
+            {
+                'shape': 'clusterNode',
+                'x': 1180,
+                'y': 500,
+                'id': 'group1',
+                'label': '集群1'
+            },
+            {
+                'shape': 'clusterNode',
+                'x': 430,
+                'y': 470,
+                'id': 'group2',
+                'label': '集群2'
+            },
+            {
+                'shape': 'serverNode',
+                'x': 480,
+                'y': 520,
+                'id': 'server2',
+                'label': '服务器2',
+                'color': '#daabab'
+            },
+            {
+                'shape': 'serverNode',
+                'x': 400,
+                'y': 430,
+                'id': 'server1',
+                'label': '服务器1',
+                'color': '#a5d69c'
+            },
+            {
+                'shape': 'serverNode',
+                'x': 1150,
+                'y': 470,
+                'id': 'server3',
+                'label': '服务器3',
+                'color': '#a5d69c'
+            },
+            {
+                'shape': 'serverNode',
+                'x': 1230,
+                'y': 540,
+                'id': 'server4',
+                'label': '服务器4',
+                'color': '#daabab'
+            },
+            {
+                'shape': 'serverNode',
+                'x': 800,
+                'y': 660,
+                'id': 'server7',
+                'label': '服务器7',
+                'color': '#a5d69c'
+            }
+        ],
+        'edges': [
+            {
+                'source': 'group1',
+                'id': 'edge1',
+                'target': 'group2',
+                'shape': 'arrow'
+            },
+            {
+                'source': 'group3',
+                'id': 'edge2',
+                'target': 'group2'
+            },
+            {
+                'source': 'group1',
+                'id': 'edge3',
+                'target': 'group3'
+            },
+            {
+                'source': 'group1',
+                'id': 'edge4',
+                'target': 'server7'
+            }
+        ]
+    },
+    'guides': []
+}
+
+G6.registerNode('clusterNode', {
+    draw(cfg, group) {
+        group.addShape('text', {
+            attrs: {
+                x: cfg.x - 20,
+                y: cfg.y - 110,
+                fill: '#333',
+                text: cfg.label
+            }
+        });
+        return group.addShape('rect', {
+            attrs: {
+                x: cfg.x - 100,
+                y: cfg.y - 100,
+                width: 200,
+                height: 200,
+                fill: '#fff',
+                stroke: 'red'
+            }
+        });
+    },
+    getAnchorPoints() {
+        return [
+            [0, 0.25],
+            [0, 0.5],
+            [0, 0.75],
+            [1, 0.25],
+            [1, 0.5],
+            [1, 0.75],
+            [0.25, 0],
+            [0.5, 0],
+            [0.75, 0],
+            [0.25, 1],
+            [0.5, 1],
+            [0.75, 1]
+        ];
+    }
+});
+
+G6.registerNode('serverNode', {
+    draw(cfg, group) {
+        // group.addShape('text', {
+        //   attrs: {
+        //     x: cfg.x - 20,
+        //     y: cfg.y,
+        //     fill: '#333',
+        //     text: cfg.label
+        //   }
+        // });
+        return group.addShape('rect', {
+            attrs: {
+                x: cfg.x - 25,
+                y: cfg.y - 35,
+                width: 50,
+                height: 70,
+                fill: cfg.color,
+                stroke: '#f00'
+            }
+        });
+    },
+
+    afterDraw(cfg, group) {
+        group.addShape('text', {
+            attrs: {
+                x: cfg.x - 20,
+                y: cfg.y,
+                fill: '#333',
+                text: cfg.label
+            }
+        });
+    },
+    getAnchorPoints() {
+        return [
+            [0, 0.25],
+            [0, 0.5],
+            [0, 0.75],
+            [1, 0.25],
+            [1, 0.5],
+            [1, 0.75],
+            [0.25, 0],
+            [0.5, 0],
+            [0.75, 0],
+            [0.25, 1],
+            [0.5, 1],
+            [0.75, 1]
+        ];
+    }
+});
+
 @Component({
     selector: 'app-server-topology',
     templateUrl: './server-topology.component.html',
@@ -37,29 +234,46 @@ import {
     providers: [DestroyService],
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ServerTopologyComponent implements OnInit {
+export class ServerTopologyComponent implements OnInit, AfterViewInit {
     tabIndex = 0
+    data = data;
+    net: any
 
     constructor(
         private messageService: NzMessageService,
         private modalService: NzModalService,
         private store: Store<State>,
         private destroyService: DestroyService
-    ) {}
+    ) { }
 
     ngOnInit() {
         this.intDataSource()
         this.initDispatcher()
         this.initSubscriber()
-
-        console.log(G2)
     }
 
-    tabChange(tabIndex: number) {}
+    tabChange(tabIndex: number) { }
 
-    private intDataSource(): void {}
+    ngAfterViewInit() {
+        this.net = new G6.Net({
+            id: 'c1',      // 容器ID
+            mode: 'edit',
+            width: window.innerWidth,    // 画布宽
+            height: window.innerHeight    // 画布高
+        });
+        // 第五步：载入数据
+        this.net.source(this.data.source.nodes, this.data.source.edges);
+        // 第六步：渲染关系图
+        this.net.render();
+    }
 
-    private initDispatcher(): void {}
+    save() {
+        console.log(this.net.save())
+    }
 
-    private initSubscriber(): void {}
+    private intDataSource(): void { }
+
+    private initDispatcher(): void { }
+
+    private initSubscriber(): void { }
 }

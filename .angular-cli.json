@@ -3,36 +3,35 @@
     "project": {
         "name": "ng-alain"
     },
-    "apps": [
-        {
-            "root": "src",
-            "outDir": "dist",
-            "assets": ["assets", "favicon.ico"],
-            "index": "index.html",
-            "main": "main.ts",
-            "polyfills": "polyfills.ts",
-            "test": "test.ts",
-            "tsconfig": "tsconfig.app.json",
-            "testTsconfig": "tsconfig.spec.json",
-            "prefix": "app",
-            "styles": ["styles.less"],
-            "scripts": [],
-            "environmentSource": "environments/environment.ts",
-            "environments": {
-                "dev": "environments/environment.ts",
-                "prod": "environments/environment.prod.ts",
-                "hmr": "environments/environment.hmr.ts",
-                "chore": "environments/environment.chore.ts"
-            }
+    "apps": [{
+        "root": "src",
+        "outDir": "dist",
+        "assets": ["assets", "favicon.ico"],
+        "index": "index.html",
+        "main": "main.ts",
+        "polyfills": "polyfills.ts",
+        "test": "test.ts",
+        "tsconfig": "tsconfig.app.json",
+        "testTsconfig": "tsconfig.spec.json",
+        "prefix": "app",
+        "styles": ["styles.less"],
+        "scripts": [
+            "../node_modules/@antv/g6/dist/g6.min.js"
+        ],
+        "environmentSource": "environments/environment.ts",
+        "environments": {
+            "dev": "environments/environment.ts",
+            "prod": "environments/environment.prod.ts",
+            "hmr": "environments/environment.hmr.ts",
+            "chore": "environments/environment.chore.ts"
         }
-    ],
+    }],
     "e2e": {
         "protractor": {
             "config": "./protractor.conf.js"
         }
     },
-    "lint": [
-        {
+    "lint": [{
             "project": "src/tsconfig.app.json",
             "exclude": "**/node_modules/**"
         },

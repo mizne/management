@@ -213,6 +213,10 @@
     lodash "~4.17.4"
     wolfy87-eventemitter "~5.2.4"
 
+"@antv/g6@^1.2.8-beta.5":
+  version "1.2.8-beta.5"
+  resolved "https://registry.yarnpkg.com/@antv/g6/-/g6-1.2.8-beta.5.tgz#6644fae91aeb5a8b6bffd5b1e78e3ede9ea36909"
+
 "@antv/g@^2.0.5-beta.3":
   version "2.0.6"
   resolved "https://registry.yarnpkg.com/@antv/g/-/g-2.0.6.tgz#88a85b5899eae6f3d51f016894b51e39356e56b1"

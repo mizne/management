@@ -12,10 +12,12 @@ interface WebpackRequire {
         callback: (require: <T>(path: string) => T) => void
     ) => void
 }
-interface NodeRequire extends WebpackRequire {}
+interface NodeRequire extends WebpackRequire { }
 declare var require: NodeRequire
 
 // G2
 declare var G2: any
 declare var Slider: any
 declare var Cloud: any
+
+declare var G6: any

@@ -36,6 +36,7 @@
         "@antv/data-set": "^0.8.3",
         "@antv/g2": "^3.0.1",
         "@antv/g2-plugin-slider": "^2.0.0",
+        "@antv/g6": "^1.2.8-beta.5",
         "@delon/abc": "^0.6.5",
         "@delon/acl": "^0.6.5",
         "@delon/auth": "^0.6.5",
