@@ -195,11 +195,15 @@
     topojson-client "~3.0.0"
     wolfy87-eventemitter "~5.1.0"
 
-"@antv/g2-plugin-slider@^2.0.0":
+"@antv/g2-brush@^0.0.2":
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/@antv/g2-brush/-/g2-brush-0.0.2.tgz#0b65f3ebbf82690202913d0b6759ab2900faa841"
+
+"@antv/g2-plugin-slider@^2.0.0", "@antv/g2-plugin-slider@^2.0.1":
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/@antv/g2-plugin-slider/-/g2-plugin-slider-2.0.1.tgz#45cf6da6f2050fabe64166a213674422afe4eebf"
 
-"@antv/g2@^3.0.1":
+"@antv/g2@^3.0.0", "@antv/g2@^3.0.1":
   version "3.0.4"
   resolved "https://registry.yarnpkg.com/@antv/g2/-/g2-3.0.4.tgz#718880d3797af713cb872ebc2da76d94fd72cfba"
   dependencies:
@@ -303,6 +307,14 @@
     semver "^5.3.0"
     semver-intersect "^1.1.2"
 
+"@types/core-js@^0.9.43":
+  version "0.9.46"
+  resolved "https://registry.yarnpkg.com/@types/core-js/-/core-js-0.9.46.tgz#ea701ee34cbb6dfe6d100f1530319547c93c8d79"
+
+"@types/d3-format@*":
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/@types/d3-format/-/d3-format-1.2.1.tgz#9435fb1771d2fbf6a858c93218f4097c9aa396c1"
+
 "@types/jasmine@*":
   version "2.8.6"
   resolved "https://registry.yarnpkg.com/@types/jasmine/-/jasmine-2.8.6.tgz#14445b6a1613cf4e05dd61c3c3256d0e95c0421e"
@@ -323,6 +335,10 @@
   dependencies:
     "@types/node" "*"
 
+"@types/lodash@*":
+  version "4.14.106"
+  resolved "https://registry.yarnpkg.com/@types/lodash/-/lodash-4.14.106.tgz#6093e9a02aa567ddecfe9afadca89e53e5dce4dd"
+
 "@types/mockjs@^1.0.0":
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/@types/mockjs/-/mockjs-1.0.0.tgz#a696e1f64c92e7bd6af6343bf8350d1b9d12b388"
@@ -331,9 +347,17 @@
   version "9.4.6"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-9.4.6.tgz#d8176d864ee48753d053783e4e463aec86b8d82e"
 
+"@types/node@7.0.7":
+  version "7.0.7"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-7.0.7.tgz#92637c6c4844bfc9a0a686323e38f3e9319118c2"
+
 "@types/node@^6.0.46", "@types/node@~6.0.60":
   version "6.0.101"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-6.0.101.tgz#0c5911cfb434af4a51c0a499931fe6423207d921"
+
+"@types/node@^8.0.53":
+  version "8.10.1"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-8.10.1.tgz#aac98b810c50568054486f2bb8c486d824713be8"
 
 "@types/q@^0.0.32":
   version "0.0.32"
@@ -1837,6 +1861,10 @@ d3-dsv@~1.0.5:
 d3-ease@~1.0.3:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/d3-ease/-/d3-ease-1.0.3.tgz#68bfbc349338a380c44d8acc4fbc3304aa2d8c0e"
+
+d3-format@^1.2.0:
+  version "1.2.2"
+  resolved "https://registry.yarnpkg.com/d3-format/-/d3-format-1.2.2.tgz#1a39c479c8a57fe5051b2e67a3bee27061a74e7a"
 
 d3-geo-projection@~2.1.2:
   version "2.1.2"
@@ -5902,6 +5930,10 @@ ramda@^0.25.0:
   version "0.25.0"
   resolved "https://registry.yarnpkg.com/ramda/-/ramda-0.25.0.tgz#8fdf68231cffa90bc2f9460390a0cb74a29b29a9"
 
+random-float@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/random-float/-/random-float-1.0.0.tgz#3a891cd66342108fc5f46cdfa32838e26b07b09e"
+
 randomatic@^1.1.3:
   version "1.1.7"
   resolved "https://registry.yarnpkg.com/randomatic/-/randomatic-1.1.7.tgz#c7abe9cc8b87c0baa876b19fde83fd464797e38c"
@@ -7825,6 +7857,27 @@ vinyl@^0.5.0:
     clone "^1.0.0"
     clone-stats "^0.0.1"
     replace-ext "0.0.1"
+
+viser-ng@^2.2.3:
+  version "2.2.3"
+  resolved "https://registry.yarnpkg.com/viser-ng/-/viser-ng-2.2.3.tgz#f9783f0655644587fd893030cd88b2b3e856df88"
+  dependencies:
+    "@types/core-js" "^0.9.43"
+    "@types/node" "7.0.7"
+    viser "^2.0.0"
+
+viser@^2.0.0:
+  version "2.2.2"
+  resolved "https://registry.yarnpkg.com/viser/-/viser-2.2.2.tgz#8ce0979ea6ce8328d3bf5297020623c092d53e55"
+  dependencies:
+    "@antv/g2" "^3.0.0"
+    "@antv/g2-brush" "^0.0.2"
+    "@antv/g2-plugin-slider" "^2.0.1"
+    "@types/d3-format" "*"
+    "@types/lodash" "*"
+    "@types/node" "^8.0.53"
+    d3-format "^1.2.0"
+    lodash "^4.17.4"
 
 vlq@^0.2.1:
   version "0.2.3"

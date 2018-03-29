@@ -9,8 +9,10 @@ import { AlainACLModule } from '@delon/acl'
 import { ZORROMODULES, ABCMODULES } from '../delon.module'
 // i18n
 import { TranslateModule } from '@ngx-translate/core'
+import { ViserModule } from 'viser-ng'
 
-import { TimeAgoPipe } from './pipes/time-ago.pipe'
+import { components } from './components'
+import { pipes } from './pipes'
 
 @NgModule({
     imports: [
@@ -22,10 +24,12 @@ import { TimeAgoPipe } from './pipes/time-ago.pipe'
         NgZorroAntdExtraModule,
         AlainThemeModule.forChild(),
         ...ABCMODULES,
-        AlainACLModule
+        AlainACLModule,
+        ViserModule
     ],
-    declarations: [TimeAgoPipe],
+    declarations: [...pipes, ...components],
     exports: [
+        ViserModule,
         CommonModule,
         FormsModule,
         ReactiveFormsModule,
@@ -35,7 +39,8 @@ import { TimeAgoPipe } from './pipes/time-ago.pipe'
         AlainThemeModule,
         ...ABCMODULES,
         TranslateModule,
-        TimeAgoPipe
+        ...pipes,
+        ...components
     ]
 })
 export class SharedModule {}

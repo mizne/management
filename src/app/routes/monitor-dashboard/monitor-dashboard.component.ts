@@ -1,6 +1,6 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core'
 import { NzMessageService, NzModalService } from 'ng-zorro-antd'
-
+import * as moment from 'moment'
 import {
     PhysicalServerAccount,
     VirtualServerAccount,
@@ -52,6 +52,15 @@ import {
 })
 export class MonitorDashboardComponent implements OnInit {
     tabIndex = 0
+
+    webSite = [
+        { x: '2018-03-20', y: 11 },
+        { x: '2018-03-21', y: 21 },
+        { x: '2018-03-22', y: 31 },
+        { x: '2018-03-23', y: 41 },
+        { x: '2018-03-24', y: 51 }
+    ]
+
     constructor(
         private messageService: NzMessageService,
         private modalService: NzModalService,
@@ -65,7 +74,10 @@ export class MonitorDashboardComponent implements OnInit {
         this.initSubscriber()
     }
 
-    tabChange(tabIndex: number) {}
+    tabChange(tabIndex: number) {
+        // 由于第一次切换tab时 被激活tab不渲染G2图表 故手动触发resize事件来渲染图表
+        window.dispatchEvent(new Event('resize'))
+    }
 
     couponFormat(val: any) {
         switch (parseInt(val, 10)) {

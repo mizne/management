@@ -189,9 +189,6 @@ import { DelonCacheModule } from '@delon/cache'
 
 // endregion
 
-declare var G2: any
-G2.track(false)
-
 @NgModule({
     imports: [
         NgZorroAntdModule.forRoot(),

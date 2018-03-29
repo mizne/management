@@ -76,6 +76,7 @@ export function StartupServiceFactory(
         SharedModule,
         LayoutModule,
         RoutesModule,
+
         DelonModule.forRoot(),
         TranslateModule.forRoot({
             loader: {
@@ -89,9 +90,9 @@ export function StartupServiceFactory(
         environment.production
             ? []
             : StoreDevtoolsModule.instrument({
-                maxAge: 42,
-                logOnly: true
-            }),
+                  maxAge: 42,
+                  logOnly: true
+              }),
         AngularWebStoreModule.forRoot()
     ],
     providers: [
@@ -116,4 +117,4 @@ export function StartupServiceFactory(
     ],
     bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {}
