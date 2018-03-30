@@ -59,7 +59,13 @@ import {
     ToShowSystemSoftwareAccountComponent,
     ToShowMiddlewareSoftwareAccountComponent
 } from './modals'
-import { mergeMap, takeUntil, filter, tap, withLatestFrom } from 'rxjs/operators';
+import {
+    mergeMap,
+    takeUntil,
+    filter,
+    tap,
+    withLatestFrom
+} from 'rxjs/operators'
 
 @Component({
     selector: 'app-software-account',
@@ -70,11 +76,6 @@ import { mergeMap, takeUntil, filter, tap, withLatestFrom } from 'rxjs/operators
 })
 export class SoftwareAccountComponent implements OnInit {
     tabIndex = 0
-    buttonText = '新建应用软件台账'
-    searchText = '搜索应用软件名称、类型'
-    toCreateSub: Subject<void> = new Subject<void>()
-    toSearchSub: Subject<void> = new Subject<void>()
-    searchCtrl: FormControl = new FormControl()
 
     applications$: Observable<ApplicationSoftwareAccount[]>
     applicationsCount$: Observable<number>
@@ -84,10 +85,13 @@ export class SoftwareAccountComponent implements OnInit {
     applicationPageChangeSub: Subject<void> = new Subject<void>()
     toEditApplicationSub: Subject<ApplicationSoftwareAccount> = new Subject<
         ApplicationSoftwareAccount
-        >()
+    >()
     toShowApplicationSub: Subject<ApplicationSoftwareAccount> = new Subject<
         ApplicationSoftwareAccount
-        >()
+    >()
+    searchApplicationCtrl: FormControl = new FormControl()
+    toCreateApplicationSub: Subject<void> = new Subject<void>()
+    toSearchApplicationSub: Subject<void> = new Subject<void>()
 
     systems$: Observable<SystemSoftwareAccount[]>
     systemsCount$: Observable<number>
@@ -97,10 +101,13 @@ export class SoftwareAccountComponent implements OnInit {
     systemPageChangeSub: Subject<void> = new Subject<void>()
     toEditSystemSub: Subject<SystemSoftwareAccount> = new Subject<
         SystemSoftwareAccount
-        >()
+    >()
     toShowSystemSub: Subject<SystemSoftwareAccount> = new Subject<
         SystemSoftwareAccount
-        >()
+    >()
+    searchSystemCtrl: FormControl = new FormControl()
+    toCreateSystemSub: Subject<void> = new Subject<void>()
+    toSearchSystemSub: Subject<void> = new Subject<void>()
 
     middlewares$: Observable<MiddlewareSoftwareAccount[]>
     middlewaresCount$: Observable<number>
@@ -110,17 +117,20 @@ export class SoftwareAccountComponent implements OnInit {
     middlewarePageChangeSub: Subject<void> = new Subject<void>()
     toEditMiddlewareSub: Subject<MiddlewareSoftwareAccount> = new Subject<
         MiddlewareSoftwareAccount
-        >()
+    >()
     toShowMiddlewareSub: Subject<MiddlewareSoftwareAccount> = new Subject<
         MiddlewareSoftwareAccount
-        >()
+    >()
+    searchMiddlewareCtrl: FormControl = new FormControl()
+    toCreateMiddlewareSub: Subject<void> = new Subject<void>()
+    toSearchMiddlewareSub: Subject<void> = new Subject<void>()
 
     constructor(
         private messageService: NzMessageService,
         private modalService: NzModalService,
         private store: Store<State>,
         private destroyService: DestroyService
-    ) { }
+    ) {}
 
     ngOnInit() {
         this.intDataSource()
@@ -128,25 +138,15 @@ export class SoftwareAccountComponent implements OnInit {
         this.initSubscriber()
     }
 
-    tabChange(tabIndex: number) {
-        if (tabIndex === 0) {
-            this.buttonText = '新建应用软件台账'
-            this.searchText = '搜索应用软件名称、类型'
-        } else if (tabIndex === 1) {
-            this.buttonText = '新建系统软件台账'
-            this.searchText = '搜索系统软件名称、类型'
-        } else if (tabIndex === 2) {
-            this.buttonText = '新建中间件台账'
-            this.searchText = '搜索中间件名称、类型'
-        }
+    tabChange(tabIndex: number) {}
+
+    // Application Software Tab
+    toCreateApplication() {
+        this.toCreateApplicationSub.next()
     }
 
-    toCreate() {
-        this.toCreateSub.next()
-    }
-
-    onSearch() {
-        this.toSearchSub.next()
+    onSearchApplication() {
+        this.toSearchApplicationSub.next()
     }
 
     fetchApplications() {
@@ -161,6 +161,15 @@ export class SoftwareAccountComponent implements OnInit {
         this.toShowApplicationSub.next(account)
     }
 
+    // System Software Tab
+    toCreateSystem() {
+        this.toCreateSystemSub.next()
+    }
+
+    onSearchSystem() {
+        this.toSearchSystemSub.next()
+    }
+
     fetchSystems() {
         this.systemPageChangeSub.next()
     }
@@ -171,6 +180,15 @@ export class SoftwareAccountComponent implements OnInit {
 
     toShowSystem(account: SystemSoftwareAccount) {
         this.toShowSystemSub.next(account)
+    }
+
+    // Middleware Software Tab
+    toCreateMiddleware() {
+        this.toCreateMiddlewareSub.next()
+    }
+
+    onSearchMiddleware() {
+        this.toSearchMiddlewareSub.next()
     }
 
     fetchMiddlewares() {
@@ -233,10 +251,9 @@ export class SoftwareAccountComponent implements OnInit {
     }
 
     private initCreateApplication(): void {
-        this.toCreateSub
+        this.toCreateApplicationSub
             .asObservable()
             .pipe(
-                filter(() => this.isApplicationTab()),
                 mergeMap(() => {
                     return this.modalService.open({
                         title: '新建应用软件台帐',
@@ -246,7 +263,8 @@ export class SoftwareAccountComponent implements OnInit {
                     })
                 }),
                 filter(e => typeof e !== 'string'),
-                takeUntil(this.destroyService))
+                takeUntil(this.destroyService)
+            )
             .subscribe(account => {
                 this.store.dispatch(
                     new CreateApplicationSoftwareAccountAction(account)
@@ -255,10 +273,9 @@ export class SoftwareAccountComponent implements OnInit {
     }
 
     private initCreateSystem(): void {
-        this.toCreateSub
+        this.toCreateSystemSub
             .asObservable()
             .pipe(
-                filter(() => this.isSystemTab()),
                 mergeMap(() => {
                     return this.modalService.open({
                         title: '新建系统软件台帐',
@@ -278,10 +295,9 @@ export class SoftwareAccountComponent implements OnInit {
     }
 
     private initCreateMiddleware(): void {
-        this.toCreateSub
+        this.toCreateMiddlewareSub
             .asObservable()
             .pipe(
-                filter(() => this.isMiddlewareTab()),
                 mergeMap(() => {
                     return this.modalService.open({
                         title: '新建中间件台帐',
@@ -301,38 +317,33 @@ export class SoftwareAccountComponent implements OnInit {
     }
 
     private initSearchApplicationAndPageChange(): void {
-        this.toSearchSub
+        this.toSearchApplicationSub
             .asObservable()
-            .pipe(
-                filter(() => this.isApplicationTab()),
-                takeUntil(this.destroyService)
-            )
+            .pipe(takeUntil(this.destroyService))
             .subscribe(() => {
                 this.store.dispatch(
                     new FetchApplicationSoftwareAccountsCountAction(
-                        this.searchCtrl.value
+                        this.searchApplicationCtrl.value
                     )
                 )
             })
 
         merge(
             this.applicationPageChangeSub.asObservable(),
-            this.toSearchSub
-                .pipe(
-                    filter(() => this.isApplicationTab()),
-                    tap(() => {
-                        this.applicationPageIndex = 1
-                        this.applicationPageSize = 10
-                    }),
-                    withLatestFrom(
-                        this.store.select(getApplicationSoftwareAccountsPageParams)
-                    ),
-                    filter(
-                        ([_, { pageIndex, pageSize }]) =>
-                            pageIndex === this.applicationPageIndex &&
-                            pageSize === this.applicationPageSize
-                    )
+            this.toCreateApplicationSub.pipe(
+                tap(() => {
+                    this.applicationPageIndex = 1
+                    this.applicationPageSize = 10
+                }),
+                withLatestFrom(
+                    this.store.select(getApplicationSoftwareAccountsPageParams)
+                ),
+                filter(
+                    ([_, { pageIndex, pageSize }]) =>
+                        pageIndex === this.applicationPageIndex &&
+                        pageSize === this.applicationPageSize
                 )
+            )
         )
             .pipe(takeUntil(this.destroyService))
             .subscribe(() => {
@@ -344,7 +355,9 @@ export class SoftwareAccountComponent implements OnInit {
                 )
                 this.store.dispatch(
                     new FetchApplicationSoftwareAccountsAction({
-                        condition: { searchText: this.searchCtrl.value },
+                        condition: {
+                            searchText: this.searchApplicationCtrl.value
+                        },
                         options: {
                             pageIndex: this.applicationPageIndex,
                             pageSize: this.applicationPageSize
@@ -355,43 +368,38 @@ export class SoftwareAccountComponent implements OnInit {
     }
 
     private initSearchSystemAndPageChange(): void {
-        this.toSearchSub
+        this.toSearchSystemSub
             .asObservable()
-            .pipe(
-                filter(() => this.isSystemTab()),
-                takeUntil(this.destroyService)
-            )
+            .pipe(takeUntil(this.destroyService))
             .subscribe(() => {
                 console.log(
                     `to search system software accounts; search text: ${
-                    this.searchCtrl.value
+                        this.searchSystemCtrl.value
                     };`
                 )
                 this.store.dispatch(
                     new FetchSystemSoftwareAccountsCountAction(
-                        this.searchCtrl.value
+                        this.searchSystemCtrl.value
                     )
                 )
             })
 
         merge(
             this.systemPageChangeSub.asObservable(),
-            this.toSearchSub
-                .pipe(
-                    filter(() => this.isSystemTab()),
-                    tap(() => {
-                        this.systemPageIndex = 1
-                        this.systemPageSize = 10
-                    }),
-                    withLatestFrom(
-                        this.store.select(getSystemSoftwareAccountsPageParams)
-                    ),
-                    filter(
-                        ([_, { pageIndex, pageSize }]) =>
-                            pageIndex === this.systemPageIndex &&
-                            pageSize === this.systemPageSize
-                    )
+            this.toSearchSystemSub.pipe(
+                tap(() => {
+                    this.systemPageIndex = 1
+                    this.systemPageSize = 10
+                }),
+                withLatestFrom(
+                    this.store.select(getSystemSoftwareAccountsPageParams)
+                ),
+                filter(
+                    ([_, { pageIndex, pageSize }]) =>
+                        pageIndex === this.systemPageIndex &&
+                        pageSize === this.systemPageSize
                 )
+            )
         )
             .pipe(takeUntil(this.destroyService))
             .subscribe(() => {
@@ -403,7 +411,7 @@ export class SoftwareAccountComponent implements OnInit {
                 )
                 this.store.dispatch(
                     new FetchSystemSoftwareAccountsAction({
-                        condition: { searchText: this.searchCtrl.value },
+                        condition: { searchText: this.searchSystemCtrl.value },
                         options: {
                             pageIndex: this.systemPageIndex,
                             pageSize: this.systemPageSize
@@ -414,43 +422,38 @@ export class SoftwareAccountComponent implements OnInit {
     }
 
     private initSearchMiddlewareAndPageChange(): void {
-        this.toSearchSub
+        this.toSearchMiddlewareSub
             .asObservable()
-            .pipe(
-                filter(() => this.isMiddlewareTab()),
-                takeUntil(this.destroyService)
-            )
+            .pipe(takeUntil(this.destroyService))
             .subscribe(() => {
                 console.log(
                     `to search middleware software accounts; search text: ${
-                    this.searchCtrl.value
+                        this.searchMiddlewareCtrl.value
                     };`
                 )
                 this.store.dispatch(
                     new FetchMiddlewareSoftwareAccountsCountAction(
-                        this.searchCtrl.value
+                        this.searchMiddlewareCtrl.value
                     )
                 )
             })
 
         merge(
             this.middlewarePageChangeSub.asObservable(),
-            this.toSearchSub
-                .pipe(
-                    filter(() => this.isMiddlewareTab()),
-                    tap(() => {
-                        this.middlewarePageIndex = 1
-                        this.middlewarePageSize = 10
-                    }),
-                    withLatestFrom(
-                        this.store.select(getMiddlewareSoftwareAccountsPageParams)
-                    ),
-                    filter(
-                        ([_, { pageIndex, pageSize }]) =>
-                            pageIndex === this.middlewarePageIndex &&
-                            pageSize === this.middlewarePageSize
-                    )
+            this.toSearchMiddlewareSub.pipe(
+                tap(() => {
+                    this.middlewarePageIndex = 1
+                    this.middlewarePageSize = 10
+                }),
+                withLatestFrom(
+                    this.store.select(getMiddlewareSoftwareAccountsPageParams)
+                ),
+                filter(
+                    ([_, { pageIndex, pageSize }]) =>
+                        pageIndex === this.middlewarePageIndex &&
+                        pageSize === this.middlewarePageSize
                 )
+            )
         )
             .pipe(takeUntil(this.destroyService))
             .subscribe(() => {
@@ -462,7 +465,9 @@ export class SoftwareAccountComponent implements OnInit {
                 )
                 this.store.dispatch(
                     new FetchMiddlewareSoftwareAccountsAction({
-                        condition: { searchText: this.searchCtrl.value },
+                        condition: {
+                            searchText: this.searchMiddlewareCtrl.value
+                        },
                         options: {
                             pageIndex: this.middlewarePageIndex,
                             pageSize: this.middlewarePageSize
@@ -556,8 +561,7 @@ export class SoftwareAccountComponent implements OnInit {
                 }),
                 takeUntil(this.destroyService)
             )
-            .subscribe(account => {
-            })
+            .subscribe(account => {})
     }
 
     private initShowSystem() {
@@ -575,8 +579,7 @@ export class SoftwareAccountComponent implements OnInit {
                 }),
                 takeUntil(this.destroyService)
             )
-            .subscribe(account => {
-            })
+            .subscribe(account => {})
     }
 
     private initShowMiddleware() {
@@ -594,19 +597,6 @@ export class SoftwareAccountComponent implements OnInit {
                 }),
                 takeUntil(this.destroyService)
             )
-            .subscribe(account => {
-            })
-    }
-
-    private isApplicationTab(): boolean {
-        return this.tabIndex === 0
-    }
-
-    private isSystemTab(): boolean {
-        return this.tabIndex === 1
-    }
-
-    private isMiddlewareTab(): boolean {
-        return this.tabIndex === 2
+            .subscribe(account => {})
     }
 }

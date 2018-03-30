@@ -1,170 +1,168 @@
 <pro-header></pro-header>
 
 
-<nz-card [nzBordered]="false">
-    <nz-tabset [nzType]="'card'" [(nzSelectedIndex)]="tabIndex" (nzSelectedIndexChange)="tabChange($event)">
-        <nz-tab>
-            <ng-template #nzTabHeading>
-                <i class="anticon anticon-apple"></i>
-                服务器负载信息
-            </ng-template>
-            <nz-card [nzTitle]="'服务器平均负载信息'" [nzBordered]="false">
-                <div nz-row [nzGutter]="24" class="pt-lg">
-                    <div nz-col nzXs="24" nzSm="12" nzMd="12" nzLg="6">
-                        <gauge [height]="180" [percent]="27" [format]="couponFormat"></gauge>
-                        <div class="text-center mt-md">CPU使用率</div>
-                    </div>
-                    <div nz-col nzXs="24" nzSm="12" nzMd="12" nzLg="6">
-                        <gauge [height]="180" [percent]="47" [format]="couponFormat"></gauge>
-                        <div class="text-center mt-md">内存使用率</div>
-                    </div>
-                    <div nz-col nzXs="24" nzSm="12" nzMd="12" nzLg="6">
-                        <gauge [height]="180" [percent]="67" [format]="couponFormat"></gauge>
-                        <div class="text-center mt-md">硬盘使用率</div>
-                    </div>
-                    <div nz-col nzXs="24" nzSm="12" nzMd="12" nzLg="6">
-                        <gauge [height]="180" [percent]="87" [format]="couponFormat"></gauge>
-                        <div class="text-center mt-md">网络使用率</div>
+<nz-tabset [nzType]="'card'" [(nzSelectedIndex)]="tabIndex" (nzSelectedIndexChange)="tabChange($event)">
+    <nz-tab>
+        <ng-template #nzTabHeading>
+            <i class="anticon anticon-apple"></i>
+            服务器负载信息
+        </ng-template>
+        <nz-card [nzTitle]="'服务器平均负载信息'" [nzBordered]="false">
+            <div nz-row [nzGutter]="24" class="pt-lg">
+                <div nz-col nzXs="24" nzSm="12" nzMd="12" nzLg="6">
+                    <gauge [height]="180" [percent]="27" [format]="couponFormat"></gauge>
+                    <div class="text-center mt-md">CPU使用率</div>
+                </div>
+                <div nz-col nzXs="24" nzSm="12" nzMd="12" nzLg="6">
+                    <gauge [height]="180" [percent]="47" [format]="couponFormat"></gauge>
+                    <div class="text-center mt-md">内存使用率</div>
+                </div>
+                <div nz-col nzXs="24" nzSm="12" nzMd="12" nzLg="6">
+                    <gauge [height]="180" [percent]="67" [format]="couponFormat"></gauge>
+                    <div class="text-center mt-md">硬盘使用率</div>
+                </div>
+                <div nz-col nzXs="24" nzSm="12" nzMd="12" nzLg="6">
+                    <gauge [height]="180" [percent]="87" [format]="couponFormat"></gauge>
+                    <div class="text-center mt-md">网络使用率</div>
+                </div>
+            </div>
+
+        </nz-card>
+        <nz-card [nzTitle]="'服务器实时平均负载信息'" [nzBordered]="false">
+            <app-cpu-memory></app-cpu-memory>
+            <app-network-io></app-network-io>
+        </nz-card>
+    </nz-tab>
+
+    <nz-tab>
+        <ng-template #nzTabHeading>
+            <i class="anticon anticon-android"></i>
+            服务器运行状态
+        </ng-template>
+        <nz-card [nzTitle]="'物理服务器状态'" [nzBordered]="false" class="card-fix">
+            <div nz-row nzGutter="16">
+                <div nz-col nzXs="24" nzSm="12" nzMd="6" class="mb-md mt-lg">
+                    <div nz-row nzType="flex" nzAlign="middle" class="bg-primary rounded-md card-item-fix">
+                        <div nz-col nzSpan="12" class="p-md text-white">
+                            <div class="h2 mt0">132</div>
+                            <p class="text-nowrap">物理服务器总数</p>
+                        </div>
+                        <div nz-col nzSpan="12">
+                            <mini-bar height="35" color="#fff" borderWidth="3" [padding]="[36, 30, 30, 30]" [data]="webSite"></mini-bar>
+                        </div>
                     </div>
                 </div>
-
-            </nz-card>
-            <nz-card [nzTitle]="'服务器实时平均负载信息'" [nzBordered]="false">
-                <app-cpu-memory></app-cpu-memory>
-                <app-network-io></app-network-io>
-            </nz-card>
-        </nz-tab>
-
-        <nz-tab>
-            <ng-template #nzTabHeading>
-                <i class="anticon anticon-android"></i>
-                服务器运行状态
-            </ng-template>
-            <nz-card [nzTitle]="'物理服务器状态'" [nzBordered]="false" class="card-fix">
-                <div nz-row nzGutter="16">
-                    <div nz-col nzXs="24" nzSm="12" nzMd="6" class="mb-md mt-lg">
-                        <div nz-row nzType="flex" nzAlign="middle" class="bg-primary rounded-md card-item-fix">
-                            <div nz-col nzSpan="12" class="p-md text-white">
-                                <div class="h2 mt0">132</div>
-                                <p class="text-nowrap">物理服务器总数</p>
-                            </div>
-                            <div nz-col nzSpan="12">
-                                <mini-bar height="35" color="#fff" borderWidth="3" [padding]="[36, 30, 30, 30]" [data]="webSite"></mini-bar>
-                            </div>
+                <div nz-col nzXs="24" nzSm="12" nzMd="6" class="mb-md mt-lg">
+                    <div nz-row nzType="flex" nzAlign="middle" class="bg-success rounded-md card-item-fix">
+                        <div nz-col nzSpan="12" class="p-md text-white">
+                            <div class="h2 mt0">12</div>
+                            <p class="text-nowrap">空闲物理服务器总数</p>
                         </div>
-                    </div>
-                    <div nz-col nzXs="24" nzSm="12" nzMd="6" class="mb-md mt-lg">
-                        <div nz-row nzType="flex" nzAlign="middle" class="bg-success rounded-md card-item-fix">
-                            <div nz-col nzSpan="12" class="p-md text-white">
-                                <div class="h2 mt0">12</div>
-                                <p class="text-nowrap">空闲物理服务器总数</p>
-                            </div>
-                            <div nz-col nzSpan="12">
-                                <mini-bar height="35" color="#fff" borderWidth="3" [padding]="[36, 30, 30, 30]" [data]="webSite"></mini-bar>
-                            </div>
+                        <div nz-col nzSpan="12">
+                            <mini-bar height="35" color="#fff" borderWidth="3" [padding]="[36, 30, 30, 30]" [data]="webSite"></mini-bar>
                         </div>
-                    </div>
-                    <div nz-col nzXs="24" nzSm="12" nzMd="6" class="mb-md mt-lg">
-                        <div nz-row nzType="flex" nzAlign="middle" class="bg-orange rounded-md card-item-fix">
-                            <div nz-col nzSpan="12" class="p-md text-white">
-                                <div class="h2 mt0">7</div>
-                                <p class="text-nowrap">未运行服务器总数</p>
-                            </div>
-                            <div nz-col nzSpan="12">
-                                <mini-bar height="35" color="#fff" borderWidth="3" [padding]="[36, 30, 30, 30]" [data]="webSite"></mini-bar>
-                            </div>
-                        </div>
-                    </div>
-                    <div nz-col nzXs="24" nzSm="12" nzMd="6" class="mb-md pie-fix">
-                        <app-pie></app-pie>
                     </div>
                 </div>
-            </nz-card>
-            <nz-card [nzTitle]="'虚拟服务器状态'" [nzBordered]="false" class="card-fix">
-                <div nz-row nzGutter="16">
-                    <div nz-col nzXs="24" nzSm="12" nzMd="6" class="mb-md mt-lg">
-                        <div nz-row nzType="flex" nzAlign="middle" class="bg-primary rounded-md card-item-fix">
-                            <div nz-col nzSpan="12" class="p-md text-white">
-                                <div class="h2 mt0">106</div>
-                                <p class="text-nowrap">虚拟服务器总数</p>
-                            </div>
-                            <div nz-col nzSpan="12">
-                                <mini-bar height="35" color="#fff" borderWidth="3" [padding]="[36, 30, 30, 30]" [data]="webSite"></mini-bar>
-                            </div>
+                <div nz-col nzXs="24" nzSm="12" nzMd="6" class="mb-md mt-lg">
+                    <div nz-row nzType="flex" nzAlign="middle" class="bg-orange rounded-md card-item-fix">
+                        <div nz-col nzSpan="12" class="p-md text-white">
+                            <div class="h2 mt0">7</div>
+                            <p class="text-nowrap">未运行服务器总数</p>
                         </div>
-                    </div>
-                    <div nz-col nzXs="24" nzSm="12" nzMd="6" class="mb-md mt-lg">
-                        <div nz-row nzType="flex" nzAlign="middle" class="bg-success rounded-md card-item-fix">
-                            <div nz-col nzSpan="12" class="p-md text-white">
-                                <div class="h2 mt0">17</div>
-                                <p class="text-nowrap">空闲虚拟服务器总数</p>
-                            </div>
-                            <div nz-col nzSpan="12">
-                                <mini-bar height="35" color="#fff" borderWidth="3" [padding]="[36, 30, 30, 30]" [data]="webSite"></mini-bar>
-                            </div>
+                        <div nz-col nzSpan="12">
+                            <mini-bar height="35" color="#fff" borderWidth="3" [padding]="[36, 30, 30, 30]" [data]="webSite"></mini-bar>
                         </div>
-                    </div>
-                    <div nz-col nzXs="24" nzSm="12" nzMd="6" class="mb-md mt-lg">
-                        <div nz-row nzType="flex" nzAlign="middle" class="bg-orange rounded-md card-item-fix">
-                            <div nz-col nzSpan="12" class="p-md text-white">
-                                <div class="h2 mt0">3</div>
-                                <p class="text-nowrap">未运行服务器总数</p>
-                            </div>
-                            <div nz-col nzSpan="12">
-                                <mini-bar height="35" color="#fff" borderWidth="3" [padding]="[36, 30, 30, 30]" [data]="webSite"></mini-bar>
-                            </div>
-                        </div>
-                    </div>
-                    <div nz-col nzXs="24" nzSm="12" nzMd="6" class="mb-md pie-fix">
-                        <app-pie></app-pie>
                     </div>
                 </div>
-            </nz-card>
-
-            <nz-card [nzTitle]="'服务器集群状态'" [nzBordered]="false" class="card-fix">
-                <div nz-row nzGutter="16">
-                    <div nz-col nzXs="24" nzSm="12" nzMd="6" class="mb-md mt-lg">
-                        <div nz-row nzType="flex" nzAlign="middle" class="bg-primary rounded-md card-item-fix">
-                            <div nz-col nzSpan="12" class="p-md text-white">
-                                <div class="h2 mt0">13</div>
-                                <p class="text-nowrap">服务器集群总数</p>
-                            </div>
-                            <div nz-col nzSpan="12">
-                                <mini-bar height="35" color="#fff" borderWidth="3" [padding]="[36, 30, 30, 30]" [data]="webSite"></mini-bar>
-                            </div>
+                <div nz-col nzXs="24" nzSm="12" nzMd="6" class="mb-md pie-fix">
+                    <app-pie></app-pie>
+                </div>
+            </div>
+        </nz-card>
+        <nz-card [nzTitle]="'虚拟服务器状态'" [nzBordered]="false" class="card-fix">
+            <div nz-row nzGutter="16">
+                <div nz-col nzXs="24" nzSm="12" nzMd="6" class="mb-md mt-lg">
+                    <div nz-row nzType="flex" nzAlign="middle" class="bg-primary rounded-md card-item-fix">
+                        <div nz-col nzSpan="12" class="p-md text-white">
+                            <div class="h2 mt0">106</div>
+                            <p class="text-nowrap">虚拟服务器总数</p>
                         </div>
-                    </div>
-                    <div nz-col nzXs="24" nzSm="12" nzMd="6" class="mb-md mt-lg">
-                        <div nz-row nzType="flex" nzAlign="middle" class="bg-success rounded-md card-item-fix">
-                            <div nz-col nzSpan="12" class="p-md text-white">
-                                <div class="h2 mt0">1</div>
-                                <p class="text-nowrap">空闲集群总数</p>
-                            </div>
-                            <div nz-col nzSpan="12">
-                                <mini-bar height="35" color="#fff" borderWidth="3" [padding]="[36, 30, 30, 30]" [data]="webSite"></mini-bar>
-                            </div>
+                        <div nz-col nzSpan="12">
+                            <mini-bar height="35" color="#fff" borderWidth="3" [padding]="[36, 30, 30, 30]" [data]="webSite"></mini-bar>
                         </div>
-                    </div>
-                    <div nz-col nzXs="24" nzSm="12" nzMd="6" class="mb-md mt-lg">
-                        <div nz-row nzType="flex" nzAlign="middle" class="bg-orange rounded-md card-item-fix">
-                            <div nz-col nzSpan="12" class="p-md text-white">
-                                <div class="h2 mt0">0</div>
-                                <p class="text-nowrap">未运行集群总数</p>
-                            </div>
-                            <div nz-col nzSpan="12">
-                                <mini-bar height="35" color="#fff" borderWidth="3" [padding]="[36, 30, 30, 30]" [data]="webSite"></mini-bar>
-                            </div>
-                        </div>
-                    </div>
-                    <div nz-col nzXs="24" nzSm="12" nzMd="6" class="mb-md pie-fix">
-                        <app-pie></app-pie>
                     </div>
                 </div>
-            </nz-card>
-            <nz-card [nzTitle]="'进程总数处于前十位的服务器'" [nzBordered]="false">
-                <app-bar></app-bar>
-            </nz-card>
-        </nz-tab>
+                <div nz-col nzXs="24" nzSm="12" nzMd="6" class="mb-md mt-lg">
+                    <div nz-row nzType="flex" nzAlign="middle" class="bg-success rounded-md card-item-fix">
+                        <div nz-col nzSpan="12" class="p-md text-white">
+                            <div class="h2 mt0">17</div>
+                            <p class="text-nowrap">空闲虚拟服务器总数</p>
+                        </div>
+                        <div nz-col nzSpan="12">
+                            <mini-bar height="35" color="#fff" borderWidth="3" [padding]="[36, 30, 30, 30]" [data]="webSite"></mini-bar>
+                        </div>
+                    </div>
+                </div>
+                <div nz-col nzXs="24" nzSm="12" nzMd="6" class="mb-md mt-lg">
+                    <div nz-row nzType="flex" nzAlign="middle" class="bg-orange rounded-md card-item-fix">
+                        <div nz-col nzSpan="12" class="p-md text-white">
+                            <div class="h2 mt0">3</div>
+                            <p class="text-nowrap">未运行服务器总数</p>
+                        </div>
+                        <div nz-col nzSpan="12">
+                            <mini-bar height="35" color="#fff" borderWidth="3" [padding]="[36, 30, 30, 30]" [data]="webSite"></mini-bar>
+                        </div>
+                    </div>
+                </div>
+                <div nz-col nzXs="24" nzSm="12" nzMd="6" class="mb-md pie-fix">
+                    <app-pie></app-pie>
+                </div>
+            </div>
+        </nz-card>
 
-    </nz-tabset>
-</nz-card>
+        <nz-card [nzTitle]="'服务器集群状态'" [nzBordered]="false" class="card-fix">
+            <div nz-row nzGutter="16">
+                <div nz-col nzXs="24" nzSm="12" nzMd="6" class="mb-md mt-lg">
+                    <div nz-row nzType="flex" nzAlign="middle" class="bg-primary rounded-md card-item-fix">
+                        <div nz-col nzSpan="12" class="p-md text-white">
+                            <div class="h2 mt0">13</div>
+                            <p class="text-nowrap">服务器集群总数</p>
+                        </div>
+                        <div nz-col nzSpan="12">
+                            <mini-bar height="35" color="#fff" borderWidth="3" [padding]="[36, 30, 30, 30]" [data]="webSite"></mini-bar>
+                        </div>
+                    </div>
+                </div>
+                <div nz-col nzXs="24" nzSm="12" nzMd="6" class="mb-md mt-lg">
+                    <div nz-row nzType="flex" nzAlign="middle" class="bg-success rounded-md card-item-fix">
+                        <div nz-col nzSpan="12" class="p-md text-white">
+                            <div class="h2 mt0">1</div>
+                            <p class="text-nowrap">空闲集群总数</p>
+                        </div>
+                        <div nz-col nzSpan="12">
+                            <mini-bar height="35" color="#fff" borderWidth="3" [padding]="[36, 30, 30, 30]" [data]="webSite"></mini-bar>
+                        </div>
+                    </div>
+                </div>
+                <div nz-col nzXs="24" nzSm="12" nzMd="6" class="mb-md mt-lg">
+                    <div nz-row nzType="flex" nzAlign="middle" class="bg-orange rounded-md card-item-fix">
+                        <div nz-col nzSpan="12" class="p-md text-white">
+                            <div class="h2 mt0">0</div>
+                            <p class="text-nowrap">未运行集群总数</p>
+                        </div>
+                        <div nz-col nzSpan="12">
+                            <mini-bar height="35" color="#fff" borderWidth="3" [padding]="[36, 30, 30, 30]" [data]="webSite"></mini-bar>
+                        </div>
+                    </div>
+                </div>
+                <div nz-col nzXs="24" nzSm="12" nzMd="6" class="mb-md pie-fix">
+                    <app-pie></app-pie>
+                </div>
+            </div>
+        </nz-card>
+        <nz-card [nzTitle]="'进程总数处于前十位的服务器'" [nzBordered]="false">
+            <app-bar></app-bar>
+        </nz-card>
+    </nz-tab>
+
+</nz-tabset>

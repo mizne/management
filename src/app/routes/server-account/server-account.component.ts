@@ -25,7 +25,11 @@ import {
     getClusterServerAccountsPageParams
 } from './reducers'
 
-import { fromClusterServer, fromPhysicalServer, fromVirtualServer } from './actions'
+import {
+    fromClusterServer,
+    fromPhysicalServer,
+    fromVirtualServer
+} from './actions'
 import { Subject } from 'rxjs/Subject'
 import { DestroyService } from '@core/services/destroy.service'
 import { FormControl } from '@angular/forms'
@@ -40,7 +44,13 @@ import {
     ToShowVirtualServerAccountComponent,
     ToShowClusterServerAccountComponent
 } from './modals'
-import { filter, mergeMap, takeUntil, tap, withLatestFrom } from 'rxjs/operators';
+import {
+    filter,
+    mergeMap,
+    takeUntil,
+    tap,
+    withLatestFrom
+} from 'rxjs/operators'
 
 @Component({
     selector: 'app-server-account',
@@ -51,11 +61,6 @@ import { filter, mergeMap, takeUntil, tap, withLatestFrom } from 'rxjs/operators
 })
 export class ServerAccountComponent implements OnInit {
     tabIndex = 0
-    buttonText = '新建物理服务器台账'
-    searchText = '搜索物理服务器名称、类型'
-    toCreateSub: Subject<void> = new Subject<void>()
-    toSearchSub: Subject<void> = new Subject<void>()
-    searchCtrl: FormControl = new FormControl()
 
     physicals$: Observable<PhysicalServerAccount[]>
     physicalsCount$: Observable<number>
@@ -65,10 +70,13 @@ export class ServerAccountComponent implements OnInit {
     physicalPageChangeSub: Subject<void> = new Subject<void>()
     toEditPhysicalSub: Subject<PhysicalServerAccount> = new Subject<
         PhysicalServerAccount
-        >()
+    >()
     toShowPhysicalSub: Subject<PhysicalServerAccount> = new Subject<
         PhysicalServerAccount
-        >()
+    >()
+    toCreatePhysicalSub: Subject<void> = new Subject<void>()
+    toSearchPhysicalSub: Subject<void> = new Subject<void>()
+    searchPhysicalCtrl: FormControl = new FormControl()
 
     virtuals$: Observable<VirtualServerAccount[]>
     virtualsCount$: Observable<number>
@@ -78,10 +86,13 @@ export class ServerAccountComponent implements OnInit {
     virtualPageChangeSub: Subject<void> = new Subject<void>()
     toEditVirtualSub: Subject<VirtualServerAccount> = new Subject<
         VirtualServerAccount
-        >()
+    >()
     toShowVirtualSub: Subject<VirtualServerAccount> = new Subject<
         VirtualServerAccount
-        >()
+    >()
+    toCreateVirtualSub: Subject<void> = new Subject<void>()
+    toSearchVirtualSub: Subject<void> = new Subject<void>()
+    searchVirtualCtrl: FormControl = new FormControl()
 
     clusters$: Observable<ClusterServerAccount[]>
     clustersCount$: Observable<number>
@@ -91,17 +102,20 @@ export class ServerAccountComponent implements OnInit {
     clusterPageChangeSub: Subject<void> = new Subject<void>()
     toEditClusterSub: Subject<ClusterServerAccount> = new Subject<
         ClusterServerAccount
-        >()
+    >()
     toShowClusterSub: Subject<ClusterServerAccount> = new Subject<
         ClusterServerAccount
-        >()
+    >()
+    toCreateClusterSub: Subject<void> = new Subject<void>()
+    toSearchClusterSub: Subject<void> = new Subject<void>()
+    searchClusterCtrl: FormControl = new FormControl()
 
     constructor(
         private messageService: NzMessageService,
         private modalService: NzModalService,
         private store: Store<State>,
         private destroyService: DestroyService
-    ) { }
+    ) {}
 
     ngOnInit() {
         this.intDataSource()
@@ -109,25 +123,15 @@ export class ServerAccountComponent implements OnInit {
         this.initSubscriber()
     }
 
-    tabChange(tabIndex: number) {
-        if (tabIndex === 0) {
-            this.buttonText = '新建物理服务器台账'
-            this.searchText = '搜索物理服务器名称、类型'
-        } else if (tabIndex === 1) {
-            this.buttonText = '新建虚拟服务器台账'
-            this.searchText = '搜索虚拟服务器名称、类型'
-        } else if (tabIndex === 2) {
-            this.buttonText = '新建集群服务器台账'
-            this.searchText = '搜索集群服务器名称、类型'
-        }
+    tabChange(tabIndex: number) {}
+
+    // Physical Server Tab
+    toCreatePhysical() {
+        this.toCreatePhysicalSub.next()
     }
 
-    toCreate() {
-        this.toCreateSub.next()
-    }
-
-    onSearch() {
-        this.toSearchSub.next()
+    onSearchPhysical() {
+        this.toSearchPhysicalSub.next()
     }
 
     fetchPhysicals() {
@@ -142,6 +146,15 @@ export class ServerAccountComponent implements OnInit {
         this.toShowPhysicalSub.next(account)
     }
 
+    // Virtual Server Tab
+    toCreateVirtual() {
+        this.toCreateVirtualSub.next()
+    }
+
+    onSearchVirtual() {
+        this.toSearchVirtualSub.next()
+    }
+
     fetchVirtuals() {
         this.virtualPageChangeSub.next()
     }
@@ -152,6 +165,15 @@ export class ServerAccountComponent implements OnInit {
 
     toShowVirtual(account: VirtualServerAccount) {
         this.toShowVirtualSub.next(account)
+    }
+
+    // Cluster Server Tab
+    toCreateCluster() {
+        this.toCreateClusterSub.next()
+    }
+
+    onSearchCluster() {
+        this.toSearchClusterSub.next()
     }
 
     fetchClusters() {
@@ -181,14 +203,26 @@ export class ServerAccountComponent implements OnInit {
     }
 
     private initDispatcher(): void {
-        this.store.dispatch(new fromPhysicalServer.FetchPhysicalServerAccountsAction())
-        this.store.dispatch(new fromPhysicalServer.FetchPhysicalServerAccountsCountAction())
+        this.store.dispatch(
+            new fromPhysicalServer.FetchPhysicalServerAccountsAction()
+        )
+        this.store.dispatch(
+            new fromPhysicalServer.FetchPhysicalServerAccountsCountAction()
+        )
 
-        this.store.dispatch(new fromVirtualServer.FetchVirtualServerAccountsAction())
-        this.store.dispatch(new fromVirtualServer.FetchVirtualServerAccountsCountAction())
+        this.store.dispatch(
+            new fromVirtualServer.FetchVirtualServerAccountsAction()
+        )
+        this.store.dispatch(
+            new fromVirtualServer.FetchVirtualServerAccountsCountAction()
+        )
 
-        this.store.dispatch(new fromClusterServer.FetchClusterServerAccountsAction())
-        this.store.dispatch(new fromClusterServer.FetchClusterServerAccountsCountAction())
+        this.store.dispatch(
+            new fromClusterServer.FetchClusterServerAccountsAction()
+        )
+        this.store.dispatch(
+            new fromClusterServer.FetchClusterServerAccountsCountAction()
+        )
     }
 
     private initSubscriber(): void {
@@ -210,10 +244,9 @@ export class ServerAccountComponent implements OnInit {
     }
 
     private initCreatePhysical(): void {
-        this.toCreateSub
+        this.toCreatePhysicalSub
             .asObservable()
             .pipe(
-                filter(() => this.isPhysicalTab()),
                 mergeMap(() => {
                     return this.modalService.open({
                         title: '新建物理服务器台帐',
@@ -227,16 +260,17 @@ export class ServerAccountComponent implements OnInit {
             )
             .subscribe(account => {
                 this.store.dispatch(
-                    new fromPhysicalServer.CreatePhysicalServerAccountAction(account)
+                    new fromPhysicalServer.CreatePhysicalServerAccountAction(
+                        account
+                    )
                 )
             })
     }
 
     private initCreateVirtual(): void {
-        this.toCreateSub
+        this.toCreateVirtualSub
             .asObservable()
             .pipe(
-                filter(() => this.isVirtualTab()),
                 mergeMap(() => {
                     return this.modalService.open({
                         title: '新建虚拟服务器台帐',
@@ -250,16 +284,17 @@ export class ServerAccountComponent implements OnInit {
             )
             .subscribe(account => {
                 this.store.dispatch(
-                    new fromVirtualServer.CreateVirtualServerAccountAction(account)
+                    new fromVirtualServer.CreateVirtualServerAccountAction(
+                        account
+                    )
                 )
             })
     }
 
     private initCreateCluster(): void {
-        this.toCreateSub
+        this.toCreateClusterSub
             .asObservable()
             .pipe(
-                filter(() => this.isClusterTab()),
                 mergeMap(() => {
                     return this.modalService.open({
                         title: '新建集群服务器台帐',
@@ -273,42 +308,41 @@ export class ServerAccountComponent implements OnInit {
             )
             .subscribe(account => {
                 this.store.dispatch(
-                    new fromClusterServer.CreateClusterServerAccountAction(account)
+                    new fromClusterServer.CreateClusterServerAccountAction(
+                        account
+                    )
                 )
             })
     }
 
     private initSearchPhysicalAndPageChange(): void {
-        this.toSearchSub
+        this.toSearchPhysicalSub
             .asObservable()
-            .pipe(
-                filter(() => this.isPhysicalTab()),
-                takeUntil(this.destroyService)
-            )
+            .pipe(takeUntil(this.destroyService))
             .subscribe(() => {
                 this.store.dispatch(
                     new fromPhysicalServer.FetchPhysicalServerAccountsCountAction(
-                        this.searchCtrl.value
+                        this.searchPhysicalCtrl.value
                     )
                 )
             })
 
         merge(
             this.physicalPageChangeSub.asObservable(),
-            this.toSearchSub
-                .pipe(
-                    filter(() => this.isPhysicalTab()),
-                    tap(() => {
-                        this.physicalPageIndex = 1
-                        this.physicalPageSize = 10
-                    }),
-                    withLatestFrom(this.store.select(getPhysicalServerAccountsPageParams)),
-                    filter(
-                        ([_, { pageIndex, pageSize }]) =>
-                            pageIndex === this.physicalPageIndex &&
-                            pageSize === this.physicalPageSize
-                    )
+            this.toSearchPhysicalSub.pipe(
+                tap(() => {
+                    this.physicalPageIndex = 1
+                    this.physicalPageSize = 10
+                }),
+                withLatestFrom(
+                    this.store.select(getPhysicalServerAccountsPageParams)
+                ),
+                filter(
+                    ([_, { pageIndex, pageSize }]) =>
+                        pageIndex === this.physicalPageIndex &&
+                        pageSize === this.physicalPageSize
                 )
+            )
         )
             .pipe(takeUntil(this.destroyService))
             .subscribe(() => {
@@ -320,7 +354,9 @@ export class ServerAccountComponent implements OnInit {
                 )
                 this.store.dispatch(
                     new fromPhysicalServer.FetchPhysicalServerAccountsAction({
-                        condition: { searchText: this.searchCtrl.value },
+                        condition: {
+                            searchText: this.searchPhysicalCtrl.value
+                        },
                         options: {
                             pageIndex: this.physicalPageIndex,
                             pageSize: this.physicalPageSize
@@ -331,38 +367,33 @@ export class ServerAccountComponent implements OnInit {
     }
 
     private initSearchVirtualAndPageChange(): void {
-        this.toSearchSub
+        this.toSearchVirtualSub
             .asObservable()
-            .pipe(
-                filter(() => this.isVirtualTab()),
-                takeUntil(this.destroyService)
-            )
+            .pipe(takeUntil(this.destroyService))
             .subscribe(() => {
                 this.store.dispatch(
                     new fromVirtualServer.FetchVirtualServerAccountsCountAction(
-                        this.searchCtrl.value
+                        this.searchVirtualCtrl.value
                     )
                 )
             })
 
         merge(
             this.virtualPageChangeSub.asObservable(),
-            this.toSearchSub
-                .pipe(
-                    filter(() => this.isVirtualTab()),
-                    tap(() => {
-                        this.virtualPageIndex = 1
-                        this.virtualPageSize = 10
-                    }),
-                    withLatestFrom(
-                        this.store.select(getVirtualServerAccountsPageParams)
-                    ),
-                    filter(
-                        ([_, { pageIndex, pageSize }]) =>
-                            pageIndex === this.virtualPageIndex &&
-                            pageSize === this.virtualPageSize
-                    )
+            this.toSearchVirtualSub.pipe(
+                tap(() => {
+                    this.virtualPageIndex = 1
+                    this.virtualPageSize = 10
+                }),
+                withLatestFrom(
+                    this.store.select(getVirtualServerAccountsPageParams)
+                ),
+                filter(
+                    ([_, { pageIndex, pageSize }]) =>
+                        pageIndex === this.virtualPageIndex &&
+                        pageSize === this.virtualPageSize
                 )
+            )
         )
             .pipe(takeUntil(this.destroyService))
             .subscribe(() => {
@@ -374,7 +405,7 @@ export class ServerAccountComponent implements OnInit {
                 )
                 this.store.dispatch(
                     new fromVirtualServer.FetchVirtualServerAccountsAction({
-                        condition: { searchText: this.searchCtrl.value },
+                        condition: { searchText: this.searchVirtualCtrl.value },
                         options: {
                             pageIndex: this.virtualPageIndex,
                             pageSize: this.virtualPageSize
@@ -385,37 +416,33 @@ export class ServerAccountComponent implements OnInit {
     }
 
     private initSearchClusterAndPageChange(): void {
-        this.toSearchSub
+        this.toSearchClusterSub
             .asObservable()
-            .pipe(
-                filter(() => this.isClusterTab()),
-                takeUntil(this.destroyService))
+            .pipe(takeUntil(this.destroyService))
             .subscribe(() => {
                 this.store.dispatch(
                     new fromClusterServer.FetchClusterServerAccountsCountAction(
-                        this.searchCtrl.value
+                        this.searchClusterCtrl.value
                     )
                 )
             })
 
         merge(
             this.clusterPageChangeSub.asObservable(),
-            this.toSearchSub
-                .pipe(
-                    filter(() => this.isClusterTab()),
-                    tap(() => {
-                        this.clusterPageIndex = 1
-                        this.clusterPageSize = 10
-                    }),
-                    withLatestFrom(
-                        this.store.select(getClusterServerAccountsPageParams)
-                    ),
-                    filter(
-                        ([_, { pageIndex, pageSize }]) =>
-                            pageIndex === this.clusterPageIndex &&
-                            pageSize === this.clusterPageSize
-                    )
+            this.toSearchClusterSub.pipe(
+                tap(() => {
+                    this.clusterPageIndex = 1
+                    this.clusterPageSize = 10
+                }),
+                withLatestFrom(
+                    this.store.select(getClusterServerAccountsPageParams)
+                ),
+                filter(
+                    ([_, { pageIndex, pageSize }]) =>
+                        pageIndex === this.clusterPageIndex &&
+                        pageSize === this.clusterPageSize
                 )
+            )
         )
             .pipe(takeUntil(this.destroyService))
             .subscribe(() => {
@@ -427,7 +454,7 @@ export class ServerAccountComponent implements OnInit {
                 )
                 this.store.dispatch(
                     new fromClusterServer.FetchClusterServerAccountsAction({
-                        condition: { searchText: this.searchCtrl.value },
+                        condition: { searchText: this.searchClusterCtrl.value },
                         options: {
                             pageIndex: this.clusterPageIndex,
                             pageSize: this.clusterPageSize
@@ -455,7 +482,9 @@ export class ServerAccountComponent implements OnInit {
             )
             .subscribe(account => {
                 this.store.dispatch(
-                    new fromPhysicalServer.EditPhysicalServerAccountAction(account)
+                    new fromPhysicalServer.EditPhysicalServerAccountAction(
+                        account
+                    )
                 )
             })
     }
@@ -474,9 +503,14 @@ export class ServerAccountComponent implements OnInit {
                     })
                 }),
                 filter(e => typeof e !== 'string'),
-                takeUntil(this.destroyService))
+                takeUntil(this.destroyService)
+            )
             .subscribe(account => {
-                this.store.dispatch(new fromVirtualServer.EditVirtualServerAccountAction(account))
+                this.store.dispatch(
+                    new fromVirtualServer.EditVirtualServerAccountAction(
+                        account
+                    )
+                )
             })
     }
 
@@ -497,7 +531,11 @@ export class ServerAccountComponent implements OnInit {
                 takeUntil(this.destroyService)
             )
             .subscribe(account => {
-                this.store.dispatch(new fromClusterServer.EditClusterServerAccountAction(account))
+                this.store.dispatch(
+                    new fromClusterServer.EditClusterServerAccountAction(
+                        account
+                    )
+                )
             })
     }
 
@@ -516,7 +554,7 @@ export class ServerAccountComponent implements OnInit {
                 }),
                 takeUntil(this.destroyService)
             )
-            .subscribe(account => { })
+            .subscribe(account => {})
     }
 
     private initShowVirtual() {
@@ -534,35 +572,24 @@ export class ServerAccountComponent implements OnInit {
                 }),
                 takeUntil(this.destroyService)
             )
-            .subscribe(account => { })
+            .subscribe(account => {})
     }
 
     private initShowCluster() {
         this.toShowClusterSub
             .asObservable()
-            .pipe(mergeMap(account => {
-                return this.modalService.open({
-                    title: '查看集群服务器台帐',
-                    content: ToShowClusterServerAccountComponent,
-                    footer: false,
-                    width: 800,
-                    componentParams: { account }
-                })
-            }),
+            .pipe(
+                mergeMap(account => {
+                    return this.modalService.open({
+                        title: '查看集群服务器台帐',
+                        content: ToShowClusterServerAccountComponent,
+                        footer: false,
+                        width: 800,
+                        componentParams: { account }
+                    })
+                }),
                 takeUntil(this.destroyService)
             )
-            .subscribe(account => { })
-    }
-
-    private isPhysicalTab(): boolean {
-        return this.tabIndex === 0
-    }
-
-    private isVirtualTab(): boolean {
-        return this.tabIndex === 1
-    }
-
-    private isClusterTab(): boolean {
-        return this.tabIndex === 2
+            .subscribe(account => {})
     }
 }
