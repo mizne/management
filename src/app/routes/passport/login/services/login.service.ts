@@ -12,7 +12,7 @@ export class LoginService {
     constructor(
         private http: HttpClient,
         private errorLogger: ErrorLoggerService
-    ) { }
+    ) {}
     login(
         params: LoginParams
     ): Observable<{ login: LoginResult; exhibition: any }> {
@@ -20,8 +20,8 @@ export class LoginService {
             login: {
                 tenantId: `string`,
                 userId: `string`,
-                userName: `string`,
-                tenantName: `string`,
+                userName: `管理员`,
+                tenantName: `管理员`,
                 token: `string`,
                 organizationId: `string`,
                 exhibitionId: `string`
