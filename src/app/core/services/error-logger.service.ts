@@ -24,7 +24,7 @@ interface HttpErrorInfo {
 */
 @Injectable()
 export class ErrorLoggerService {
-    constructor(private tenantService: TenantService) {}
+    constructor(private tenantService: TenantService) { }
 
     /**
      * info 级别日志记录
@@ -44,7 +44,7 @@ export class ErrorLoggerService {
         } else {
             console.info(
                 `Module: ${error.module}; Method: ${
-                    error.method
+                error.method
                 }; description: ${error.description};`
             )
         }
@@ -68,7 +68,7 @@ export class ErrorLoggerService {
         } else {
             console.error(
                 `Module: ${error.module}; Method: ${
-                    error.method
+                error.method
                 }; description: ${error.description};`
             )
         }
@@ -93,7 +93,7 @@ export class ErrorLoggerService {
             description: errMsg
         })
 
-        return Observable.throw(errMsg)
+        return Observable.throw(new Error(errMsg))
     }
 
     /**

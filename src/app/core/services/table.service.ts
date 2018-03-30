@@ -66,16 +66,12 @@ export class TableService {
 
     preCreateItem(params: CreateOptions) {
         this.checkMehtodInvokeOrder('createItem')
-        this.checkParams(params.type, 'preCreateItem')
+        this.checkTypeConsistency(params.type, 'preCreateItem')
         this.subjects['createItem'].next(params)
     }
 
-    private capitalFirst(s: string): string {
-        return s[0].toUpperCase() + s.slice(1)
-    }
-
     toCreateItem(type?: string): Observable<any> {
-        this.checkParams(type, 'toCreateItem')
+        this.checkTypeConsistency(type, 'toCreateItem')
         this.lazyInitial('createItem')
         return this.subjects['createItem'].asObservable().pipe(
             filter(params => (type ? type === params.type : true)),
@@ -94,12 +90,12 @@ export class TableService {
 
     preEditItem(params: EditOptions) {
         this.checkMehtodInvokeOrder('editItem')
-        this.checkParams(params.type, 'preEditItem')
+        this.checkTypeConsistency(params.type, 'preEditItem')
         this.subjects['editItem'].next(params)
     }
 
     toEditItem(type?: string): Observable<any> {
-        this.checkParams(type, 'toEditItem')
+        this.checkTypeConsistency(type, 'toEditItem')
         this.lazyInitial('editItem')
         return this.subjects['editItem'].asObservable().pipe(
             filter(params => (type ? type === params.type : true)),
@@ -119,12 +115,12 @@ export class TableService {
 
     preShowItem(params: ShowOptions) {
         this.checkMehtodInvokeOrder('showItem')
-        this.checkParams(params.type, 'preShowItem')
+        this.checkTypeConsistency(params.type, 'preShowItem')
         this.subjects['showItem'].next(params)
     }
 
     toShowItem(type?: string): Observable<any> {
-        this.checkParams(type, 'toShowItem')
+        this.checkTypeConsistency(type, 'toShowItem')
         this.lazyInitial('showItem')
         return this.subjects['showItem'].asObservable().pipe(
             filter(params => (type ? type === params.type : true)),
@@ -144,12 +140,12 @@ export class TableService {
 
     preSingleDeleteItem(params: SingleDeleteOptions) {
         this.checkMehtodInvokeOrder('singleDeleteItem')
-        this.checkParams(params.type, 'preSingleDeleteItem')
+        this.checkTypeConsistency(params.type, 'preSingleDeleteItem')
         this.subjects['singleDeleteItem'].next(params)
     }
 
     toSingleDeleteItem(type?: string): Observable<string> {
-        this.checkParams(type, 'toSingleDeleteItem')
+        this.checkTypeConsistency(type, 'toSingleDeleteItem')
         this.lazyInitial('singleDeleteItem')
         return this.subjects['singleDeleteItem'].asObservable().pipe(
             filter(params => (type ? type === params.type : true)),
@@ -173,13 +169,17 @@ export class TableService {
         }
     }
 
+    private capitalFirst(s: string): string {
+        return s[0].toUpperCase() + s.slice(1)
+    }
+
     private lazyInitial(operator: keyof Operators) {
         if (!this.subjects[operator]) {
             this.subjects[operator] = new Subject()
         }
     }
 
-    private checkParams(type: string, method: string) {
+    private checkTypeConsistency(type: string, method: string) {
         if (type && !this.hasMultiType) {
             throw new Error(`Did you forgot to inject 'HAS_MULTI_TYPE' token for multi types?`)
         }

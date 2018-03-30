@@ -14,7 +14,7 @@ import * as uuid from 'uuid'
  */
 @Injectable()
 export class DestroyService extends Subject<void> implements OnDestroy {
-    id: string
+    private id: string
     constructor() {
         super()
         this.id = uuid.v4()
