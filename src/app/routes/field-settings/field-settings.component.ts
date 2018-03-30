@@ -60,32 +60,33 @@ export class FieldSettingsComponent implements OnInit {
                                                                 {
                                                                     name: 'V16',
                                                                     children: []
+                                                                },
+                                                                {
+                                                                    name:
+                                                                        '新增属性值',
+                                                                    children: []
                                                                 }
                                                             ]
-                                                        },
-                                                        {
-                                                            name: '新增属性',
-                                                            children: []
                                                         }
                                                     ]
+                                                },
+                                                {
+                                                    name: '新增属性值',
+                                                    children: []
                                                 }
                                             ]
-                                        },
-                                        {
-                                            name: '新增属性',
-                                            children: []
                                         }
                                     ]
                                 },
                                 {
                                     name: '系统软件',
                                     children: []
+                                },
+                                {
+                                    name: '新增属性值',
+                                    children: []
                                 }
                             ]
-                        },
-                        {
-                            name: '新增属性',
-                            children: []
                         }
                     ]
                 },
@@ -152,7 +153,7 @@ export class FieldSettingsComponent implements OnInit {
             type: [null, Validators.required],
             length: [null, Validators.length],
             pattern: [null, Validators.required],
-            remark: [null]
+            remark: ['*代表任意字符串， ?代表任意单个字符，+代表一个到多个字符']
         })
     }
 
