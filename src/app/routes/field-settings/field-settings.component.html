@@ -6,6 +6,84 @@
             <i class="anticon anticon-apple"></i>
             资源属性配置管理
         </ng-template>
-        资源属性配置管理
+        <div nz-row [nzGutter]="16">
+            <div nz-col [nzXs]="24" [nzMd]="8" class="mb-md">
+                <nz-card [nzBordered]="false">
+                    <nz-tree [nzAutoExpandParent]="true" [nzShowLine]="true" [nzNodes]="nodes" [nzOptions]="options" (nzEvent)="onEvent($event)"></nz-tree>
+                </nz-card>
+            </div>
+            <div nz-col [nzXs]="24" [nzMd]="16" class="mb-md">
+                <nz-card [nzBordered]="false">
+                    <form nz-form [formGroup]="form" [nzLayout]="'vertical'">
+                        <div nz-row [nzGutter]="40">
+                            <div nz-col [nzSpan]="12">
+                                <div nz-form-item nz-row>
+                                    <div nz-form-label nz-col>
+                                        <label nz-form-item-required>字段名称</label>
+                                    </div>
+                                    <div nz-form-control nz-col nzHasFeedback>
+                                        <nz-input formControlName="name" nzPlaceHolder="请输入字段名称" nzSize="large"></nz-input>
+                                    </div>
+                                </div>
+                            </div>
+                            <div nz-col [nzSpan]="12">
+                                <div nz-form-item nz-row>
+                                    <div nz-form-label nz-col>
+                                        <label nz-form-item-required>字段类型</label>
+                                    </div>
+                                    <div nz-form-control nz-col nzHasFeedback>
+                                        <nz-input formControlName="type" nzPlaceHolder="请输入字段类型" nzSize="large"></nz-input>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div nz-row [nzGutter]="40">
+                            <div nz-col [nzSpan]="12">
+                                <div nz-form-item nz-row>
+                                    <div nz-form-label nz-col>
+                                        <label nz-form-item-required>字段长度</label>
+                                    </div>
+                                    <div nz-form-control nz-col nzHasFeedback>
+                                        <nz-input formControlName="length" nzPlaceHolder="请输入字段长度" nzSize="large"></nz-input>
+                                    </div>
+                                </div>
+                            </div>
+                            <div nz-col [nzSpan]="12">
+                                <div nz-form-item nz-row>
+                                    <div nz-form-label nz-col>
+                                        <label nz-form-item-required>字段正则</label>
+                                    </div>
+                                    <div nz-form-control nz-col nzHasFeedback>
+                                        <nz-input formControlName="pattern" nzPlaceHolder="请输入字段正则" nzSize="large"></nz-input>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div nz-row [nzGutter]="40">
+                            <div nz-col [nzSpan]="20">
+                                <div nz-form-item nz-row>
+                                    <div nz-form-label nz-col>
+                                        <label nz-form-item-required>字段正则编写说明</label>
+                                    </div>
+                                    <div nz-form-control nz-col nzHasFeedback>
+                                        <nz-input [nzType]="'textarea'" [nzRows]="4" formControlName="remark" nzPlaceHolder="请输入字段正则编写说明" nzSize="large"></nz-input>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div nz-row [nzGutter]="40" class="d-flex justify-content-center">
+                            <button nz-button class="ml-md" [nzType]="'primary'" nzSize="large" (click)="toCreate()">新增字段</button>
+                            <button nz-button class="ml-md" nzSize="large" (click)="toEdit()">修改字段</button>
+                            <button nz-button class="ml-md" [nzType]="'primary'" nzSize="large" (click)="toCancel()">取消编辑</button>
+                            <button nz-button class="ml-md" nzSize="large" (click)="toDelete()">删除字段</button>
+                        </div>
+                    </form>
+                </nz-card>
+            </div>
+        </div>
+
     </nz-tab>
 </nz-tabset>

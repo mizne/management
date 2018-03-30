@@ -10,6 +10,7 @@ import { ZORROMODULES, ABCMODULES } from '../delon.module'
 // i18n
 import { TranslateModule } from '@ngx-translate/core'
 import { ViserModule } from 'viser-ng'
+import { NzTreeModule } from 'ng-tree-antd'
 
 import { components } from './components'
 import { pipes } from './pipes'
@@ -25,10 +26,12 @@ import { pipes } from './pipes'
         AlainThemeModule.forChild(),
         ...ABCMODULES,
         AlainACLModule,
-        ViserModule
+        ViserModule,
+        NzTreeModule
     ],
     declarations: [...pipes, ...components],
     exports: [
+        NzTreeModule,
         ViserModule,
         CommonModule,
         FormsModule,

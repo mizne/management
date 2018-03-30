@@ -13,7 +13,6 @@ import {
 import { BrowserModule } from '@angular/platform-browser'
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
 import { AngularWebStoreModule } from 'angular-web-store'
-import { NzTreeModule } from 'ng-tree-antd'
 
 import { StoreModule } from '@ngrx/store'
 import { EffectsModule } from '@ngrx/effects'
@@ -77,7 +76,6 @@ export function StartupServiceFactory(
         SharedModule,
         LayoutModule,
         RoutesModule,
-        NzTreeModule,
         DelonModule.forRoot(),
         TranslateModule.forRoot({
             loader: {

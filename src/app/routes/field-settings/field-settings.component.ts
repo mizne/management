@@ -1,5 +1,5 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core'
-import { FormControl } from '@angular/forms'
+import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms'
 import { NzMessageService, NzModalService } from 'ng-zorro-antd'
 
 import { SystemLogger } from '@core/models/system-logger.model'
@@ -35,62 +35,130 @@ import {
 export class FieldSettingsComponent implements OnInit {
     tabIndex = 0
 
-    systemLoggers$: Observable<SystemLogger[]>
-    systemLoggersCount$: Observable<number>
-    systemLoggerLoading$: Observable<boolean>
-    systemLoggerPageIndex = 1
-    systemLoggerPageSize = 10
-    systemLoggerPageChangeSub: Subject<void> = new Subject<void>()
-    toShowSystemLoggerSub: Subject<SystemLogger> = new Subject<SystemLogger>()
-    searchSystemLoggerCtrl: FormControl = new FormControl()
-    toSearchSystemLoggerSub: Subject<void> = new Subject<void>()
+    nodes = [
+        {
+            name: '资源类型',
+            children: [
+                {
+                    name: '软件资源',
+                    children: [
+                        {
+                            name: '软件类型',
+                            children: [
+                                {
+                                    name: '应用软件',
+                                    children: [
+                                        {
+                                            name: '软件名称',
+                                            children: [
+                                                {
+                                                    name: 'Office',
+                                                    children: [
+                                                        {
+                                                            name: '软件版本',
+                                                            children: [
+                                                                {
+                                                                    name: 'V16',
+                                                                    children: []
+                                                                }
+                                                            ]
+                                                        },
+                                                        {
+                                                            name: '新增属性',
+                                                            children: []
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            name: '新增属性',
+                                            children: []
+                                        }
+                                    ]
+                                },
+                                {
+                                    name: '系统软件',
+                                    children: []
+                                }
+                            ]
+                        },
+                        {
+                            name: '新增属性',
+                            children: []
+                        }
+                    ]
+                },
+                {
+                    name: '计算资源',
+                    children: []
+                },
+                {
+                    name: '存储资源',
+                    children: []
+                },
+                {
+                    name: '数据库资源',
+                    children: []
+                },
+                {
+                    name: 'IP地址资源',
+                    children: []
+                },
+                {
+                    name: '防火墙访问权限资源',
+                    children: []
+                }
+            ]
+        }
+    ]
+
+    options = {}
+
+    form: FormGroup
 
     constructor(
         private messageService: NzMessageService,
         private modalService: NzModalService,
         private store: Store<State>,
-        private destroyService: DestroyService
+        private destroyService: DestroyService,
+        private fb: FormBuilder
     ) {}
 
     ngOnInit() {
+        this.buildForm()
         this.intDataSource()
         this.initDispatcher()
         this.initSubscriber()
     }
 
+    onEvent(ev: any) {
+        console.log('onEvent', ev)
+    }
+
     tabChange(tabIndex: number) {}
 
-    // System Logger Tab
-    onSearchSystemLogger() {
-        this.toSearchSystemLoggerSub.next()
+    toCreate() {}
+
+    toEdit() {}
+
+    toCancel() {}
+
+    toDelete() {}
+
+    private buildForm() {
+        this.form = this.fb.group({
+            name: [null, Validators.required],
+            type: [null, Validators.required],
+            length: [null, Validators.length],
+            pattern: [null, Validators.required],
+            remark: [null]
+        })
     }
 
-    fetchSystemLoggers() {
-        this.systemLoggerPageChangeSub.next()
-    }
+    private intDataSource(): void {}
 
-    toShowSystemLogger(logger: SystemLogger) {
-        this.toShowSystemLoggerSub.next(logger)
-    }
-
-    private intDataSource(): void {
-        this.systemLoggers$ = this.store.select(getResourceFieldSettings)
-        this.systemLoggersCount$ = this.store.select(
-            getResourceFieldSettingsCount
-        )
-        this.systemLoggerLoading$ = this.store.select(
-            getResourceFieldSettingsLoading
-        )
-    }
-
-    private initDispatcher(): void {
-        this.store.dispatch(
-            new fromResourceFieldSettings.FetchResourceFieldSettingsAction()
-        )
-        this.store.dispatch(
-            new fromResourceFieldSettings.FetchResourceFieldSettingsCountAction()
-        )
-    }
+    private initDispatcher(): void {}
 
     private initSubscriber(): void {}
 }
