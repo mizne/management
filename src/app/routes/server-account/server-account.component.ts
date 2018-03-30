@@ -33,7 +33,7 @@ import {
 } from './actions'
 import { Subject } from 'rxjs/Subject'
 import { DestroyService } from '@core/services/destroy.service'
-import { TableService } from '@core/services/table.service'
+import { TableService, HAS_MULTI_TYPE } from '@core/services/table.service'
 import { FormControl } from '@angular/forms'
 import {
     ToCreatePhysicalServerAccountComponent,
@@ -59,7 +59,11 @@ import {
     selector: 'app-server-account',
     templateUrl: './server-account.component.html',
     styleUrls: ['./server-account.component.less'],
-    providers: [DestroyService, TableService],
+    providers: [
+        DestroyService,
+        TableService,
+        { provide: HAS_MULTI_TYPE, useValue: true }
+    ],
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ServerAccountComponent implements OnInit {
@@ -99,7 +103,7 @@ export class ServerAccountComponent implements OnInit {
         private store: Store<State>,
         private destroyService: DestroyService,
         private tableService: TableService
-    ) {}
+    ) { }
 
     ngOnInit() {
         this.intDataSource()
@@ -107,7 +111,7 @@ export class ServerAccountComponent implements OnInit {
         this.initSubscriber()
     }
 
-    tabChange(tabIndex: number) {}
+    tabChange(tabIndex: number) { }
 
     // Physical Server Tab
     toCreatePhysical() {
@@ -559,18 +563,18 @@ export class ServerAccountComponent implements OnInit {
     private initShowPhysical() {
         this.tableService
             .toShowItem(ServerAccountType.PHYSICAL)
-            .subscribe(() => {})
+            .subscribe(() => { })
     }
 
     private initShowVirtual() {
         this.tableService
             .toShowItem(ServerAccountType.VIRTUAL)
-            .subscribe(() => {})
+            .subscribe(() => { })
     }
 
     private initShowCluster() {
         this.tableService
             .toShowItem(ServerAccountType.CLUSTER)
-            .subscribe(() => {})
+            .subscribe(() => { })
     }
 }

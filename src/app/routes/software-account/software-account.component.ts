@@ -48,7 +48,6 @@ import {
     EditMiddlewareSoftwareAccountAction
 } from './actions/middleware-software-account.action'
 import { Subject } from 'rxjs/Subject'
-import { DestroyService } from '@core/services/destroy.service'
 import {
     ToCreateApplicationSoftwareAccountComponent,
     ToCreateSystemSoftwareAccountComponent,
@@ -67,13 +66,17 @@ import {
     tap,
     withLatestFrom
 } from 'rxjs/operators'
-import { TableService } from '@core/services/table.service'
+import { DestroyService } from '@core/services/destroy.service'
+import { TableService, HAS_MULTI_TYPE } from '@core/services/table.service'
 
 @Component({
     selector: 'app-software-account',
     templateUrl: './software-account.component.html',
     styleUrls: ['./software-account.component.less'],
-    providers: [TableService, DestroyService],
+    providers: [
+        TableService, DestroyService,
+        { provide: HAS_MULTI_TYPE, useValue: true }
+    ],
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SoftwareAccountComponent implements OnInit {
@@ -114,7 +117,7 @@ export class SoftwareAccountComponent implements OnInit {
         private store: Store<State>,
         private destroyService: DestroyService,
         private tableService: TableService
-    ) {}
+    ) { }
 
     ngOnInit() {
         this.intDataSource()
@@ -122,7 +125,7 @@ export class SoftwareAccountComponent implements OnInit {
         this.initSubscriber()
     }
 
-    tabChange(tabIndex: number) {}
+    tabChange(tabIndex: number) { }
 
     // Application Software Tab
     toCreateApplication() {
@@ -427,7 +430,7 @@ export class SoftwareAccountComponent implements OnInit {
             .subscribe(() => {
                 console.log(
                     `to search system software accounts; search text: ${
-                        this.searchSystemCtrl.value
+                    this.searchSystemCtrl.value
                     };`
                 )
                 this.store.dispatch(
@@ -481,7 +484,7 @@ export class SoftwareAccountComponent implements OnInit {
             .subscribe(() => {
                 console.log(
                     `to search middleware software accounts; search text: ${
-                        this.searchMiddlewareCtrl.value
+                    this.searchMiddlewareCtrl.value
                     };`
                 )
                 this.store.dispatch(
@@ -563,18 +566,18 @@ export class SoftwareAccountComponent implements OnInit {
     private initShowApplication() {
         this.tableService
             .toShowItem(SoftwareAccountType.APPLICATION)
-            .subscribe(() => {})
+            .subscribe(() => { })
     }
 
     private initShowSystem() {
         this.tableService
             .toShowItem(SoftwareAccountType.SYSTEM)
-            .subscribe(() => {})
+            .subscribe(() => { })
     }
 
     private initShowMiddleware() {
         this.tableService
             .toShowItem(SoftwareAccountType.MIDDLEWARE)
-            .subscribe(() => {})
+            .subscribe(() => { })
     }
 }
