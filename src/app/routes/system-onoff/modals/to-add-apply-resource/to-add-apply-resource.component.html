@@ -7,7 +7,10 @@
                         <label for="status">资源类型</label>
                     </div>
                     <div nz-form-control class="flex-1">
-                        <nz-input formControlName="type" nzPlaceHolder="请输入资源类型" nzSize="large"></nz-input>
+                        <nz-select formControlName="type" [nzPlaceHolder]="'请选择资源类型'" nzAllowClear>
+                            <nz-option *ngFor="let option of RESOURCE_TYPES" [nzLabel]="option.label" [nzValue]="option.value">
+                            </nz-option>
+                        </nz-select>
                     </div>
                 </div>
             </div>

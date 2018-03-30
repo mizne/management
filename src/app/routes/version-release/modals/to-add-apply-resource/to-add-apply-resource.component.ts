@@ -8,7 +8,8 @@ import { merge } from 'rxjs/observable/merge'
 import { DestroyService } from '@core/services/destroy.service'
 import {
     ApplyResource,
-    FetchAddableApplyResourceCountParams
+    FetchAddableApplyResourceCountParams,
+    resourceTypes
 } from '@core/models/resource-apply.model'
 import { Store } from '@ngrx/store'
 import {
@@ -24,7 +25,7 @@ import {
     FetchAddableApplyResourceCountAction,
     EnsurePageParamsAction
 } from '../../actions/to-add-apply-resource.action'
-import { withLatestFrom, takeUntil, tap, filter, map } from 'rxjs/operators';
+import { withLatestFrom, takeUntil, tap, filter, map } from 'rxjs/operators'
 
 interface CheckRow {
     id: string
@@ -37,6 +38,7 @@ interface CheckRow {
     providers: [DestroyService]
 })
 export class ToAddApplyResourceComponent implements OnInit {
+    RESOURCE_TYPES = resourceTypes
     addableResources$: Observable<ApplyResource[]>
     addableResourcesCount$: Observable<number>
     loading$: Observable<boolean>
@@ -60,7 +62,7 @@ export class ToAddApplyResourceComponent implements OnInit {
         private destroyService: DestroyService,
         private messageService: NzMessageService,
         private store: Store<State>
-    ) { }
+    ) {}
 
     ngOnInit() {
         this.buildForm()
@@ -177,22 +179,20 @@ export class ToAddApplyResourceComponent implements OnInit {
 
         merge(
             this.pageChangeSub.asObservable(),
-            this.resetSub
-                .pipe(
-                    tap(() => {
-                        this.pageIndex = 1
-                        this.pageSize = 10
-                    }),
-                    withLatestFrom(
-                        this.store.select(getAddableApplyResourcesPageParams)
-                    ),
-                    filter(
-                        ([_, { pageIndex, pageSize }]) =>
-                            pageIndex === this.pageIndex &&
-                            pageSize === this.pageSize
-                    )
+            this.resetSub.pipe(
+                tap(() => {
+                    this.pageIndex = 1
+                    this.pageSize = 10
+                }),
+                withLatestFrom(
+                    this.store.select(getAddableApplyResourcesPageParams)
+                ),
+                filter(
+                    ([_, { pageIndex, pageSize }]) =>
+                        pageIndex === this.pageIndex &&
+                        pageSize === this.pageSize
                 )
-
+            )
         )
             .pipe(takeUntil(this.destroyService))
             .subscribe(() => {

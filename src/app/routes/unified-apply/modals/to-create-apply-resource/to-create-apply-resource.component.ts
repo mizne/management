@@ -6,7 +6,7 @@ import { Observable } from 'rxjs/Observable'
 import * as uuid from 'uuid'
 
 import { DestroyService } from '@core/services/destroy.service'
-import { ApplyResource } from '@core/models/resource-apply.model'
+import { ApplyResource, resourceTypes } from '@core/models/resource-apply.model'
 
 @Component({
     selector: 'app-to-create-apply-resource',
@@ -14,6 +14,7 @@ import { ApplyResource } from '@core/models/resource-apply.model'
     providers: [DestroyService]
 })
 export class ToCreateApplyResourceComponent implements OnInit {
+    RESOURCE_TYPES = resourceTypes
     form: FormGroup
     constructor(
         private fb: FormBuilder,

@@ -289,3 +289,30 @@ export class TabOptions {
         }
     }
 }
+
+export const resourceTypes = [
+    {
+        label: '软件资源',
+        value: '软件资源'
+    },
+    {
+        label: '计算资源',
+        value: '计算资源'
+    },
+    {
+        label: '存储资源',
+        value: '存储资源'
+    },
+    {
+        label: '数据库资源',
+        value: '数据库资源'
+    },
+    {
+        label: 'IP地址资源',
+        value: 'IP地址资源'
+    },
+    {
+        label: '防火墙访问权限资源',
+        value: '防火墙访问权限资源'
+    }
+]

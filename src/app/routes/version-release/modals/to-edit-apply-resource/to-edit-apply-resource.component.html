@@ -7,10 +7,10 @@
                         <label nz-form-item-required>资源类型</label>
                     </div>
                     <div nz-form-control nz-col nzHasFeedback [nzValidateStatus]="type">
-                        <nz-input formControlName="type" nzPlaceHolder="请输入资源类型" nzSize="large"></nz-input>
-                        <p nz-form-explain *ngIf="(type.dirty || type.touched) && type.errors?.required">
-                            请输入资源类型
-                        </p>
+                        <nz-select formControlName="type" [nzPlaceHolder]="'请选择资源类型'" nzAllowClear>
+                            <nz-option *ngFor="let option of RESOURCE_TYPES" [nzLabel]="option.label" [nzValue]="option.value">
+                            </nz-option>
+                        </nz-select>
                     </div>
                 </div>
             </div>

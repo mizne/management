@@ -1,4 +1,9 @@
-import { Component, OnInit, ChangeDetectionStrategy, AfterViewInit } from '@angular/core'
+import {
+    Component,
+    OnInit,
+    ChangeDetectionStrategy,
+    AfterViewInit
+} from '@angular/core'
 import { NzMessageService, NzModalService } from 'ng-zorro-antd'
 import * as moment from 'moment'
 import {
@@ -31,111 +36,111 @@ import {
 } from 'rxjs/operators'
 
 const data = {
-    'source': {
-        'nodes': [
+    source: {
+        nodes: [
             {
-                'shape': 'clusterNode',
-                'x': 790,
-                'y': 110,
-                'id': 'group3',
-                'label': '集群3'
+                shape: 'clusterNode',
+                x: 790 * window.innerWidth / 1858,
+                y: 110 * window.innerHeight / 989,
+                id: 'group3',
+                label: '集群3'
             },
             {
-                'shape': 'serverNode',
-                'x': 760,
-                'y': 60,
-                'id': 'server6',
-                'label': '服务器6',
-                'color': '#a5d69c'
+                shape: 'serverNode',
+                x: 760 * window.innerWidth / 1858,
+                y: 60 * window.innerHeight / 989,
+                id: 'server6',
+                label: '服务器6',
+                color: '#a5d69c'
             },
             {
-                'shape': 'serverNode',
-                'x': 820,
-                'y': 150,
-                'id': 'server5',
-                'label': '服务器5',
-                'color': '#a5d69c'
+                shape: 'serverNode',
+                x: 820 * window.innerWidth / 1858,
+                y: 150 * window.innerHeight / 989,
+                id: 'server5',
+                label: '服务器5',
+                color: '#a5d69c'
             },
             {
-                'shape': 'clusterNode',
-                'x': 1180,
-                'y': 500,
-                'id': 'group1',
-                'label': '集群1'
+                shape: 'clusterNode',
+                x: 1180 * window.innerWidth / 1858,
+                y: 500 * window.innerHeight / 989,
+                id: 'group1',
+                label: '集群1'
             },
             {
-                'shape': 'clusterNode',
-                'x': 430,
-                'y': 470,
-                'id': 'group2',
-                'label': '集群2'
+                shape: 'clusterNode',
+                x: 430 * window.innerWidth / 1858,
+                y: 470 * window.innerHeight / 989,
+                id: 'group2',
+                label: '集群2'
             },
             {
-                'shape': 'serverNode',
-                'x': 480,
-                'y': 520,
-                'id': 'server2',
-                'label': '服务器2',
-                'color': '#daabab'
+                shape: 'serverNode',
+                x: 480 * window.innerWidth / 1858,
+                y: 520 * window.innerHeight / 989,
+                id: 'server2',
+                label: '服务器2',
+                color: '#daabab'
             },
             {
-                'shape': 'serverNode',
-                'x': 400,
-                'y': 430,
-                'id': 'server1',
-                'label': '服务器1',
-                'color': '#a5d69c'
+                shape: 'serverNode',
+                x: 400 * window.innerWidth / 1858,
+                y: 430 * window.innerHeight / 989,
+                id: 'server1',
+                label: '服务器1',
+                color: '#a5d69c'
             },
             {
-                'shape': 'serverNode',
-                'x': 1150,
-                'y': 470,
-                'id': 'server3',
-                'label': '服务器3',
-                'color': '#a5d69c'
+                shape: 'serverNode',
+                x: 1150 * window.innerWidth / 1858,
+                y: 470 * window.innerHeight / 989,
+                id: 'server3',
+                label: '服务器3',
+                color: '#a5d69c'
             },
             {
-                'shape': 'serverNode',
-                'x': 1230,
-                'y': 540,
-                'id': 'server4',
-                'label': '服务器4',
-                'color': '#daabab'
+                shape: 'serverNode',
+                x: 1230 * window.innerWidth / 1858,
+                y: 540 * window.innerHeight / 989,
+                id: 'server4',
+                label: '服务器4',
+                color: '#daabab'
             },
             {
-                'shape': 'serverNode',
-                'x': 800,
-                'y': 660,
-                'id': 'server7',
-                'label': '服务器7',
-                'color': '#a5d69c'
+                shape: 'serverNode',
+                x: 800 * window.innerWidth / 1858,
+                y: 660 * window.innerHeight / 989,
+                id: 'server7',
+                label: '服务器7',
+                color: '#a5d69c'
             }
         ],
-        'edges': [
+        edges: [
             {
-                'source': 'group1',
-                'id': 'edge1',
-                'target': 'group2',
-                'shape': 'arrow'
+                source: 'group1',
+                id: 'edge1',
+                target: 'group2',
+                shape: 'arrow'
             },
             {
-                'source': 'group3',
-                'id': 'edge2',
-                'target': 'group2'
+                source: 'group3',
+                id: 'edge2',
+                target: 'group2'
             },
             {
-                'source': 'group1',
-                'id': 'edge3',
-                'target': 'group3'
+                source: 'group1',
+                id: 'edge3',
+                target: 'group3'
             },
             {
-                'source': 'group1',
-                'id': 'edge4',
-                'target': 'server7'
+                source: 'group1',
+                id: 'edge4',
+                target: 'server7'
             }
         ]
     },
-    'guides': []
+    guides: []
 }
 
 G6.registerNode('clusterNode', {
@@ -147,7 +152,7 @@ G6.registerNode('clusterNode', {
                 fill: '#333',
                 text: cfg.label
             }
-        });
+        })
         return group.addShape('rect', {
             attrs: {
                 x: cfg.x - 100,
@@ -157,7 +162,7 @@ G6.registerNode('clusterNode', {
                 fill: '#fff',
                 stroke: 'red'
             }
-        });
+        })
     },
     getAnchorPoints() {
         return [
@@ -173,9 +178,9 @@ G6.registerNode('clusterNode', {
             [0.25, 1],
             [0.5, 1],
             [0.75, 1]
-        ];
+        ]
     }
-});
+})
 
 G6.registerNode('serverNode', {
     draw(cfg, group) {
@@ -196,7 +201,7 @@ G6.registerNode('serverNode', {
                 fill: cfg.color,
                 stroke: '#f00'
             }
-        });
+        })
     },
 
     afterDraw(cfg, group) {
@@ -207,7 +212,7 @@ G6.registerNode('serverNode', {
                 fill: '#333',
                 text: cfg.label
             }
-        });
+        })
     },
     getAnchorPoints() {
         return [
@@ -223,9 +228,9 @@ G6.registerNode('serverNode', {
             [0.25, 1],
             [0.5, 1],
             [0.75, 1]
-        ];
+        ]
     }
-});
+})
 
 @Component({
     selector: 'app-server-topology',
@@ -236,7 +241,7 @@ G6.registerNode('serverNode', {
 })
 export class ServerTopologyComponent implements OnInit, AfterViewInit {
     tabIndex = 0
-    data = data;
+    data = data
     net: any
 
     constructor(
@@ -244,7 +249,7 @@ export class ServerTopologyComponent implements OnInit, AfterViewInit {
         private modalService: NzModalService,
         private store: Store<State>,
         private destroyService: DestroyService
-    ) { }
+    ) {}
 
     ngOnInit() {
         this.intDataSource()
@@ -252,28 +257,28 @@ export class ServerTopologyComponent implements OnInit, AfterViewInit {
         this.initSubscriber()
     }
 
-    tabChange(tabIndex: number) { }
+    tabChange(tabIndex: number) {}
 
     ngAfterViewInit() {
         this.net = new G6.Net({
-            id: 'c1',      // 容器ID
+            id: 'c1', // 容器ID
             mode: 'edit',
-            width: window.innerWidth,    // 画布宽
-            height: window.innerHeight    // 画布高
-        });
+            width: window.innerWidth, // 画布宽
+            height: window.innerHeight // 画布高
+        })
         // 第五步：载入数据
-        this.net.source(this.data.source.nodes, this.data.source.edges);
+        this.net.source(this.data.source.nodes, this.data.source.edges)
         // 第六步：渲染关系图
-        this.net.render();
+        this.net.render()
     }
 
     save() {
         console.log(this.net.save())
     }
 
-    private intDataSource(): void { }
+    private intDataSource(): void {}
 
-    private initDispatcher(): void { }
+    private initDispatcher(): void {}
 
-    private initSubscriber(): void { }
+    private initSubscriber(): void {}
 }

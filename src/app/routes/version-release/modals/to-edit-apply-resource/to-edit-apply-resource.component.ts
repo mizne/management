@@ -5,7 +5,7 @@ import { Subject } from 'rxjs/Subject'
 import { Observable } from 'rxjs/Observable'
 
 import { DestroyService } from '@core/services/destroy.service'
-import { ApplyResource } from '@core/models/resource-apply.model'
+import { ApplyResource, resourceTypes } from '@core/models/resource-apply.model'
 
 @Component({
     selector: 'app-to-edit-apply-resource',
@@ -13,6 +13,7 @@ import { ApplyResource } from '@core/models/resource-apply.model'
     providers: [DestroyService]
 })
 export class ToEditApplyResourceComponent implements OnInit {
+    RESOURCE_TYPES = resourceTypes
     form: FormGroup
     _resource: ApplyResource
     constructor(

@@ -96,11 +96,6 @@
                             "text": "资产回收管理",
                             "link": "/assets-management/assets-recovery",
                             "translate": "assets-recovery"
-                        },
-                        {
-                            "text": "待我审批(演示)",
-                            "link": "/assets-management/to-approve",
-                            "translate": "to-approve"
                         }
                     ]
                 },

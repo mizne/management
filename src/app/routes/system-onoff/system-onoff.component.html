@@ -244,7 +244,7 @@
                     <tbody nz-tbody>
                         <tr nz-tbody-tr *ngFor="let data of nzTable1.data; let i = index;">
                             <td nz-td>{{data.type}}</td>
-                            <td nz-td>{{data.name}}</td>
+                            <td nz-td>{{data.name || data.softwareName}}</td>
                             <td nz-td>{{data.environment}}</td>
                             <td nz-td>{{data.applyCount}}</td>
                             <td nz-td>{{data.applyTime}}</td>
@@ -413,7 +413,7 @@
                             <tbody nz-tbody>
                                 <tr nz-tbody-tr *ngFor="let data of nzTable6.data; let i = index;">
                                     <td nz-td>{{data.type}}</td>
-                                    <td nz-td>{{data.name}}</td>
+                                    <td nz-td>{{data.name || data.softwareName}}</td>
                                     <td nz-td>{{data.environment}}</td>
                                     <td nz-td>{{data.applyCount}}</td>
                                     <td nz-td>{{data.applyTime}}</td>
@@ -697,7 +697,7 @@
                             <tbody nz-tbody>
                                 <tr nz-tbody-tr *ngFor="let data of nzTable4.data; let i = index;">
                                     <td nz-td>{{data.type}}</td>
-                                    <td nz-td>{{data.name}}</td>
+                                    <td nz-td>{{data.name || data.softwareName}}</td>
                                     <td nz-td>{{data.environment}}</td>
                                     <td nz-td>{{data.applyCount}}</td>
                                     <td nz-td>{{data.applyTime}}</td>

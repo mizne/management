@@ -8,7 +8,8 @@ import { merge } from 'rxjs/observable/merge'
 import { DestroyService } from '@core/services/destroy.service'
 import {
     ApplyResource,
-    FetchAddableApplyResourceCountParams
+    FetchAddableApplyResourceCountParams,
+    resourceTypes
 } from '@core/models/resource-apply.model'
 import { Store } from '@ngrx/store'
 import {
@@ -37,6 +38,8 @@ interface CheckRow {
     providers: [DestroyService]
 })
 export class ToAddApplyResourceComponent implements OnInit {
+    RESOURCE_TYPES = resourceTypes
+    
     addableResources$: Observable<ApplyResource[]>
     addableResourcesCount$: Observable<number>
     loading$: Observable<boolean>
