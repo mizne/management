@@ -41,14 +41,14 @@ const data = {
             {
                 shape: 'clusterNode',
                 x: 790 * window.innerWidth / 1858,
-                y: 90 * window.innerHeight / 989,
+                y: 140 * window.innerHeight / 989,
                 id: 'group3',
                 label: '集群3'
             },
             {
                 shape: 'serverNode',
                 x: 760 * window.innerWidth / 1858,
-                y: 60 * window.innerHeight / 989,
+                y: 90 * window.innerHeight / 989,
                 id: 'server6',
                 label: '服务器6',
                 color: '#a5d69c'
