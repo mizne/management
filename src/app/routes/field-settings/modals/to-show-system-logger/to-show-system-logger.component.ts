@@ -4,20 +4,20 @@ import { Subject } from 'rxjs/Subject'
 import { Observable } from 'rxjs/Observable'
 
 import { DestroyService } from '@core/services/destroy.service'
-import { SystemLogger } from '@core/models/software-account.model'
+import { SystemLogger } from '@core/models/system-logger.model'
 
 @Component({
-    selector: 'app-to-show-application-software-account',
-    templateUrl: './to-show-application-software-account.component.html',
+    selector: 'app-to-show-system-logger',
+    templateUrl: './to-show-system-logger.component.html',
     providers: [DestroyService]
 })
-export class ToShowApplicationSoftwareAccountComponent implements OnInit {
+export class ToShowSystemLoggerComponent implements OnInit {
     constructor(
         private subject: NzModalSubject,
         private destroyService: DestroyService
     ) {}
 
-    @Input() account: SystemLogger
+    @Input() logger: SystemLogger
 
     ngOnInit() {}
 

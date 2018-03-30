@@ -17,11 +17,8 @@ export class SoftwareAccount {
     checked?: boolean
 }
 
-export class ApplicationSoftwareAccount extends SoftwareAccount {
-    static generateFakeDataItems({
-        pageIndex,
-        pageSize
-    }): ApplicationSoftwareAccount[] {
+export class SystemLogger extends SoftwareAccount {
+    static generateFakeDataItems({ pageIndex, pageSize }): SystemLogger[] {
         return Array.from({ length: pageSize }, (_, i) => ({
             id: uuid.v4(),
             name: `app softwareName ${i + (pageIndex - 1) * pageSize}`,

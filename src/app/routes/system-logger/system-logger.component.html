@@ -1,0 +1,66 @@
+<pro-header></pro-header>
+
+<nz-tabset [nzType]="'card'" [(nzSelectedIndex)]="tabIndex" (nzSelectedIndexChange)="tabChange($event)">
+    <nz-tab>
+        <ng-template #nzTabHeading>
+            <i class="anticon anticon-apple"></i>
+            系统日志
+        </ng-template>
+        <div class="mb-md" nz-row>
+            <div nz-col [nzSpan]="'18'" class="text-center">
+                <nz-input [nzType]="'search'" [formControl]="searchSystemLoggerCtrl" [nzSize]="'large'" [nzPlaceHolder]="'搜索系统日志'" style="width: 300px;"
+                    (nzOnSearch)="onSearchSystemLogger($event)"></nz-input>
+            </div>
+        </div>
+        <nz-card [nzBordered]="false">
+            <nz-table #nzTable1 [nzAjaxData]="systemLoggers$ | async" [nzShowSizeChanger]="true" [nzLoading]="systemLoggerLoading$ | async"
+                [nzTotal]="systemLoggersCount$ | async" [(nzPageIndex)]="systemLoggerPageIndex" (nzPageIndexChange)="fetchSystemLoggers()"
+                [(nzPageSize)]="systemLoggerPageSize" (nzPageSizeChange)="fetchSystemLoggers()" [nzShowFooter]="true">
+                <thead nz-thead>
+                    <tr>
+                        <th nz-th>
+                            <span>时间</span>
+                        </th>
+                        <th nz-th>
+                            <span>触发事件</span>
+                        </th>
+                        <th nz-th>
+                            <span>操作内容</span>
+                        </th>
+                        <th nz-th>
+                            <span>操作人</span>
+                        </th>
+                        <th nz-th>
+                            <span>用户名</span>
+                        </th>
+                        <th nz-th>
+                            <span>用户角色</span>
+                        </th>
+                        <th nz-th>
+                            <span>操作</span>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody nz-tbody>
+                    <tr nz-tbody-tr *ngFor="let data of nzTable1.data">
+                        <td nz-td>{{data.createdAt}}</td>
+                        <td nz-td>{{data.event}}</td>
+                        <td nz-td>{{data.operationContent}}</td>
+                        <td nz-td>{{data.operator}}</td>
+                        <td nz-td>{{data.userName}}</td>
+                        <td nz-td>{{data.userRole}}</td>
+                        <td nz-td>
+                            <span>
+                                <a (click)="toShowSystemLogger(data)">详情</a>
+                            </span>
+                        </td>
+                    </tr>
+                </tbody>
+                <span nz-table-footer>
+                    <i class="anticon anticon-database"></i>
+                    {{'共 ' + (systemLoggersCount$ | async) + ' 条'}}
+                </span>
+            </nz-table>
+        </nz-card>
+    </nz-tab>
+</nz-tabset>

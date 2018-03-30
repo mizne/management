@@ -1,6 +1,6 @@
 import { Action } from '@ngrx/store'
 
-import { ApplicationSoftwareAccount } from '@core/models/software-account.model'
+import { SystemLogger } from '@core/models/software-account.model'
 import {
     PaginationParams,
     FetchItemsParams,
@@ -44,9 +44,7 @@ export class FetchApplicationSoftwareAccountsAction implements Action {
 }
 export class FetchApplicationSoftwareAccountsSuccessAction implements Action {
     readonly type = FETCH_APPLICATION_SOFTWARE_ACCOUNTS_SUCCESS
-    constructor(
-        public applicationSoftwareAccounts: ApplicationSoftwareAccount[]
-    ) {}
+    constructor(public applicationSoftwareAccounts: SystemLogger[]) {}
 }
 export class FetchApplicationSoftwareAccountsFailureAction implements Action {
     readonly type = FETCH_APPLICATION_SOFTWARE_ACCOUNTS_FAILURE
@@ -68,7 +66,7 @@ export class FetchApplicationSoftwareAccountsCountFailureAction
 
 export class CreateApplicationSoftwareAccountAction implements Action {
     readonly type = CREATE_APPLICATION_SOFTWARE_ACCOUNT
-    constructor(public account: ApplicationSoftwareAccount) {}
+    constructor(public account: SystemLogger) {}
 }
 export class CreateApplicationSoftwareAccountSuccessAction implements Action {
     readonly type = CREATE_APPLICATION_SOFTWARE_ACCOUNT_SUCCESS
@@ -79,7 +77,7 @@ export class CreateApplicationSoftwareAccountFailureAction implements Action {
 
 export class EditApplicationSoftwareAccountAction implements Action {
     readonly type = EDIT_APPLICATION_SOFTWARE_ACCOUNT
-    constructor(public account: ApplicationSoftwareAccount) {}
+    constructor(public account: SystemLogger) {}
 }
 export class EditApplicationSoftwareAccountSuccessAction implements Action {
     readonly type = EDIT_APPLICATION_SOFTWARE_ACCOUNT_SUCCESS

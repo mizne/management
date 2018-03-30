@@ -4,7 +4,7 @@ import { Observable } from 'rxjs/Observable'
 import { of } from 'rxjs/observable/of'
 import { delay } from 'rxjs/operators'
 import {
-    ApplicationSoftwareAccount,
+    SystemLogger,
     SystemSoftwareAccount,
     MiddlewareSoftwareAccount
 } from '@core/models/software-account.model'
@@ -15,18 +15,18 @@ import {
 
 @Injectable()
 export class SoftwareAccountService {
-    constructor() { }
+    constructor() {}
     fetchApplicationSoftwareAccounts(
         params: FetchItemsParams
-    ): Observable<ApplicationSoftwareAccount[]> {
+    ): Observable<SystemLogger[]> {
         if (params.condition.searchText) {
             console.log(
                 `search application with ${params.condition.searchText}`
             )
         }
-        return of(
-            ApplicationSoftwareAccount.generateFakeDataItems(params.options)
-        ).pipe(delay(4e2))
+        return of(SystemLogger.generateFakeDataItems(params.options)).pipe(
+            delay(4e2)
+        )
     }
 
     fetchApplicationSoftwareAccountsCount(
@@ -38,15 +38,11 @@ export class SoftwareAccountService {
         return of(42).pipe(delay(3e2))
     }
 
-    createApplicationSoftwareAccount(
-        account: ApplicationSoftwareAccount
-    ): Observable<any> {
+    createApplicationSoftwareAccount(account: SystemLogger): Observable<any> {
         return of(null).pipe(delay(4e2))
     }
 
-    editApplicationSoftwareAccount(
-        account: ApplicationSoftwareAccount
-    ): Observable<any> {
+    editApplicationSoftwareAccount(account: SystemLogger): Observable<any> {
         return of(null).pipe(delay(4e2))
     }
 

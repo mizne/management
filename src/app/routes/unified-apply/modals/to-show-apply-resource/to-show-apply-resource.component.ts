@@ -4,7 +4,7 @@ import { Subject } from 'rxjs/Subject'
 import { Observable } from 'rxjs/Observable'
 
 import { DestroyService } from '@core/services/destroy.service'
-import { ApplicationSoftwareAccount } from '@core/models/software-account.model'
+import { SystemLogger } from '@core/models/software-account.model'
 import { ApplyResource } from '@core/models/resource-apply.model'
 
 @Component({

@@ -81,6 +81,10 @@ const routes: Routes = [
                     './assets-recovery/assets-recovery.module#AssetsRecoveryModule'
             },
             {
+                path: 'monitor-management',
+                redirectTo: 'monitor-management/monitor-dashboard'
+            },
+            {
                 path: 'monitor-management/monitor-dashboard',
                 loadChildren:
                     './monitor-dashboard/monitor-dashboard.module#MonitorDashboardModule'
@@ -89,31 +93,21 @@ const routes: Routes = [
                 path: 'monitor-management/server-topology',
                 loadChildren:
                     './server-topology/server-topology.module#ServerTopologyModule'
+            },
+            {
+                path: 'system-management',
+                redirectTo: 'system-management/system-logger'
+            },
+            {
+                path: 'system-management/field-settings',
+                loadChildren:
+                    './field-settings/field-settings.module#FieldSettingsModule'
+            },
+            {
+                path: 'system-management/system-logger',
+                loadChildren:
+                    './system-logger/system-logger.module#SystemLoggerModule'
             }
-            // {
-            //     path: 'assets-management/my-apply',
-            //     loadChildren: './my-apply/my-apply.module#MyApplyModule'
-            // },
-            // {
-            //     path: 'assets-management/distribution-treasury',
-            //     loadChildren:
-            //         './distribution-treasury/distribution-treasury.module#DistributionTreasuryModule'
-            // },
-            // {
-            //     path: 'assets-management/assets-recovery',
-            //     loadChildren:
-            //         './assets-recovery/assets-recovery.module#AssetsRecoveryModule'
-            // },
-            // {
-            //     path: 'monitor-management',
-            //     redirectTo: 'monitor-management/monitor-dashboard',
-            //     pathMatch: 'full'
-            // },
-            // {
-            //     path: 'monitor-management/monitor-dashboard',
-            //     loadChildren:
-            //         './monitor-dashboard/monitor-dashboard.module#MonitorDashboardModule'
-            // }
         ]
     }
     // passport

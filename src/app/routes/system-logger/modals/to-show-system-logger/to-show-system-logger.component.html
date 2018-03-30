@@ -1,0 +1,22 @@
+<nz-card [nzNoHovering]="true" [nzBordered]="false">
+    <ng-template #body>
+        <desc-list size="large" title="基本信息" class="mb-lg">
+            <desc-list-item term="触发时间">{{logger.createdAt}}</desc-list-item>
+            <desc-list-item term="触发事件">{{logger.event}}</desc-list-item>
+        </desc-list>
+        <nz-divider class="mb-lg"></nz-divider>
+        <desc-list size="large" title="操作信息" class="mb-lg">
+            <desc-list-item term="操作内容">{{logger.operationContent}}</desc-list-item>
+            <desc-list-item term="操作人">{{logger.operator}}</desc-list-item>
+        </desc-list>
+        <nz-divider class="mb-lg"></nz-divider>
+        <desc-list size="large" title="用户信息" class="mb-lg">
+            <desc-list-item term="用户名">{{logger.userName}}</desc-list-item>
+            <desc-list-item term="用户角色">{{logger.userRole}}</desc-list-item>
+        </desc-list>
+        <nz-divider class="mb-lg"></nz-divider>
+    </ng-template>
+</nz-card>
+<div class="customize-footer text-center">
+    <button nz-button [nzSize]="'large'" (click)="toSave()" [nzType]="'primary'" nzSize="large">我知道了</button>
+</div>

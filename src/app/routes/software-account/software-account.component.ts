@@ -3,7 +3,7 @@ import { FormControl } from '@angular/forms'
 import { NzMessageService, NzModalService } from 'ng-zorro-antd'
 
 import {
-    ApplicationSoftwareAccount,
+    SystemLogger,
     SystemSoftwareAccount,
     MiddlewareSoftwareAccount
 } from '@core/models/software-account.model'
@@ -77,18 +77,14 @@ import {
 export class SoftwareAccountComponent implements OnInit {
     tabIndex = 0
 
-    applications$: Observable<ApplicationSoftwareAccount[]>
+    applications$: Observable<SystemLogger[]>
     applicationsCount$: Observable<number>
     applicationLoading$: Observable<boolean>
     applicationPageIndex = 1
     applicationPageSize = 10
     applicationPageChangeSub: Subject<void> = new Subject<void>()
-    toEditApplicationSub: Subject<ApplicationSoftwareAccount> = new Subject<
-        ApplicationSoftwareAccount
-    >()
-    toShowApplicationSub: Subject<ApplicationSoftwareAccount> = new Subject<
-        ApplicationSoftwareAccount
-    >()
+    toEditApplicationSub: Subject<SystemLogger> = new Subject<SystemLogger>()
+    toShowApplicationSub: Subject<SystemLogger> = new Subject<SystemLogger>()
     searchApplicationCtrl: FormControl = new FormControl()
     toCreateApplicationSub: Subject<void> = new Subject<void>()
     toSearchApplicationSub: Subject<void> = new Subject<void>()
@@ -153,11 +149,11 @@ export class SoftwareAccountComponent implements OnInit {
         this.applicationPageChangeSub.next()
     }
 
-    toEditApplication(account: ApplicationSoftwareAccount) {
+    toEditApplication(account: SystemLogger) {
         this.toEditApplicationSub.next(account)
     }
 
-    toShowApplication(account: ApplicationSoftwareAccount) {
+    toShowApplication(account: SystemLogger) {
         this.toShowApplicationSub.next(account)
     }
 
@@ -330,7 +326,7 @@ export class SoftwareAccountComponent implements OnInit {
 
         merge(
             this.applicationPageChangeSub.asObservable(),
-            this.toCreateApplicationSub.pipe(
+            this.toSearchApplicationSub.pipe(
                 tap(() => {
                     this.applicationPageIndex = 1
                     this.applicationPageSize = 10

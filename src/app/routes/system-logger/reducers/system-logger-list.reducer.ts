@@ -1,51 +1,51 @@
-import * as fromApplicationSoftwareAccount from '../actions/application-software-account.action'
-import { SystemLogger } from '@core/models/software-account.model'
+import * as fromSystemLoggerList from '../actions/system-logger-list.action'
+import { SystemLogger } from '@core/models/system-logger.model'
 
 export interface State {
     loading: boolean
-    accounts: SystemLogger[]
-    accountsCount: number
+    loggers: SystemLogger[]
+    loggersCount: number
     pageIndex: number
     pageSize: number
 }
 
 const initialState: State = {
     loading: false,
-    accounts: [],
-    accountsCount: 0,
+    loggers: [],
+    loggersCount: 0,
     pageIndex: 1,
     pageSize: 10
 }
 
 export function reducer(
     state: State = initialState,
-    action: fromApplicationSoftwareAccount.Actions
+    action: fromSystemLoggerList.Actions
 ): State {
     switch (action.type) {
-        case fromApplicationSoftwareAccount.FETCH_APPLICATION_SOFTWARE_ACCOUNTS:
+        case fromSystemLoggerList.FETCH_SYSTEM_LOGGERS:
             return {
                 ...state,
                 loading: true
             }
-        case fromApplicationSoftwareAccount.FETCH_APPLICATION_SOFTWARE_ACCOUNTS_SUCCESS:
+        case fromSystemLoggerList.FETCH_SYSTEM_LOGGERS_SUCCESS:
             return {
                 ...state,
-                accounts: action.applicationSoftwareAccounts,
+                loggers: action.loggers,
                 loading: false
             }
-        case fromApplicationSoftwareAccount.FETCH_APPLICATION_SOFTWARE_ACCOUNTS_FAILURE:
+        case fromSystemLoggerList.FETCH_SYSTEM_LOGGERS_FAILURE:
             return {
                 ...state,
                 loading: false
             }
 
-        case fromApplicationSoftwareAccount.FETCH_APPLICATION_SOFTWARE_ACCOUNTS_COUNT_SUCCESS:
+        case fromSystemLoggerList.FETCH_SYSTEM_LOGGERS_COUNT_SUCCESS:
             return {
                 ...state,
-                accountsCount: action.count
+                loggersCount: action.count
             }
 
-        case fromApplicationSoftwareAccount.ENSURE_PAGE_PARAMS:
+        case fromSystemLoggerList.ENSURE_PAGE_PARAMS:
             return {
                 ...state,
                 pageIndex: action.params.pageIndex,
@@ -57,8 +57,8 @@ export function reducer(
 }
 
 export const getLoading = (state: State) => state.loading
-export const getAccounts = (state: State) => state.accounts
-export const getAccountsCount = (state: State) => state.accountsCount
+export const getLoggers = (state: State) => state.loggers
+export const getLoggersCount = (state: State) => state.loggersCount
 export const getPageParams = (state: State) => ({
     pageIndex: state.pageIndex,
     pageSize: state.pageSize
