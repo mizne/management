@@ -17,7 +17,7 @@
                                         <div nz-form-label nz-col>
                                             <label nz-form-item-required>申请单号</label>
                                         </div>
-                                        <div nz-form-control nz-col nzHasFeedback [nzValidateStatus]="listNumber">
+                                        <div nz-form-control nz-col nzHasFeedback [nzValidateStatus]="applyListNumber">
                                             <nz-input formControlName="listNumber" [nzDisabled]="true" nzPlaceHolder="请输入申请单号" nzSize="large"></nz-input>
                                             <p nz-form-explain *ngIf="(applyListNumber.dirty || applyListNumber.touched) && applyListNumber.errors?.required">
                                                 请输入申请单号
@@ -31,7 +31,7 @@
                                             <div nz-form-label nz-col>
                                                 <label nz-form-item-required>申请人姓名</label>
                                             </div>
-                                            <div nz-form-control nz-col nzHasFeedback [nzValidateStatus]="applicantName">
+                                            <div nz-form-control nz-col nzHasFeedback [nzValidateStatus]="applyApplicantName">
                                                 <nz-input formControlName="applicantName" [nzDisabled]="true" nzPlaceHolder="请输入申请人姓名" nzSize="large"></nz-input>
                                                 <p nz-form-explain *ngIf="(applyApplicantName.dirty || applyApplicantName.touched) && applyApplicantName.errors?.required">
                                                     请输入申请人姓名
@@ -46,7 +46,7 @@
                                         <div nz-form-label nz-col>
                                             <label nz-form-item-required>申请人部门</label>
                                         </div>
-                                        <div nz-form-control nz-col nzHasFeedback [nzValidateStatus]="applicantDept">
+                                        <div nz-form-control nz-col nzHasFeedback [nzValidateStatus]="applyApplicantDept">
                                             <nz-input formControlName="applicantDept" [nzDisabled]="true" nzPlaceHolder="请输入申请人部门" nzSize="large"></nz-input>
                                             <p nz-form-explain *ngIf="(applyApplicantDept.dirty || applyApplicantDept.touched) && applyApplicantDept.errors?.required">
                                                 请输入申请人部门
@@ -60,7 +60,7 @@
                                         <div nz-form-label nz-col>
                                             <label nz-form-item-required>联系电话</label>
                                         </div>
-                                        <div nz-form-control nz-col nzHasFeedback [nzValidateStatus]="applicantPhone">
+                                        <div nz-form-control nz-col nzHasFeedback [nzValidateStatus]="applyApplicantPhone">
                                             <nz-input formControlName="applicantPhone" [nzDisabled]="true" nzPlaceHolder="请输入联系电话" nzSize="large"></nz-input>
                                             <p nz-form-explain *ngIf="(applyApplicantPhone.dirty || applyApplicantPhone.touched) && applyApplicantPhone.errors?.required">
                                                 请输入联系电话
@@ -76,7 +76,7 @@
                                         <div nz-form-label nz-col>
                                             <label nz-form-item-required>申请原因</label>
                                         </div>
-                                        <div nz-form-control nz-col nzHasFeedback [nzValidateStatus]="applyReason">
+                                        <div nz-form-control nz-col nzHasFeedback [nzValidateStatus]="applyApplyReason">
                                             <nz-input [nzType]="'textarea'" [nzRows]="3" formControlName="applyReason" nzPlaceHolder="请输入申请原因" nzSize="large"></nz-input>
                                             <p nz-form-explain *ngIf="(applyApplyReason.dirty || applyApplyReason.touched) && applyApplyReason.errors?.required">
                                                 请输入申请原因
@@ -200,7 +200,7 @@
                                         <div nz-form-label nz-col>
                                             <label nz-form-item-required>分包编号</label>
                                         </div>
-                                        <div nz-form-control nz-col nzHasFeedback [nzValidateStatus]="subPackageNumber">
+                                        <div nz-form-control nz-col nzHasFeedback [nzValidateStatus]="subPackageListNumber">
                                             <nz-input formControlName="subPackageNumber" [nzDisabled]="true" nzPlaceHolder="请输入分包编号" nzSize="large"></nz-input>
                                             <p nz-form-explain *ngIf="(subPackageListNumber.dirty || subPackageListNumber.touched) && subPackageListNumber.errors?.required">
                                                 请输入分包编号
@@ -214,7 +214,7 @@
                                             <div nz-form-label nz-col>
                                                 <label nz-form-item-required>申请人姓名</label>
                                             </div>
-                                            <div nz-form-control nz-col nzHasFeedback [nzValidateStatus]="applicantName">
+                                            <div nz-form-control nz-col nzHasFeedback [nzValidateStatus]="subPackageApplicantName">
                                                 <nz-input formControlName="applicantName" [nzDisabled]="true" nzPlaceHolder="请输入申请人姓名" nzSize="large"></nz-input>
                                                 <p nz-form-explain *ngIf="(subPackageApplicantName.dirty || subPackageApplicantName.touched) && subPackageApplicantName.errors?.required">
                                                     请输入申请人姓名
@@ -229,7 +229,7 @@
                                         <div nz-form-label nz-col>
                                             <label nz-form-item-required>申请人部门</label>
                                         </div>
-                                        <div nz-form-control nz-col nzHasFeedback [nzValidateStatus]="applicantDept">
+                                        <div nz-form-control nz-col nzHasFeedback [nzValidateStatus]="subPackageApplicantDept">
                                             <nz-input formControlName="applicantDept" [nzDisabled]="true" nzPlaceHolder="请输入申请人部门" nzSize="large"></nz-input>
                                             <p nz-form-explain *ngIf="(subPackageApplicantDept.dirty || subPackageApplicantDept.touched) && subPackageApplicantDept.errors?.required">
                                                 请输入申请人部门
@@ -243,7 +243,7 @@
                                         <div nz-form-label nz-col>
                                             <label nz-form-item-required>联系电话</label>
                                         </div>
-                                        <div nz-form-control nz-col nzHasFeedback [nzValidateStatus]="applicantPhone">
+                                        <div nz-form-control nz-col nzHasFeedback [nzValidateStatus]="subPackageApplicantPhone">
                                             <nz-input formControlName="applicantPhone" [nzDisabled]="true" nzPlaceHolder="请输入联系电话" nzSize="large"></nz-input>
                                             <p nz-form-explain *ngIf="(subPackageApplicantPhone.dirty || subPackageApplicantPhone.touched) && subPackageApplicantPhone.errors?.required">
                                                 请输入联系电话
@@ -259,7 +259,7 @@
                                         <div nz-form-label nz-col>
                                             <label nz-form-item-required>申请原因</label>
                                         </div>
-                                        <div nz-form-control nz-col nzHasFeedback [nzValidateStatus]="applyReason">
+                                        <div nz-form-control nz-col nzHasFeedback [nzValidateStatus]="subPackageApplyReason">
                                             <nz-input [nzType]="'textarea'" [nzRows]="3" formControlName="applyReason" nzPlaceHolder="请输入申请原因" nzSize="large"></nz-input>
                                             <p nz-form-explain *ngIf="(subPackageApplyReason.dirty || subPackageApplyReason.touched) && subPackageApplyReason.errors?.required">
                                                 请输入申请原因
@@ -603,11 +603,8 @@
                                             <div nz-form-label nz-col>
                                                 <label nz-form-item-required>申请单号</label>
                                             </div>
-                                            <div nz-form-control nz-col nzHasFeedback [nzValidateStatus]="listNumber">
+                                            <div nz-form-control nz-col nzHasFeedback>
                                                 <nz-input formControlName="listNumber" [nzDisabled]="true" nzPlaceHolder="请输入申请单号" nzSize="large"></nz-input>
-                                                <p nz-form-explain *ngIf="(applyListNumber.dirty || applyListNumber.touched) && applyListNumber.errors?.required">
-                                                    请输入申请单号
-                                                </p>
                                             </div>
                                         </div>
                                     </div>
@@ -617,11 +614,8 @@
                                                 <div nz-form-label nz-col>
                                                     <label nz-form-item-required>申请人姓名</label>
                                                 </div>
-                                                <div nz-form-control nz-col nzHasFeedback [nzValidateStatus]="applicantName">
+                                                <div nz-form-control nz-col nzHasFeedback>
                                                     <nz-input formControlName="applicantName" [nzDisabled]="true" nzPlaceHolder="请输入申请人姓名" nzSize="large"></nz-input>
-                                                    <p nz-form-explain *ngIf="(applyApplicantName.dirty || applyApplicantName.touched) && applyApplicantName.errors?.required">
-                                                        请输入申请人姓名
-                                                    </p>
                                                 </div>
                                             </div>
                                         </div>
@@ -632,11 +626,8 @@
                                             <div nz-form-label nz-col>
                                                 <label nz-form-item-required>申请人部门</label>
                                             </div>
-                                            <div nz-form-control nz-col nzHasFeedback [nzValidateStatus]="applicantDept">
+                                            <div nz-form-control nz-col nzHasFeedback>
                                                 <nz-input formControlName="applicantDept" [nzDisabled]="true" nzPlaceHolder="请输入申请人部门" nzSize="large"></nz-input>
-                                                <p nz-form-explain *ngIf="(applyApplicantDept.dirty || applyApplicantDept.touched) && applyApplicantDept.errors?.required">
-                                                    请输入申请人部门
-                                                </p>
                                             </div>
                                         </div>
                                     </div>
@@ -646,11 +637,8 @@
                                             <div nz-form-label nz-col>
                                                 <label nz-form-item-required>联系电话</label>
                                             </div>
-                                            <div nz-form-control nz-col nzHasFeedback [nzValidateStatus]="applicantPhone">
+                                            <div nz-form-control nz-col nzHasFeedback>
                                                 <nz-input formControlName="applicantPhone" [nzDisabled]="true" nzPlaceHolder="请输入联系电话" nzSize="large"></nz-input>
-                                                <p nz-form-explain *ngIf="(applyApplicantPhone.dirty || applyApplicantPhone.touched) && applyApplicantPhone.errors?.required">
-                                                    请输入联系电话
-                                                </p>
                                             </div>
                                         </div>
                                     </div>
@@ -662,11 +650,8 @@
                                             <div nz-form-label nz-col>
                                                 <label nz-form-item-required>申请原因</label>
                                             </div>
-                                            <div nz-form-control nz-col nzHasFeedback [nzValidateStatus]="applyReason">
+                                            <div nz-form-control nz-col nzHasFeedback>
                                                 <nz-input [nzType]="'textarea'" [nzRows]="3" formControlName="applyReason" nzPlaceHolder="请输入申请原因" nzSize="large"></nz-input>
-                                                <p nz-form-explain *ngIf="(applyApplyReason.dirty || applyApplyReason.touched) && applyApplyReason.errors?.required">
-                                                    请输入申请原因
-                                                </p>
                                             </div>
                                         </div>
                                     </div>
@@ -779,11 +764,8 @@
                                             <div nz-form-label nz-col>
                                                 <label nz-form-item-required>分包编号</label>
                                             </div>
-                                            <div nz-form-control nz-col nzHasFeedback [nzValidateStatus]="subPackageNumber">
+                                            <div nz-form-control nz-col nzHasFeedback>
                                                 <nz-input formControlName="subPackageNumber" [nzDisabled]="true" nzPlaceHolder="请输入分包编号" nzSize="large"></nz-input>
-                                                <p nz-form-explain *ngIf="(subPackageListNumber.dirty || subPackageListNumber.touched) && subPackageListNumber.errors?.required">
-                                                    请输入分包编号
-                                                </p>
                                             </div>
                                         </div>
                                     </div>
@@ -793,11 +775,8 @@
                                                 <div nz-form-label nz-col>
                                                     <label nz-form-item-required>申请人姓名</label>
                                                 </div>
-                                                <div nz-form-control nz-col nzHasFeedback [nzValidateStatus]="applicantName">
+                                                <div nz-form-control nz-col nzHasFeedback>
                                                     <nz-input formControlName="applicantName" [nzDisabled]="true" nzPlaceHolder="请输入申请人姓名" nzSize="large"></nz-input>
-                                                    <p nz-form-explain *ngIf="(subPackageApplicantName.dirty || subPackageApplicantName.touched) && subPackageApplicantName.errors?.required">
-                                                        请输入申请人姓名
-                                                    </p>
                                                 </div>
                                             </div>
                                         </div>
@@ -808,11 +787,8 @@
                                             <div nz-form-label nz-col>
                                                 <label nz-form-item-required>申请人部门</label>
                                             </div>
-                                            <div nz-form-control nz-col nzHasFeedback [nzValidateStatus]="applicantDept">
+                                            <div nz-form-control nz-col nzHasFeedback>
                                                 <nz-input formControlName="applicantDept" [nzDisabled]="true" nzPlaceHolder="请输入申请人部门" nzSize="large"></nz-input>
-                                                <p nz-form-explain *ngIf="(subPackageApplicantDept.dirty || subPackageApplicantDept.touched) && subPackageApplicantDept.errors?.required">
-                                                    请输入申请人部门
-                                                </p>
                                             </div>
                                         </div>
                                     </div>
@@ -822,11 +798,8 @@
                                             <div nz-form-label nz-col>
                                                 <label nz-form-item-required>联系电话</label>
                                             </div>
-                                            <div nz-form-control nz-col nzHasFeedback [nzValidateStatus]="applicantPhone">
+                                            <div nz-form-control nz-col nzHasFeedback>
                                                 <nz-input formControlName="applicantPhone" [nzDisabled]="true" nzPlaceHolder="请输入联系电话" nzSize="large"></nz-input>
-                                                <p nz-form-explain *ngIf="(subPackageApplicantPhone.dirty || subPackageApplicantPhone.touched) && subPackageApplicantPhone.errors?.required">
-                                                    请输入联系电话
-                                                </p>
                                             </div>
                                         </div>
                                     </div>
@@ -838,11 +811,8 @@
                                             <div nz-form-label nz-col>
                                                 <label nz-form-item-required>申请原因</label>
                                             </div>
-                                            <div nz-form-control nz-col nzHasFeedback [nzValidateStatus]="applyReason">
+                                            <div nz-form-control nz-col nzHasFeedback>
                                                 <nz-input [nzType]="'textarea'" [nzRows]="3" formControlName="applyReason" nzPlaceHolder="请输入申请原因" nzSize="large"></nz-input>
-                                                <p nz-form-explain *ngIf="(subPackageApplyReason.dirty || subPackageApplyReason.touched) && subPackageApplyReason.errors?.required">
-                                                    请输入申请原因
-                                                </p>
                                             </div>
                                         </div>
                                     </div>

@@ -17,7 +17,7 @@
 
             <div nz-col [nzSpan]="'18'" class="text-center">
                 <nz-input [nzType]="'search'" [formControl]="searchPhysicalCtrl" [nzSize]="'large'" [nzPlaceHolder]="'搜索物理服务器名称、类型'" style="width: 300px;"
-                    (nzOnSearch)="onSearchPhysical($event)"></nz-input>
+                    (nzOnSearch)="onSearchPhysical()"></nz-input>
             </div>
         </div>
         <nz-card [nzBordered]="false">
@@ -93,7 +93,7 @@
 
             <div nz-col [nzSpan]="'18'" class="text-center">
                 <nz-input [nzType]="'search'" [formControl]="searchVirtualCtrl" [nzSize]="'large'" [nzPlaceHolder]="'搜索虚拟服务器名称、类型'" style="width: 300px;"
-                    (nzOnSearch)="onSearchVirtual($event)"></nz-input>
+                    (nzOnSearch)="onSearchVirtual()"></nz-input>
             </div>
         </div>
         <nz-card [nzBordered]="false">
@@ -169,7 +169,7 @@
 
             <div nz-col [nzSpan]="'18'" class="text-center">
                 <nz-input [nzType]="'search'" [formControl]="searchClusterCtrl" [nzSize]="'large'" [nzPlaceHolder]="'搜索集群服务器名称、类型'" style="width: 300px;"
-                    (nzOnSearch)="onSearchCluster($event)"></nz-input>
+                    (nzOnSearch)="onSearchCluster()"></nz-input>
             </div>
         </div>
         <nz-card [nzBordered]="false">

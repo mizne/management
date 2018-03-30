@@ -113,34 +113,34 @@ const routes: Routes = [
                     './system-logger/system-logger.module#SystemLoggerModule'
             }
         ]
-    }
+    },
     // passport
-    // {
-    //     path: 'passport',
-    //     component: LayoutPassportComponent,
-    //     children: [
-    //         {
-    //             path: 'login',
-    //             loadChildren: './passport/login/login.module#LoginModule',
-    //             data: { title: '登录' }
-    //         },
-    //         {
-    //             path: 'register',
-    //             loadChildren:
-    //                 './passport/register/register.module#RegisterModule',
-    //             data: { title: '注册' }
-    //         },
-    //         {
-    //             path: 'register-result',
-    //             component: UserRegisterResultComponent,
-    //             data: { title: '注册结果' }
-    //         }
-    //     ]
-    // },
-    // { path: '403', component: Exception403Component },
-    // { path: '404', component: Exception404Component },
-    // { path: '500', component: Exception500Component },
-    // { path: '**', redirectTo: '404' }
+    {
+        path: 'passport',
+        component: LayoutPassportComponent,
+        children: [
+            {
+                path: 'login',
+                loadChildren: './passport/login/login.module#LoginModule',
+                data: { title: '登录' }
+            },
+            {
+                path: 'register',
+                loadChildren:
+                    './passport/register/register.module#RegisterModule',
+                data: { title: '注册' }
+            },
+            {
+                path: 'register-result',
+                component: UserRegisterResultComponent,
+                data: { title: '注册结果' }
+            }
+        ]
+    },
+    { path: '403', component: Exception403Component },
+    { path: '404', component: Exception404Component },
+    { path: '500', component: Exception500Component },
+    { path: '**', redirectTo: '404' }
 ]
 
 @NgModule({

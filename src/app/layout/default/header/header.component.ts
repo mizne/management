@@ -4,9 +4,16 @@ import { Router } from '@angular/router'
 import { Store } from '@ngrx/store'
 import { Observable } from 'rxjs/Observable'
 import { combineLatest } from 'rxjs/observable/combineLatest'
-import { State, getVisitorApprovalsCount, getExhibitorApprovalsCount } from '../reducers'
-import { FetchVisitorApprovalsCountAction, FetchExhibitorApprovalsCountAction } from '../actions/header.action'
-import { map } from 'rxjs/operators';
+import {
+    State,
+    getVisitorApprovalsCount,
+    getExhibitorApprovalsCount
+} from '../reducers'
+import {
+    FetchVisitorApprovalsCountAction,
+    FetchExhibitorApprovalsCountAction
+} from '../actions/header.action'
+import { map } from 'rxjs/operators'
 
 @Component({
     selector: 'app-header',
@@ -20,7 +27,7 @@ export class HeaderComponent implements OnInit {
         public settings: SettingsService,
         private router: Router,
         private store: Store<State>
-    ) { }
+    ) {}
 
     ngOnInit() {
         this.initDataSource()
@@ -42,17 +49,14 @@ export class HeaderComponent implements OnInit {
     }
 
     toApprove() {
-        this.router.navigate(['/approval-management/to-approve'])
+        // this.router.navigate(['/approval-management/to-approve'])
     }
 
     private initDataSource() {
         this.approvalsCount$ = combineLatest(
             this.store.select(getVisitorApprovalsCount),
             this.store.select(getExhibitorApprovalsCount)
-        )
-            .pipe(
-                map(([count1, count2]) => count1 + count2)
-            )
+        ).pipe(map(([count1, count2]) => count1 + count2))
     }
 
     private initDispatcher() {

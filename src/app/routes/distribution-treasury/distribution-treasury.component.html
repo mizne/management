@@ -131,7 +131,7 @@
                             <div nz-form-label nz-col>
                                 <label nz-form-item-required>软件类型</label>
                             </div>
-                            <div nz-form-control nz-col nzHasFeedback [nzValidateStatus]="softwareType">
+                            <div nz-form-control nz-col nzHasFeedback>
                                 <nz-input formControlName="softwareType" nzPlaceHolder="请输入软件类型" nzSize="large"></nz-input>
                                 <p nz-form-explain *ngIf="(resourceUseInfoEditForm.get('softwareType').dirty || resourceUseInfoEditForm.get('softwareType').touched) && resourceUseInfoEditForm.get('softwareType').errors?.required">
                                     请输入软件类型
@@ -144,7 +144,7 @@
                             <div nz-form-label nz-col>
                                 <label nz-form-item-required>软件名称</label>
                             </div>
-                            <div nz-form-control nz-col nzHasFeedback [nzValidateStatus]="softwareName">
+                            <div nz-form-control nz-col nzHasFeedback>
                                 <nz-input formControlName="softwareName" nzPlaceHolder="请输入软件名称" nzSize="large"></nz-input>
                                 <p nz-form-explain *ngIf="(resourceUseInfoEditForm.get('softwareName').dirty || resourceUseInfoEditForm.get('softwareName').touched) && resourceUseInfoEditForm.get('softwareName').errors?.required">
                                     请输入软件名称
@@ -157,7 +157,7 @@
                             <div nz-form-label nz-col>
                                 <label nz-form-item-required>软件版本</label>
                             </div>
-                            <div nz-form-control nz-col nzHasFeedback [nzValidateStatus]="softwareVersion">
+                            <div nz-form-control nz-col nzHasFeedback>
                                 <nz-input formControlName="softwareVersion" nzPlaceHolder="请输入软件版本" nzSize="large"></nz-input>
                                 <p nz-form-explain *ngIf="(resourceUseInfoEditForm.get('softwareVersion').dirty || resourceUseInfoEditForm.get('softwareVersion').touched) && resourceUseInfoEditForm.get('softwareVersion').errors?.required">
                                     请输入软件版本
@@ -173,7 +173,7 @@
                             <div nz-form-label nz-col>
                                 <label nz-form-item-required>分配对象</label>
                             </div>
-                            <div nz-form-control nz-col nzHasFeedback [nzValidateStatus]="whoUse">
+                            <div nz-form-control nz-col nzHasFeedback>
                                 <nz-input formControlName="whoUse" nzPlaceHolder="请输入分配对象" nzSize="large"></nz-input>
                                 <p nz-form-explain *ngIf="(resourceUseInfoEditForm.get('whoUse').dirty || resourceUseInfoEditForm.get('whoUse').touched) && resourceUseInfoEditForm.get('whoUse').errors?.required">
                                     请输入分配对象
@@ -186,7 +186,7 @@
                             <div nz-form-label nz-col>
                                 <label nz-form-item-required>分配数量</label>
                             </div>
-                            <div nz-form-control nz-col nzHasFeedback [nzValidateStatus]="useCount">
+                            <div nz-form-control nz-col nzHasFeedback>
                                 <nz-input formControlName="useCount" nzPlaceHolder="请输入分配数量" nzSize="large"></nz-input>
                                 <p nz-form-explain *ngIf="(resourceUseInfoEditForm.get('useCount').dirty || resourceUseInfoEditForm.get('useCount').touched) && resourceUseInfoEditForm.get('useCount').errors?.required">
                                     请输入分配数量
@@ -199,7 +199,7 @@
                             <div nz-form-label nz-col>
                                 <label nz-form-item-required>数量单位</label>
                             </div>
-                            <div nz-form-control nz-col nzHasFeedback [nzValidateStatus]="countUnit">
+                            <div nz-form-control nz-col nzHasFeedback>
                                 <nz-input formControlName="countUnit" nzPlaceHolder="请输入数量单位" nzSize="large"></nz-input>
                                 <p nz-form-explain *ngIf="(resourceUseInfoEditForm.get('countUnit').dirty || resourceUseInfoEditForm.get('countUnit').touched) && resourceUseInfoEditForm.get('countUnit').errors?.required">
                                     请输入数量单位
@@ -215,7 +215,7 @@
                             <div nz-form-label nz-col>
                                 <label nz-form-item-required>分配时间</label>
                             </div>
-                            <div nz-form-control nz-col nzHasFeedback [nzValidateStatus]="useStartTime">
+                            <div nz-form-control nz-col nzHasFeedback>
                                 <nz-input formControlName="useStartTime" nzPlaceHolder="请输入分配时间" nzSize="large"></nz-input>
                                 <p nz-form-explain *ngIf="(resourceUseInfoEditForm.get('useStartTime').dirty || resourceUseInfoEditForm.get('useStartTime').touched) && resourceUseInfoEditForm.get('useStartTime').errors?.required">
                                     请输入分配时间
@@ -228,7 +228,7 @@
                             <div nz-form-label nz-col>
                                 <label nz-form-item-required>操作员</label>
                             </div>
-                            <div nz-form-control nz-col nzHasFeedback [nzValidateStatus]="operator">
+                            <div nz-form-control nz-col nzHasFeedback>
                                 <nz-input formControlName="operator" nzPlaceHolder="请输入操作员" nzSize="large"></nz-input>
                                 <p nz-form-explain *ngIf="(resourceUseInfoEditForm.get('operator').dirty || resourceUseInfoEditForm.get('operator').touched) && resourceUseInfoEditForm.get('operator').errors?.required">
                                     请输入操作员

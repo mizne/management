@@ -16,7 +16,7 @@
 
             <div nz-col [nzSpan]="'18'" class="text-center">
                 <nz-input [nzType]="'search'" [formControl]="searchApplicationCtrl" [nzSize]="'large'" [nzPlaceHolder]="'搜索应用软件名称、类型'" style="width: 300px;"
-                    (nzOnSearch)="onSearchApplication($event)"></nz-input>
+                    (nzOnSearch)="onSearchApplication()"></nz-input>
             </div>
         </div>
         <nz-card [nzBordered]="false">
@@ -84,7 +84,7 @@
 
             <div nz-col [nzSpan]="'18'" class="text-center">
                 <nz-input [nzType]="'search'" [formControl]="searchSystemCtrl" [nzSize]="'large'" [nzPlaceHolder]="'搜索系统软件名称、类型'" style="width: 300px;"
-                    (nzOnSearch)="onSearchSystem($event)"></nz-input>
+                    (nzOnSearch)="onSearchSystem()"></nz-input>
             </div>
         </div>
         <nz-card [nzBordered]="false">
@@ -152,7 +152,7 @@
 
             <div nz-col [nzSpan]="'18'" class="text-center">
                 <nz-input [nzType]="'search'" [formControl]="searchMiddlewareCtrl" [nzSize]="'large'" [nzPlaceHolder]="'搜索中间件名称、类型'" style="width: 300px;"
-                    (nzOnSearch)="onSearchMiddleware($event)"></nz-input>
+                    (nzOnSearch)="onSearchMiddleware()"></nz-input>
             </div>
         </div>
         <nz-card [nzBordered]="false">
