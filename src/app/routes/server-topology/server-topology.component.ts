@@ -41,7 +41,7 @@ const data = {
             {
                 shape: 'clusterNode',
                 x: 790 * window.innerWidth / 1858,
-                y: 110 * window.innerHeight / 989,
+                y: 90 * window.innerHeight / 989,
                 id: 'group3',
                 label: '集群3'
             },
