@@ -151,7 +151,9 @@ export interface FetchAddableApplyResourceParams extends PaginationParams {
     name: string
     version: string
 }
-export const defaultFetchAddableApplyResourceParams: Partial<FetchAddableApplyResourceParams> = {
+export const defaultFetchAddableApplyResourceParams: Partial<
+    FetchAddableApplyResourceParams
+> = {
     pageIndex: 1,
     pageSize: 10
 }
@@ -161,7 +163,9 @@ export interface FetchAddableApplyResourceCountParams {
     name: string
     version: string
 }
-export const defaultFetchAddableApplyResourceCountParams: Partial<FetchAddableApplyResourceCountParams> = {}
+export const defaultFetchAddableApplyResourceCountParams: Partial<
+    FetchAddableApplyResourceCountParams
+> = {}
 
 export class Approver {
     id: string
@@ -199,6 +203,7 @@ export interface TabData {
     fetchApplyInfoLoading: boolean
     applyInfoForm: FormGroup
     fetchApproversLoading: boolean
+    hiddenAddResourceBtn: boolean
     approvers: Approver[]
     addedApplyResources: ApplyResource[]
     ensureEditLoading: boolean
@@ -236,6 +241,7 @@ export class TabOptions {
                     applyReason: new FormControl(apply.applyInfo.applyReason)
                 }),
                 fetchApproversLoading: false,
+                hiddenAddResourceBtn: false,
                 approvers: apply.approvers,
                 addedApplyResources: apply.resources,
                 ensureEditLoading: false,
@@ -268,6 +274,7 @@ export class TabOptions {
                     applyReason: new FormControl(apply.applyInfo.applyReason)
                 }),
                 fetchApproversLoading: false,
+                hiddenAddResourceBtn: false,
                 approvers: apply.approvers,
                 addedApplyResources: apply.resources,
                 ensureEditLoading: false,

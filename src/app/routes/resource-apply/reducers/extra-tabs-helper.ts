@@ -75,6 +75,24 @@ export class ExtraTabsHelper {
         }
     }
 
+    static generateForSwitchApplyType(oldState: State, tabIndex: number, applyType: string): State {
+        return {
+            ...oldState,
+            tabs: oldState.tabs.map((e, i) => {
+                if (i === tabIndex) {
+                    return {
+                        ...e,
+                        data: {
+                            ...e.data,
+                            hiddenAddResourceBtn: applyType === '个人申请'
+                        }
+                    }
+                }
+                return { ...e }
+            })
+        }
+    }
+
     static generateForFetchApplyInfo(oldState: State, tabIndex: number): State {
         return {
             ...oldState,

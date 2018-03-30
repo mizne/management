@@ -32,6 +32,10 @@ export const getRequirementApplyState = createSelector(
     getResourceApplyModuleState,
     (state: ResourceApplyState) => state.requirementApply
 )
+export const getHiddenAddResourceBtn = createSelector(
+    getRequirementApplyState,
+    fromRequirementApply.getHiddenAddResourceBtn
+)
 export const getSaveOrSubmitLoading = createSelector(
     getRequirementApplyState,
     fromRequirementApply.getSaveOrSubmitLoading

@@ -14,6 +14,8 @@ export interface State {
     addedApplyResources: ApplyResource[]
     saveOrSubmitLoading: boolean
     saveOrSubmitText: string
+
+    hiddenAddResourceBtn: boolean
 }
 
 const initialState: State = {
@@ -23,7 +25,9 @@ const initialState: State = {
     approvers: [],
     addedApplyResources: [],
     saveOrSubmitLoading: false,
-    saveOrSubmitText: ''
+    saveOrSubmitText: '',
+
+    hiddenAddResourceBtn: false
 }
 
 export function reducer(
@@ -31,6 +35,11 @@ export function reducer(
     action: fromRequirementApply.Actions
 ): State {
     switch (action.type) {
+        case fromRequirementApply.SWITCH_APPLY_TYPE:
+            return {
+                ...state,
+                hiddenAddResourceBtn: action.applyType === '个人申请'
+            }
         case fromRequirementApply.FETCH_APPLY_INFO:
             return {
                 ...state,
@@ -136,6 +145,8 @@ export function reducer(
     }
 }
 
+export const getHiddenAddResourceBtn = (state: State) =>
+    state.hiddenAddResourceBtn
 export const getFetchApplyInfoLoading = (state: State) =>
     state.fetchApplyInfoLoading
 export const getApplyInfo = (state: State) => state.applyInfo

@@ -19,13 +19,19 @@ import {
     getSavedApplies,
     getExtraTabs,
     getNeedManualSetTabIndex,
-    getTabIndexToNeedManualSet
+    getTabIndexToNeedManualSet,
+    getHiddenAddResourceBtn
 } from './reducers'
 import { fromSavedApply, fromRequirementApply, fromExtraTabs } from './actions'
 
 import { Subject } from 'rxjs/Subject'
 import { DestroyService } from '@core/services/destroy.service'
-import { ToCreateApplyResourceComponent, ToAddApplyResourceComponent, ToEditApplyResourceComponent, ToShowApplyResourceComponent } from './modals'
+import {
+    ToCreateApplyResourceComponent,
+    ToAddApplyResourceComponent,
+    ToEditApplyResourceComponent,
+    ToShowApplyResourceComponent
+} from './modals'
 import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms'
 import {
     ApplyInfo,
@@ -34,7 +40,16 @@ import {
     RequirementApply,
     TabOptions
 } from '@core/models/resource-apply.model'
-import { takeUntil, filter, mergeMap, first, withLatestFrom, distinctUntilChanged, map } from 'rxjs/operators';
+import {
+    takeUntil,
+    filter,
+    mergeMap,
+    first,
+    withLatestFrom,
+    distinctUntilChanged,
+    map,
+    tap
+} from 'rxjs/operators'
 
 @Component({
     selector: 'app-resource-apply',
@@ -50,6 +65,7 @@ export class ResourceApplyComponent implements OnInit {
     // 第一个tab
     applyForm: FormGroup
 
+    hiddenAddReourceBtn$: Observable<boolean>
     saveOrSubmitText$: Observable<string>
     saveOrSubmitLoading$: Observable<boolean>
     toSaveSub: Subject<RequirementApply> = new Subject<RequirementApply>()
@@ -74,16 +90,16 @@ export class ResourceApplyComponent implements OnInit {
     savedApplies$: Observable<RequirementApply[]>
     toEditSavedApplySub: Subject<RequirementApply> = new Subject<
         RequirementApply
-        >()
+    >()
     toDetailSavedApplySub: Subject<RequirementApply> = new Subject<
         RequirementApply
-        >()
+    >()
     toSubmitSavedApplySub: Subject<RequirementApply> = new Subject<
         RequirementApply
-        >()
+    >()
     toDeleteSavedApplySub: Subject<RequirementApply> = new Subject<
         RequirementApply
-        >()
+    >()
 
     // 额外的tabs
     extraTabs$: Observable<TabOptions[]>
@@ -118,7 +134,7 @@ export class ResourceApplyComponent implements OnInit {
         private store: Store<State>,
         private destroyService: DestroyService,
         private fb: FormBuilder
-    ) { }
+    ) {}
 
     ngOnInit() {
         this.buildForm()
@@ -209,6 +225,8 @@ export class ResourceApplyComponent implements OnInit {
     }
 
     private initFirstTabDataSource() {
+        this.hiddenAddReourceBtn$ = this.store.select(getHiddenAddResourceBtn)
+
         this.saveOrSubmitText$ = this.store.select(getSaveOrSubmitText)
         this.saveOrSubmitLoading$ = this.store.select(getSaveOrSubmitLoading)
 
@@ -236,7 +254,7 @@ export class ResourceApplyComponent implements OnInit {
         this.extraTabs$ = this.store.select(getExtraTabs)
     }
 
-    private initDispatcher(): void { }
+    private initDispatcher(): void {}
 
     private initSubscriber(): void {
         this.initFirstTabSubscriber()
@@ -284,12 +302,11 @@ export class ResourceApplyComponent implements OnInit {
 
     private initSwitchApplyType() {
         this.type.valueChanges
-            .pipe(
-                filter(e => !!e),
-                takeUntil(this.destroyService)
-            )
+            .pipe(filter(e => !!e), takeUntil(this.destroyService))
             .subscribe(applyType => {
-                this.store.dispatch(new fromRequirementApply.SwitchApplyTypeAction(applyType))
+                this.store.dispatch(
+                    new fromRequirementApply.SwitchApplyTypeAction(applyType)
+                )
             })
     }
 
@@ -311,7 +328,9 @@ export class ResourceApplyComponent implements OnInit {
             .asObservable()
             .pipe(takeUntil(this.destroyService))
             .subscribe(() => {
-                this.store.dispatch(new fromRequirementApply.SaveRequirementApplyAction())
+                this.store.dispatch(
+                    new fromRequirementApply.SaveRequirementApplyAction()
+                )
             })
     }
 
@@ -320,7 +339,9 @@ export class ResourceApplyComponent implements OnInit {
             .asObservable()
             .pipe(takeUntil(this.destroyService))
             .subscribe(() => {
-                this.store.dispatch(new fromRequirementApply.SubmitRequirementApplyAction())
+                this.store.dispatch(
+                    new fromRequirementApply.SubmitRequirementApplyAction()
+                )
             })
     }
 
@@ -329,7 +350,9 @@ export class ResourceApplyComponent implements OnInit {
             .asObservable()
             .pipe(takeUntil(this.destroyService))
             .subscribe(() => {
-                this.store.dispatch(new fromRequirementApply.ResetRequirementApplyAction())
+                this.store.dispatch(
+                    new fromRequirementApply.ResetRequirementApplyAction()
+                )
             })
     }
 
@@ -350,7 +373,9 @@ export class ResourceApplyComponent implements OnInit {
                 takeUntil(this.destroyService)
             )
             .subscribe(resource => {
-                this.store.dispatch(new fromRequirementApply.CreateApplyResourceAction(resource))
+                this.store.dispatch(
+                    new fromRequirementApply.CreateApplyResourceAction(resource)
+                )
             })
     }
 
@@ -371,7 +396,9 @@ export class ResourceApplyComponent implements OnInit {
                 takeUntil(this.destroyService)
             )
             .subscribe(resources => {
-                this.store.dispatch(new fromRequirementApply.AddApplyResourcesAction(resources))
+                this.store.dispatch(
+                    new fromRequirementApply.AddApplyResourcesAction(resources)
+                )
             })
     }
 
@@ -391,7 +418,7 @@ export class ResourceApplyComponent implements OnInit {
                 }),
                 takeUntil(this.destroyService)
             )
-            .subscribe(() => { })
+            .subscribe(() => {})
     }
 
     private initEditTempApplyResource() {
@@ -412,7 +439,11 @@ export class ResourceApplyComponent implements OnInit {
                 takeUntil(this.destroyService)
             )
             .subscribe(resource => {
-                this.store.dispatch(new fromRequirementApply.EditTempApplyResourceAction(resource))
+                this.store.dispatch(
+                    new fromRequirementApply.EditTempApplyResourceAction(
+                        resource
+                    )
+                )
             })
     }
 
@@ -429,7 +460,9 @@ export class ResourceApplyComponent implements OnInit {
                     content: '确定删除这个资源信息?',
                     onOk: () => {
                         this.store.dispatch(
-                            new fromRequirementApply.DeleteApplyResourceAction(index)
+                            new fromRequirementApply.DeleteApplyResourceAction(
+                                index
+                            )
                         )
                     }
                 })
@@ -445,7 +478,9 @@ export class ResourceApplyComponent implements OnInit {
                 takeUntil(this.destroyService)
             )
             .subscribe(tabIndex => {
-                this.store.dispatch(new fromSavedApply.FetchSavedAppliesAction())
+                this.store.dispatch(
+                    new fromSavedApply.FetchSavedAppliesAction()
+                )
             })
     }
 
@@ -454,7 +489,9 @@ export class ResourceApplyComponent implements OnInit {
             .asObservable()
             .pipe(takeUntil(this.destroyService))
             .subscribe(apply => {
-                this.store.dispatch(new fromSavedApply.ToDetailSavedApplyAction(apply))
+                this.store.dispatch(
+                    new fromSavedApply.ToDetailSavedApplyAction(apply)
+                )
             })
     }
 
@@ -463,7 +500,9 @@ export class ResourceApplyComponent implements OnInit {
             .asObservable()
             .pipe(takeUntil(this.destroyService))
             .subscribe(apply => {
-                this.store.dispatch(new fromSavedApply.ToEditSavedApplyAction(apply))
+                this.store.dispatch(
+                    new fromSavedApply.ToEditSavedApplyAction(apply)
+                )
             })
     }
 
@@ -476,7 +515,9 @@ export class ResourceApplyComponent implements OnInit {
                     title: '提交申请',
                     content: '确定提交这个申请?',
                     onOk: () => {
-                        this.store.dispatch(new fromSavedApply.SubmitSavedApplyAction(apply))
+                        this.store.dispatch(
+                            new fromSavedApply.SubmitSavedApplyAction(apply)
+                        )
                     }
                 })
             })
@@ -491,7 +532,9 @@ export class ResourceApplyComponent implements OnInit {
                     title: '删除申请',
                     content: '确定删除这个申请?',
                     onOk: () => {
-                        this.store.dispatch(new fromSavedApply.DeleteSavedApplyAction(apply))
+                        this.store.dispatch(
+                            new fromSavedApply.DeleteSavedApplyAction(apply)
+                        )
                     }
                 })
             })
@@ -516,7 +559,9 @@ export class ResourceApplyComponent implements OnInit {
             )
             .subscribe(([_, tabIndex]) => {
                 this.tabIndex = tabIndex + 2
-                this.store.dispatch(new fromExtraTabs.ResetNeedManualSetTabIndexAction())
+                this.store.dispatch(
+                    new fromExtraTabs.ResetNeedManualSetTabIndexAction()
+                )
             })
     }
 
@@ -528,10 +573,12 @@ export class ResourceApplyComponent implements OnInit {
                         ...tabs.map((tab, i) =>
                             tab.data.applyInfoForm
                                 .get('type')
-                                .valueChanges.pipe(map(e => ({
-                                    applyType: e,
-                                    tabIndex: i
-                                })))
+                                .valueChanges.pipe(
+                                    map(e => ({
+                                        applyType: e,
+                                        tabIndex: i
+                                    }))
+                                )
                         )
                     )
                 }),
@@ -645,7 +692,8 @@ export class ResourceApplyComponent implements OnInit {
                     })
                 }),
                 filter(e => typeof e !== 'string'),
-                takeUntil(this.destroyService))
+                takeUntil(this.destroyService)
+            )
             .subscribe(resource => {
                 this.store.dispatch(
                     new fromExtraTabs.EditTempApplyResourceAction({
@@ -670,8 +718,9 @@ export class ResourceApplyComponent implements OnInit {
                         componentParams: { resource }
                     })
                 }),
-                takeUntil(this.destroyService))
-            .subscribe(() => { })
+                takeUntil(this.destroyService)
+            )
+            .subscribe(() => {})
     }
 
     private initDeleteApplyResourceForExtra() {
@@ -679,7 +728,8 @@ export class ResourceApplyComponent implements OnInit {
             .asObservable()
             .pipe(
                 filter(() => this.tabIndex >= 2),
-                takeUntil(this.destroyService))
+                takeUntil(this.destroyService)
+            )
             .subscribe(index => {
                 this.modalService.confirm({
                     title: '删除资源信息',
@@ -693,7 +743,7 @@ export class ResourceApplyComponent implements OnInit {
                         )
                         console.log(
                             `delete apply resource; tab index: ${
-                            this.tabIndex
+                                this.tabIndex
                             }; resource index: ${index}`
                         )
                     }

@@ -40,6 +40,13 @@ export function reducer(state: State = initialState, action: Actions): State {
                 ...state,
                 needManualSetTabIndex: false
             }
+
+        case fromExtraTabs.SWITCH_APPLY_TYPE:
+            return ExtraTabsHelper.generateForSwitchApplyType(
+                state,
+                action.payload.tabIndex,
+                action.payload.applyType
+            )
         case fromExtraTabs.FETCH_APPLY_INFO:
             return ExtraTabsHelper.generateForFetchApplyInfo(
                 state,
