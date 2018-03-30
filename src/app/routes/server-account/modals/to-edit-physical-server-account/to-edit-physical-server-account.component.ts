@@ -22,7 +22,7 @@ export class ToEditPhysicalServerAccountComponent implements OnInit {
     ) {}
 
     @Input()
-    set account(v: PhysicalServerAccount) {
+    set data(v: PhysicalServerAccount) {
         this._account = v
         if (this.form) {
             this.patchForm()

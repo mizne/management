@@ -22,7 +22,7 @@ export class ToEditMiddlewareSoftwareAccountComponent implements OnInit {
     ) {}
 
     @Input()
-    set account(v: MiddlewareSoftwareAccount) {
+    set data(v: MiddlewareSoftwareAccount) {
         this._account = v
         if (this.form) {
             this.patchForm()

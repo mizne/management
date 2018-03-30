@@ -22,7 +22,7 @@ export class ToEditVirtualServerAccountComponent implements OnInit {
     ) {}
 
     @Input()
-    set account(v: VirtualServerAccount) {
+    set data(v: VirtualServerAccount) {
         this._account = v
         if (this.form) {
             this.patchForm()

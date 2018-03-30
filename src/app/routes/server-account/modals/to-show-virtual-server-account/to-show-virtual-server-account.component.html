@@ -1,25 +1,25 @@
 <nz-card [nzNoHovering]="true" [nzBordered]="false">
     <ng-template #body>
         <desc-list size="large" title="基本信息" class="mb-lg">
-            <desc-list-item term="服务器名称">{{account.name}}</desc-list-item>
-            <desc-list-item term="服务器用途">{{account.purpose}}</desc-list-item>
-            <desc-list-item term="工作状态">{{account.workStatus}}</desc-list-item>
-            <desc-list-item term="所属物理主机">{{account.physicalHostOwner}}</desc-list-item>
-            <desc-list-item term="所属集群分组">{{account.clusterGroupOwner}}</desc-list-item>
-            <desc-list-item term="管理IP">{{account.managementIP}}</desc-list-item>
+            <desc-list-item term="服务器名称">{{data.name}}</desc-list-item>
+            <desc-list-item term="服务器用途">{{data.purpose}}</desc-list-item>
+            <desc-list-item term="工作状态">{{data.workStatus}}</desc-list-item>
+            <desc-list-item term="所属物理主机">{{data.physicalHostOwner}}</desc-list-item>
+            <desc-list-item term="所属集群分组">{{data.clusterGroupOwner}}</desc-list-item>
+            <desc-list-item term="管理IP">{{data.managementIP}}</desc-list-item>
         </desc-list>
         <nz-divider class="mb-lg"></nz-divider>
         <desc-list size="large" title="详细信息" class="mb-lg">
-            <desc-list-item term="操作系统">{{account.operationSystem}}</desc-list-item>
-            <desc-list-item term="CPU">{{account.cpuCost}}</desc-list-item>
-            <desc-list-item term="内存">{{account.memoryCost}}</desc-list-item>
-            <desc-list-item term="存储空间">{{account.storageCost}}</desc-list-item>
+            <desc-list-item term="操作系统">{{data.operationSystem}}</desc-list-item>
+            <desc-list-item term="CPU">{{data.cpuCost}}</desc-list-item>
+            <desc-list-item term="内存">{{data.memoryCost}}</desc-list-item>
+            <desc-list-item term="存储空间">{{data.storageCost}}</desc-list-item>
         </desc-list>
         <nz-divider class="mb-lg"></nz-divider>
         <desc-list size="large" title="使用信息" class="mb-lg">
-            <desc-list-item term="使用对象">{{account.whoUse}}</desc-list-item>
-            <desc-list-item term="起始使用时间">{{account.startTimeUse}}</desc-list-item>
-            <desc-list-item term="使用期限">{{account.durationUse}}</desc-list-item>
+            <desc-list-item term="使用对象">{{data.whoUse}}</desc-list-item>
+            <desc-list-item term="起始使用时间">{{data.startTimeUse}}</desc-list-item>
+            <desc-list-item term="使用期限">{{data.durationUse}}</desc-list-item>
         </desc-list>
         <nz-divider class="mb-lg"></nz-divider>
     </ng-template>

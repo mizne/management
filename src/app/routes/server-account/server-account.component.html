@@ -67,7 +67,7 @@
                                 <span nz-table-divider></span>
                                 <a (click)="toShowPhysical(data)">详情</a>
                                 <span nz-table-divider></span>
-                                <a (click)="toDeletePhysical(data)">删除</a>
+                                <a (click)="toDeletePhysical(data.id)">删除</a>
                             </span>
                         </td>
                     </tr>
@@ -141,7 +141,7 @@
                                 <span nz-table-divider></span>
                                 <a (click)="toShowVirtual(data)">详情</a>
                                 <span nz-table-divider></span>
-                                <a (click)="toDeleteVirtual(data)">删除</a>
+                                <a (click)="toDeleteVirtual(data.id)">删除</a>
                             </span>
                         </td>
                     </tr>
@@ -211,7 +211,7 @@
                                 <span nz-table-divider></span>
                                 <a (click)="toShowCluster(data)">详情</a>
                                 <span nz-table-divider></span>
-                                <a (click)="toDeleteCluster(data)">删除</a>
+                                <a (click)="toDeleteCluster(data.id)">删除</a>
                             </span>
                         </td>
                     </tr>

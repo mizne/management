@@ -17,7 +17,7 @@ export class ToShowMiddlewareSoftwareAccountComponent implements OnInit {
         private destroyService: DestroyService
     ) {}
 
-    @Input() account: MiddlewareSoftwareAccount
+    @Input() data: MiddlewareSoftwareAccount
 
     ngOnInit() {}
 

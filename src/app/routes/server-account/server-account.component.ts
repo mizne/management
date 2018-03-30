@@ -4,7 +4,8 @@ import { NzMessageService, NzModalService } from 'ng-zorro-antd'
 import {
     PhysicalServerAccount,
     VirtualServerAccount,
-    ClusterServerAccount
+    ClusterServerAccount,
+    ServerAccountType
 } from '@core/models/server-account.model'
 import { Observable } from 'rxjs/Observable'
 import { merge } from 'rxjs/observable/merge'
@@ -32,6 +33,7 @@ import {
 } from './actions'
 import { Subject } from 'rxjs/Subject'
 import { DestroyService } from '@core/services/destroy.service'
+import { TableService } from '@core/services/table.service'
 import { FormControl } from '@angular/forms'
 import {
     ToCreatePhysicalServerAccountComponent,
@@ -49,14 +51,15 @@ import {
     mergeMap,
     takeUntil,
     tap,
-    withLatestFrom
+    withLatestFrom,
+    mapTo
 } from 'rxjs/operators'
 
 @Component({
     selector: 'app-server-account',
     templateUrl: './server-account.component.html',
     styleUrls: ['./server-account.component.less'],
-    providers: [DestroyService],
+    providers: [DestroyService, TableService],
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ServerAccountComponent implements OnInit {
@@ -68,14 +71,7 @@ export class ServerAccountComponent implements OnInit {
     physicalPageIndex = 1
     physicalPageSize = 10
     physicalPageChangeSub: Subject<void> = new Subject<void>()
-    toEditPhysicalSub: Subject<PhysicalServerAccount> = new Subject<
-        PhysicalServerAccount
-    >()
-    toShowPhysicalSub: Subject<PhysicalServerAccount> = new Subject<
-        PhysicalServerAccount
-    >()
-    toDeletePhysicalSub: Subject<string> = new Subject<string>()
-    toCreatePhysicalSub: Subject<void> = new Subject<void>()
+
     toSearchPhysicalSub: Subject<void> = new Subject<void>()
     searchPhysicalCtrl: FormControl = new FormControl()
 
@@ -85,14 +81,6 @@ export class ServerAccountComponent implements OnInit {
     virtualPageIndex = 1
     virtualPageSize = 10
     virtualPageChangeSub: Subject<void> = new Subject<void>()
-    toEditVirtualSub: Subject<VirtualServerAccount> = new Subject<
-        VirtualServerAccount
-    >()
-    toShowVirtualSub: Subject<VirtualServerAccount> = new Subject<
-        VirtualServerAccount
-    >()
-    toDeleteVirtualSub: Subject<string> = new Subject<string>()
-    toCreateVirtualSub: Subject<void> = new Subject<void>()
     toSearchVirtualSub: Subject<void> = new Subject<void>()
     searchVirtualCtrl: FormControl = new FormControl()
 
@@ -102,14 +90,6 @@ export class ServerAccountComponent implements OnInit {
     clusterPageIndex = 1
     clusterPageSize = 10
     clusterPageChangeSub: Subject<void> = new Subject<void>()
-    toEditClusterSub: Subject<ClusterServerAccount> = new Subject<
-        ClusterServerAccount
-    >()
-    toShowClusterSub: Subject<ClusterServerAccount> = new Subject<
-        ClusterServerAccount
-    >()
-    toDeleteClusterSub: Subject<string> = new Subject<string>()
-    toCreateClusterSub: Subject<void> = new Subject<void>()
     toSearchClusterSub: Subject<void> = new Subject<void>()
     searchClusterCtrl: FormControl = new FormControl()
 
@@ -117,7 +97,8 @@ export class ServerAccountComponent implements OnInit {
         private messageService: NzMessageService,
         private modalService: NzModalService,
         private store: Store<State>,
-        private destroyService: DestroyService
+        private destroyService: DestroyService,
+        private tableService: TableService
     ) {}
 
     ngOnInit() {
@@ -130,7 +111,11 @@ export class ServerAccountComponent implements OnInit {
 
     // Physical Server Tab
     toCreatePhysical() {
-        this.toCreatePhysicalSub.next()
+        this.tableService.preCreateItem({
+            title: '新建物理服务器台帐',
+            content: ToCreatePhysicalServerAccountComponent,
+            type: ServerAccountType.PHYSICAL
+        })
     }
 
     onSearchPhysical() {
@@ -142,20 +127,39 @@ export class ServerAccountComponent implements OnInit {
     }
 
     toEditPhysical(account: PhysicalServerAccount) {
-        this.toEditPhysicalSub.next(account)
+        this.tableService.preEditItem({
+            title: '编辑物理服务器台帐',
+            content: ToEditPhysicalServerAccountComponent,
+            data: account,
+            type: ServerAccountType.PHYSICAL
+        })
     }
 
     toShowPhysical(account: PhysicalServerAccount) {
-        this.toShowPhysicalSub.next(account)
+        this.tableService.preShowItem({
+            title: '查看物理服务器台帐',
+            content: ToShowPhysicalServerAccountComponent,
+            data: account,
+            type: ServerAccountType.PHYSICAL
+        })
     }
 
     toDeletePhysical(id: string) {
-        this.toDeletePhysicalSub.next(id)
+        this.tableService.preSingleDeleteItem({
+            title: '删除物理服务器台帐',
+            content: '确定删除这个物理服务器台帐?',
+            id,
+            type: ServerAccountType.PHYSICAL
+        })
     }
 
     // Virtual Server Tab
     toCreateVirtual() {
-        this.toCreateVirtualSub.next()
+        this.tableService.preCreateItem({
+            title: '新建虚拟服务器台帐',
+            content: ToCreateVirtualServerAccountComponent,
+            type: ServerAccountType.VIRTUAL
+        })
     }
 
     onSearchVirtual() {
@@ -167,20 +171,39 @@ export class ServerAccountComponent implements OnInit {
     }
 
     toEditVirtual(account: VirtualServerAccount) {
-        this.toEditVirtualSub.next(account)
+        this.tableService.preEditItem({
+            title: '编辑虚拟服务器台帐',
+            content: ToEditVirtualServerAccountComponent,
+            data: account,
+            type: ServerAccountType.VIRTUAL
+        })
     }
 
     toShowVirtual(account: VirtualServerAccount) {
-        this.toShowVirtualSub.next(account)
+        this.tableService.preShowItem({
+            title: '查看虚拟服务器台帐',
+            content: ToShowVirtualServerAccountComponent,
+            data: account,
+            type: ServerAccountType.VIRTUAL
+        })
     }
 
     toDeleteVirtual(id: string) {
-        this.toDeleteVirtualSub.next(id)
+        this.tableService.preSingleDeleteItem({
+            title: '删除虚拟服务器台帐',
+            content: '确定删除这个虚拟服务器台帐?',
+            id,
+            type: ServerAccountType.VIRTUAL
+        })
     }
 
     // Cluster Server Tab
     toCreateCluster() {
-        this.toCreateClusterSub.next()
+        this.tableService.preCreateItem({
+            title: '新建集群服务器台帐',
+            content: ToCreateClusterServerAccountComponent,
+            type: ServerAccountType.CLUSTER
+        })
     }
 
     onSearchCluster() {
@@ -192,15 +215,30 @@ export class ServerAccountComponent implements OnInit {
     }
 
     toEditCluster(account: ClusterServerAccount) {
-        this.toEditClusterSub.next(account)
+        this.tableService.preEditItem({
+            title: '编辑集群服务器台帐',
+            content: ToEditClusterServerAccountComponent,
+            data: account,
+            type: ServerAccountType.CLUSTER
+        })
     }
 
     toShowCluster(account: ClusterServerAccount) {
-        this.toShowClusterSub.next(account)
+        this.tableService.preShowItem({
+            title: '查看集群服务器台帐',
+            content: ToShowClusterServerAccountComponent,
+            data: account,
+            type: ServerAccountType.CLUSTER
+        })
     }
 
     toDeleteCluster(id) {
-        this.toDeleteClusterSub.next(id)
+        this.tableService.preSingleDeleteItem({
+            title: '删除集群服务器台帐',
+            content: '确定删除这个集群服务器台帐?',
+            id,
+            type: ServerAccountType.CLUSTER
+        })
     }
 
     private intDataSource(): void {
@@ -271,65 +309,32 @@ export class ServerAccountComponent implements OnInit {
     }
 
     private initDeletePhysical() {
-        this.toDeletePhysicalSub
-            .asObservable()
-            .pipe(takeUntil(this.destroyService))
-            .subscribe(() => {
-                this.modalService.confirm({
-                    title: '删除物理服务器台帐',
-                    content: '确定删除这个物理服务器台帐?',
-                    onOk: () => {
-                        console.log(`delete physical server account `)
-                    }
-                })
+        this.tableService
+            .toSingleDeleteItem(ServerAccountType.PHYSICAL)
+            .subscribe(id => {
+                console.log(`ensure delete physical id: ${id}`)
             })
     }
 
     private initDeleteVirtual() {
-        this.toDeleteVirtualSub
-            .asObservable()
-            .pipe(takeUntil(this.destroyService))
-            .subscribe(() => {
-                this.modalService.confirm({
-                    title: '删除虚拟服务器台帐',
-                    content: '确定删除这个虚拟服务器台帐?',
-                    onOk: () => {
-                        console.log(`delete physical server account `)
-                    }
-                })
+        this.tableService
+            .toSingleDeleteItem(ServerAccountType.VIRTUAL)
+            .subscribe(id => {
+                console.log(`ensure delete virtual id: ${id}`)
             })
     }
 
     private initDeleteCluster() {
-        this.toDeleteClusterSub
-            .asObservable()
-            .pipe(takeUntil(this.destroyService))
-            .subscribe(() => {
-                this.modalService.confirm({
-                    title: '删除集群服务器台帐',
-                    content: '确定删除这个集群服务器台帐?',
-                    onOk: () => {
-                        console.log(`delete cluster server account `)
-                    }
-                })
+        this.tableService
+            .toSingleDeleteItem(ServerAccountType.CLUSTER)
+            .subscribe(id => {
+                console.log(`ensure delete cluster id: ${id}`)
             })
     }
 
     private initCreatePhysical(): void {
-        this.toCreatePhysicalSub
-            .asObservable()
-            .pipe(
-                mergeMap(() => {
-                    return this.modalService.open({
-                        title: '新建物理服务器台帐',
-                        content: ToCreatePhysicalServerAccountComponent,
-                        footer: false,
-                        width: 800
-                    })
-                }),
-                filter(e => typeof e !== 'string'),
-                takeUntil(this.destroyService)
-            )
+        this.tableService
+            .toCreateItem(ServerAccountType.PHYSICAL)
             .subscribe(account => {
                 this.store.dispatch(
                     new fromPhysicalServer.CreatePhysicalServerAccountAction(
@@ -340,20 +345,8 @@ export class ServerAccountComponent implements OnInit {
     }
 
     private initCreateVirtual(): void {
-        this.toCreateVirtualSub
-            .asObservable()
-            .pipe(
-                mergeMap(() => {
-                    return this.modalService.open({
-                        title: '新建虚拟服务器台帐',
-                        content: ToCreateVirtualServerAccountComponent,
-                        footer: false,
-                        width: 800
-                    })
-                }),
-                filter(e => typeof e !== 'string'),
-                takeUntil(this.destroyService)
-            )
+        this.tableService
+            .toCreateItem(ServerAccountType.VIRTUAL)
             .subscribe(account => {
                 this.store.dispatch(
                     new fromVirtualServer.CreateVirtualServerAccountAction(
@@ -364,20 +357,8 @@ export class ServerAccountComponent implements OnInit {
     }
 
     private initCreateCluster(): void {
-        this.toCreateClusterSub
-            .asObservable()
-            .pipe(
-                mergeMap(() => {
-                    return this.modalService.open({
-                        title: '新建集群服务器台帐',
-                        content: ToCreateClusterServerAccountComponent,
-                        footer: false,
-                        width: 800
-                    })
-                }),
-                filter(e => typeof e !== 'string'),
-                takeUntil(this.destroyService)
-            )
+        this.tableService
+            .toCreateItem(ServerAccountType.CLUSTER)
             .subscribe(account => {
                 this.store.dispatch(
                     new fromClusterServer.CreateClusterServerAccountAction(
@@ -537,22 +518,10 @@ export class ServerAccountComponent implements OnInit {
     }
 
     private initEditPhysical(): void {
-        this.toEditPhysicalSub
-            .asObservable()
-            .pipe(
-                mergeMap(account => {
-                    return this.modalService.open({
-                        title: '编辑物理服务器台帐',
-                        content: ToEditPhysicalServerAccountComponent,
-                        footer: false,
-                        width: 800,
-                        componentParams: { account }
-                    })
-                }),
-                filter(e => typeof e !== 'string'),
-                takeUntil(this.destroyService)
-            )
+        this.tableService
+            .toEditItem(ServerAccountType.PHYSICAL)
             .subscribe(account => {
+                console.log(`to edit physical server account, `, account)
                 this.store.dispatch(
                     new fromPhysicalServer.EditPhysicalServerAccountAction(
                         account
@@ -562,22 +531,10 @@ export class ServerAccountComponent implements OnInit {
     }
 
     private initEditVirtual() {
-        this.toEditVirtualSub
-            .asObservable()
-            .pipe(
-                mergeMap(account => {
-                    return this.modalService.open({
-                        title: '编辑虚拟服务器台帐',
-                        content: ToEditVirtualServerAccountComponent,
-                        footer: false,
-                        width: 800,
-                        componentParams: { account }
-                    })
-                }),
-                filter(e => typeof e !== 'string'),
-                takeUntil(this.destroyService)
-            )
+        this.tableService
+            .toEditItem(ServerAccountType.VIRTUAL)
             .subscribe(account => {
+                console.log(`to edit virtual server account, `, account)
                 this.store.dispatch(
                     new fromVirtualServer.EditVirtualServerAccountAction(
                         account
@@ -587,22 +544,10 @@ export class ServerAccountComponent implements OnInit {
     }
 
     private initEditCluster() {
-        this.toEditClusterSub
-            .asObservable()
-            .pipe(
-                mergeMap(account => {
-                    return this.modalService.open({
-                        title: '编辑集群服务器台帐',
-                        content: ToEditClusterServerAccountComponent,
-                        footer: false,
-                        width: 800,
-                        componentParams: { account }
-                    })
-                }),
-                filter(e => typeof e !== 'string'),
-                takeUntil(this.destroyService)
-            )
+        this.tableService
+            .toEditItem(ServerAccountType.CLUSTER)
             .subscribe(account => {
+                console.log(`to edit cluster server account, `, account)
                 this.store.dispatch(
                     new fromClusterServer.EditClusterServerAccountAction(
                         account
@@ -612,56 +557,20 @@ export class ServerAccountComponent implements OnInit {
     }
 
     private initShowPhysical() {
-        this.toShowPhysicalSub
-            .asObservable()
-            .pipe(
-                mergeMap(account => {
-                    return this.modalService.open({
-                        title: '查看物理服务器台帐',
-                        content: ToShowPhysicalServerAccountComponent,
-                        footer: false,
-                        width: 800,
-                        componentParams: { account }
-                    })
-                }),
-                takeUntil(this.destroyService)
-            )
-            .subscribe(account => {})
+        this.tableService
+            .toShowItem(ServerAccountType.PHYSICAL)
+            .subscribe(() => {})
     }
 
     private initShowVirtual() {
-        this.toShowVirtualSub
-            .asObservable()
-            .pipe(
-                mergeMap(account => {
-                    return this.modalService.open({
-                        title: '查看虚拟服务器台帐',
-                        content: ToShowVirtualServerAccountComponent,
-                        footer: false,
-                        width: 800,
-                        componentParams: { account }
-                    })
-                }),
-                takeUntil(this.destroyService)
-            )
-            .subscribe(account => {})
+        this.tableService
+            .toShowItem(ServerAccountType.VIRTUAL)
+            .subscribe(() => {})
     }
 
     private initShowCluster() {
-        this.toShowClusterSub
-            .asObservable()
-            .pipe(
-                mergeMap(account => {
-                    return this.modalService.open({
-                        title: '查看集群服务器台帐',
-                        content: ToShowClusterServerAccountComponent,
-                        footer: false,
-                        width: 800,
-                        componentParams: { account }
-                    })
-                }),
-                takeUntil(this.destroyService)
-            )
-            .subscribe(account => {})
+        this.tableService
+            .toShowItem(ServerAccountType.CLUSTER)
+            .subscribe(() => {})
     }
 }

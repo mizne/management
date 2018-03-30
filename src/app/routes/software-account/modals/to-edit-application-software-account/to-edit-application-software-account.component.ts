@@ -22,7 +22,7 @@ export class ToEditApplicationSoftwareAccountComponent implements OnInit {
     ) {}
 
     @Input()
-    set account(v: SystemLogger) {
+    set data(v: SystemLogger) {
         this._account = v
         if (this.form) {
             this.patchForm()

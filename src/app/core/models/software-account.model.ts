@@ -78,3 +78,9 @@ export class MiddlewareSoftwareAccount {
         }))
     }
 }
+
+export enum SoftwareAccountType {
+    APPLICATION = 'APPLICATION',
+    SYSTEM = 'SYSTEM',
+    MIDDLEWARE = 'MIDDLEWARE'
+}

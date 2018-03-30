@@ -1,17 +1,17 @@
 <nz-card [nzNoHovering]="true" [nzBordered]="false">
     <ng-template #body>
         <desc-list size="large" title="基本信息" class="mb-lg">
-            <desc-list-item term="集群名称">{{account.name}}</desc-list-item>
-            <desc-list-item term="集群用途">{{account.purpose}}</desc-list-item>
-            <desc-list-item term="工作状态">{{account.workStatus}}</desc-list-item>
-            <desc-list-item term="对应成员服务器">{{account.memberServer}}</desc-list-item>
+            <desc-list-item term="集群名称">{{data.name}}</desc-list-item>
+            <desc-list-item term="集群用途">{{data.purpose}}</desc-list-item>
+            <desc-list-item term="工作状态">{{data.workStatus}}</desc-list-item>
+            <desc-list-item term="对应成员服务器">{{data.memberServer}}</desc-list-item>
         </desc-list>
         <nz-divider class="mb-lg"></nz-divider>
         <desc-list size="large" title="使用信息" class="mb-lg">
-            <desc-list-item term="管理IP">{{account.managementIP}}</desc-list-item>
-            <desc-list-item term="使用对象">{{account.whoUse}}</desc-list-item>
-            <desc-list-item term="起始使用时间">{{account.startTimeUse}}</desc-list-item>
-            <desc-list-item term="使用期限">{{account.durationUse}}</desc-list-item>
+            <desc-list-item term="管理IP">{{data.managementIP}}</desc-list-item>
+            <desc-list-item term="使用对象">{{data.whoUse}}</desc-list-item>
+            <desc-list-item term="起始使用时间">{{data.startTimeUse}}</desc-list-item>
+            <desc-list-item term="使用期限">{{data.durationUse}}</desc-list-item>
         </desc-list>
         <nz-divider class="mb-lg"></nz-divider>
     </ng-template>

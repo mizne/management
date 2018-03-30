@@ -17,7 +17,7 @@ export class ToShowApplicationSoftwareAccountComponent implements OnInit {
         private destroyService: DestroyService
     ) {}
 
-    @Input() account: SystemLogger
+    @Input() data: SystemLogger
 
     ngOnInit() {}
 

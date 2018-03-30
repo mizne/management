@@ -17,7 +17,7 @@ export class ToShowVirtualServerAccountComponent implements OnInit {
         private destroyService: DestroyService
     ) {}
 
-    @Input() account: VirtualServerAccount
+    @Input() data: VirtualServerAccount
 
     ngOnInit() {}
 

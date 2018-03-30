@@ -4,7 +4,7 @@ import { Subject } from 'rxjs/Subject'
 import { Observable } from 'rxjs/Observable'
 
 import { DestroyService } from '@core/services/destroy.service'
-import { ClusterServerAccount } from '@core/models/server-account.model';
+import { ClusterServerAccount } from '@core/models/server-account.model'
 
 @Component({
     selector: 'app-to-show-cluster-server-account',
@@ -17,7 +17,7 @@ export class ToShowClusterServerAccountComponent implements OnInit {
         private destroyService: DestroyService
     ) {}
 
-    @Input() account: ClusterServerAccount
+    @Input() data: ClusterServerAccount
 
     ngOnInit() {}
 

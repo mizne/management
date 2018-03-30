@@ -17,7 +17,7 @@ export class ToShowSystemSoftwareAccountComponent implements OnInit {
         private destroyService: DestroyService
     ) {}
 
-    @Input() account: SystemSoftwareAccount
+    @Input() data: SystemSoftwareAccount
 
     ngOnInit() {}
 

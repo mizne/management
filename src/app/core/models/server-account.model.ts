@@ -131,3 +131,9 @@ export class ClusterServerAccount {
         }))
     }
 }
+
+export enum ServerAccountType {
+    PHYSICAL = 'PHYSICAL',
+    VIRTUAL = 'VIRTUAL',
+    CLUSTER = 'CLUSTER'
+}

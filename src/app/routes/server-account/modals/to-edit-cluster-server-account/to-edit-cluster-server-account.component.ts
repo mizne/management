@@ -22,7 +22,7 @@ export class ToEditClusterServerAccountComponent implements OnInit {
     ) {}
 
     @Input()
-    set account(v: ClusterServerAccount) {
+    set data(v: ClusterServerAccount) {
         this._account = v
         if (this.form) {
             this.patchForm()

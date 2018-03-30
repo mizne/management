@@ -17,7 +17,7 @@ export class ToShowPhysicalServerAccountComponent implements OnInit {
         private destroyService: DestroyService
     ) {}
 
-    @Input() account: PhysicalServerAccount
+    @Input() data: PhysicalServerAccount
 
     ngOnInit() {}
 
