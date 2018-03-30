@@ -74,6 +74,7 @@ export class ServerAccountComponent implements OnInit {
     toShowPhysicalSub: Subject<PhysicalServerAccount> = new Subject<
         PhysicalServerAccount
     >()
+    toDeletePhysicalSub: Subject<string> = new Subject<string>()
     toCreatePhysicalSub: Subject<void> = new Subject<void>()
     toSearchPhysicalSub: Subject<void> = new Subject<void>()
     searchPhysicalCtrl: FormControl = new FormControl()
@@ -90,6 +91,7 @@ export class ServerAccountComponent implements OnInit {
     toShowVirtualSub: Subject<VirtualServerAccount> = new Subject<
         VirtualServerAccount
     >()
+    toDeleteVirtualSub: Subject<string> = new Subject<string>()
     toCreateVirtualSub: Subject<void> = new Subject<void>()
     toSearchVirtualSub: Subject<void> = new Subject<void>()
     searchVirtualCtrl: FormControl = new FormControl()
@@ -106,6 +108,7 @@ export class ServerAccountComponent implements OnInit {
     toShowClusterSub: Subject<ClusterServerAccount> = new Subject<
         ClusterServerAccount
     >()
+    toDeleteClusterSub: Subject<string> = new Subject<string>()
     toCreateClusterSub: Subject<void> = new Subject<void>()
     toSearchClusterSub: Subject<void> = new Subject<void>()
     searchClusterCtrl: FormControl = new FormControl()
@@ -146,6 +149,10 @@ export class ServerAccountComponent implements OnInit {
         this.toShowPhysicalSub.next(account)
     }
 
+    toDeletePhysical(id: string) {
+        this.toDeletePhysicalSub.next(id)
+    }
+
     // Virtual Server Tab
     toCreateVirtual() {
         this.toCreateVirtualSub.next()
@@ -167,6 +174,10 @@ export class ServerAccountComponent implements OnInit {
         this.toShowVirtualSub.next(account)
     }
 
+    toDeleteVirtual(id: string) {
+        this.toDeleteVirtualSub.next(id)
+    }
+
     // Cluster Server Tab
     toCreateCluster() {
         this.toCreateClusterSub.next()
@@ -186,6 +197,10 @@ export class ServerAccountComponent implements OnInit {
 
     toShowCluster(account: ClusterServerAccount) {
         this.toShowClusterSub.next(account)
+    }
+
+    toDeleteCluster(id) {
+        this.toDeleteClusterSub.next(id)
     }
 
     private intDataSource(): void {
@@ -226,21 +241,78 @@ export class ServerAccountComponent implements OnInit {
     }
 
     private initSubscriber(): void {
+        this.initFirstTab()
+        this.initSecondTab()
+        this.initThirdTab()
+    }
+
+    private initFirstTab() {
         this.initCreatePhysical()
-        this.initCreateVirtual()
-        this.initCreateCluster()
-
         this.initSearchPhysicalAndPageChange()
-        this.initSearchVirtualAndPageChange()
-        this.initSearchClusterAndPageChange()
-
         this.initEditPhysical()
-        this.initEditVirtual()
-        this.initEditCluster()
-
         this.initShowPhysical()
+        this.initDeletePhysical()
+    }
+
+    private initSecondTab() {
+        this.initCreateVirtual()
+        this.initSearchVirtualAndPageChange()
+        this.initEditVirtual()
         this.initShowVirtual()
+        this.initDeleteVirtual()
+    }
+
+    private initThirdTab() {
+        this.initCreateCluster()
+        this.initSearchClusterAndPageChange()
+        this.initEditCluster()
         this.initShowCluster()
+        this.initDeleteCluster()
+    }
+
+    private initDeletePhysical() {
+        this.toDeletePhysicalSub
+            .asObservable()
+            .pipe(takeUntil(this.destroyService))
+            .subscribe(() => {
+                this.modalService.confirm({
+                    title: '删除物理服务器台帐',
+                    content: '确定删除这个物理服务器台帐?',
+                    onOk: () => {
+                        console.log(`delete physical server account `)
+                    }
+                })
+            })
+    }
+
+    private initDeleteVirtual() {
+        this.toDeleteVirtualSub
+            .asObservable()
+            .pipe(takeUntil(this.destroyService))
+            .subscribe(() => {
+                this.modalService.confirm({
+                    title: '删除虚拟服务器台帐',
+                    content: '确定删除这个虚拟服务器台帐?',
+                    onOk: () => {
+                        console.log(`delete physical server account `)
+                    }
+                })
+            })
+    }
+
+    private initDeleteCluster() {
+        this.toDeleteClusterSub
+            .asObservable()
+            .pipe(takeUntil(this.destroyService))
+            .subscribe(() => {
+                this.modalService.confirm({
+                    title: '删除集群服务器台帐',
+                    content: '确定删除这个集群服务器台帐?',
+                    onOk: () => {
+                        console.log(`delete cluster server account `)
+                    }
+                })
+            })
     }
 
     private initCreatePhysical(): void {

@@ -85,6 +85,7 @@ export class SoftwareAccountComponent implements OnInit {
     applicationPageChangeSub: Subject<void> = new Subject<void>()
     toEditApplicationSub: Subject<SystemLogger> = new Subject<SystemLogger>()
     toShowApplicationSub: Subject<SystemLogger> = new Subject<SystemLogger>()
+    toDeleteApplicationSub: Subject<string> = new Subject<string>()
     searchApplicationCtrl: FormControl = new FormControl()
     toCreateApplicationSub: Subject<void> = new Subject<void>()
     toSearchApplicationSub: Subject<void> = new Subject<void>()
@@ -101,6 +102,7 @@ export class SoftwareAccountComponent implements OnInit {
     toShowSystemSub: Subject<SystemSoftwareAccount> = new Subject<
         SystemSoftwareAccount
     >()
+    toDeleteSystemSub: Subject<string> = new Subject<string>()
     searchSystemCtrl: FormControl = new FormControl()
     toCreateSystemSub: Subject<void> = new Subject<void>()
     toSearchSystemSub: Subject<void> = new Subject<void>()
@@ -117,6 +119,7 @@ export class SoftwareAccountComponent implements OnInit {
     toShowMiddlewareSub: Subject<MiddlewareSoftwareAccount> = new Subject<
         MiddlewareSoftwareAccount
     >()
+    toDeleteMiddlewareSub: Subject<string> = new Subject<string>()
     searchMiddlewareCtrl: FormControl = new FormControl()
     toCreateMiddlewareSub: Subject<void> = new Subject<void>()
     toSearchMiddlewareSub: Subject<void> = new Subject<void>()
@@ -157,6 +160,10 @@ export class SoftwareAccountComponent implements OnInit {
         this.toShowApplicationSub.next(account)
     }
 
+    toDeleteApplication(id: string) {
+        this.toDeleteApplicationSub.next()
+    }
+
     // System Software Tab
     toCreateSystem() {
         this.toCreateSystemSub.next()
@@ -178,6 +185,10 @@ export class SoftwareAccountComponent implements OnInit {
         this.toShowSystemSub.next(account)
     }
 
+    toDeleteSystem(id: string) {
+        this.toDeleteSystemSub.next()
+    }
+
     // Middleware Software Tab
     toCreateMiddleware() {
         this.toCreateMiddlewareSub.next()
@@ -197,6 +208,10 @@ export class SoftwareAccountComponent implements OnInit {
 
     toShowMiddleware(account: MiddlewareSoftwareAccount) {
         this.toShowMiddlewareSub.next(account)
+    }
+
+    toDeleteMiddleware(id: string) {
+        this.toDeleteMiddlewareSub.next()
     }
 
     private intDataSource(): void {
@@ -229,21 +244,78 @@ export class SoftwareAccountComponent implements OnInit {
     }
 
     private initSubscriber(): void {
+        this.initFirstTab()
+        this.initSecondTab()
+        this.initThirdTab()
+    }
+
+    private initFirstTab() {
         this.initCreateApplication()
-        this.initCreateSystem()
-        this.initCreateMiddleware()
-
         this.initSearchApplicationAndPageChange()
-        this.initSearchSystemAndPageChange()
-        this.initSearchMiddlewareAndPageChange()
-
         this.initEditApplication()
-        this.initEditSystem()
-        this.initEditMiddleware()
-
         this.initShowApplication()
+        this.initDeleteApplication()
+    }
+
+    private initSecondTab() {
+        this.initCreateSystem()
+        this.initSearchSystemAndPageChange()
+        this.initEditSystem()
         this.initShowSystem()
+        this.initDeleteSystem()
+    }
+
+    private initThirdTab() {
+        this.initCreateMiddleware()
+        this.initSearchMiddlewareAndPageChange()
+        this.initEditMiddleware()
         this.initShowMiddleware()
+        this.initDeleteMiddleware()
+    }
+
+    private initDeleteApplication() {
+        this.toDeleteApplicationSub
+            .asObservable()
+            .pipe(takeUntil(this.destroyService))
+            .subscribe(() => {
+                this.modalService.confirm({
+                    title: '删除应用软件台帐',
+                    content: '确定删除这个应用软件台帐?',
+                    onOk: () => {
+                        console.log(`delete application software account `)
+                    }
+                })
+            })
+    }
+
+    private initDeleteSystem() {
+        this.toDeleteSystemSub
+            .asObservable()
+            .pipe(takeUntil(this.destroyService))
+            .subscribe(() => {
+                this.modalService.confirm({
+                    title: '删除系统软件台帐',
+                    content: '确定删除这个系统软件台帐?',
+                    onOk: () => {
+                        console.log(`delete system software account `)
+                    }
+                })
+            })
+    }
+
+    private initDeleteMiddleware() {
+        this.toDeleteMiddlewareSub
+            .asObservable()
+            .pipe(takeUntil(this.destroyService))
+            .subscribe(() => {
+                this.modalService.confirm({
+                    title: '删除中间件软件台帐',
+                    content: '确定删除这个中间件软件台帐?',
+                    onOk: () => {
+                        console.log(`delete middleware software account `)
+                    }
+                })
+            })
     }
 
     private initCreateApplication(): void {
