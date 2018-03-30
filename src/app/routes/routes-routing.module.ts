@@ -25,7 +25,11 @@ const routes: Routes = [
         component: LayoutDefaultComponent,
         canActivate: [AuthGuard],
         children: [
-            { path: '', redirectTo: 'dashboard/workspace', pathMatch: 'full' },
+            {
+                path: '',
+                redirectTo: 'monitor-management/monitor-dashboard',
+                pathMatch: 'full'
+            },
             {
                 path: 'dashboard/workspace',
                 loadChildren:
