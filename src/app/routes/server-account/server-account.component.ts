@@ -50,7 +50,7 @@ import {
     mapTo
 } from 'rxjs/operators'
 
-import { actionCreator } from './reducers/cluster-server-account.reducer'
+import { actionCreator as clusterActionCreator } from './reducers/cluster-server-account.reducer'
 import { actionCreator as physicalActionCreator } from './reducers/physical-server-account.reducer'
 import { actionCreator as virtualActionCreator } from './reducers/virtual-server-account.reducer'
 
@@ -259,18 +259,18 @@ export class ServerAccountComponent implements OnInit {
     }
 
     private initDispatcher(): void {
-        this.store.dispatch(physicalActionCreator.createFetchItemsAction())
-        this.store.dispatch(physicalActionCreator.createFetchItemsCountAction())
+        this.store.dispatch(physicalActionCreator.fetchItemsAction())
+        this.store.dispatch(physicalActionCreator.fetchItemsCountAction())
 
         this.store.dispatch(
-            virtualActionCreator.createFetchItemsAction()
+            virtualActionCreator.fetchItemsAction()
         )
         this.store.dispatch(
-            virtualActionCreator.createFetchItemsCountAction()
+            virtualActionCreator.fetchItemsCountAction()
         )
 
-        this.store.dispatch(actionCreator.createFetchItemsAction())
-        this.store.dispatch(actionCreator.createFetchItemsCountAction())
+        this.store.dispatch(clusterActionCreator.fetchItemsAction())
+        this.store.dispatch(clusterActionCreator.fetchItemsCountAction())
     }
 
     private initSubscriber(): void {
@@ -332,7 +332,7 @@ export class ServerAccountComponent implements OnInit {
             .toCreateItem(ServerAccountType.PHYSICAL)
             .subscribe(account => {
                 this.store.dispatch(
-                    physicalActionCreator.createCreateItemAction(account)
+                    physicalActionCreator.createItemAction(account)
                 )
             })
     }
@@ -342,7 +342,7 @@ export class ServerAccountComponent implements OnInit {
             .toCreateItem(ServerAccountType.VIRTUAL)
             .subscribe(account => {
                 this.store.dispatch(
-                    virtualActionCreator.createCreateItemAction(account)
+                    virtualActionCreator.createItemAction(account)
                 )
             })
     }
@@ -352,7 +352,7 @@ export class ServerAccountComponent implements OnInit {
             .toCreateItem(ServerAccountType.CLUSTER)
             .subscribe(account => {
                 this.store.dispatch(
-                    actionCreator.createCreateItemAction(account)
+                    clusterActionCreator.createItemAction(account)
                 )
             })
     }
@@ -363,7 +363,7 @@ export class ServerAccountComponent implements OnInit {
             .pipe(takeUntil(this.destroyService))
             .subscribe(() => {
                 this.store.dispatch(
-                    physicalActionCreator.createFetchItemsCountAction(this.searchPhysicalCtrl.value)
+                    physicalActionCreator.fetchItemsCountAction(this.searchPhysicalCtrl.value)
                 )
             })
 
@@ -387,13 +387,13 @@ export class ServerAccountComponent implements OnInit {
             .pipe(takeUntil(this.destroyService))
             .subscribe(() => {
                 this.store.dispatch(
-                    physicalActionCreator.createEnsurePageParamsAction({
+                    physicalActionCreator.ensurePageParamsAction({
                         pageIndex: this.physicalPageIndex,
                         pageSize: this.physicalPageSize
                     })
                 )
                 this.store.dispatch(
-                    physicalActionCreator.createFetchItemsAction({
+                    physicalActionCreator.fetchItemsAction({
                         condition: {
                             searchText: this.searchPhysicalCtrl.value
                         },
@@ -412,7 +412,7 @@ export class ServerAccountComponent implements OnInit {
             .pipe(takeUntil(this.destroyService))
             .subscribe(() => {
                 this.store.dispatch(
-                    virtualActionCreator.createFetchItemsCountAction({
+                    virtualActionCreator.fetchItemsCountAction({
                         condition: {
                             searchText: this.searchVirtualCtrl.value
                         }
@@ -440,13 +440,13 @@ export class ServerAccountComponent implements OnInit {
             .pipe(takeUntil(this.destroyService))
             .subscribe(() => {
                 this.store.dispatch(
-                    virtualActionCreator.createEnsurePageParamsAction({
+                    virtualActionCreator.ensurePageParamsAction({
                         pageIndex: this.virtualPageIndex,
                         pageSize: this.virtualPageSize
                     })
                 )
                 this.store.dispatch(
-                    virtualActionCreator.createFetchItemsAction({
+                    virtualActionCreator.fetchItemsAction({
                         condition: { searchText: this.searchVirtualCtrl.value },
                         options: {
                             pageIndex: this.virtualPageIndex,
@@ -463,7 +463,7 @@ export class ServerAccountComponent implements OnInit {
             .pipe(takeUntil(this.destroyService))
             .subscribe(() => {
                 this.store.dispatch(
-                    actionCreator.createFetchItemsCountAction(this.searchClusterCtrl.value)
+                    clusterActionCreator.fetchItemsCountAction(this.searchClusterCtrl.value)
                 )
             })
 
@@ -486,12 +486,12 @@ export class ServerAccountComponent implements OnInit {
         )
             .pipe(takeUntil(this.destroyService))
             .subscribe(() => {
-                this.store.dispatch(actionCreator.createEnsurePageParamsAction({
+                this.store.dispatch(clusterActionCreator.ensurePageParamsAction({
                     pageIndex: this.clusterPageIndex,
                     pageSize: this.clusterPageSize
                 }))
 
-                this.store.dispatch(actionCreator.createFetchItemsAction({
+                this.store.dispatch(clusterActionCreator.fetchItemsAction({
                     condition: { searchText: this.searchClusterCtrl.value },
                     options: {
                         pageIndex: this.clusterPageIndex,
@@ -507,7 +507,7 @@ export class ServerAccountComponent implements OnInit {
             .subscribe(account => {
                 console.log(`to edit physical server account, `, account)
                 this.store.dispatch(
-                    physicalActionCreator.createEditItemAction(account)
+                    physicalActionCreator.editItemAction(account)
                 )
             })
     }
@@ -518,7 +518,7 @@ export class ServerAccountComponent implements OnInit {
             .subscribe(account => {
                 console.log(`to edit virtual server account, `, account)
                 this.store.dispatch(
-                    virtualActionCreator.createEditItemAction(account)
+                    virtualActionCreator.editItemAction(account)
                 )
             })
     }
@@ -528,7 +528,7 @@ export class ServerAccountComponent implements OnInit {
             .toEditItem(ServerAccountType.CLUSTER)
             .subscribe(account => {
                 console.log(`to edit cluster server account, `, account)
-                this.store.dispatch(actionCreator.createEditItemAction(account))
+                this.store.dispatch(clusterActionCreator.editItemAction(account))
             })
     }
 

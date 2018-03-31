@@ -152,55 +152,55 @@ export class TableActionCreator {
         return this.name === action.name
     }
 
-    createFetchItemsAction<E>(params: FetchItemsParams = defaultFetchItemsParams): FetchItemsAction<E> {
+    fetchItemsAction<E>(params: FetchItemsParams = defaultFetchItemsParams): FetchItemsAction<E> {
         return new FetchItemsAction(this.name, params)
     }
 
-    createFetchItemsSuccessAction<E>(items: E[]): FetchItemsSuccessAction<E> {
+    fetchItemsSuccessAction<E>(items: E[]): FetchItemsSuccessAction<E> {
         return new FetchItemsSuccessAction(this.name, items)
     }
 
-    createFetchItemsFailureAction<E>(errMsg?: string): FetchItemsFailureAction<E> {
+    fetchItemsFailureAction<E>(errMsg?: string): FetchItemsFailureAction<E> {
         return new FetchItemsFailureAction(this.name, errMsg)
     }
 
-    createFetchItemsCountAction<E>(params: FetchItemsCountParams = defaultFetchItemsCountParams): FetchItemsCountAction<E> {
+    fetchItemsCountAction<E>(params: FetchItemsCountParams = defaultFetchItemsCountParams): FetchItemsCountAction<E> {
         return new FetchItemsCountAction(this.name, params)
     }
 
-    createFetchItemsCountSuccessAction<E>(count: number): FetchItemsCountSuccessAction<E> {
+    fetchItemsCountSuccessAction<E>(count: number): FetchItemsCountSuccessAction<E> {
         return new FetchItemsCountSuccessAction(this.name, count)
     }
 
-    createFetchItemsCountFailureAction<E>(errMsg?: string): FetchItemsCountFailureAction<E> {
+    fetchItemsCountFailureAction<E>(errMsg?: string): FetchItemsCountFailureAction<E> {
         return new FetchItemsCountFailureAction(this.name, errMsg)
     }
 
-    createCreateItemAction<E>(params: E): CreateItemAction<E> {
+    createItemAction<E>(params: E): CreateItemAction<E> {
         return new CreateItemAction(this.name, params)
     }
 
-    createCreateItemSuccessAction<E>(): CreateItemSuccessAction<E> {
+    createItemSuccessAction<E>(): CreateItemSuccessAction<E> {
         return new CreateItemSuccessAction(this.name)
     }
 
-    createCreateItemFailureAction<E>(errMsg?: string): CreateItemFailureAction<E> {
+    createItemFailureAction<E>(errMsg?: string): CreateItemFailureAction<E> {
         return new CreateItemFailureAction(this.name, errMsg)
     }
 
-    createEditItemAction<E>(params: E): EditItemAction<E> {
+    editItemAction<E>(params: E): EditItemAction<E> {
         return new EditItemAction(this.name, params)
     }
 
-    createEditItemSuccessAction<E>(params: E): EditItemSuccessAction<E> {
+    editItemSuccessAction<E>(params: E): EditItemSuccessAction<E> {
         return new EditItemSuccessAction(this.name, params)
     }
 
-    createEditItemFailureAction<E>(errMsg?: string): EditItemFailureAction<E> {
+    editItemFailureAction<E>(errMsg?: string): EditItemFailureAction<E> {
         return new EditItemFailureAction(this.name, errMsg)
     }
 
-    createEnsurePageParamsAction<E>(params: PaginationParams): EnsurePageParamsAction<E> {
+    ensurePageParamsAction<E>(params: PaginationParams): EnsurePageParamsAction<E> {
         return new EnsurePageParamsAction(this.name, params)
     }
 }

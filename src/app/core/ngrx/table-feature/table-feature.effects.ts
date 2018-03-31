@@ -27,8 +27,8 @@ export class TableFeatureEffectsHelper<E extends DataItem> {
                 filter(action => this.actionCreator.has(action)),
                 map(action => action.params),
                 switchMap(handler),
-                map(results => this.actionCreator.createFetchItemsSuccessAction<E>(results)),
-                catchError(() => of(this.actionCreator.createFetchItemsFailureAction<E>()))
+                map(results => this.actionCreator.fetchItemsSuccessAction<E>(results)),
+                catchError(() => of(this.actionCreator.fetchItemsFailureAction<E>()))
             )
         }
     }
@@ -39,8 +39,8 @@ export class TableFeatureEffectsHelper<E extends DataItem> {
                 filter(action => this.actionCreator.has(action)),
                 map(action => action.params),
                 switchMap(handler),
-                map(count => this.actionCreator.createFetchItemsCountSuccessAction<E>(count)),
-                catchError(() => of(this.actionCreator.createFetchItemsCountFailureAction<E>()))
+                map(count => this.actionCreator.fetchItemsCountSuccessAction<E>(count)),
+                catchError(() => of(this.actionCreator.fetchItemsCountFailureAction<E>()))
             )
         }
     }
@@ -52,10 +52,10 @@ export class TableFeatureEffectsHelper<E extends DataItem> {
                 map(action => action.params),
                 switchMap(handler),
                 concatMap(() => [
-                    this.actionCreator.createCreateItemSuccessAction<E>(),
-                    this.actionCreator.createFetchItemsAction<E>()
+                    this.actionCreator.createItemSuccessAction<E>(),
+                    this.actionCreator.fetchItemsAction<E>()
                 ]),
-                catchError(() => of(this.actionCreator.createCreateItemFailureAction<E>()))
+                catchError(() => of(this.actionCreator.createItemFailureAction<E>()))
             )
         }
     }
@@ -85,9 +85,9 @@ export class TableFeatureEffectsHelper<E extends DataItem> {
                 map(action => action.params),
                 switchMap(handler),
                 concatMap((result) => [
-                    this.actionCreator.createEditItemSuccessAction<E>(result),
+                    this.actionCreator.editItemSuccessAction<E>(result),
                 ]),
-                catchError(() => of(this.actionCreator.createEditItemFailureAction<E>()))
+                catchError(() => of(this.actionCreator.editItemFailureAction<E>()))
             )
         }
     }
