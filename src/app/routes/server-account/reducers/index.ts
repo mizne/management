@@ -1,4 +1,4 @@
-import { createFeatureSelector, createSelector } from '@ngrx/store'
+import { createFeatureSelector, createSelector, ActionReducerMap } from '@ngrx/store'
 
 import * as fromPhysicalServerAccount from './physical-server-account.reducer'
 import * as fromVirtualServerAccount from './virtual-server-account.reducer'
@@ -14,7 +14,7 @@ export interface SoftwareAccountState {
 export interface State extends fromRoot.State {
     fromServerAccount: SoftwareAccountState
 }
-export const reducers = {
+export const reducers: ActionReducerMap<SoftwareAccountState> = {
     physicalServerAccount: fromPhysicalServerAccount.reducer,
     virtualServerAccount: fromVirtualServerAccount.reducer,
     clusterServerAccount: fromClusterServerAccount.reducer
@@ -22,7 +22,7 @@ export const reducers = {
 
 export const getServerAccountModuleState = createFeatureSelector<
     SoftwareAccountState
->('fromServerAccount')
+    >('fromServerAccount')
 
 export const getPhysicalServerAccountState = createSelector(
     getServerAccountModuleState,

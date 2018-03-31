@@ -10,7 +10,8 @@ import {
 } from '@core/models/server-account.model'
 import {
     PaginationParams,
-    FetchItemsParams
+    FetchItemsParams,
+    FetchItemsCountParams
 } from '@core/models/pagination.model'
 
 @Injectable()
@@ -27,10 +28,7 @@ export class ServerAccountService {
         ).pipe(delay(4e2))
     }
 
-    fetchPhysicalServerAccountsCount(searchText: string): Observable<number> {
-        if (searchText) {
-            console.log(`search physical count with ${searchText}`)
-        }
+    fetchPhysicalServerAccountsCount(params: FetchItemsCountParams): Observable<number> {
         return of(42).pipe(delay(3e2))
     }
 
@@ -40,8 +38,8 @@ export class ServerAccountService {
         return of(null).pipe(delay(4e2))
     }
 
-    editPhysicalServerAccount(account: PhysicalServerAccount): Observable<any> {
-        return of(null).pipe(delay(4e2))
+    editPhysicalServerAccount(account: PhysicalServerAccount): Observable<PhysicalServerAccount> {
+        return of(PhysicalServerAccount.generateFakeItem()).pipe(delay(4e2))
     }
 
     fetchVirtualServerAccounts(
@@ -55,10 +53,7 @@ export class ServerAccountService {
         ).pipe(delay(4e2))
     }
 
-    fetchVirtualServerAccountsCount(searchText: string): Observable<number> {
-        if (searchText) {
-            console.log(`search virtual count with ${searchText}`)
-        }
+    fetchVirtualServerAccountsCount(params: FetchItemsCountParams): Observable<number> {
         return of(42).pipe(delay(3e2))
     }
 
@@ -66,8 +61,8 @@ export class ServerAccountService {
         return of(null).pipe(delay(4e2))
     }
 
-    editVirtualServerAccount(account: VirtualServerAccount): Observable<any> {
-        return of(null).pipe(delay(4e2))
+    editVirtualServerAccount(account: VirtualServerAccount): Observable<VirtualServerAccount> {
+        return of(VirtualServerAccount.generateFakeItem()).pipe(delay(4e2))
     }
 
     fetchClusterServerAccounts(
@@ -81,10 +76,7 @@ export class ServerAccountService {
         ).pipe(delay(4e2))
     }
 
-    fetchClusterServerAccountsCount(searchText: string): Observable<number> {
-        if (searchText) {
-            console.log(`search cluster count with ${searchText}`)
-        }
+    fetchClusterServerAccountsCount(params: FetchItemsCountParams): Observable<number> {
         return of(42).pipe(delay(3e2))
     }
 
@@ -92,7 +84,7 @@ export class ServerAccountService {
         return of(null).pipe(delay(4e2))
     }
 
-    editClusterServerAccount(account: ClusterServerAccount): Observable<any> {
-        return of(null).pipe(delay(4e2))
+    editClusterServerAccount(account: ClusterServerAccount): Observable<ClusterServerAccount> {
+        return of(ClusterServerAccount.generateFakeItem()).pipe(delay(4e2))
     }
 }
