@@ -47,7 +47,8 @@ import {
     takeUntil,
     tap,
     withLatestFrom,
-    mapTo
+    mapTo,
+    map
 } from 'rxjs/operators'
 
 import { actionCreator as clusterActionCreator } from './reducers/cluster-server-account.reducer'
@@ -90,9 +91,14 @@ export class ServerAccountComponent implements OnInit {
     clusters$: Observable<ClusterServerAccount[]>
     clustersCount$: Observable<number>
     clusterLoading$: Observable<boolean>
-    clusterPageIndex = 1
-    clusterPageSize = 10
-    clusterPageChangeSub: Subject<void> = new Subject<void>()
+    clusterPageIndex$: Observable<number>
+    clusterPageSize$: Observable<number>
+    // clusterPageIndex = 1
+    // clusterPageSize = 10
+    // clusterPageChangeSub: Subject<void> = new Subject<void>()
+    clusterPageIndexChangeSub: Subject<number> = new Subject<number>()
+    clusterPageSizeChangeSub: Subject<number> = new Subject<number>()
+
     toSearchClusterSub: Subject<void> = new Subject<void>()
     searchClusterCtrl: FormControl = new FormControl()
 
@@ -214,7 +220,15 @@ export class ServerAccountComponent implements OnInit {
     }
 
     fetchClusters() {
-        this.clusterPageChangeSub.next()
+        // this.clusterPageChangeSub.next()
+    }
+
+    clusterPageIndexChange(pageIndex: number) {
+        this.clusterPageIndexChangeSub.next(pageIndex)
+    }
+
+    clusterPageSizeChange(pageSize: number) {
+        this.clusterPageSizeChangeSub.next(pageSize)
     }
 
     toEditCluster(account: ClusterServerAccount) {
@@ -256,6 +270,14 @@ export class ServerAccountComponent implements OnInit {
         this.clusters$ = this.store.select(getClusterServerAccounts)
         this.clustersCount$ = this.store.select(getClusterServerAccountCount)
         this.clusterLoading$ = this.store.select(getClusterLoading)
+        this.clusterPageIndex$ = this.store.select(getClusterServerAccountsPageParams)
+            .pipe(
+                map(e => e.pageIndex)
+            )
+        this.clusterPageSize$ = this.store.select(getClusterServerAccountsPageParams)
+            .pipe(
+                map(e => e.pageSize)
+            )
     }
 
     private initDispatcher(): void {
@@ -458,47 +480,82 @@ export class ServerAccountComponent implements OnInit {
     }
 
     private initSearchClusterAndPageChange(): void {
+        merge(
+            this.clusterPageSizeChangeSub.asObservable()
+                .pipe(
+                    withLatestFrom(this.clusterPageIndex$),
+                    map(([pageSize, pageIndex]) => [pageIndex, pageSize])
+                ),
+            this.clusterPageIndexChangeSub.asObservable()
+                .pipe(
+                    withLatestFrom(this.clusterPageSize$)
+                ),
+            this.toSearchClusterSub.asObservable()
+                .pipe(
+                    map(() => [1, 10])
+                )
+        )
+            .pipe(
+                takeUntil(this.destroyService)
+            )
+            .subscribe(([pageIndex, pageSize]) => {
+                this.store.dispatch(clusterActionCreator.ensurePageParamsAction({
+                    pageIndex,
+                    pageSize
+                }))
+
+                this.store.dispatch(clusterActionCreator.fetchItemsAction({
+                    condition: { searchText: this.searchClusterCtrl.value },
+                    options: {
+                        pageIndex,
+                        pageSize
+                    }
+                }))
+            })
+
         this.toSearchClusterSub
             .asObservable()
-            .pipe(takeUntil(this.destroyService))
+            .pipe(
+                takeUntil(this.destroyService)
+            )
             .subscribe(() => {
                 this.store.dispatch(
                     clusterActionCreator.fetchItemsCountAction(this.searchClusterCtrl.value)
                 )
             })
 
-        merge(
-            this.clusterPageChangeSub.asObservable(),
-            this.toSearchClusterSub.pipe(
-                tap(() => {
-                    this.clusterPageIndex = 1
-                    this.clusterPageSize = 10
-                }),
-                withLatestFrom(
-                    this.store.select(getClusterServerAccountsPageParams)
-                ),
-                filter(
-                    ([_, { pageIndex, pageSize }]) =>
-                        pageIndex === this.clusterPageIndex &&
-                        pageSize === this.clusterPageSize
-                )
-            )
-        )
-            .pipe(takeUntil(this.destroyService))
-            .subscribe(() => {
-                this.store.dispatch(clusterActionCreator.ensurePageParamsAction({
-                    pageIndex: this.clusterPageIndex,
-                    pageSize: this.clusterPageSize
-                }))
+        // merge(
+        //     this.clusterPageChangeSub.asObservable(),
+        //     this.toSearchClusterSub.pipe(
+        //         tap(() => {
+        //             this.clusterPageIndex = 1
+        //             this.clusterPageSize = 10
+        //         }),
+        //         withLatestFrom(
+        //             this.store.select(getClusterServerAccountsPageParams)
+        //         ),
+        //         filter(
+        //             ([_, { pageIndex, pageSize }]) =>
+        //                 pageIndex === this.clusterPageIndex &&
+        //                 pageSize === this.clusterPageSize
+        //         )
+        //     )
+        // )
+        //     .pipe(takeUntil(this.destroyService))
+        //     .subscribe(() => {
+        //         this.store.dispatch(clusterActionCreator.ensurePageParamsAction({
+        //             pageIndex: this.clusterPageIndex,
+        //             pageSize: this.clusterPageSize
+        //         }))
 
-                this.store.dispatch(clusterActionCreator.fetchItemsAction({
-                    condition: { searchText: this.searchClusterCtrl.value },
-                    options: {
-                        pageIndex: this.clusterPageIndex,
-                        pageSize: this.clusterPageSize
-                    }
-                }))
-            })
+        //         this.store.dispatch(clusterActionCreator.fetchItemsAction({
+        //             condition: { searchText: this.searchClusterCtrl.value },
+        //             options: {
+        //                 pageIndex: this.clusterPageIndex,
+        //                 pageSize: this.clusterPageSize
+        //             }
+        //         }))
+        //     })
     }
 
     private initEditPhysical(): void {

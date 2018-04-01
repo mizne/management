@@ -174,8 +174,8 @@
         </div>
         <nz-card [nzBordered]="false">
             <nz-table #nzTable3 [nzAjaxData]="clusters$ | async" [nzShowSizeChanger]="true" [nzLoading]="clusterLoading$ | async" [nzTotal]="clustersCount$ | async"
-                [(nzPageIndex)]="clusterPageIndex" (nzPageIndexChange)="fetchClusters()" [(nzPageSize)]="clusterPageSize" (nzPageSizeChange)="fetchClusters()"
-                [nzShowFooter]="true">
+                [nzPageIndex]="clusterPageIndex$ | async" (nzPageIndexChange)="clusterPageIndexChange($event)" [nzPageSize]="clusterPageSize$ | async"
+                (nzPageSizeChange)="clusterPageSizeChange($event)" [nzShowFooter]="true">
                 <thead nz-thead>
                     <tr>
                         <th nz-th>

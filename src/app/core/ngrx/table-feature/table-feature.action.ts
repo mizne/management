@@ -139,8 +139,8 @@ export class EnsurePageParamsAction<E extends DataItem> extends TableFeatureActi
 
     reducer(state: BaseTableState<E>): BaseTableState<E> {
         return Object.assign({}, state, {
-            pageIndex: this.params.pageIndex,
-            pageSize: this.params.pageSize
+            pageIndex: this.params.pageIndex || state.pageIndex,
+            pageSize: this.params.pageSize || state.pageSize
         })
     }
 }
