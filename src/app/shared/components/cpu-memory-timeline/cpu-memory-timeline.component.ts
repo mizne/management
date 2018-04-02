@@ -69,7 +69,7 @@ export class CPUAndMemoryTimelineComponent implements OnInit {
     latestCPU: number
     latestMemory: number
 
-    private _timeDurationCount = 30
+    private _timeDurationCount = 31
     @Input()
     set count(v: number) {
         this._timeDurationCount = v
@@ -87,41 +87,6 @@ export class CPUAndMemoryTimelineComponent implements OnInit {
     }
 
     initFakeDataSource() {
-        const sourceData = Array.from(
-            { length: this._timeDurationCount },
-            (_, i) => ({
-                时间: moment()
-                    .subtract(
-                        (this._timeDurationCount - 1 - i) * this._timeDuration,
-                        'ms'
-                    )
-                    .format('HH:mm:ss'),
-                CPU使用: this.fakeRealRandomCPU(),
-                内存使用: this.fakeRealRandomMemory()
-            })
-        )
-        const realtime$ = timer(0, this._timeDuration).pipe(
-            map(i => ({
-                时间: moment().format('HH:mm:ss'),
-                CPU使用: this.fakeRealRandomCPU(),
-                内存使用: this.fakeRealRandomMemory()
-            })),
-            scan<CPUAndMemoryUseInfo>((accu, curr) => {
-                const t = accu.slice(1).concat(curr)
-                return t
-            }, sourceData),
-            map(src => {
-                const dv1 = new (DataSet as any).View().source(src)
-                dv1.transform({
-                    type: 'fold',
-                    fields: ['CPU使用', '内存使用'],
-                    key: 'resourctType',
-                    value: '使用率'
-                })
-                return dv1.rows
-            })
-        )
-
         this.data$ = this.durationCtrl.valueChanges.pipe(
             startWith(this.durationCtrl.value),
             tap(durationType => {
@@ -160,14 +125,53 @@ export class CPUAndMemoryTimelineComponent implements OnInit {
                     case DurationType.LATEST_2_HOURS:
                         return this.lastestMinutesDataSource(2 * 60)
                     default:
-                        return realtime$
+                        return this.fakeRealTimeDataSource()
                 }
             })
         )
     }
 
+    private fakeRealTimeDataSource(): Observable<any[]> {
+        const sourceData = Array.from(
+            { length: this._timeDurationCount },
+            (_, i) => ({
+                时间: moment()
+                    .subtract(
+                        (this._timeDurationCount - 1 - i) * this._timeDuration,
+                        'ms'
+                    )
+                    .format('HH:mm:ss'),
+                CPU使用: this.fakeRealRandomCPU(),
+                内存使用: this.fakeRealRandomMemory()
+            })
+        )
+        return timer(this._timeDuration, this._timeDuration).pipe(
+            map(i => ({
+                时间: moment().format('HH:mm:ss'),
+                CPU使用: this.fakeRealRandomCPU(),
+                内存使用: this.fakeRealRandomMemory()
+            })),
+            scan<CPUAndMemoryUseInfo>((accu, curr) => {
+                const t = accu.slice(1).concat(curr)
+                return t
+            }, sourceData),
+            startWith(sourceData),
+            tap(console.log),
+            map(src => {
+                const dv1 = new (DataSet as any).View().source(src)
+                dv1.transform({
+                    type: 'fold',
+                    fields: ['CPU使用', '内存使用'],
+                    key: 'resourctType',
+                    value: '使用率'
+                })
+                return dv1.rows
+            })
+        )
+    }
+
     private lastestMinutesDataSource(minutes: number): Observable<any[]> {
-        const counts = minutes * 2
+        const counts = minutes * 2 + 1
         const sourceData = Array.from({ length: counts }, (_, i) => ({
             时间: moment()
                 .subtract(
