@@ -8,16 +8,6 @@ import { FormControl } from '@angular/forms'
 import { of } from 'rxjs/observable/of'
 
 const DataSet = require('@antv/data-set')
-const scale = [
-    {
-        dataKey: '时间',
-        min: 0,
-        max: 1,
-        tickCount: 15,
-        formatter: val => val
-    }
-]
-
 interface CPUAndMemoryUseInfo {
     时间: string
     CPU使用: number
@@ -64,7 +54,21 @@ export class CPUAndMemoryTimelineComponent implements OnInit {
     forceFit = true
     height = 400
     data$: Observable<CPUAndMemoryUseInfo[]>
-    scale = scale
+    scale = [
+        {
+            dataKey: '时间',
+            min: 0,
+            max: 1,
+            tickCount: 15,
+            formatter: val => val
+        },
+        {
+            dataKey: '使用率',
+            min: 0,
+            max: 1,
+            formatter: val => `${(val * 100).toFixed(2)} %`
+        }
+    ]
 
     latestCPU: number
     latestMemory: number
@@ -98,6 +102,12 @@ export class CPUAndMemoryTimelineComponent implements OnInit {
                             max: 1,
                             tickCount: 15,
                             formatter: val => val
+                        },
+                        {
+                            dataKey: '使用率',
+                            min: 0,
+                            max: 1,
+                            formatter: val => `${(val * 100).toFixed(2)} %`
                         }
                     ]
                 } else {
@@ -107,9 +117,14 @@ export class CPUAndMemoryTimelineComponent implements OnInit {
                             min: 0,
                             max: 1,
                             tickCount: 15,
-                            formatter: val => {
-                                return moment(val, 'HH:mm:ss').format('HH:mm')
-                            }
+                            formatter: val =>
+                                moment(val, 'HH:mm:ss').format('HH:mm')
+                        },
+                        {
+                            dataKey: '使用率',
+                            min: 0,
+                            max: 1,
+                            formatter: val => `${(val * 100).toFixed(2)} %`
                         }
                     ]
                 }
@@ -156,7 +171,6 @@ export class CPUAndMemoryTimelineComponent implements OnInit {
                 return t
             }, sourceData),
             startWith(sourceData),
-            tap(console.log),
             map(src => {
                 const dv1 = new (DataSet as any).View().source(src)
                 dv1.transform({
@@ -199,28 +213,29 @@ export class CPUAndMemoryTimelineComponent implements OnInit {
     private fakeRealRandomCPU(): number {
         if (!this.latestCPU) {
             const float = randomFloat(0, 1)
-            const limit = Math.floor(float * 100) / 100
+            const limit = Math.floor(float * 10000) / 10000
             this.latestCPU = limit
-            return Number(limit.toFixed(2))
+            return Number(limit.toFixed(4))
         }
 
         const newFloat = randomFloat(-0.2, 0.2)
-        const newLimit = this.latestCPU + Math.floor(newFloat * 100) / 100
+        const newLimit = this.latestCPU + Math.floor(newFloat * 10000) / 10000
         this.latestCPU = Math.min(0.9, Math.max(newLimit, 0.1))
-        return Number(this.latestCPU.toFixed(2))
+        return Number(this.latestCPU.toFixed(4))
     }
 
     private fakeRealRandomMemory(): number {
         if (!this.latestMemory) {
             const float = randomFloat(0, 1)
-            const limit = Math.floor(float * 100) / 100
+            const limit = Math.floor(float * 10000) / 10000
             this.latestMemory = limit
-            return Number(limit.toFixed(2))
+            return Number(limit.toFixed(4))
         }
 
         const newFloat = randomFloat(-0.2, 0.2)
-        const newLimit = this.latestMemory + Math.floor(newFloat * 100) / 100
+        const newLimit =
+            this.latestMemory + Math.floor(newFloat * 10000) / 10000
         this.latestMemory = Math.min(0.9, Math.max(newLimit, 0.1))
-        return Number(this.latestMemory.toFixed(2))
+        return Number(this.latestMemory.toFixed(4))
     }
 }

@@ -64,7 +64,21 @@ export class NetWorkAndIOTimelineComponent implements OnInit {
     forceFit = true
     height = 400
     data$: Observable<NetWorkAndIOUseInfo[]>
-    scale = scale
+    scale = [
+        {
+            dataKey: '时间',
+            min: 0,
+            max: 1,
+            tickCount: 15,
+            formatter: val => val
+        },
+        {
+            dataKey: '使用率',
+            min: 0,
+            max: 1,
+            formatter: val => `${(val * 100).toFixed(2)} %`
+        }
+    ]
 
     latestNetwork: number
     latestIO: number
@@ -98,6 +112,12 @@ export class NetWorkAndIOTimelineComponent implements OnInit {
                             max: 1,
                             tickCount: 15,
                             formatter: val => val
+                        },
+                        {
+                            dataKey: '使用率',
+                            min: 0,
+                            max: 1,
+                            formatter: val => `${(val * 100).toFixed(2)} %`
                         }
                     ]
                 } else {
@@ -107,9 +127,14 @@ export class NetWorkAndIOTimelineComponent implements OnInit {
                             min: 0,
                             max: 1,
                             tickCount: 15,
-                            formatter: val => {
-                                return moment(val, 'HH:mm:ss').format('HH:mm')
-                            }
+                            formatter: val =>
+                                moment(val, 'HH:mm:ss').format('HH:mm')
+                        },
+                        {
+                            dataKey: '使用率',
+                            min: 0,
+                            max: 1,
+                            formatter: val => `${(val * 100).toFixed(2)} %`
                         }
                     ]
                 }
@@ -198,28 +223,29 @@ export class NetWorkAndIOTimelineComponent implements OnInit {
     private fakeRealRandomNetwork(): number {
         if (!this.latestNetwork) {
             const float = randomFloat(0, 1)
-            const limit = Math.floor(float * 100) / 100
+            const limit = Math.floor(float * 10000) / 10000
             this.latestNetwork = limit
-            return Number(limit.toFixed(2))
+            return Number(limit.toFixed(4))
         }
 
         const newFloat = randomFloat(-0.2, 0.2)
-        const newLimit = this.latestNetwork + Math.floor(newFloat * 100) / 100
+        const newLimit =
+            this.latestNetwork + Math.floor(newFloat * 10000) / 10000
         this.latestNetwork = Math.min(0.9, Math.max(newLimit, 0.1))
-        return Number(this.latestNetwork.toFixed(2))
+        return Number(this.latestNetwork.toFixed(4))
     }
 
     private fakeRealRandomIO(): number {
         if (!this.latestIO) {
             const float = randomFloat(0, 1)
-            const limit = Math.floor(float * 100) / 100
+            const limit = Math.floor(float * 10000) / 10000
             this.latestIO = limit
-            return Number(limit.toFixed(2))
+            return Number(limit.toFixed(4))
         }
 
         const newFloat = randomFloat(-0.2, 0.2)
-        const newLimit = this.latestIO + Math.floor(newFloat * 100) / 100
+        const newLimit = this.latestIO + Math.floor(newFloat * 10000) / 10000
         this.latestIO = Math.min(0.9, Math.max(newLimit, 0.1))
-        return Number(this.latestIO.toFixed(2))
+        return Number(this.latestIO.toFixed(4))
     }
 }
