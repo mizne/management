@@ -18,6 +18,7 @@ export class PhysicalServerAccount {
     startTimeUse: string
     durationUse: string
     physicalLocation: string
+    dataSource: string
 
     disabled: boolean
     checked: boolean
@@ -32,8 +33,7 @@ export class PhysicalServerAccount {
             type: `physical type ${i + (pageIndex - 1) * pageSize}`,
             purpose: `purpose ${i + (pageIndex - 1) * pageSize}`,
             workStatus: `workStatus ${i + (pageIndex - 1) * pageSize}`,
-            clusterGroupOwner: `clusterGroupOwner ${i +
-                (pageIndex - 1) * pageSize}`,
+            clusterGroupOwner: `groupOwner ${i + (pageIndex - 1) * pageSize}`,
             managementIP: `managementIP ${i + (pageIndex - 1) * pageSize}`,
             operationSystem: `operationSystem ${i +
                 (pageIndex - 1) * pageSize}`,
@@ -47,6 +47,7 @@ export class PhysicalServerAccount {
             durationUse: `durationUse ${i + (pageIndex - 1) * pageSize}`,
             physicalLocation: `physicalLocation ${i +
                 (pageIndex - 1) * pageSize}`,
+            dataSource: `dataSource ${i + (pageIndex - 1) * pageSize}`,
             checked: false,
             disabled: false
         }))
@@ -71,6 +72,7 @@ export class PhysicalServerAccount {
             startTimeUse: `startTimeUse `,
             durationUse: `durationUse `,
             physicalLocation: `physicalLocation`,
+            dataSource: 'dataSource',
             checked: false,
             disabled: false
         }
@@ -93,6 +95,7 @@ export class VirtualServerAccount {
     startTimeUse: string
     durationUse: string
     physicalLocation: string
+    dataSource: string
 
     static generateFakeDataItems({
         pageIndex,
@@ -103,10 +106,8 @@ export class VirtualServerAccount {
             name: `virtual name ${i + (pageIndex - 1) * pageSize}`,
             purpose: `virtual purpose ${i + (pageIndex - 1) * pageSize}`,
             workStatus: `workStatus ${i + (pageIndex - 1) * pageSize}`,
-            physicalHostOwner: `physicalHostOwner ${i +
-                (pageIndex - 1) * pageSize}`,
-            clusterGroupOwner: `clusterGroupOwner ${i +
-                (pageIndex - 1) * pageSize}`,
+            physicalHostOwner: `hostOwner ${i + (pageIndex - 1) * pageSize}`,
+            clusterGroupOwner: `groupOwner ${i + (pageIndex - 1) * pageSize}`,
             managementIP: `managementIP ${i + (pageIndex - 1) * pageSize}`,
             operationSystem: `operationSystem ${i +
                 (pageIndex - 1) * pageSize}`,
@@ -116,6 +117,7 @@ export class VirtualServerAccount {
             whoUse: `whoUse ${i + (pageIndex - 1) * pageSize}`,
             startTimeUse: `startTimeUse ${i + (pageIndex - 1) * pageSize}`,
             durationUse: `durationUse ${i + (pageIndex - 1) * pageSize}`,
+            dataSource: `dataSource ${i + (pageIndex - 1) * pageSize}`,
             physicalLocation: `physicalLocation ${i +
                 (pageIndex - 1) * pageSize}`
         }))
@@ -137,7 +139,8 @@ export class VirtualServerAccount {
             whoUse: `whoUse`,
             startTimeUse: `startTimeUse`,
             durationUse: `durationUse`,
-            physicalLocation: `physicalLocation`
+            physicalLocation: `physicalLocation`,
+            dataSource: 'dataSource'
         }
     }
 }
@@ -152,6 +155,7 @@ export class ClusterServerAccount {
     whoUse: string
     startTimeUse: string
     durationUse: string
+    dataSource: string
 
     static generateFakeDataItems({
         pageIndex,
@@ -166,7 +170,8 @@ export class ClusterServerAccount {
             managementIP: `managementIP ${i + (pageIndex - 1) * pageSize}`,
             whoUse: `whoUse ${i + (pageIndex - 1) * pageSize}`,
             startTimeUse: `startTimeUse ${i + (pageIndex - 1) * pageSize}`,
-            durationUse: `durationUse ${i + (pageIndex - 1) * pageSize}`
+            durationUse: `durationUse ${i + (pageIndex - 1) * pageSize}`,
+            dataSource: `dataSource ${i + (pageIndex - 1) * pageSize}`
         }))
     }
 
@@ -180,7 +185,8 @@ export class ClusterServerAccount {
             managementIP: `managementIP ${Math.random()}`,
             whoUse: `whoUse ${Math.random()}`,
             startTimeUse: `startTimeUse ${Math.random()}`,
-            durationUse: `durationUse ${Math.random()}`
+            durationUse: `durationUse ${Math.random()}`,
+            dataSource: 'dataSource'
         }
     }
 }

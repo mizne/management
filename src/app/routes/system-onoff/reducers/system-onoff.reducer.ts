@@ -12,6 +12,7 @@ export interface State {
     fetchApproversLoading: boolean
     approvers: Approver[]
     addedApplyResources: ApplyResource[]
+    showCreateApplyResourceBtn: boolean
     saveOrSubmitLoading: boolean
     saveOrSubmitText: string
 }
@@ -22,6 +23,7 @@ const initialState: State = {
     fetchApproversLoading: false,
     approvers: [],
     addedApplyResources: [],
+    showCreateApplyResourceBtn: false,
     saveOrSubmitLoading: false,
     saveOrSubmitText: ''
 }
@@ -31,6 +33,11 @@ export function reducer(
     action: fromSystemOnOff.Actions
 ): State {
     switch (action.type) {
+        case fromSystemOnOff.SWITCH_APPLY_TYPE:
+            return {
+                ...state,
+                showCreateApplyResourceBtn: action.applyType === '上线'
+            }
         case fromSystemOnOff.FETCH_APPLY_INFO:
             return {
                 ...state,
@@ -136,6 +143,7 @@ export function reducer(
     }
 }
 
+
 export const getFetchApplyInfoLoading = (state: State) =>
     state.fetchApplyInfoLoading
 export const getApplyInfo = (state: State) => state.applyInfo
@@ -144,6 +152,7 @@ export const getFetchApproversLoading = (state: State) =>
 export const getApprovers = (state: State) => state.approvers
 export const getAddedApplyResources = (state: State) =>
     state.addedApplyResources
+export const getShowCreateApplyResourceBtn = (state: State) => state.showCreateApplyResourceBtn
 export const getSaveOrSubmitLoading = (state: State) =>
     state.saveOrSubmitLoading
 export const getSaveOrSubmitText = (state: State) => state.saveOrSubmitText

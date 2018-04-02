@@ -20,7 +20,8 @@ import {
     getSavedApplies,
     getExtraTabs,
     getNeedManualSetTabIndex,
-    getTabIndexToNeedManualSet
+    getTabIndexToNeedManualSet,
+    getShowCreateApplyResourceBtn
 } from './reducers'
 import {
     SwitchApplyTypeAction,
@@ -62,7 +63,15 @@ import {
     CloseExtraTabAction,
     ResetNeedManualSetTabIndexAction
 } from './actions/extra-tabs.action'
-import { filter, takeUntil, mergeMap, distinctUntilChanged, map, withLatestFrom, first } from 'rxjs/operators';
+import {
+    filter,
+    takeUntil,
+    mergeMap,
+    distinctUntilChanged,
+    map,
+    withLatestFrom,
+    first
+} from 'rxjs/operators'
 
 @Component({
     selector: 'app-system-onoff',
@@ -84,6 +93,7 @@ export class SystemOnOffComponent implements OnInit {
     toSubmitSub: Subject<SystemOnOffApply> = new Subject<SystemOnOffApply>()
     toResetSub: Subject<SystemOnOffApply> = new Subject<SystemOnOffApply>()
 
+    showCreateApplyResourceBtn$: Observable<boolean>
     fetchApplyInfoLoading$: Observable<boolean>
     applyInfo$: Observable<ApplyInfo>
 
@@ -102,16 +112,16 @@ export class SystemOnOffComponent implements OnInit {
     savedApplies$: Observable<SystemOnOffApply[]>
     toEditSavedApplySub: Subject<SystemOnOffApply> = new Subject<
         SystemOnOffApply
-        >()
+    >()
     toDetailSavedApplySub: Subject<SystemOnOffApply> = new Subject<
         SystemOnOffApply
-        >()
+    >()
     toSubmitSavedApplySub: Subject<SystemOnOffApply> = new Subject<
         SystemOnOffApply
-        >()
+    >()
     toDeleteSavedApplySub: Subject<SystemOnOffApply> = new Subject<
         SystemOnOffApply
-        >()
+    >()
 
     // 额外的tabs
     extraTabs$: Observable<TabOptions[]>
@@ -167,7 +177,7 @@ export class SystemOnOffComponent implements OnInit {
         private store: Store<State>,
         private destroyService: DestroyService,
         private fb: FormBuilder
-    ) { }
+    ) {}
 
     ngOnInit() {
         this.buildForm()
@@ -274,7 +284,9 @@ export class SystemOnOffComponent implements OnInit {
         this.applyInfo$ = this.store.select(getApplyInfo)
 
         this.addedApplyResources$ = this.store.select(getAddedApplyResources)
-
+        this.showCreateApplyResourceBtn$ = this.store.select(
+            getShowCreateApplyResourceBtn
+        )
         this.fetchApproversLoading$ = this.store.select(
             getFetchApproversLoading
         )
@@ -292,7 +304,7 @@ export class SystemOnOffComponent implements OnInit {
         this.extraTabs$ = this.store.select(getExtraTabs)
     }
 
-    private initDispatcher(): void { }
+    private initDispatcher(): void {}
 
     private initSubscriber(): void {
         this.initFirstTabSubscriber()
@@ -340,10 +352,7 @@ export class SystemOnOffComponent implements OnInit {
 
     private initSwitchApplyType() {
         this.type.valueChanges
-            .pipe(
-                filter(e => !!e),
-                takeUntil(this.destroyService)
-            )
+            .pipe(filter(e => !!e), takeUntil(this.destroyService))
             .subscribe(applyType => {
                 this.store.dispatch(new SwitchApplyTypeAction(applyType))
             })
@@ -447,7 +456,7 @@ export class SystemOnOffComponent implements OnInit {
                 }),
                 takeUntil(this.destroyService)
             )
-            .subscribe(() => { })
+            .subscribe(() => {})
     }
 
     private initEditTempApplyResource() {
@@ -731,7 +740,7 @@ export class SystemOnOffComponent implements OnInit {
                 }),
                 takeUntil(this.destroyService)
             )
-            .subscribe(() => { })
+            .subscribe(() => {})
     }
 
     private initDeleteApplyResourceForExtra() {
@@ -754,7 +763,7 @@ export class SystemOnOffComponent implements OnInit {
                         )
                         console.log(
                             `delete apply resource; tab index: ${
-                            this.tabIndex
+                                this.tabIndex
                             }; resource index: ${index}`
                         )
                     }

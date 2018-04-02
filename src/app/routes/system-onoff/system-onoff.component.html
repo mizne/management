@@ -212,8 +212,8 @@
 
             <nz-card [nzTitle]="'资源信息'" [nzBordered]="false">
                 <ng-template #extra>
-                    <button nz-button class="mx-sm" nzSize="large" (click)="toCreateResource()">新增资源信息</button>
-                    <button nz-button class="mx-sm" nzSize="large" [nzType]="'primary'" (click)="toAddResources()">添加资源信息</button>
+                    <button nz-button *ngIf="showCreateApplyResourceBtn$ | async" class="mx-sm" nzSize="large" (click)="toCreateResource()">新增资源信息</button>
+                    <!-- <button nz-button class="mx-sm" nzSize="large" [nzType]="'primary'" (click)="toAddResources()">添加资源信息</button> -->
                 </ng-template>
                 <nz-table #nzTable1 [nzAjaxData]="addedApplyResources$ | async" [nzIsPagination]="false">
                     <thead nz-thead>
@@ -665,8 +665,8 @@
 
                     <nz-card *ngIf="tab.data; let tabData;" [nzTitle]="'资源信息'" [nzBordered]="false">
                         <ng-template #extra>
-                            <button nz-button class="mx-sm" nzSize="large" (click)="toCreateResource()">新增资源信息</button>
-                            <button nz-button class="mx-sm" nzSize="large" [nzType]="'primary'" (click)="toAddResources()">添加资源信息</button>
+                            <button nz-button *ngIf="tabData.showCreateApplyResourceBtn" class="mx-sm" nzSize="large" (click)="toCreateResource()">新增资源信息</button>
+                            <!-- <button nz-button class="mx-sm" nzSize="large" [nzType]="'primary'" (click)="toAddResources()">添加资源信息</button> -->
                         </ng-template>
                         <nz-table #nzTable4 [nzDataSource]="tabData.addedApplyResources" [nzIsPagination]="false">
                             <thead nz-thead>

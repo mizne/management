@@ -1,0 +1,14 @@
+<div>
+    <!-- <nz-radio-group [formControl]="durationCtrl" [nzSize]="'large'">
+        <label *ngFor="let d of durations" nz-radio-button [nzValue]="d.value">
+            <span>{{d.label}}</span>
+        </label>
+    </nz-radio-group> -->
+    <v-chart [forceFit]="forceFit" [height]="height" [data]="data$ | async" [scale]="scale">
+        <v-tooltip></v-tooltip>
+        <v-axis></v-axis>
+        <v-legend></v-legend>
+        <v-smooth-line [position]="['时间', '使用率']" color="resourctType" shape="smooth"></v-smooth-line>
+        <v-point [position]="['时间', '使用率']" color="resourctType" shape="circle"></v-point>
+    </v-chart>
+</div>

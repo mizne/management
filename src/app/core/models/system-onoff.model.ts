@@ -179,7 +179,9 @@ export interface FetchAddableApplyResourceParams extends PaginationParams {
     name: string
     version: string
 }
-export const defaultFetchAddableApplyResourceParams: Partial<FetchAddableApplyResourceParams> = {
+export const defaultFetchAddableApplyResourceParams: Partial<
+    FetchAddableApplyResourceParams
+> = {
     pageIndex: 1,
     pageSize: 10
 }
@@ -189,7 +191,9 @@ export interface FetchAddableApplyResourceCountParams {
     name: string
     version: string
 }
-export const defaultFetchAddableApplyResourceCountParams: Partial<FetchAddableApplyResourceCountParams> = {}
+export const defaultFetchAddableApplyResourceCountParams: Partial<
+    FetchAddableApplyResourceCountParams
+> = {}
 
 export class Approver {
     id: string
@@ -229,6 +233,7 @@ export interface TabData {
     fetchApproversLoading: boolean
     approvers: Approver[]
     addedApplyResources: ApplyResource[]
+    showCreateApplyResourceBtn: boolean
     ensureEditLoading: boolean
     ensureEditText: string
 }
@@ -271,6 +276,7 @@ export class TabOptions {
                 fetchApproversLoading: false,
                 approvers: apply.approvers,
                 addedApplyResources: apply.resources,
+                showCreateApplyResourceBtn: apply.applyInfo.type === '上线',
                 ensureEditLoading: false,
                 ensureEditText: ''
             },
@@ -308,6 +314,7 @@ export class TabOptions {
                 fetchApproversLoading: false,
                 approvers: apply.approvers,
                 addedApplyResources: apply.resources,
+                showCreateApplyResourceBtn: false,
                 ensureEditLoading: false,
                 ensureEditText: ''
             },

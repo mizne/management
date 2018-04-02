@@ -60,6 +60,10 @@ export const getAddedApplyResources = createSelector(
     getSystemOnOffApplyState,
     fromSystemOnOff.getAddedApplyResources
 )
+export const getShowCreateApplyResourceBtn = createSelector(
+    getSystemOnOffApplyState,
+    fromSystemOnOff.getShowCreateApplyResourceBtn
+)
 
 export const getSavedApplyState = createSelector(
     getSystemOnOffModuleState,

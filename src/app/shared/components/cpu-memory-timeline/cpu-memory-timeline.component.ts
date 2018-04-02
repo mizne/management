@@ -4,6 +4,7 @@ import { timer } from 'rxjs/observable/timer'
 import { map, startWith, scan, take } from 'rxjs/operators'
 import * as randomFloat from 'random-float'
 import * as moment from 'moment'
+import { FormControl } from '@angular/forms'
 
 const DataSet = require('@antv/data-set')
 const scale = [
@@ -22,18 +23,33 @@ interface CPUAndMemoryUseInfo {
 
 @Component({
     selector: 'app-cpu-memory',
-    template: `
-    <div>
-    <v-chart [forceFit]="forceFit" [height]="height" [data]="data$ | async" [scale]="scale">
-      <v-tooltip></v-tooltip>
-      <v-axis></v-axis>
-      <v-legend></v-legend>
-      <v-smooth-line [position]="['时间', '使用率']" color="resourctType" shape="smooth"></v-smooth-line>
-      <v-point [position]="['时间', '使用率']" color="resourctType" shape="circle"></v-point>
-    </v-chart>
-  </div>`
+    templateUrl: './cpu-memory-timeline.component.html'
 })
 export class CPUAndMemoryTimelineComponent implements OnInit {
+    durationCtrl: FormControl = new FormControl()
+    durations = [
+        {
+            label: '实时',
+            value: 'realtime'
+        },
+        {
+            label: '15分钟',
+            value: '15min'
+        },
+        {
+            label: '30分钟',
+            value: '30min'
+        },
+        {
+            label: '1小时',
+            value: '1h'
+        },
+        {
+            label: '2小时',
+            value: '2h'
+        }
+    ]
+
     forceFit = true
     height = 400
     data$: Observable<CPUAndMemoryUseInfo[]>
