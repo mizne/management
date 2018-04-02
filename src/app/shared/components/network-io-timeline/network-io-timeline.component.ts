@@ -18,10 +18,10 @@ const scale = [
     }
 ]
 
-interface CPUAndMemoryUseInfo {
+interface NetWorkAndIOUseInfo {
     时间: string
-    CPU使用: number
-    内存使用: number
+    网络速率: number
+    磁盘读写速率: number
 }
 
 enum DurationType {
@@ -33,10 +33,10 @@ enum DurationType {
 }
 
 @Component({
-    selector: 'app-cpu-memory',
-    templateUrl: './cpu-memory-timeline.component.html'
+    selector: 'app-network-io',
+    templateUrl: './network-io-timeline.component.html'
 })
-export class CPUAndMemoryTimelineComponent implements OnInit {
+export class NetWorkAndIOTimelineComponent implements OnInit {
     durationCtrl: FormControl = new FormControl(DurationType.REAL_TIME)
     durations = [
         {
@@ -63,11 +63,11 @@ export class CPUAndMemoryTimelineComponent implements OnInit {
 
     forceFit = true
     height = 400
-    data$: Observable<CPUAndMemoryUseInfo[]>
+    data$: Observable<NetWorkAndIOUseInfo[]>
     scale = scale
 
-    latestCPU: number
-    latestMemory: number
+    latestNetwork: number
+    latestIO: number
 
     private _timeDurationCount = 30
     @Input()
@@ -96,17 +96,17 @@ export class CPUAndMemoryTimelineComponent implements OnInit {
                         'ms'
                     )
                     .format('HH:mm:ss'),
-                CPU使用: this.fakeRealRandomCPU(),
-                内存使用: this.fakeRealRandomMemory()
+                网络速率: this.fakeRealRandomNetwork(),
+                磁盘读写速率: this.fakeRealRandomIO()
             })
         )
         const realtime$ = timer(0, this._timeDuration).pipe(
             map(i => ({
                 时间: moment().format('HH:mm:ss'),
-                CPU使用: this.fakeRealRandomCPU(),
-                内存使用: this.fakeRealRandomMemory()
+                网络速率: this.fakeRealRandomNetwork(),
+                磁盘读写速率: this.fakeRealRandomIO()
             })),
-            scan<CPUAndMemoryUseInfo>((accu, curr) => {
+            scan<NetWorkAndIOUseInfo>((accu, curr) => {
                 const t = accu.slice(1).concat(curr)
                 return t
             }, sourceData),
@@ -114,8 +114,8 @@ export class CPUAndMemoryTimelineComponent implements OnInit {
                 const dv1 = new (DataSet as any).View().source(src)
                 dv1.transform({
                     type: 'fold',
-                    fields: ['CPU使用', '内存使用'],
-                    key: 'resourctType',
+                    fields: ['网络速率', '磁盘读写速率'],
+                    key: 'resourceType',
                     value: '使用率'
                 })
                 return dv1.rows
@@ -175,16 +175,16 @@ export class CPUAndMemoryTimelineComponent implements OnInit {
                     'ms'
                 )
                 .format('HH:mm:ss'),
-            CPU使用: this.fakeRealRandomCPU(),
-            内存使用: this.fakeRealRandomMemory()
+            网络速率: this.fakeRealRandomNetwork(),
+            磁盘读写速率: this.fakeRealRandomIO()
         }))
         return of(sourceData).pipe(
             map(src => {
                 const dv1 = new (DataSet as any).View().source(src)
                 dv1.transform({
                     type: 'fold',
-                    fields: ['CPU使用', '内存使用'],
-                    key: 'resourctType',
+                    fields: ['网络速率', '磁盘读写速率'],
+                    key: 'resourceType',
                     value: '使用率'
                 })
                 return dv1.rows
@@ -192,31 +192,31 @@ export class CPUAndMemoryTimelineComponent implements OnInit {
         )
     }
 
-    private fakeRealRandomCPU(): number {
-        if (!this.latestCPU) {
+    private fakeRealRandomNetwork(): number {
+        if (!this.latestNetwork) {
             const float = randomFloat(0, 1)
             const limit = Math.floor(float * 100) / 100
-            this.latestCPU = limit
+            this.latestNetwork = limit
             return Number(limit.toFixed(2))
         }
 
         const newFloat = randomFloat(-0.2, 0.2)
-        const newLimit = this.latestCPU + Math.floor(newFloat * 100) / 100
-        this.latestCPU = Math.min(0.9, Math.max(newLimit, 0.1))
-        return Number(this.latestCPU.toFixed(2))
+        const newLimit = this.latestNetwork + Math.floor(newFloat * 100) / 100
+        this.latestNetwork = Math.min(0.9, Math.max(newLimit, 0.1))
+        return Number(this.latestNetwork.toFixed(2))
     }
 
-    private fakeRealRandomMemory(): number {
-        if (!this.latestMemory) {
+    private fakeRealRandomIO(): number {
+        if (!this.latestIO) {
             const float = randomFloat(0, 1)
             const limit = Math.floor(float * 100) / 100
-            this.latestMemory = limit
+            this.latestIO = limit
             return Number(limit.toFixed(2))
         }
 
         const newFloat = randomFloat(-0.2, 0.2)
-        const newLimit = this.latestMemory + Math.floor(newFloat * 100) / 100
-        this.latestMemory = Math.min(0.9, Math.max(newLimit, 0.1))
-        return Number(this.latestMemory.toFixed(2))
+        const newLimit = this.latestIO + Math.floor(newFloat * 100) / 100
+        this.latestIO = Math.min(0.9, Math.max(newLimit, 0.1))
+        return Number(this.latestIO.toFixed(2))
     }
 }
