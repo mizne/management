@@ -8,7 +8,7 @@
                     </div>
                     <div nz-form-control class="flex-1">
                         <nz-select formControlName="type" [nzPlaceHolder]="'请选择资源类型'" nzAllowClear>
-                            <nz-option *ngFor="let option of RESOURCE_TYPES" [nzLabel]="option.label" [nzValue]="option.value">
+                            <nz-option *ngFor="let option of resourceTypes$ | async" [nzLabel]="option.label" [nzValue]="option.value">
                             </nz-option>
                         </nz-select>
                     </div>
@@ -84,8 +84,8 @@
                 <td nz-td>{{data.version}}</td>
                 <td nz-td>{{data.environment}}</td>
                 <td nz-td>{{data.applyCount}}</td>
-                <td nz-td>{{data.applyTime}}</td>
-                <td nz-td>{{data.endTime}}</td>
+                <td nz-td>{{data.applyTime | date: 'yyyy-MM-dd'}}</td>
+                <td nz-td>{{data.endTime | date: 'yyyy-MM-dd'}}</td>
             </tr>
         </tbody>
         <span nz-table-footer>

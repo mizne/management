@@ -13,7 +13,7 @@ import {
     getUnifiedAddedApplyResources,
     getApprovers
 } from '../reducers'
-import { map, switchMap, catchError } from 'rxjs/operators';
+import { map, switchMap, catchError } from 'rxjs/operators'
 
 @Injectable()
 export class ToAddApplyResourceEffects {
@@ -22,25 +22,27 @@ export class ToAddApplyResourceEffects {
         .ofType(fromToAddApplyResource.FETCH_ADDABLE_APPLY_RESOURCE)
         .pipe(
             map(
-                (action: fromToAddApplyResource.FetchAddableApplyResourceAction) =>
-                    action.payload
+                (
+                    action: fromToAddApplyResource.FetchAddableApplyResourceAction
+                ) => action.payload
             ),
             switchMap(params => {
                 return this.unifiedApplyService
                     .fetchAddableApplyResources(params)
-
-            }),
-            map(
-                resources =>
-                    new fromToAddApplyResource.FetchAddableApplyResourceSuccessAction(
-                        resources
+                    .pipe(
+                        map(
+                            resources =>
+                                new fromToAddApplyResource.FetchAddableApplyResourceSuccessAction(
+                                    resources
+                                )
+                        ),
+                        catchError(() =>
+                            of(
+                                new fromToAddApplyResource.FetchAddableApplyResourceFailureAction()
+                            )
+                        )
                     )
-            ),
-            catchError(() =>
-                of(
-                    new fromToAddApplyResource.FetchAddableApplyResourceFailureAction()
-                )
-            )
+            })
         )
 
     @Effect()
@@ -55,19 +57,20 @@ export class ToAddApplyResourceEffects {
             switchMap(params => {
                 return this.unifiedApplyService
                     .fetchAddableApplyResourcesCount(params)
-
-            }),
-            map(
-                count =>
-                    new fromToAddApplyResource.FetchAddableApplyResourceCountSuccessAction(
-                        count
+                    .pipe(
+                        map(
+                            count =>
+                                new fromToAddApplyResource.FetchAddableApplyResourceCountSuccessAction(
+                                    count
+                                )
+                        ),
+                        catchError(() =>
+                            of(
+                                new fromToAddApplyResource.FetchAddableApplyResourceCountFailureAction()
+                            )
+                        )
                     )
-            ),
-            catchError(() =>
-                of(
-                    new fromToAddApplyResource.FetchAddableApplyResourceCountFailureAction()
-                )
-            )
+            })
         )
 
     constructor(
@@ -75,5 +78,5 @@ export class ToAddApplyResourceEffects {
         private unifiedApplyService: UnifiedApplyService,
         private notify: NzNotificationService,
         private store: Store<State>
-    ) { }
+    ) {}
 }

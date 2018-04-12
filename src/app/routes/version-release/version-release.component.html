@@ -228,8 +228,8 @@
                             <td nz-td>{{data.name || data.softwareName}}</td>
                             <td nz-td>{{data.environment}}</td>
                             <td nz-td>{{data.applyCount}}</td>
-                            <td nz-td>{{data.applyTime}}</td>
-                            <td nz-td>{{data.endTime}}</td>
+                            <td nz-td>{{data.applyTime | date: 'yyyy-MM-dd'}}</td>
+                            <td nz-td>{{data.endTime | date: 'yyyy-MM-dd'}}</td>
                             <td nz-td>
                                 <span>
                                     <a (click)="toShowResource(data)">详情</a>
@@ -392,8 +392,8 @@
                                     <td nz-td>{{data.name || data.softwareName}}</td>
                                     <td nz-td>{{data.environment}}</td>
                                     <td nz-td>{{data.applyCount}}</td>
-                                    <td nz-td>{{data.applyTime}}</td>
-                                    <td nz-td>{{data.endTime}}</td>
+                                    <td nz-td>{{data.applyTime | date: 'yyyy-MM-dd'}}</td>
+                                    <td nz-td>{{data.endTime | date: 'yyyy-MM-dd'}}</td>
                                     <td nz-td>
                                         <span>
                                             <a (click)="toShowResource(data)">详情</a>
@@ -653,8 +653,8 @@
                                     <td nz-td>{{data.name || data.softwareName}}</td>
                                     <td nz-td>{{data.environment}}</td>
                                     <td nz-td>{{data.applyCount}}</td>
-                                    <td nz-td>{{data.applyTime}}</td>
-                                    <td nz-td>{{data.endTime}}</td>
+                                    <td nz-td>{{data.applyTime | date: 'yyyy-MM-dd'}}</td>
+                                    <td nz-td>{{data.endTime | date: 'yyyy-MM-dd'}}</td>
                                     <td nz-td>
                                         <span>
                                             <a (click)="toShowResource(data)">详情</a>

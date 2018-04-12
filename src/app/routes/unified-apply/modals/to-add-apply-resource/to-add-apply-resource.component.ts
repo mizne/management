@@ -8,8 +8,7 @@ import { merge } from 'rxjs/observable/merge'
 import { DestroyService } from '@core/services/destroy.service'
 import {
     ApplyResource,
-    FetchAddableApplyResourceCountParams,
-    resourceTypes
+    FetchAddableApplyResourceCountParams
 } from '@core/models/resource-apply.model'
 import { Store } from '@ngrx/store'
 import {
@@ -19,13 +18,15 @@ import {
     getFetchAddableApplyResourceLoading,
     getAddableApplyResourcesPageParams
 } from '../../reducers'
+import { getResourceTypes } from '@app/reducers'
 
 import {
     FetchAddableApplyResourceAction,
     FetchAddableApplyResourceCountAction,
     EnsurePageParamsAction
 } from '../../actions/to-add-apply-resource.action'
-import { withLatestFrom, map, takeUntil, tap, filter } from 'rxjs/operators';
+import { withLatestFrom, map, takeUntil, tap, filter } from 'rxjs/operators'
+import { ResourceType } from '@app/core/models/resource-info.model'
 
 interface CheckRow {
     id: string
@@ -38,7 +39,7 @@ interface CheckRow {
     providers: [DestroyService]
 })
 export class ToAddApplyResourceComponent implements OnInit {
-    RESOURCE_TYPES = resourceTypes
+    resourceTypes$: Observable<ResourceType[]>
     addableResources$: Observable<ApplyResource[]>
     addableResourcesCount$: Observable<number>
     loading$: Observable<boolean>
@@ -62,7 +63,7 @@ export class ToAddApplyResourceComponent implements OnInit {
         private destroyService: DestroyService,
         private messageService: NzMessageService,
         private store: Store<State>
-    ) { }
+    ) {}
 
     ngOnInit() {
         this.buildForm()
@@ -116,6 +117,7 @@ export class ToAddApplyResourceComponent implements OnInit {
             getAddableApplyResourcesCount
         )
         this.loading$ = this.store.select(getFetchAddableApplyResourceLoading)
+        this.resourceTypes$ = this.store.select(getResourceTypes)
     }
 
     private initDispatcher() {
@@ -179,25 +181,22 @@ export class ToAddApplyResourceComponent implements OnInit {
 
         merge(
             this.pageChangeSub.asObservable(),
-            this.resetSub
-                .pipe(
-                    tap(() => {
-                        this.pageIndex = 1
-                        this.pageSize = 10
-                    }),
-                    withLatestFrom(
-                        this.store.select(getAddableApplyResourcesPageParams)
-                    ),
-                    filter(
-                        ([_, { pageIndex, pageSize }]) =>
-                            pageIndex === this.pageIndex &&
-                            pageSize === this.pageSize
-                    )
+            this.resetSub.pipe(
+                tap(() => {
+                    this.pageIndex = 1
+                    this.pageSize = 10
+                }),
+                withLatestFrom(
+                    this.store.select(getAddableApplyResourcesPageParams)
+                ),
+                filter(
+                    ([_, { pageIndex, pageSize }]) =>
+                        pageIndex === this.pageIndex &&
+                        pageSize === this.pageSize
                 )
-        )
-            .pipe(
-                takeUntil(this.destroyService)
             )
+        )
+            .pipe(takeUntil(this.destroyService))
             .subscribe(() => {
                 this.store.dispatch(
                     new EnsurePageParamsAction({

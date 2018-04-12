@@ -8,7 +8,7 @@
                     </div>
                     <div nz-form-control class="flex-1">
                         <nz-select formControlName="type" [nzPlaceHolder]="'请选择资源类型'" nzAllowClear>
-                            <nz-option *ngFor="let option of RESOURCE_TYPES" [nzLabel]="option.label" [nzValue]="option.value">
+                            <nz-option *ngFor="let option of resourceTypes$ | async" [nzLabel]="option.label" [nzValue]="option.value">
                             </nz-option>
                         </nz-select>
                     </div>

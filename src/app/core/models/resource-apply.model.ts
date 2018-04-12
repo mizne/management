@@ -1,6 +1,14 @@
 import * as uuid from 'uuid'
+import * as moment from 'moment'
 import { PaginationParams } from './pagination.model'
 import { FormGroup, FormControl } from '@angular/forms'
+import {
+    ResourceType,
+    SoftwareType,
+    SoftwareName,
+    SoftwareSpec,
+    UseEnvironment
+} from '@app/core/models/resource-info.model'
 
 export class RequirementApply {
     id: string
@@ -64,9 +72,9 @@ export class ApplyResource {
     version: string
     name: string
     environment: string
-    applyCount: string
-    applyTime: string
-    endTime: string
+    applyCount: number
+    applyTime: Date
+    endTime: Date
     remark: string
 
     checked: boolean
@@ -74,75 +82,24 @@ export class ApplyResource {
     static generateFakeDataItems(): ApplyResource[] {
         return Array.from({ length: 3 }, (_, i) => ({
             id: uuid.v4(),
-            type: `type ${Math.random()
-                .toString()
-                .slice(0, 5)}`,
-            softwareType: `softwareType ${Math.random()
-                .toString()
-                .slice(0, 5)}`,
-            softwareName: `softwareName ${Math.random()
-                .toString()
-                .slice(0, 5)}`,
-            version: `version ${Math.random()
-                .toString()
-                .slice(0, 5)}`,
+            type: ResourceType.generateFakeDataItems()[0].label,
+            softwareType: SoftwareType.generateFakeDataItems()[0].label,
+            softwareName: SoftwareName.generateFakeDataItems()[0].label,
+            version: SoftwareSpec.generateFakeDataItems()[0].label,
             name: `name ${Math.random()
                 .toString()
                 .slice(0, 5)}`,
-            environment: `environment ${Math.random()
-                .toString()
-                .slice(0, 5)}`,
-            applyCount: `applyCount ${Math.random()
-                .toString()
-                .slice(0, 5)}`,
-            applyTime: `applyTime ${Math.random()
-                .toString()
-                .slice(0, 5)}`,
-            endTime: `endTime ${Math.random()
-                .toString()
-                .slice(0, 5)}`,
+            environment: UseEnvironment.generateFakeDataItems()[0].label,
+            applyCount: 2,
+            applyTime: new Date(),
+            endTime: moment()
+                .add(3, 'd')
+                .toDate(),
             remark: `remark ${Math.random()
                 .toString()
                 .slice(0, 5)}`,
             checked: false
         }))
-    }
-
-    static generateTempData(): ApplyResource {
-        return {
-            tempID: uuid.v4(),
-            type: `type ${Math.random()
-                .toString()
-                .slice(0, 5)}`,
-            softwareType: `softwareType ${Math.random()
-                .toString()
-                .slice(0, 5)}`,
-            softwareName: `softwareName ${Math.random()
-                .toString()
-                .slice(0, 5)}`,
-            version: `version ${Math.random()
-                .toString()
-                .slice(0, 5)}`,
-            name: `name ${Math.random()
-                .toString()
-                .slice(0, 5)}`,
-            environment: `environment ${Math.random()
-                .toString()
-                .slice(0, 5)}`,
-            applyCount: `applyCount ${Math.random()
-                .toString()
-                .slice(0, 5)}`,
-            applyTime: `applyTime ${Math.random()
-                .toString()
-                .slice(0, 5)}`,
-            endTime: `endTime ${Math.random()
-                .toString()
-                .slice(0, 5)}`,
-            remark: `remark ${Math.random()
-                .toString()
-                .slice(0, 5)}`,
-            checked: false
-        }
     }
 }
 
@@ -296,30 +253,3 @@ export class TabOptions {
         }
     }
 }
-
-export const resourceTypes = [
-    {
-        label: '软件资源',
-        value: '软件资源'
-    },
-    {
-        label: '计算资源',
-        value: '计算资源'
-    },
-    {
-        label: '存储资源',
-        value: '存储资源'
-    },
-    {
-        label: '数据库资源',
-        value: '数据库资源'
-    },
-    {
-        label: 'IP地址资源',
-        value: 'IP地址资源'
-    },
-    {
-        label: '防火墙访问权限资源',
-        value: '防火墙访问权限资源'
-    }
-]

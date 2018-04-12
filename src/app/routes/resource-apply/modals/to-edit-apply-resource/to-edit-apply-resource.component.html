@@ -8,7 +8,7 @@
                     </div>
                     <div nz-form-control nz-col nzHasFeedback [nzValidateStatus]="type">
                         <nz-select formControlName="type" [nzPlaceHolder]="'请选择资源类型'" nzAllowClear>
-                            <nz-option *ngFor="let option of RESOURCE_TYPES" [nzLabel]="option.label" [nzValue]="option.value">
+                            <nz-option *ngFor="let option of resourceTypes$ | async" [nzLabel]="option.label" [nzValue]="option.label">
                             </nz-option>
                         </nz-select>
                     </div>
@@ -24,10 +24,10 @@
                         <label nz-form-item-required>软件类型</label>
                     </div>
                     <div nz-form-control nz-col nzHasFeedback [nzValidateStatus]="softwareType">
-                        <nz-input formControlName="softwareType" nzPlaceHolder="请输入软件类型" nzSize="large"></nz-input>
-                        <p nz-form-explain *ngIf="(softwareType.dirty || softwareType.touched) && softwareType.errors?.required">
-                            请输入软件类型
-                        </p>
+                        <nz-select formControlName="softwareType" [nzPlaceHolder]="'请选择软件类型'" nzAllowClear>
+                            <nz-option *ngFor="let option of softwareTypes$ | async" [nzLabel]="option.label" [nzValue]="option.label">
+                            </nz-option>
+                        </nz-select>
                     </div>
 
                 </div>
@@ -39,10 +39,10 @@
                             <label nz-form-item-required>软件名称</label>
                         </div>
                         <div nz-form-control nz-col nzHasFeedback [nzValidateStatus]="softwareName">
-                            <nz-input formControlName="softwareName" nzPlaceHolder="请输入软件名称" nzSize="large"></nz-input>
-                            <p nz-form-explain *ngIf="(softwareName.dirty || softwareName.touched) && softwareName.errors?.required">
-                                请输入软件名称
-                            </p>
+                            <nz-select formControlName="softwareName" [nzPlaceHolder]="'请选择软件名称'" nzAllowClear>
+                                <nz-option *ngFor="let option of softwareNames$ | async" [nzLabel]="option.label" [nzValue]="option.label">
+                                </nz-option>
+                            </nz-select>
                         </div>
                     </div>
                 </div>
@@ -57,10 +57,10 @@
                         <label nz-form-item-required>软件规格</label>
                     </div>
                     <div nz-form-control nz-col nzHasFeedback [nzValidateStatus]="version">
-                        <nz-input formControlName="version" nzPlaceHolder="请输入软件规格" nzSize="large"></nz-input>
-                        <p nz-form-explain *ngIf="(version.dirty || version.touched) && version.errors?.required">
-                            请输入软件规格
-                        </p>
+                        <nz-select formControlName="version" [nzPlaceHolder]="'请选择软件规格'" nzAllowClear>
+                            <nz-option *ngFor="let option of softwareSpecs$ | async" [nzLabel]="option.label" [nzValue]="option.label">
+                            </nz-option>
+                        </nz-select>
                     </div>
                 </div>
             </div>
@@ -70,10 +70,10 @@
                         <label nz-form-item-required>使用环境</label>
                     </div>
                     <div nz-form-control nz-col nzHasFeedback [nzValidateStatus]="environment">
-                        <nz-input formControlName="environment" nzPlaceHolder="请输入使用环境" nzSize="large"></nz-input>
-                        <p nz-form-explain *ngIf="(environment.dirty || environment.touched) && environment.errors?.required">
-                            请输入使用环境
-                        </p>
+                        <nz-select formControlName="environment" [nzPlaceHolder]="'请选择使用环境'" nzAllowClear>
+                            <nz-option *ngFor="let option of useEnvironments$ | async" [nzLabel]="option.label" [nzValue]="option.label">
+                            </nz-option>
+                        </nz-select>
                     </div>
                 </div>
             </div>
@@ -87,10 +87,7 @@
                         <label nz-form-item-required>申请数量</label>
                     </div>
                     <div nz-form-control nz-col nzHasFeedback [nzValidateStatus]="applyCount">
-                        <nz-input formControlName="applyCount" nzPlaceHolder="请输入申请数量" nzSize="large"></nz-input>
-                        <p nz-form-explain *ngIf="(applyCount.dirty || applyCount.touched) && applyCount.errors?.required">
-                            请输入申请数量
-                        </p>
+                        <nz-input-number formControlName="applyCount" nzPlaceHolder="请输入申请数量" [nzSize]="'large'" [nzStep]="1" [nzMax]="10" [nzMin]="1"></nz-input-number>
                     </div>
                 </div>
             </div>
@@ -100,10 +97,8 @@
                         <label nz-form-item-required>申请时间</label>
                     </div>
                     <div nz-form-control nz-col nzHasFeedback [nzValidateStatus]="applyTime">
-                        <nz-input formControlName="applyTime" nzPlaceHolder="请输入申请时间" nzSize="large"></nz-input>
-                        <p nz-form-explain *ngIf="(applyTime.dirty || applyTime.touched) && applyTime.errors?.required">
-                            请输入申请时间
-                        </p>
+                        <nz-datepicker formControlName="applyTime" [nzSize]="'large'" nzPlaceHolder="请选择申请时间">
+                        </nz-datepicker>
                     </div>
                 </div>
             </div>
@@ -116,10 +111,8 @@
                         <label nz-form-item-required>预计需要时间</label>
                     </div>
                     <div nz-form-control nz-col nzHasFeedback [nzValidateStatus]="endTime">
-                        <nz-input formControlName="endTime" nzPlaceHolder="请输入预计需要时间" nzSize="large"></nz-input>
-                        <p nz-form-explain *ngIf="(endTime.dirty || endTime.touched) && endTime.errors?.required">
-                            请输入预计需要时间
-                        </p>
+                        <nz-datepicker formControlName="endTime" [nzSize]="'large'" nzPlaceHolder="请选择预计需要时间">
+                        </nz-datepicker>
                     </div>
                 </div>
             </div>

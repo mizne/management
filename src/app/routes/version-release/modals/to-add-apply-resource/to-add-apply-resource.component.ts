@@ -8,8 +8,7 @@ import { merge } from 'rxjs/observable/merge'
 import { DestroyService } from '@core/services/destroy.service'
 import {
     ApplyResource,
-    FetchAddableApplyResourceCountParams,
-    resourceTypes
+    FetchAddableApplyResourceCountParams
 } from '@core/models/resource-apply.model'
 import { Store } from '@ngrx/store'
 import {
@@ -19,6 +18,7 @@ import {
     getFetchAddableApplyResourceLoading,
     getAddableApplyResourcesPageParams
 } from '../../reducers'
+import { getResourceTypes } from '@app/reducers'
 
 import {
     FetchAddableApplyResourceAction,
@@ -26,6 +26,7 @@ import {
     EnsurePageParamsAction
 } from '../../actions/to-add-apply-resource.action'
 import { withLatestFrom, takeUntil, tap, filter, map } from 'rxjs/operators'
+import { ResourceType } from '@app/core/models/resource-info.model'
 
 interface CheckRow {
     id: string
@@ -38,7 +39,7 @@ interface CheckRow {
     providers: [DestroyService]
 })
 export class ToAddApplyResourceComponent implements OnInit {
-    RESOURCE_TYPES = resourceTypes
+    resourceTypes$: Observable<ResourceType[]>
     addableResources$: Observable<ApplyResource[]>
     addableResourcesCount$: Observable<number>
     loading$: Observable<boolean>
@@ -116,6 +117,7 @@ export class ToAddApplyResourceComponent implements OnInit {
             getAddableApplyResourcesCount
         )
         this.loading$ = this.store.select(getFetchAddableApplyResourceLoading)
+        this.resourceTypes$ = this.store.select(getResourceTypes)
     }
 
     private initDispatcher() {

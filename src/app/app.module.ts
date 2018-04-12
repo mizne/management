@@ -18,6 +18,7 @@ import { StoreModule } from '@ngrx/store'
 import { EffectsModule } from '@ngrx/effects'
 import { StoreDevtoolsModule } from '@ngrx/store-devtools'
 import { reducers } from './reducers'
+import { effects } from './effects'
 
 import { DelonModule } from './delon.module'
 import { CoreModule } from '@core/core.module'
@@ -85,7 +86,7 @@ export function StartupServiceFactory(
             }
         }),
         StoreModule.forRoot(reducers),
-        EffectsModule.forRoot([]),
+        EffectsModule.forRoot(effects),
         environment.production
             ? []
             : StoreDevtoolsModule.instrument({

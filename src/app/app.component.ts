@@ -4,8 +4,12 @@ import { ThemesService, SettingsService, TitleService } from '@delon/theme'
 import { filter } from 'rxjs/operators'
 
 import { Store } from '@ngrx/store'
-import { State, getCount } from './reducers'
-import { IncrementAction, DecrementAction } from './reducers/app.action'
+import { State } from './reducers'
+import { FetchResourceTypesAction } from './actions/resource-type.action'
+import { FetchSoftwareNamesAction } from './actions/software-name.action'
+import { FetchSoftwareSpecsAction } from './actions/software-spec.action'
+import { FetchSoftwareTypesAction } from './actions/software-type.action'
+import { FetchUseEnvironmentsAction } from './actions/use-environment.action'
 
 @Component({
     selector: 'app-root',
@@ -34,6 +38,23 @@ export class AppComponent implements OnInit {
     ) {}
 
     ngOnInit() {
+        this.initSubscriber()
+        this.initDispatcher()
+    }
+
+    private initSubscriber() {
+        this.initTitleSubscriber()
+    }
+
+    private initDispatcher() {
+        this.store.dispatch(new FetchResourceTypesAction())
+        this.store.dispatch(new FetchSoftwareNamesAction())
+        this.store.dispatch(new FetchSoftwareSpecsAction())
+        this.store.dispatch(new FetchSoftwareTypesAction())
+        this.store.dispatch(new FetchUseEnvironmentsAction())
+    }
+
+    private initTitleSubscriber() {
         this.router.events
             .pipe(filter(evt => evt instanceof NavigationEnd))
             .subscribe(() => this.titleSrv.setTitle())

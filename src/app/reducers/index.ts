@@ -1,4 +1,4 @@
-import * as fromApp from './app.action'
+import * as fromApp from './app.reducer'
 import { createFeatureSelector, createSelector } from '@ngrx/store'
 
 export interface State {
@@ -10,4 +10,23 @@ export const reducers = {
 }
 
 export const getAppState = createFeatureSelector<fromApp.State>('app')
-export const getCount = createSelector(getAppState, fromApp.getCount)
+export const getResourceTypes = createSelector(
+    getAppState,
+    fromApp.getResourceTypes
+)
+export const getSoftwareNames = createSelector(
+    getAppState,
+    fromApp.getSoftwareNames
+)
+export const getSoftwareTypes = createSelector(
+    getAppState,
+    fromApp.getSoftwareTypes
+)
+export const getSoftwareSpecs = createSelector(
+    getAppState,
+    fromApp.getSoftwareSpecs
+)
+export const getUseEnvironments = createSelector(
+    getAppState,
+    fromApp.getUseEnvironments
+)

@@ -10,8 +10,8 @@
         <desc-list size="large" title="使用信息" class="mb-lg">
             <desc-list-item term="使用环境">{{resource.environment}}</desc-list-item>
             <desc-list-item term="申请数量">{{resource.applyCount}}</desc-list-item>
-            <desc-list-item term="申请时间">{{resource.applyTime}}</desc-list-item>
-            <desc-list-item term="预计需要时间">{{resource.endTime}}</desc-list-item>
+            <desc-list-item term="申请时间">{{resource.applyTime | date: 'yyyy-MM-dd'}}</desc-list-item>
+            <desc-list-item term="预计需要时间">{{resource.endTime | date: 'yyyy-MM-dd'}}</desc-list-item>
         </desc-list>
         <nz-divider class="mb-lg"></nz-divider>
         <desc-list size="large" title="更多" class="mb-lg">

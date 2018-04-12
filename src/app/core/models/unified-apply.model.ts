@@ -1,6 +1,14 @@
 import * as uuid from 'uuid'
+import * as moment from 'moment'
 import { PaginationParams } from './pagination.model'
 import { FormGroup, FormControl } from '@angular/forms'
+import {
+    ResourceType,
+    SoftwareName,
+    SoftwareSpec,
+    SoftwareType,
+    UseEnvironment
+} from '@core/models/resource-info.model'
 
 export class UnifiedApply {
     id: string
@@ -109,9 +117,9 @@ export class ApplyResource {
     version: string
     name: string
     environment: string
-    applyCount: string
-    applyTime: string
-    endTime: string
+    applyCount: number
+    applyTime: Date
+    endTime: Date
     remark: string
 
     checked: boolean
@@ -121,75 +129,24 @@ export class ApplyResource {
             id: `id ${Math.random()
                 .toString()
                 .slice(0, 5)}`,
-            type: `type ${Math.random()
-                .toString()
-                .slice(0, 5)}`,
-            softwareType: `softwareType ${Math.random()
-                .toString()
-                .slice(0, 5)}`,
-            softwareName: `softwareName ${Math.random()
-                .toString()
-                .slice(0, 5)}`,
-            version: `version ${Math.random()
-                .toString()
-                .slice(0, 5)}`,
+            type: ResourceType.generateFakeDataItems()[0].label,
+            softwareType: SoftwareType.generateFakeDataItems()[0].label,
+            softwareName: SoftwareName.generateFakeDataItems()[0].label,
+            version: SoftwareSpec.generateFakeDataItems()[0].label,
             name: `name ${Math.random()
                 .toString()
                 .slice(0, 5)}`,
-            environment: `environment ${Math.random()
-                .toString()
-                .slice(0, 5)}`,
-            applyCount: `applyCount ${Math.random()
-                .toString()
-                .slice(0, 5)}`,
-            applyTime: `applyTime ${Math.random()
-                .toString()
-                .slice(0, 5)}`,
-            endTime: `endTime ${Math.random()
-                .toString()
-                .slice(0, 5)}`,
+            environment: UseEnvironment.generateFakeDataItems()[0].label,
+            applyCount: 2,
+            applyTime: new Date(),
+            endTime: moment()
+                .add(3, 'd')
+                .toDate(),
             remark: `remark ${Math.random()
                 .toString()
                 .slice(0, 5)}`,
             checked: false
         }))
-    }
-
-    static generateTempData(): ApplyResource {
-        return {
-            tempID: uuid.v4(),
-            type: `type ${Math.random()
-                .toString()
-                .slice(0, 5)}`,
-            softwareType: `softwareType ${Math.random()
-                .toString()
-                .slice(0, 5)}`,
-            softwareName: `softwareName ${Math.random()
-                .toString()
-                .slice(0, 5)}`,
-            version: `version ${Math.random()
-                .toString()
-                .slice(0, 5)}`,
-            name: `name ${Math.random()
-                .toString()
-                .slice(0, 5)}`,
-            environment: `environment ${Math.random()
-                .toString()
-                .slice(0, 5)}`,
-            applyCount: `applyCount ${Math.random()
-                .toString()
-                .slice(0, 5)}`,
-            applyTime: `applyTime ${Math.random()
-                .toString()
-                .slice(0, 5)}`,
-            endTime: `endTime ${Math.random()
-                .toString()
-                .slice(0, 5)}`,
-            remark: `remark ${Math.random()
-                .toString()
-                .slice(0, 5)}`,
-            checked: false
-        }
     }
 }
 

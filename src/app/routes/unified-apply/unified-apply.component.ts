@@ -80,7 +80,13 @@ import {
     SubmitSubPackageApplyAction,
     ResetSubPackageApplyAction
 } from './actions/subpackage-apply.action'
-import { filter, takeUntil, mergeMap, withLatestFrom, first } from 'rxjs/operators';
+import {
+    filter,
+    takeUntil,
+    mergeMap,
+    withLatestFrom,
+    first
+} from 'rxjs/operators'
 
 @Component({
     selector: 'app-unified-apply',
@@ -122,13 +128,13 @@ export class UnifiedApplyComponent implements OnInit {
     saveOrSubmitSubPackageLoading$: Observable<boolean>
     toSaveSubPackageSub: Subject<SubPackageApply> = new Subject<
         SubPackageApply
-        >()
+    >()
     toSubmitSubPackageSub: Subject<SubPackageApply> = new Subject<
         SubPackageApply
-        >()
+    >()
     toResetSubPackageSub: Subject<SubPackageApply> = new Subject<
         SubPackageApply
-        >()
+    >()
 
     fetchSubPackageInfoLoading$: Observable<boolean>
     subPackageInfo$: Observable<SubPackageInfo>
@@ -140,30 +146,30 @@ export class UnifiedApplyComponent implements OnInit {
     savedUnifiedApplies$: Observable<UnifiedApply[]>
     toEditSavedUnifiedApplySub: Subject<UnifiedApply> = new Subject<
         UnifiedApply
-        >()
+    >()
     toDetailSavedUnifiedApplySub: Subject<UnifiedApply> = new Subject<
         UnifiedApply
-        >()
+    >()
     toSubmitSavedUnifiedApplySub: Subject<UnifiedApply> = new Subject<
         UnifiedApply
-        >()
+    >()
     toDeleteSavedUnifiedApplySub: Subject<UnifiedApply> = new Subject<
         UnifiedApply
-        >()
+    >()
     fetchSavedSubPackageAppliesLoading$: Observable<boolean>
     savedSubPackageApplies$: Observable<SubPackageApply[]>
     toEditSavedSubPackageApplySub: Subject<SubPackageApply> = new Subject<
         SubPackageApply
-        >()
+    >()
     toDetailSavedSubPackageApplySub: Subject<SubPackageApply> = new Subject<
         SubPackageApply
-        >()
+    >()
     toSubmitSavedSubPackageApplySub: Subject<SubPackageApply> = new Subject<
         SubPackageApply
-        >()
+    >()
     toDeleteSavedSubPackageApplySub: Subject<SubPackageApply> = new Subject<
         SubPackageApply
-        >()
+    >()
 
     // 额外的tabs
     extraTabs$: Observable<TabOptions[]>
@@ -213,7 +219,7 @@ export class UnifiedApplyComponent implements OnInit {
         private store: Store<State>,
         private destroyService: DestroyService,
         private fb: FormBuilder
-    ) { }
+    ) {}
 
     ngOnInit() {
         this.buildForm()
@@ -227,6 +233,14 @@ export class UnifiedApplyComponent implements OnInit {
     }
 
     // 第一个tab
+    toExport() {
+        console.log('to export excel')
+    }
+
+    toUpload() {
+        console.log('to upload file')
+    }
+
     toCreateResource() {
         this.toCreateResourceSub.next()
     }
@@ -563,7 +577,7 @@ export class UnifiedApplyComponent implements OnInit {
                 }),
                 takeUntil(this.destroyService)
             )
-            .subscribe(() => { })
+            .subscribe(() => {})
     }
 
     private initEditTempApplyResourceForUnified() {
@@ -689,7 +703,7 @@ export class UnifiedApplyComponent implements OnInit {
                 }),
                 takeUntil(this.destroyService)
             )
-            .subscribe(() => { })
+            .subscribe(() => {})
     }
 
     private initDeleteApplyResourceForSubPackage() {
@@ -925,7 +939,7 @@ export class UnifiedApplyComponent implements OnInit {
         this.toEditTempResourceSub
             .asObservable()
             .pipe(
-                filter(() => this.tabIndex >= 0),
+                filter(() => this.tabIndex >= 3),
                 mergeMap(resource => {
                     return this.modalService.open({
                         title: '新增的资源信息',
@@ -964,7 +978,7 @@ export class UnifiedApplyComponent implements OnInit {
                 }),
                 takeUntil(this.destroyService)
             )
-            .subscribe(() => { })
+            .subscribe(() => {})
     }
 
     private initDeleteApplyResourceForExtra() {
@@ -987,7 +1001,7 @@ export class UnifiedApplyComponent implements OnInit {
                         )
                         console.log(
                             `delete apply resource; tab index: ${
-                            this.tabIndex
+                                this.tabIndex
                             }; resource index: ${index}`
                         )
                     }
