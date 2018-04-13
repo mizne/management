@@ -43,7 +43,7 @@
     </form>
 
     <nz-table #nzTable1 [nzAjaxData]="addableResources$ | async" [nzShowSizeChanger]="true" [nzLoading]="loading$ | async" [nzTotal]="addableResourcesCount$ | async"
-        [nzPageIndex]="pageIndex$ | async" (nzPageIndexChange)="pageIndexChage($event)" [nzPageSize]="pageSize$ | async" (nzPageSizeChange)="pageSizeChage($event)"
+        [nzPageIndex]="pageIndex$ | async" (nzPageIndexChange)="pageIndexChange($event)" [nzPageSize]="pageSize$ | async" (nzPageSizeChange)="pageSizeChange($event)"
         [nzShowFooter]="true">
         <thead nz-thead>
             <tr>

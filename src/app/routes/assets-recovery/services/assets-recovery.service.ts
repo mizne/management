@@ -16,20 +16,20 @@ import {
 export class AssetsRecoveryService {
     constructor() { }
     fetchAssetsRecoveries(
-        params: Partial<FetchItemsParams>
+        params: any
     ): Observable<AssetsRecovery[]> {
-        if (params.condition.searchText) {
-            console.log(
-                `search assets recovery with ${params.condition.searchText}`
-            )
-        }
+        console.log(
+            `search assets recovery with `, params
+        )
+        const pageIndex = params ? (params.pageIndex || 1) : 1
+        const pageSize = params ? (params.pageSize || 10) : 10
         return of(
-            AssetsRecovery.generateFakeDataItems(params.options)
+            AssetsRecovery.generateFakeDataItems({ pageIndex, pageSize })
         ).pipe(delay(4e2))
     }
 
     fetchAssetsRecoveriesCount(
-        params: Partial<FetchAssetsRecoveriesCountParams>
+        params: any
     ): Observable<number> {
         console.log(`search assets recovery count with `, params)
         return of(42).pipe(delay(4e2))

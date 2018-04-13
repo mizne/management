@@ -6,6 +6,7 @@ import {
     AssetsRecovery
 } from '@core/models/assets-recovery.model'
 import { Observable } from 'rxjs/Observable'
+import * as R from 'ramda'
 import { Store } from '@ngrx/store'
 import {
     State,
@@ -22,35 +23,54 @@ import { Subject } from 'rxjs/Subject'
 import { takeUntil, mergeMap, filter, tap, withLatestFrom } from 'rxjs/operators'
 import { merge } from 'rxjs/observable/merge'
 import { DestroyService } from '@core/services/destroy.service'
-
+import { SearchTableService } from '@core/services/search-table.service'
+import { AssetsRecoveryService } from './services/assets-recovery.service'
 import { ToShowResourceInfoComponent } from './modals'
+
+interface SearchOptions {
+    resourceType?: string
+    computeResourceType?: string
+}
 
 @Component({
     selector: 'app-assets-recovery',
     templateUrl: './assets-recovery.component.html',
     styleUrls: ['./assets-recovery.component.less'],
-    providers: [DestroyService]
-    // changeDetection: ChangeDetectionStrategy.OnPush
+    providers: [DestroyService, SearchTableService],
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AssetsRecoveryComponent implements OnInit {
     searchForm: FormGroup
     assetsRecoveries$: Observable<AssetsRecovery[]>
     assetsRecoveriesCount$: Observable<number>
     loading$: Observable<boolean>
-    assetsRecoveryPageIndex = 1
-    assetsRecoveryPageSize = 10
-    pageChangeSub: Subject<void> = new Subject<void>()
+    pageIndex$: Observable<number>
+    pageSize$: Observable<number>
+
+
     toRecoverySub: Subject<AssetsRecovery> = new Subject<AssetsRecovery>()
     toShowSub: Subject<AssetsRecovery> = new Subject<AssetsRecovery>()
-    resetSub: Subject<void> = new Subject<void>()
+
+    trackByFn = (index, item) => {
+        return item.id
+    }
 
     constructor(
         private messageService: NzMessageService,
         private modalService: NzModalService,
         private store: Store<State>,
         private destroyService: DestroyService,
-        private fb: FormBuilder
-    ) { }
+        private fb: FormBuilder,
+        private searchTableService: SearchTableService<SearchOptions, AssetsRecovery>,
+        private assetRecoveryService: AssetsRecoveryService
+    ) {
+        this.searchTableService.setDataItemsHandler(params => {
+            return this.assetRecoveryService.fetchAssetsRecoveries(params)
+        })
+        this.searchTableService.setDataItemsCountHandler(params => {
+            return this.assetRecoveryService.fetchAssetsRecoveriesCount(params)
+        })
+    }
 
     ngOnInit() {
         this.buildForm()
@@ -60,15 +80,19 @@ export class AssetsRecoveryComponent implements OnInit {
     }
 
     queryForm() {
-        this.resetSub.next()
+        this.searchTableService.searchForm(this.convertFormValue())
     }
 
     resetForm() {
         this.searchForm.reset()
     }
 
-    fetchAssetsRecoveries() {
-        this.pageChangeSub.next()
+    pageIndexChange(index: number) {
+        this.searchTableService.pageIndexChange(index)
+    }
+
+    pageSizeChange(size: number) {
+        this.searchTableService.pageSizeChange(size)
     }
 
     toRecovery(resourceInfo: AssetsRecovery) {
@@ -87,22 +111,20 @@ export class AssetsRecoveryComponent implements OnInit {
     }
 
     private intDataSource(): void {
-        this.assetsRecoveries$ = this.store.select(getAssetsRecoveries)
-        this.assetsRecoveriesCount$ = this.store.select(
-            getAssetsRecoveriesCount
-        )
-        this.loading$ = this.store.select(getLoading)
+        this.assetsRecoveries$ = this.searchTableService.dataItems$
+        this.assetsRecoveriesCount$ = this.searchTableService.dataItemsCount$
+        this.loading$ = this.searchTableService.loading$
+        this.pageIndex$ = this.searchTableService.pageIndex$
+        this.pageSize$ = this.searchTableService.pageSize$
     }
 
     private initDispatcher(): void {
-        this.store.dispatch(new fromAssetsRecovery.FetchAssetsRecoveriesAction())
-        this.store.dispatch(new fromAssetsRecovery.FetchAssetsRecoveriesCountAction())
+        this.searchTableService.initFetch()
     }
 
     private initSubscriber(): void {
         this.initEnsureRecovery()
         this.initShowAssetsRecovery()
-        this.initSearchResourceInfoAndPageChange()
     }
 
     private initEnsureRecovery() {
@@ -144,48 +166,10 @@ export class AssetsRecoveryComponent implements OnInit {
             })
     }
 
-    private initSearchResourceInfoAndPageChange(): void {
-        this.resetSub
-            .asObservable()
-            .pipe(takeUntil(this.destroyService))
-            .subscribe(() => {
-                this.store.dispatch(
-                    new fromAssetsRecovery.FetchAssetsRecoveriesCountAction(this.searchForm.value)
-                )
-            })
-
-        merge(
-            this.pageChangeSub.asObservable(),
-            this.resetSub
-                .asObservable()
-                .pipe(
-                    tap(() => {
-                        this.assetsRecoveryPageIndex = 1
-                        this.assetsRecoveryPageSize = 10
-                    }),
-                    withLatestFrom(this.store.select(getAssetsRecoveryPageParams)),
-                    filter(([_, { pageIndex, pageSize }]) =>
-                        pageIndex === this.assetsRecoveryPageIndex &&
-                        pageSize === this.assetsRecoveryPageSize
-                    ),
-            ))
-            .pipe(takeUntil(this.destroyService))
-            .subscribe(() => {
-                this.store.dispatch(
-                    new fromAssetsRecovery.EnsurePageParamsAction({
-                        pageIndex: this.assetsRecoveryPageIndex,
-                        pageSize: this.assetsRecoveryPageSize
-                    })
-                )
-                this.store.dispatch(
-                    new fromAssetsRecovery.FetchAssetsRecoveriesAction({
-                        condition: this.searchForm.value,
-                        options: {
-                            pageIndex: this.assetsRecoveryPageIndex,
-                            pageSize: this.assetsRecoveryPageSize
-                        }
-                    })
-                )
-            })
+    private convertFormValue(): SearchOptions {
+        return R.filter(R.complement(R.isNil), {
+            resourceType: this.searchForm.value.resourceType,
+            computeResourceType: this.searchForm.value.computeResourceType
+        })
     }
 }

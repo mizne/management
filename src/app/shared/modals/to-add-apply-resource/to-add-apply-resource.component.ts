@@ -37,7 +37,8 @@ interface SearchOptions {
 @Component({
     selector: 'app-to-add-apply-resource',
     templateUrl: './to-add-apply-resource.component.html',
-    providers: [DestroyService, SearchTableService]
+    providers: [DestroyService, SearchTableService],
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ToAddApplyResourceComponent implements OnInit {
     @Input() resourceTypes: ResourceType[]
@@ -67,7 +68,7 @@ export class ToAddApplyResourceComponent implements OnInit {
         private searchTableService: SearchTableService<
             SearchOptions,
             ResourceInfo
-        >
+            >
     ) {
         this.searchTableService.setDataItemsHandler(params =>
             this.resourceInfoService.fetchResourceInfos(params)
@@ -92,11 +93,11 @@ export class ToAddApplyResourceComponent implements OnInit {
         this.form.reset()
     }
 
-    pageIndexChage(index: number) {
+    pageIndexChange(index: number) {
         this.searchTableService.pageIndexChange(index)
     }
 
-    pageSizeChage(size: number) {
+    pageSizeChange(size: number) {
         this.searchTableService.pageSizeChange(size)
     }
 
