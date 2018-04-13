@@ -37,7 +37,7 @@
                                             <label nz-form-item-required>申请单号</label>
                                         </div>
                                         <div nz-form-control nz-col nzHasFeedback [nzValidateStatus]="listNumber">
-                                            <nz-input formControlName="listNumber" [nzDisabled]="true" nzPlaceHolder="请输入申请单号" nzSize="large"></nz-input>
+                                            <nz-input formControlName="listNumber" nzPlaceHolder="请输入申请单号" nzSize="large"></nz-input>
                                             <p nz-form-explain *ngIf="(listNumber.dirty || listNumber.touched) && listNumber.errors?.required">
                                                 请输入申请单号
                                             </p>
@@ -51,7 +51,7 @@
                                                 <label nz-form-item-required>系统名称</label>
                                             </div>
                                             <div nz-form-control nz-col nzHasFeedback [nzValidateStatus]="systemName">
-                                                <nz-input formControlName="systemName" [nzDisabled]="true" nzPlaceHolder="请输入系统名称" nzSize="large"></nz-input>
+                                                <nz-input formControlName="systemName" nzPlaceHolder="请输入系统名称" nzSize="large"></nz-input>
                                                 <p nz-form-explain *ngIf="(systemName.dirty || systemName.touched) && systemName.errors?.required">
                                                     请输入系统名称
                                                 </p>
@@ -66,7 +66,7 @@
                                             <label nz-form-item-required>版本号</label>
                                         </div>
                                         <div nz-form-control nz-col nzHasFeedback [nzValidateStatus]="version">
-                                            <nz-input formControlName="version" [nzDisabled]="true" nzPlaceHolder="请输入版本号" nzSize="large"></nz-input>
+                                            <nz-input formControlName="version" nzPlaceHolder="请输入版本号" nzSize="large"></nz-input>
                                             <p nz-form-explain *ngIf="(version.dirty || version.touched) && version.errors?.required">
                                                 请输入版本号
                                             </p>
@@ -83,7 +83,7 @@
                                             <label nz-form-item-required>上线年度</label>
                                         </div>
                                         <div nz-form-control nz-col nzHasFeedback [nzValidateStatus]="onlineTime">
-                                            <nz-input formControlName="onlineTime" [nzDisabled]="true" nzPlaceHolder="请输入上线年度" nzSize="large"></nz-input>
+                                            <nz-input formControlName="onlineTime" nzPlaceHolder="请输入上线年度" nzSize="large"></nz-input>
                                             <p nz-form-explain *ngIf="(onlineTime.dirty || onlineTime.touched) && onlineTime.errors?.required">
                                                 请输入上线年度
                                             </p>
@@ -97,7 +97,7 @@
                                                 <label nz-form-item-required>开发部门</label>
                                             </div>
                                             <div nz-form-control nz-col nzHasFeedback [nzValidateStatus]="devDept">
-                                                <nz-input formControlName="devDept" [nzDisabled]="true" nzPlaceHolder="请输入开发部门" nzSize="large"></nz-input>
+                                                <nz-input formControlName="devDept" nzPlaceHolder="请输入开发部门" nzSize="large"></nz-input>
                                                 <p nz-form-explain *ngIf="(devDept.dirty || devDept.touched) && devDept.errors?.required">
                                                     请输入开发部门
                                                 </p>
@@ -112,7 +112,7 @@
                                             <label nz-form-item-required>对应项目名称</label>
                                         </div>
                                         <div nz-form-control nz-col nzHasFeedback [nzValidateStatus]="projectName">
-                                            <nz-input formControlName="projectName" [nzDisabled]="true" nzPlaceHolder="请输入对应项目名称" nzSize="large"></nz-input>
+                                            <nz-input formControlName="projectName" nzPlaceHolder="请输入对应项目名称" nzSize="large"></nz-input>
                                             <p nz-form-explain *ngIf="(projectName.dirty || projectName.touched) && projectName.errors?.required">
                                                 请输入对应项目名称
                                             </p>
@@ -482,7 +482,7 @@
                                                     <label nz-form-item-required>申请单号</label>
                                                 </div>
                                                 <div nz-form-control nz-col nzHasFeedback [nzValidateStatus]="listNumber">
-                                                    <nz-input formControlName="listNumber" [nzDisabled]="true" nzPlaceHolder="请输入申请单号" nzSize="large"></nz-input>
+                                                    <nz-input formControlName="listNumber" nzPlaceHolder="请输入申请单号" nzSize="large"></nz-input>
                                                     <p nz-form-explain *ngIf="(listNumber.dirty || listNumber.touched) && listNumber.errors?.required">
                                                         请输入申请单号
                                                     </p>
@@ -496,7 +496,7 @@
                                                         <label nz-form-item-required>系统名称</label>
                                                     </div>
                                                     <div nz-form-control nz-col nzHasFeedback [nzValidateStatus]="systemName">
-                                                        <nz-input formControlName="systemName" [nzDisabled]="true" nzPlaceHolder="请输入系统名称" nzSize="large"></nz-input>
+                                                        <nz-input formControlName="systemName" nzPlaceHolder="请输入系统名称" nzSize="large"></nz-input>
                                                         <p nz-form-explain *ngIf="(systemName.dirty || systemName.touched) && systemName.errors?.required">
                                                             请输入系统名称
                                                         </p>
@@ -511,7 +511,7 @@
                                                     <label nz-form-item-required>版本号</label>
                                                 </div>
                                                 <div nz-form-control nz-col nzHasFeedback [nzValidateStatus]="version">
-                                                    <nz-input formControlName="version" [nzDisabled]="true" nzPlaceHolder="请输入版本号" nzSize="large"></nz-input>
+                                                    <nz-input formControlName="version" nzPlaceHolder="请输入版本号" nzSize="large"></nz-input>
                                                     <p nz-form-explain *ngIf="(version.dirty || version.touched) && version.errors?.required">
                                                         请输入版本号
                                                     </p>
@@ -528,7 +528,7 @@
                                                     <label nz-form-item-required>上线年度</label>
                                                 </div>
                                                 <div nz-form-control nz-col nzHasFeedback [nzValidateStatus]="onlineTime">
-                                                    <nz-input formControlName="onlineTime" [nzDisabled]="true" nzPlaceHolder="请输入上线年度" nzSize="large"></nz-input>
+                                                    <nz-input formControlName="onlineTime" nzPlaceHolder="请输入上线年度" nzSize="large"></nz-input>
                                                     <p nz-form-explain *ngIf="(onlineTime.dirty || onlineTime.touched) && onlineTime.errors?.required">
                                                         请输入上线年度
                                                     </p>
@@ -542,7 +542,7 @@
                                                         <label nz-form-item-required>开发部门</label>
                                                     </div>
                                                     <div nz-form-control nz-col nzHasFeedback [nzValidateStatus]="devDept">
-                                                        <nz-input formControlName="devDept" [nzDisabled]="true" nzPlaceHolder="请输入开发部门" nzSize="large"></nz-input>
+                                                        <nz-input formControlName="devDept" nzPlaceHolder="请输入开发部门" nzSize="large"></nz-input>
                                                         <p nz-form-explain *ngIf="(devDept.dirty || devDept.touched) && devDept.errors?.required">
                                                             请输入开发部门
                                                         </p>
@@ -557,7 +557,7 @@
                                                     <label nz-form-item-required>对应项目名称</label>
                                                 </div>
                                                 <div nz-form-control nz-col nzHasFeedback [nzValidateStatus]="projectName">
-                                                    <nz-input formControlName="projectName" [nzDisabled]="true" nzPlaceHolder="请输入对应项目名称" nzSize="large"></nz-input>
+                                                    <nz-input formControlName="projectName" nzPlaceHolder="请输入对应项目名称" nzSize="large"></nz-input>
                                                     <p nz-form-explain *ngIf="(projectName.dirty || projectName.touched) && projectName.errors?.required">
                                                         请输入对应项目名称
                                                     </p>
