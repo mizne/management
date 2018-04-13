@@ -5,9 +5,10 @@ import {
     TabAction,
     ApplyInfo,
     Approver,
-    ApplyResource,
     MAX_TABS_COUNT
 } from '@core/models/system-onoff.model'
+import { ResourceInfo } from '@core/models/resource-info.model'
+
 
 export class ExtraTabsHelper {
     static generateForToEdit(oldState: State, apply: SystemOnOffApply): State {
@@ -222,7 +223,7 @@ export class ExtraTabsHelper {
     static generateForAddApplyResources(
         oldState: State,
         tabIndex: number,
-        resources: ApplyResource[]
+        resources: ResourceInfo[]
     ): State {
         return {
             ...oldState,
@@ -246,7 +247,7 @@ export class ExtraTabsHelper {
     static generateForCreateApplyResource(
         oldState: State,
         tabIndex: number,
-        resource: ApplyResource
+        resource: ResourceInfo
     ): State {
         return {
             ...oldState,
@@ -270,7 +271,7 @@ export class ExtraTabsHelper {
     static generateForEditTempApplyResource(
         oldState: State,
         tabIndex: number,
-        resource: ApplyResource
+        resource: ResourceInfo
     ): State {
         return {
             ...oldState,

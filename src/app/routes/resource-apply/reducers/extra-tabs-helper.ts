@@ -5,9 +5,9 @@ import {
     TabAction,
     ApplyInfo,
     Approver,
-    ApplyResource,
     MAX_TABS_COUNT
 } from '@core/models/resource-apply.model'
+import { ResourceInfo } from '@core/models/resource-info.model'
 
 export class ExtraTabsHelper {
     static generateForToEdit(oldState: State, apply: RequirementApply): State {
@@ -75,7 +75,11 @@ export class ExtraTabsHelper {
         }
     }
 
-    static generateForSwitchApplyType(oldState: State, tabIndex: number, applyType: string): State {
+    static generateForSwitchApplyType(
+        oldState: State,
+        tabIndex: number,
+        applyType: string
+    ): State {
         return {
             ...oldState,
             tabs: oldState.tabs.map((e, i) => {
@@ -222,7 +226,7 @@ export class ExtraTabsHelper {
     static generateForAddApplyResources(
         oldState: State,
         tabIndex: number,
-        resources: ApplyResource[]
+        resources: ResourceInfo[]
     ): State {
         return {
             ...oldState,
@@ -246,7 +250,7 @@ export class ExtraTabsHelper {
     static generateForCreateApplyResource(
         oldState: State,
         tabIndex: number,
-        resource: ApplyResource
+        resource: ResourceInfo
     ): State {
         return {
             ...oldState,
@@ -270,7 +274,7 @@ export class ExtraTabsHelper {
     static generateForEditTempApplyResource(
         oldState: State,
         tabIndex: number,
-        resource: ApplyResource
+        resource: ResourceInfo
     ): State {
         return {
             ...oldState,

@@ -6,7 +6,6 @@ import { Observable } from 'rxjs/Observable'
 import * as uuid from 'uuid'
 
 import { DestroyService } from '@core/services/destroy.service'
-import { ApplyResource } from '@core/models/resource-apply.model'
 
 import {
     ResourceType,

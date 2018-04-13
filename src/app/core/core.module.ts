@@ -11,6 +11,7 @@ import { SoftwareNameService } from './services/software-name.service'
 import { SoftwareSpecService } from './services/software-spec.service'
 import { SoftwareTypeService } from './services/software-type.service'
 import { UseEnvironmentService } from './services/use-environment.service'
+import { ResourceInfoService } from './services/resource-info.service'
 
 @NgModule({
     providers: [
@@ -22,7 +23,8 @@ import { UseEnvironmentService } from './services/use-environment.service'
         SoftwareNameService,
         SoftwareSpecService,
         SoftwareTypeService,
-        UseEnvironmentService
+        UseEnvironmentService,
+        ResourceInfoService
     ]
 })
 export class CoreModule {

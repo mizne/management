@@ -3,7 +3,6 @@ import { Action } from '@ngrx/store'
 import {
     VersionReleaseApply,
     ApplyInfo,
-    ApplyResource,
     Approver
 } from '@core/models/version-release.model'
 import {

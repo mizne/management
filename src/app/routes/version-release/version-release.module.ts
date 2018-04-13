@@ -13,15 +13,12 @@ import { ToAddApplyResourceEffects } from './effects/to-add-apply-resource.effec
 import { reducers } from './reducers'
 import { VersionReleaseService } from './services/version-release.service'
 
-import { ToAddApplyResourceComponent } from './modals/to-add-apply-resource/to-add-apply-resource.component'
-
 export const routes: Routes = [
     {
         path: '',
         component: VersionReleaseComponent
     }
 ]
-const modals = [ToAddApplyResourceComponent]
 @NgModule({
     imports: [
         SharedModule,
@@ -35,8 +32,8 @@ const modals = [ToAddApplyResourceComponent]
         ])
     ],
     exports: [],
-    declarations: [VersionReleaseComponent, ...modals],
+    declarations: [VersionReleaseComponent],
     providers: [VersionReleaseService],
-    entryComponents: [...modals]
+    entryComponents: []
 })
 export class VersionReleaseModule {}

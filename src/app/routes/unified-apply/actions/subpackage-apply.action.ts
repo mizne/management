@@ -1,10 +1,10 @@
 import { Action } from '@ngrx/store'
 import {
     ApplyInfo,
-    ApplyResource,
     Approver,
     SubPackageInfo
 } from '@core/models/unified-apply.model'
+import { ResourceInfo } from '@core/models/resource-info.model'
 
 export const FETCH_SUBPACKAGE_INFO = '[SubPackage Apply] Fetch SubPackage Info'
 export const FETCH_SUBPACKAGE_INFO_SUCCESS =
@@ -44,7 +44,7 @@ export class FetchSubPackageInfoFailureAction implements Action {
 
 export class AddApplyResourcesAction implements Action {
     readonly type = ADD_APPLY_RESOURCES
-    constructor(public applyResources: ApplyResource[]) {}
+    constructor(public applyResources: ResourceInfo[]) {}
 }
 export class DeleteApplyResourceAction implements Action {
     readonly type = DELETE_APPLY_RESOURCE

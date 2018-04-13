@@ -23,7 +23,7 @@ import {
     getTabIndexToNeedManualSet,
     getShowCreateApplyResourceBtn
 } from './reducers'
-import { getApplyResourceForSelect } from '@app/reducers'
+import { getApplyResourceForSelect, getResourceTypes } from '@app/reducers'
 import {
     SwitchApplyTypeAction,
     AddApplyResourcesAction,
@@ -52,16 +52,16 @@ import { DestroyService } from '@core/services/destroy.service'
 import {
     ToCreateApplyResourceComponent,
     ToEditApplyResourceComponent,
-    ToShowApplyResourceComponent
+    ToShowApplyResourceComponent,
+    ToAddApplyResourceComponent
 } from '@shared/modals'
-import { ToAddApplyResourceComponent } from './modals/to-add-apply-resource/to-add-apply-resource.component'
 import {
     ApplyInfo,
     Approver,
-    ApplyResource,
     SystemOnOffApply,
     TabOptions
 } from '@core/models/system-onoff.model'
+import { ResourceInfo } from '@core/models/resource-info.model'
 import {
     CloseExtraTabAction,
     ResetNeedManualSetTabIndexAction
@@ -100,11 +100,11 @@ export class SystemOnOffComponent implements OnInit {
     fetchApplyInfoLoading$: Observable<boolean>
     applyInfo$: Observable<ApplyInfo>
 
-    addedApplyResources$: Observable<ApplyResource[]>
+    addedApplyResources$: Observable<ResourceInfo[]>
     toCreateResourceSub: Subject<void> = new Subject<void>()
     toAddResourcesSub: Subject<void> = new Subject<void>()
-    toShowResourceSub: Subject<ApplyResource> = new Subject<ApplyResource>()
-    toEditTempResourceSub: Subject<ApplyResource> = new Subject<ApplyResource>()
+    toShowResourceSub: Subject<ResourceInfo> = new Subject<ResourceInfo>()
+    toEditTempResourceSub: Subject<ResourceInfo> = new Subject<ResourceInfo>()
     toDeleteResourceSub: Subject<number> = new Subject<number>()
 
     fetchApproversLoading$: Observable<boolean>
@@ -201,11 +201,11 @@ export class SystemOnOffComponent implements OnInit {
         this.toAddResourcesSub.next()
     }
 
-    toShowResource(resource: ApplyResource) {
+    toShowResource(resource: ResourceInfo) {
         this.toShowResourceSub.next(resource)
     }
 
-    toEditTempResource(resource: ApplyResource) {
+    toEditTempResource(resource: ResourceInfo) {
         this.toEditTempResourceSub.next(resource)
     }
 
@@ -429,12 +429,14 @@ export class SystemOnOffComponent implements OnInit {
             .asObservable()
             .pipe(
                 filter(() => this.tabIndex < 2),
-                mergeMap(() => {
+                withLatestFrom(this.store.select(getResourceTypes)),
+                mergeMap(([_, resourceTypes]) => {
                     return this.modalService.open({
                         title: '添加资源信息',
                         content: ToAddApplyResourceComponent,
                         footer: false,
-                        width: 1000
+                        width: 1000,
+                        componentParams: { resourceTypes }
                     })
                 }),
                 filter(e => typeof e !== 'string'),
@@ -684,12 +686,14 @@ export class SystemOnOffComponent implements OnInit {
             .asObservable()
             .pipe(
                 filter(() => this.tabIndex >= 2),
-                mergeMap(() => {
+                withLatestFrom(this.store.select(getResourceTypes)),
+                mergeMap(([_, resourceTypes]) => {
                     return this.modalService.open({
                         title: '添加资源信息',
                         content: ToAddApplyResourceComponent,
                         footer: false,
-                        width: 1000
+                        width: 1000,
+                        componentParams: { resourceTypes }
                     })
                 }),
                 filter(e => typeof e !== 'string'),

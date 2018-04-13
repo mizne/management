@@ -1,13 +1,14 @@
 import * as fromToAddApplyResource from '../actions/to-add-apply-resource.action'
 import {
     ApplyInfo,
-    ApplyResource,
     Approver,
 } from '@core/models/version-release.model'
+import { ResourceInfo } from '@core/models/resource-info.model'
+
 
 export interface State {
     fetchAddableApplyResourcesLoading: boolean
-    addableApplyResources: ApplyResource[]
+    addableApplyResources: ResourceInfo[]
     addableApplyResourcesCount: number
     pageIndex: number
     pageSize: number

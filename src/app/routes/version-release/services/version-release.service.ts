@@ -5,7 +5,6 @@ import { of } from 'rxjs/observable/of'
 import { delay } from 'rxjs/operators'
 import {
     ApplyInfo,
-    ApplyResource,
     Approver,
     VersionReleaseApply,
     FetchAddableApplyResourceParams,
@@ -13,6 +12,7 @@ import {
     defaultFetchAddableApplyResourceParams,
     defaultFetchAddableApplyResourceCountParams
 } from '@core/models/version-release.model'
+import { ResourceInfo } from '@core/models/resource-info.model'
 import {
     PaginationParams,
     FetchItemsParams
@@ -31,8 +31,8 @@ export class VersionReleaseService {
 
     fetchAddableApplyResources(
         params: Partial<FetchAddableApplyResourceParams>
-    ): Observable<ApplyResource[]> {
-        return of(ApplyResource.generateFakeDataItems()).pipe(delay(4e2))
+    ): Observable<ResourceInfo[]> {
+        return of(ResourceInfo.generateFakeDataItems()).pipe(delay(4e2))
     }
 
     fetchAddableApplyResourcesCount(

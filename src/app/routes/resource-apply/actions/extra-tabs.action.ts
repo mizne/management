@@ -3,9 +3,9 @@ import { Action } from '@ngrx/store'
 import {
     RequirementApply,
     ApplyInfo,
-    ApplyResource,
     Approver
 } from '@core/models/resource-apply.model'
+import { ResourceInfo } from '@core/models/resource-info.model'
 
 export const SWITCH_APPLY_TYPE = '[Resource Extra Tabs] Switch Apply Type'
 
@@ -104,7 +104,7 @@ export class AddApplyResourcesAction implements Action {
     readonly type = ADD_APPLY_RESOURCES
     constructor(
         public payload: {
-            applyResources: ApplyResource[]
+            applyResources: ResourceInfo[]
             tabIndex: number
         }
     ) {}
@@ -113,7 +113,7 @@ export class CreateApplyResourceAction implements Action {
     readonly type = CREATE_APPLY_RESOURCE
     constructor(
         public payload: {
-            applyResource: ApplyResource
+            applyResource: ResourceInfo
             tabIndex: number
         }
     ) {}
@@ -122,7 +122,7 @@ export class EditTempApplyResourceAction implements Action {
     readonly type = EDIT_TEMP_APPLY_RESOURCE
     constructor(
         public payload: {
-            resource: ApplyResource
+            resource: ResourceInfo
             tabIndex: number
         }
     ) {}

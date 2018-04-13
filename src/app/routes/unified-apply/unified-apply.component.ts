@@ -26,7 +26,7 @@ import {
     getSubPackageInfo,
     getSubPackageAddedApplyResources
 } from './reducers'
-import { getApplyResourceForSelect } from '@app/reducers'
+import { getApplyResourceForSelect, getResourceTypes } from '@app/reducers'
 import {
     AddApplyResourcesAction,
     CreateApplyResourceAction,
@@ -60,20 +60,20 @@ import { DestroyService } from '@core/services/destroy.service'
 import {
     ToCreateApplyResourceComponent,
     ToEditApplyResourceComponent,
-    ToShowApplyResourceComponent
+    ToShowApplyResourceComponent,
+    ToAddApplyResourceComponent
 } from '@shared/modals'
-import { ToAddApplyResourceComponent } from './modals/to-add-apply-resource/to-add-apply-resource.component'
 import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms'
 import {
     ApplyInfo,
     Approver,
-    ApplyResource,
     UnifiedApply,
     SubPackageApply,
     TabOptions,
     TabAction,
     SubPackageInfo
 } from '@core/models/unified-apply.model'
+import { ResourceInfo } from '@core/models/resource-info.model'
 import {
     CloseExtraTabAction,
     ResetNeedManualSetTabIndexAction
@@ -114,11 +114,11 @@ export class UnifiedApplyComponent implements OnInit {
     fetchApplyInfoLoading$: Observable<boolean>
     applyInfo$: Observable<ApplyInfo>
 
-    unifiedAddedApplyResources$: Observable<ApplyResource[]>
+    unifiedAddedApplyResources$: Observable<ResourceInfo[]>
     toCreateResourceSub: Subject<void> = new Subject<void>()
     toAddResourcesSub: Subject<void> = new Subject<void>()
-    toShowResourceSub: Subject<ApplyResource> = new Subject<ApplyResource>()
-    toEditTempResourceSub: Subject<ApplyResource> = new Subject<ApplyResource>()
+    toShowResourceSub: Subject<ResourceInfo> = new Subject<ResourceInfo>()
+    toEditTempResourceSub: Subject<ResourceInfo> = new Subject<ResourceInfo>()
     toDeleteResourceSub: Subject<number> = new Subject<number>()
 
     fetchApproversLoading$: Observable<boolean>
@@ -142,7 +142,7 @@ export class UnifiedApplyComponent implements OnInit {
     fetchSubPackageInfoLoading$: Observable<boolean>
     subPackageInfo$: Observable<SubPackageInfo>
 
-    subPackageAddedApplyResources$: Observable<ApplyResource[]>
+    subPackageAddedApplyResources$: Observable<ResourceInfo[]>
 
     // 第三个tab
     fetchSavedUnifiedAppliesLoading$: Observable<boolean>
@@ -252,11 +252,11 @@ export class UnifiedApplyComponent implements OnInit {
         this.toAddResourcesSub.next()
     }
 
-    toShowResource(resource: ApplyResource) {
+    toShowResource(resource: ResourceInfo) {
         this.toShowResourceSub.next(resource)
     }
 
-    toEditTempResource(resource: ApplyResource) {
+    toEditTempResource(resource: ResourceInfo) {
         this.toEditTempResourceSub.next(resource)
     }
 
@@ -552,12 +552,14 @@ export class UnifiedApplyComponent implements OnInit {
             .asObservable()
             .pipe(
                 filter(() => this.tabIndex === 0),
-                mergeMap(() => {
+                withLatestFrom(this.store.select(getResourceTypes)),
+                mergeMap(([_, resourceTypes]) => {
                     return this.modalService.open({
                         title: '添加资源信息',
                         content: ToAddApplyResourceComponent,
                         footer: false,
-                        width: 1000
+                        width: 1000,
+                        componentParams: { resourceTypes }
                     })
                 }),
                 filter(e => typeof e !== 'string'),
@@ -677,12 +679,14 @@ export class UnifiedApplyComponent implements OnInit {
             .asObservable()
             .pipe(
                 filter(() => this.tabIndex === 1),
-                mergeMap(() => {
+                withLatestFrom(this.store.select(getResourceTypes)),
+                mergeMap(([_, resourceTypes]) => {
                     return this.modalService.open({
                         title: '添加资源信息',
                         content: ToAddApplyResourceComponent,
                         footer: false,
-                        width: 1000
+                        width: 1000,
+                        componentParams: { resourceTypes }
                     })
                 }),
                 filter(e => typeof e !== 'string'),
@@ -926,12 +930,14 @@ export class UnifiedApplyComponent implements OnInit {
             .asObservable()
             .pipe(
                 filter(() => this.tabIndex >= 3),
-                mergeMap(() => {
+                withLatestFrom(this.store.select(getResourceTypes)),
+                mergeMap(([_, resourceTypes]) => {
                     return this.modalService.open({
                         title: '添加资源信息',
                         content: ToAddApplyResourceComponent,
                         footer: false,
-                        width: 1000
+                        width: 1000,
+                        componentParams: { resourceTypes }
                     })
                 }),
                 filter(e => typeof e !== 'string'),

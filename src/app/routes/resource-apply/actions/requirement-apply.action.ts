@@ -3,9 +3,9 @@ import { Action } from '@ngrx/store'
 import {
     RequirementApply,
     ApplyInfo,
-    ApplyResource,
     Approver
 } from '@core/models/resource-apply.model'
+import { ResourceInfo } from '@core/models/resource-info.model'
 
 export const SWITCH_APPLY_TYPE =
     '[Resource Requirement Apply] Switch Apply Type'
@@ -79,15 +79,15 @@ export class FetchApproversFailureAction implements Action {
 
 export class AddApplyResourcesAction implements Action {
     readonly type = ADD_APPLY_RESOURCES
-    constructor(public applyResources: ApplyResource[]) {}
+    constructor(public applyResources: ResourceInfo[]) {}
 }
 export class CreateApplyResourceAction implements Action {
     readonly type = CREATE_APPLY_RESOURCE
-    constructor(public applyResource: ApplyResource) {}
+    constructor(public applyResource: ResourceInfo) {}
 }
 export class EditTempApplyResourceAction implements Action {
     readonly type = EDIT_TEMP_APPLY_RESOURCE
-    constructor(public resource: ApplyResource) {}
+    constructor(public resource: ResourceInfo) {}
 }
 export class DeleteApplyResourceAction implements Action {
     readonly type = DELETE_APPLY_RESOURCE

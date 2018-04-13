@@ -1,16 +1,17 @@
 import * as fromVersionRelease from '../actions/version-release.action'
 import {
     ApplyInfo,
-    ApplyResource,
     Approver,
 } from '@core/models/version-release.model'
+import { ResourceInfo } from '@core/models/resource-info.model'
+
 
 export interface State {
     fetchApplyInfoLoading: boolean
     applyInfo: ApplyInfo
     fetchApproversLoading: boolean
     approvers: Approver[]
-    addedApplyResources: ApplyResource[]
+    addedApplyResources: ResourceInfo[]
     saveOrSubmitLoading: boolean
     saveOrSubmitText: string
 }

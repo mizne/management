@@ -1,17 +1,18 @@
 import * as fromSystemOnOff from '../actions/system-onoff.action'
 import {
     ApplyInfo,
-    ApplyResource,
     Approver,
     SystemOnOffApply
 } from '@core/models/system-onoff.model'
+import { ResourceInfo } from '@core/models/resource-info.model'
+
 
 export interface State {
     fetchApplyInfoLoading: boolean
     applyInfo: ApplyInfo
     fetchApproversLoading: boolean
     approvers: Approver[]
-    addedApplyResources: ApplyResource[]
+    addedApplyResources: ResourceInfo[]
     showCreateApplyResourceBtn: boolean
     saveOrSubmitLoading: boolean
     saveOrSubmitText: string

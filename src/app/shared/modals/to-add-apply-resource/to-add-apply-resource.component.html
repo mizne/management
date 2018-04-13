@@ -8,7 +8,7 @@
                     </div>
                     <div nz-form-control class="flex-1">
                         <nz-select formControlName="type" [nzPlaceHolder]="'请选择资源类型'" nzAllowClear>
-                            <nz-option *ngFor="let option of resourceTypes$ | async" [nzLabel]="option.label" [nzValue]="option.value">
+                            <nz-option *ngFor="let option of resourceTypes" [nzLabel]="option.label" [nzValue]="option.label">
                             </nz-option>
                         </nz-select>
                     </div>
@@ -43,12 +43,12 @@
     </form>
 
     <nz-table #nzTable1 [nzAjaxData]="addableResources$ | async" [nzShowSizeChanger]="true" [nzLoading]="loading$ | async" [nzTotal]="addableResourcesCount$ | async"
-        [(nzPageIndex)]="pageIndex" (nzPageIndexChange)="pageChage()" [(nzPageSize)]="pageSize" (nzPageSizeChange)="pageChage()"
+        [nzPageIndex]="pageIndex$ | async" (nzPageIndexChange)="pageIndexChage($event)" [nzPageSize]="pageSize$ | async" (nzPageSizeChange)="pageSizeChage($event)"
         [nzShowFooter]="true">
         <thead nz-thead>
             <tr>
                 <th nz-th [nzCheckbox]="true">
-                    <label nz-checkbox [ngModel]="allChecked" [nzIndeterminate]="indeterminate" (ngModelChange)="checkAll($event)"></label>
+                    <label nz-checkbox [ngModel]="allChecked$ | async" [nzIndeterminate]="indeterminate$ | async" (ngModelChange)="checkAll($event)"></label>
                 </th>
                 <th nz-th>
                     <span>资源类型</span>
@@ -74,7 +74,7 @@
             </tr>
         </thead>
         <tbody nz-tbody>
-            <tr nz-tbody-tr *ngFor="let data of nzTable1.data">
+            <tr nz-tbody-tr *ngFor="let data of nzTable1.data; trackBy: trackByFn">
                 <td nz-td [nzCheckbox]="true">
                     <label nz-checkbox [nzDisabled]="data.disabled" [(ngModel)]="data.checked" (ngModelChange)="refreshStatus($event, data.id)">
                     </label>

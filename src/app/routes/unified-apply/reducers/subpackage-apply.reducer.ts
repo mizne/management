@@ -1,14 +1,15 @@
 import * as fromSubPackageApply from '../actions/subpackage-apply.action'
 import {
-    ApplyResource,
     UnifiedApply,
     SubPackageInfo
 } from '@core/models/unified-apply.model'
+import { ResourceInfo } from '@core/models/resource-info.model'
+
 
 export interface State {
     fetchSubPackageInfoLoading: boolean
     subPackageInfo: SubPackageInfo
-    addedApplyResources: ApplyResource[]
+    addedApplyResources: ResourceInfo[]
     saveOrSubmitLoading: boolean
     saveOrSubmitText: string
 }

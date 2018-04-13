@@ -3,7 +3,6 @@ import { Action } from '@ngrx/store'
 import {
     SystemOnOffApply,
     ApplyInfo,
-    ApplyResource,
     Approver
 } from '@core/models/system-onoff.model'
 import {
@@ -12,23 +11,28 @@ import {
     defaultFetchItemsParams
 } from '@core/models/pagination.model'
 
-export const FETCH_SAVED_APPLIES = '[System OnOff Saved Apply] Fetch Saved Applies'
+export const FETCH_SAVED_APPLIES =
+    '[System OnOff Saved Apply] Fetch Saved Applies'
 export const FETCH_SAVED_APPLIES_SUCCESS =
     '[System OnOff Saved Apply] Fetch Saved Applies Success'
 export const FETCH_SAVED_APPLIES_FAILURE =
     '[System OnOff Saved Apply] Fetch Saved Applies Failure'
 
-export const TO_EDIT_SAVED_APPLY = '[System OnOff Saved Apply] To Edit Saved Apply'
+export const TO_EDIT_SAVED_APPLY =
+    '[System OnOff Saved Apply] To Edit Saved Apply'
 
-export const TO_DETAIL_SAVED_APPLY = '[System OnOff Saved Apply] To Detail Saved Apply'
+export const TO_DETAIL_SAVED_APPLY =
+    '[System OnOff Saved Apply] To Detail Saved Apply'
 
-export const SUBMIT_SAVED_APPLY = '[System OnOff Saved Apply] Submit Saved Apply'
+export const SUBMIT_SAVED_APPLY =
+    '[System OnOff Saved Apply] Submit Saved Apply'
 export const SUBMIT_SAVED_APPLY_SUCCESS =
     '[System OnOff Saved Apply] Submit Saved Apply Success'
 export const SUBMIT_SAVED_APPLY_FAILURE =
     '[System OnOff Saved Apply] Submit Saved Apply Failure'
 
-export const DELETE_SAVED_APPLY = '[System OnOff Saved Apply] Delete Saved Apply'
+export const DELETE_SAVED_APPLY =
+    '[System OnOff Saved Apply] Delete Saved Apply'
 export const DELETE_SAVED_APPLY_SUCCESS =
     '[System OnOff Saved Apply] Delete Saved Apply Success'
 export const DELETE_SAVED_APPLY_FAILURE =

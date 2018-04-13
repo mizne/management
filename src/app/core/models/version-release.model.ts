@@ -1,6 +1,7 @@
 import * as uuid from 'uuid'
 import * as moment from 'moment'
 import { PaginationParams } from './pagination.model'
+import { ResourceInfo } from './resource-info.model'
 import { FormGroup, FormControl } from '@angular/forms'
 import {
     ResourceType,
@@ -13,7 +14,7 @@ import {
 export class VersionReleaseApply {
     id: string
     applyInfo: ApplyInfo
-    resources: ApplyResource[]
+    resources: ResourceInfo[]
     approvers: Approver[]
     createdAt: string
 
@@ -24,7 +25,7 @@ export class VersionReleaseApply {
         return Array.from({ length: 3 }, (_, i) => ({
             id: uuid.v4(),
             applyInfo: ApplyInfo.generateFakeData(),
-            resources: ApplyResource.generateFakeDataItems(),
+            resources: ResourceInfo.generateFakeDataItems(),
             approvers: Approver.generateFakeDataItems(),
             createdAt: `createAt ${i}`,
             checked: false,
@@ -96,46 +97,6 @@ export class ApplyInfo {
     }
 }
 
-export class ApplyResource {
-    id?: string
-    tempID?: string
-    type: string
-    softwareType: string
-    softwareName: string
-    version: string
-    name: string
-    environment: string
-    applyCount: number
-    applyTime: Date
-    endTime: Date
-    remark: string
-
-    checked: boolean
-
-    static generateFakeDataItems(): ApplyResource[] {
-        return Array.from({ length: 3 }, (_, i) => ({
-            id: uuid.v4(),
-            type: ResourceType.generateFakeDataItems()[0].label,
-            softwareType: SoftwareType.generateFakeDataItems()[0].label,
-            softwareName: SoftwareName.generateFakeDataItems()[0].label,
-            version: SoftwareSpec.generateFakeDataItems()[0].label,
-            name: `name ${Math.random()
-                .toString()
-                .slice(0, 5)}`,
-            environment: UseEnvironment.generateFakeDataItems()[0].label,
-            applyCount: 2,
-            applyTime: new Date(),
-            endTime: moment()
-                .add(3, 'd')
-                .toDate(),
-            remark: `remark ${Math.random()
-                .toString()
-                .slice(0, 5)}`,
-            checked: false
-        }))
-    }
-}
-
 export interface FetchAddableApplyResourceParams extends PaginationParams {
     type: string
     name: string
@@ -194,7 +155,7 @@ export interface TabData {
     applyInfoForm: FormGroup
     fetchApproversLoading: boolean
     approvers: Approver[]
-    addedApplyResources: ApplyResource[]
+    addedApplyResources: ResourceInfo[]
     ensureEditLoading: boolean
     ensureEditText: string
 }

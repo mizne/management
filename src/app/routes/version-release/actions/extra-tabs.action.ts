@@ -3,9 +3,10 @@ import { Action } from '@ngrx/store'
 import {
     VersionReleaseApply,
     ApplyInfo,
-    ApplyResource,
     Approver
 } from '@core/models/version-release.model'
+import { ResourceInfo } from '@core/models/resource-info.model'
+
 
 export const FETCH_APPLY_INFO = '[Version Release Extra Tabs] Fetch Apply Info'
 export const FETCH_APPLY_INFO_SUCCESS =
@@ -92,7 +93,7 @@ export class AddApplyResourcesAction implements Action {
     readonly type = ADD_APPLY_RESOURCES
     constructor(
         public payload: {
-            applyResources: ApplyResource[]
+            applyResources: ResourceInfo[]
             tabIndex: number
         }
     ) {}
@@ -101,7 +102,7 @@ export class CreateApplyResourceAction implements Action {
     readonly type = CREATE_APPLY_RESOURCE
     constructor(
         public payload: {
-            applyResource: ApplyResource
+            applyResource: ResourceInfo
             tabIndex: number
         }
     ) {}
@@ -110,7 +111,7 @@ export class EditTempApplyResourceAction implements Action {
     readonly type = EDIT_TEMP_APPLY_RESOURCE
     constructor(
         public payload: {
-            resource: ApplyResource
+            resource: ResourceInfo
             tabIndex: number
         }
     ) {}

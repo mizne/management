@@ -1,10 +1,7 @@
 import { Action } from '@ngrx/store'
 
-import {
-    ApplyInfo,
-    ApplyResource,
-    Approver
-} from '@core/models/unified-apply.model'
+import { ApplyInfo, Approver } from '@core/models/unified-apply.model'
+import { ResourceInfo } from '@core/models/resource-info.model'
 
 export const FETCH_APPLY_INFO = '[Unified Apply] Fetch Apply Info'
 export const FETCH_APPLY_INFO_SUCCESS =
@@ -60,15 +57,15 @@ export class FetchApproversFailureAction implements Action {
 
 export class AddApplyResourcesAction implements Action {
     readonly type = ADD_APPLY_RESOURCES
-    constructor(public applyResources: ApplyResource[]) {}
+    constructor(public applyResources: ResourceInfo[]) {}
 }
 export class CreateApplyResourceAction implements Action {
     readonly type = CREATE_APPLY_RESOURCE
-    constructor(public applyResource: ApplyResource) {}
+    constructor(public applyResource: ResourceInfo) {}
 }
 export class EditTempApplyResourceAction implements Action {
     readonly type = EDIT_TEMP_APPLY_RESOURCE
-    constructor(public resource: ApplyResource) {}
+    constructor(public resource: ResourceInfo) {}
 }
 export class DeleteApplyResourceAction implements Action {
     readonly type = DELETE_APPLY_RESOURCE

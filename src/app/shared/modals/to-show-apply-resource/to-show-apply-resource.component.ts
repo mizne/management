@@ -5,7 +5,7 @@ import { Observable } from 'rxjs/Observable'
 
 import { DestroyService } from '@core/services/destroy.service'
 import { SystemLogger } from '@core/models/software-account.model'
-import { ApplyResource } from '@core/models/resource-apply.model'
+import { ResourceInfo } from '@core/models/resource-info.model'
 
 @Component({
     selector: 'app-to-show-apply-resource',
@@ -18,7 +18,7 @@ export class ToShowApplyResourceComponent implements OnInit {
         private destroyService: DestroyService
     ) {}
 
-    @Input() resource: ApplyResource
+    @Input() resource: ResourceInfo
 
     ngOnInit() {}
 

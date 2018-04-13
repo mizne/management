@@ -2,7 +2,6 @@ import * as fromExtraTabs from '../actions/extra-tabs.action'
 import * as fromSavedApply from '../actions/saved-apply.action'
 import {
     ApplyInfo,
-    ApplyResource,
     Approver,
     RequirementApply,
     TabOptions,

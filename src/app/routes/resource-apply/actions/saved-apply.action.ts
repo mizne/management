@@ -3,7 +3,6 @@ import { Action } from '@ngrx/store'
 import {
     RequirementApply,
     ApplyInfo,
-    ApplyResource,
     Approver
 } from '@core/models/resource-apply.model'
 import {
@@ -20,7 +19,8 @@ export const FETCH_SAVED_APPLIES_FAILURE =
 
 export const TO_EDIT_SAVED_APPLY = '[Resource Saved Apply] To Edit Saved Apply'
 
-export const TO_DETAIL_SAVED_APPLY = '[Resource Saved Apply] To Detail Saved Apply'
+export const TO_DETAIL_SAVED_APPLY =
+    '[Resource Saved Apply] To Detail Saved Apply'
 
 export const SUBMIT_SAVED_APPLY = '[Resource Saved Apply] Submit Saved Apply'
 export const SUBMIT_SAVED_APPLY_SUCCESS =

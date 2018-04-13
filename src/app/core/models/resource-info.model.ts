@@ -1,4 +1,5 @@
 import * as uuid from 'uuid'
+import * as moment from 'moment'
 
 export class ResourceType {
     id?: string
@@ -210,5 +211,45 @@ export class UseEnvironment {
         if (index >= 0) {
             UseEnvironment.cacheItems.splice(index, 1)
         }
+    }
+}
+
+export class ResourceInfo {
+    id?: string
+    tempID?: string
+    type: string
+    softwareType: string
+    softwareName: string
+    version: string
+    name: string
+    environment: string
+    applyCount: number
+    applyTime: Date
+    endTime: Date
+    remark: string
+
+    checked: boolean
+
+    static generateFakeDataItems(): ResourceInfo[] {
+        return Array.from({ length: 3 }, (_, i) => ({
+            id: uuid.v4(),
+            type: ResourceType.generateFakeDataItems()[0].label,
+            softwareType: SoftwareType.generateFakeDataItems()[0].label,
+            softwareName: SoftwareName.generateFakeDataItems()[0].label,
+            version: SoftwareSpec.generateFakeDataItems()[0].label,
+            name: `name ${Math.random()
+                .toString()
+                .slice(0, 5)}`,
+            environment: UseEnvironment.generateFakeDataItems()[0].label,
+            applyCount: 2,
+            applyTime: new Date(),
+            endTime: moment()
+                .add(3, 'd')
+                .toDate(),
+            remark: `remark ${Math.random()
+                .toString()
+                .slice(0, 5)}`,
+            checked: false
+        }))
     }
 }

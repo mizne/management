@@ -3,13 +3,14 @@ import { Action } from '@ngrx/store'
 import { PaginationParams } from '@core/models/pagination.model'
 import {
     ApplyInfo,
-    ApplyResource,
     Approver,
     FetchAddableApplyResourceParams,
     defaultFetchAddableApplyResourceParams,
     FetchAddableApplyResourceCountParams,
     defaultFetchAddableApplyResourceCountParams
 } from '@core/models/version-release.model'
+import { ResourceInfo } from '@core/models/resource-info.model'
+
 
 export const FETCH_ADDABLE_APPLY_RESOURCE =
     '[Version Release To Add Apply Resource] Fetch Addable Apply Resource'
@@ -36,7 +37,7 @@ export class FetchAddableApplyResourceAction implements Action {
 }
 export class FetchAddableApplyResourceSuccessAction implements Action {
     readonly type = FETCH_ADDABLE_APPLY_RESOURCE_SUCCESS
-    constructor(public resources: ApplyResource[]) { }
+    constructor(public resources: ResourceInfo[]) { }
 }
 export class FetchAddableApplyResourceFailureAction implements Action {
     readonly type = FETCH_ADDABLE_APPLY_RESOURCE_FAILURE

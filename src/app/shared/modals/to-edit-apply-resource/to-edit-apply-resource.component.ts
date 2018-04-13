@@ -5,7 +5,7 @@ import { Subject } from 'rxjs/Subject'
 import { Observable } from 'rxjs/Observable'
 
 import { DestroyService } from '@core/services/destroy.service'
-import { ApplyResource } from '@core/models/resource-apply.model'
+import { ResourceInfo } from '@core/models/resource-info.model'
 
 import {
     ResourceType,
@@ -22,7 +22,7 @@ import {
 })
 export class ToEditApplyResourceComponent implements OnInit {
     form: FormGroup
-    _resource: ApplyResource
+    _resource: ResourceInfo
 
     @Input()
     set applyResourceForSelect(v: any) {
@@ -45,7 +45,7 @@ export class ToEditApplyResourceComponent implements OnInit {
     ) {}
 
     @Input()
-    set resource(v: ApplyResource) {
+    set resource(v: ResourceInfo) {
         this._resource = v
         if (this.form) {
             this.patchForm()

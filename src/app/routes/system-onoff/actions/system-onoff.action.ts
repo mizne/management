@@ -3,12 +3,11 @@ import { Action } from '@ngrx/store'
 import {
     SystemOnOffApply,
     ApplyInfo,
-    ApplyResource,
     Approver
 } from '@core/models/system-onoff.model'
+import { ResourceInfo } from '@core/models/resource-info.model'
 
-export const SWITCH_APPLY_TYPE =
-    '[System OnOff Apply] Switch Apply Type'
+export const SWITCH_APPLY_TYPE = '[System OnOff Apply] Switch Apply Type'
 
 export const FETCH_APPLY_INFO = '[System OnOff Apply] Fetch Apply Info'
 export const FETCH_APPLY_INFO_SUCCESS =
@@ -22,8 +21,7 @@ export const FETCH_APPROVERS_SUCCESS =
 export const FETCH_APPROVERS_FAILURE =
     '[System OnOff Apply] Fetch Approver Failure'
 
-export const ADD_APPLY_RESOURCES =
-    '[System OnOff Apply] Add Apply Resources'
+export const ADD_APPLY_RESOURCES = '[System OnOff Apply] Add Apply Resources'
 export const CREATE_APPLY_RESOURCE =
     '[System OnOff Apply] Create Apply Resource'
 export const EDIT_TEMP_APPLY_RESOURCE =
@@ -79,15 +77,15 @@ export class FetchApproversFailureAction implements Action {
 
 export class AddApplyResourcesAction implements Action {
     readonly type = ADD_APPLY_RESOURCES
-    constructor(public applyResources: ApplyResource[]) {}
+    constructor(public applyResources: ResourceInfo[]) {}
 }
 export class CreateApplyResourceAction implements Action {
     readonly type = CREATE_APPLY_RESOURCE
-    constructor(public applyResource: ApplyResource) {}
+    constructor(public applyResource: ResourceInfo) {}
 }
 export class EditTempApplyResourceAction implements Action {
     readonly type = EDIT_TEMP_APPLY_RESOURCE
-    constructor(public resource: ApplyResource) {}
+    constructor(public resource: ResourceInfo) {}
 }
 export class DeleteApplyResourceAction implements Action {
     readonly type = DELETE_APPLY_RESOURCE

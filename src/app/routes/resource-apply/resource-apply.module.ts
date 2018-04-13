@@ -8,8 +8,6 @@ import { effects } from './effects'
 import { reducers } from './reducers'
 import { services } from './services'
 
-import { modals } from './modals'
-
 export const routes: Routes = [
     {
         path: '',
@@ -25,8 +23,8 @@ export const routes: Routes = [
         EffectsModule.forFeature(effects)
     ],
     exports: [],
-    declarations: [ResourceApplyComponent, ...modals],
+    declarations: [ResourceApplyComponent],
     providers: [...services],
-    entryComponents: [...modals]
+    entryComponents: []
 })
 export class ResourceApplyModule { }

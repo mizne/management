@@ -1,17 +1,18 @@
 import * as fromUnifiedApply from '../actions/unified-apply.action'
 import {
     ApplyInfo,
-    ApplyResource,
     Approver,
     UnifiedApply
 } from '@core/models/unified-apply.model'
+import { ResourceInfo } from '@core/models/resource-info.model'
+
 
 export interface State {
     fetchApplyInfoLoading: boolean
     applyInfo: ApplyInfo
     fetchApproversLoading: boolean
     approvers: Approver[]
-    addedApplyResources: ApplyResource[]
+    addedApplyResources: ResourceInfo[]
     saveOrSubmitLoading: boolean
     saveOrSubmitText: string
 }

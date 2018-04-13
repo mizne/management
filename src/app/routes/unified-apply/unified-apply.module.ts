@@ -14,15 +14,12 @@ import { ToAddApplyResourceEffects } from './effects/to-add-apply-resource.effec
 import { reducers } from './reducers'
 import { UnifiedApplyService } from './services/unified-apply.service'
 
-import { ToAddApplyResourceComponent } from './modals/to-add-apply-resource/to-add-apply-resource.component'
-
 export const routes: Routes = [
     {
         path: '',
         component: UnifiedApplyComponent
     }
 ]
-const modals = [ToAddApplyResourceComponent]
 @NgModule({
     imports: [
         SharedModule,
@@ -37,8 +34,8 @@ const modals = [ToAddApplyResourceComponent]
         ])
     ],
     exports: [],
-    declarations: [UnifiedApplyComponent, ...modals],
+    declarations: [UnifiedApplyComponent],
     providers: [UnifiedApplyService],
-    entryComponents: [...modals]
+    entryComponents: []
 })
 export class UnifiedApplyModule {}

@@ -1,17 +1,17 @@
 import * as fromRequirementApply from '../actions/requirement-apply.action'
 import {
     ApplyInfo,
-    ApplyResource,
     Approver,
     RequirementApply
 } from '@core/models/resource-apply.model'
+import { ResourceInfo } from '@core/models/resource-info.model'
 
 export interface State {
     fetchApplyInfoLoading: boolean
     applyInfo: ApplyInfo
     fetchApproversLoading: boolean
     approvers: Approver[]
-    addedApplyResources: ApplyResource[]
+    addedApplyResources: ResourceInfo[]
     saveOrSubmitLoading: boolean
     saveOrSubmitText: string
 
