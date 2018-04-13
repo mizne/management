@@ -8,7 +8,7 @@ import { ResourceApplyService } from '../services'
 import { NzNotificationService } from 'ng-zorro-antd'
 import { Store } from '@ngrx/store'
 import { State } from '../reducers'
-import { switchMap, map, catchError, tap, concatMap } from 'rxjs/operators';
+import { switchMap, map, catchError, tap, concatMap } from 'rxjs/operators'
 
 @Injectable()
 export class SavedApplyEffects {
@@ -16,13 +16,24 @@ export class SavedApplyEffects {
     fetchSavedApplies$ = this.actions$
         .ofType(fromSavedApply.FETCH_SAVED_APPLIES)
         .pipe(
-            switchMap(() => this.resourceApplyService.fetchRequirementApplies()),
-            map(applies => new fromSavedApply.FetchSavedAppliesSuccessAction(
-                applies
-            )),
-            catchError(() => of(new fromSavedApply.FetchSavedAppliesFailureAction()))
+            switchMap(() =>
+                this.resourceApplyService
+                    .fetchRequirementApplies()
+                    .pipe(
+                        map(
+                            applies =>
+                                new fromSavedApply.FetchSavedAppliesSuccessAction(
+                                    applies
+                                )
+                        ),
+                        catchError(() =>
+                            of(
+                                new fromSavedApply.FetchSavedAppliesFailureAction()
+                            )
+                        )
+                    )
+            )
         )
-
 
     @Effect({ dispatch: false })
     fetchSavedAppliesSuccess$ = this.actions$
@@ -41,7 +52,10 @@ export class SavedApplyEffects {
         .ofType(fromSavedApply.FETCH_SAVED_APPLIES_FAILURE)
         .pipe(
             tap(() => {
-                this.notify.error(`获取已保存申请`, `啊哦，获取已保存申请失败！`)
+                this.notify.error(
+                    `获取已保存申请`,
+                    `啊哦，获取已保存申请失败！`
+                )
             })
         )
 
@@ -49,15 +63,25 @@ export class SavedApplyEffects {
     submitSavedApplies$ = this.actions$
         .ofType(fromSavedApply.SUBMIT_SAVED_APPLY)
         .pipe(
-            map((action: fromSavedApply.SubmitSavedApplyAction) => action.apply),
-            switchMap(apply => this.resourceApplyService.submitRequirementApply(apply)),
-            concatMap(() => [
-                new fromSavedApply.SubmitSavedApplySuccessAction(),
-                new fromSavedApply.FetchSavedAppliesAction()
-            ]),
-            catchError(() => of(new fromSavedApply.SubmitSavedApplyFailureAction()))
+            map(
+                (action: fromSavedApply.SubmitSavedApplyAction) => action.apply
+            ),
+            switchMap(apply =>
+                this.resourceApplyService
+                    .submitRequirementApply(apply)
+                    .pipe(
+                        concatMap(() => [
+                            new fromSavedApply.SubmitSavedApplySuccessAction(),
+                            new fromSavedApply.FetchSavedAppliesAction()
+                        ]),
+                        catchError(() =>
+                            of(
+                                new fromSavedApply.SubmitSavedApplyFailureAction()
+                            )
+                        )
+                    )
+            )
         )
-
 
     @Effect({ dispatch: false })
     submitSavedAppliesSuccess$ = this.actions$
@@ -81,15 +105,25 @@ export class SavedApplyEffects {
     deleteSavedApplies$ = this.actions$
         .ofType(fromSavedApply.DELETE_SAVED_APPLY)
         .pipe(
-            map((action: fromSavedApply.DeleteSavedApplyAction) => action.apply),
-            switchMap(apply => this.resourceApplyService.deleteSavedApply(apply)),
-            concatMap(() => [
-                new fromSavedApply.DeleteSavedApplySuccessAction(),
-                new fromSavedApply.FetchSavedAppliesAction()
-            ]),
-            catchError(() => of(new fromSavedApply.DeleteSavedApplyFailureAction()))
+            map(
+                (action: fromSavedApply.DeleteSavedApplyAction) => action.apply
+            ),
+            switchMap(apply =>
+                this.resourceApplyService
+                    .deleteSavedApply(apply)
+                    .pipe(
+                        concatMap(() => [
+                            new fromSavedApply.DeleteSavedApplySuccessAction(),
+                            new fromSavedApply.FetchSavedAppliesAction()
+                        ]),
+                        catchError(() =>
+                            of(
+                                new fromSavedApply.DeleteSavedApplyFailureAction()
+                            )
+                        )
+                    )
+            )
         )
-
 
     @Effect({ dispatch: false })
     deleteSavedAppliesSuccess$ = this.actions$
@@ -114,5 +148,5 @@ export class SavedApplyEffects {
         private resourceApplyService: ResourceApplyService,
         private notify: NzNotificationService,
         private store: Store<State>
-    ) { }
+    ) {}
 }

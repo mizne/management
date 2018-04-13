@@ -23,18 +23,21 @@ export class VirtualServerAccountEffects {
             ),
             switchMap(params =>
                 this.serverAccountService.fetchVirtualServerAccounts(params)
-            ),
-            map(
-                accounts =>
-                    new fromVirtualServerAccount.FetchVirtualServerAccountsSuccessAction(
-                        accounts
+                .pipe(
+                    map(
+                        accounts =>
+                            new fromVirtualServerAccount.FetchVirtualServerAccountsSuccessAction(
+                                accounts
+                            )
+                    ),
+                    catchError(() =>
+                        of(
+                            new fromVirtualServerAccount.FetchVirtualServerAccountsFailureAction()
+                        )
                     )
-            ),
-            catchError(() =>
-                of(
-                    new fromVirtualServerAccount.FetchVirtualServerAccountsFailureAction()
                 )
-            )
+            ),
+            
         )
 
     @Effect()
@@ -49,19 +52,21 @@ export class VirtualServerAccountEffects {
             switchMap(searchText =>
                 this.serverAccountService.fetchVirtualServerAccountsCount(
                     searchText
-                )
-            ),
-            map(
-                count =>
-                    new fromVirtualServerAccount.FetchVirtualServerAccountsCountSuccessAction(
-                        count
+                ).pipe(
+                    map(
+                        count =>
+                            new fromVirtualServerAccount.FetchVirtualServerAccountsCountSuccessAction(
+                                count
+                            )
+                    ),
+                    catchError(() =>
+                        of(
+                            new fromVirtualServerAccount.FetchVirtualServerAccountsCountFailureAction()
+                        )
                     )
-            ),
-            catchError(() =>
-                of(
-                    new fromVirtualServerAccount.FetchVirtualServerAccountsCountFailureAction()
                 )
-            )
+            ),
+            
         )
 
     // TODO 新增完的查询逻辑
@@ -76,17 +81,20 @@ export class VirtualServerAccountEffects {
             ),
             switchMap(account =>
                 this.serverAccountService.createVirtualServerAccount(account)
-            ),
-            concatMap(() => [
-                new fromVirtualServerAccount.CreateVirtualServerAccountSuccessAction(),
-                new fromVirtualServerAccount.FetchVirtualServerAccountsAction(),
-                new fromVirtualServerAccount.FetchVirtualServerAccountsCountAction()
-            ]),
-            catchError(() =>
-                of(
-                    new fromVirtualServerAccount.CreateVirtualServerAccountFailureAction()
+                .pipe(
+                    concatMap(() => [
+                        new fromVirtualServerAccount.CreateVirtualServerAccountSuccessAction(),
+                        new fromVirtualServerAccount.FetchVirtualServerAccountsAction(),
+                        new fromVirtualServerAccount.FetchVirtualServerAccountsCountAction()
+                    ]),
+                    catchError(() =>
+                        of(
+                            new fromVirtualServerAccount.CreateVirtualServerAccountFailureAction()
+                        )
+                    )
                 )
-            )
+            ),
+            
         )
 
     @Effect({ dispatch: false })
@@ -125,16 +133,19 @@ export class VirtualServerAccountEffects {
             ),
             switchMap(account =>
                 this.serverAccountService.editVirtualServerAccount(account)
-            ),
-            concatMap(() => [
-                new fromVirtualServerAccount.EditVirtualServerAccountSuccessAction(),
-                new fromVirtualServerAccount.FetchVirtualServerAccountsAction()
-            ]),
-            catchError(() =>
-                of(
-                    new fromVirtualServerAccount.EditVirtualServerAccountFailureAction()
+                .pipe(
+                    concatMap(() => [
+                        new fromVirtualServerAccount.EditVirtualServerAccountSuccessAction(),
+                        new fromVirtualServerAccount.FetchVirtualServerAccountsAction()
+                    ]),
+                    catchError(() =>
+                        of(
+                            new fromVirtualServerAccount.EditVirtualServerAccountFailureAction()
+                        )
+                    )
                 )
-            )
+            ),
+            
         )
 
     @Effect({ dispatch: false })

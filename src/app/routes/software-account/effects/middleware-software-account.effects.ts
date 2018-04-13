@@ -23,11 +23,13 @@ export class MiddlewareSoftwareAccountEffects {
                     action: fromMiddlewareSoftwareAccount.FetchMiddlewareSoftwareAccountsAction
                 ) => action.payload
             ),
-            switchMap(params => this.softwareAccountService.fetchMiddlewareSoftwareAccounts(params)),
-            map(accounts => new fromMiddlewareSoftwareAccount.FetchMiddlewareSoftwareAccountsSuccessAction(
-                accounts
+            switchMap(params => this.softwareAccountService.fetchMiddlewareSoftwareAccounts(params).pipe(
+                map(accounts => new fromMiddlewareSoftwareAccount.FetchMiddlewareSoftwareAccountsSuccessAction(
+                    accounts
+                )),
+                catchError(() => of(new fromMiddlewareSoftwareAccount.FetchMiddlewareSoftwareAccountsFailureAction()))
             )),
-            catchError(() => of(new fromMiddlewareSoftwareAccount.FetchMiddlewareSoftwareAccountsFailureAction()))
+            
         )
 
     @Effect()
@@ -41,11 +43,13 @@ export class MiddlewareSoftwareAccountEffects {
                     action: fromMiddlewareSoftwareAccount.FetchMiddlewareSoftwareAccountsCountAction
                 ) => action.searchText
             ),
-            switchMap(searchText => this.softwareAccountService.fetchMiddlewareSoftwareAccountsCount(searchText)),
-            map((count) => new fromMiddlewareSoftwareAccount.FetchMiddlewareSoftwareAccountsCountSuccessAction(
-                count
+            switchMap(searchText => this.softwareAccountService.fetchMiddlewareSoftwareAccountsCount(searchText).pipe(
+                map((count) => new fromMiddlewareSoftwareAccount.FetchMiddlewareSoftwareAccountsCountSuccessAction(
+                    count
+                )),
+                catchError(() => of(new fromMiddlewareSoftwareAccount.FetchMiddlewareSoftwareAccountsCountFailureAction()))
             )),
-            catchError(() => of(new fromMiddlewareSoftwareAccount.FetchMiddlewareSoftwareAccountsCountFailureAction()))
+            
         )
 
     // TODO 新增完的查询逻辑
@@ -60,13 +64,15 @@ export class MiddlewareSoftwareAccountEffects {
                     action: fromMiddlewareSoftwareAccount.CreateMiddlewareSoftwareAccountAction
                 ) => action.account
             ),
-            switchMap(account => this.softwareAccountService.createMiddlewareSoftwareAccount(account)),
-            concatMap(() => [
-                new fromMiddlewareSoftwareAccount.CreateMiddlewareSoftwareAccountSuccessAction(),
-                new fromMiddlewareSoftwareAccount.FetchMiddlewareSoftwareAccountsAction(),
-                new fromMiddlewareSoftwareAccount.FetchMiddlewareSoftwareAccountsCountAction()
-            ]),
-            catchError(() => of(new fromMiddlewareSoftwareAccount.CreateMiddlewareSoftwareAccountFailureAction()))
+            switchMap(account => this.softwareAccountService.createMiddlewareSoftwareAccount(account).pipe(
+                concatMap(() => [
+                    new fromMiddlewareSoftwareAccount.CreateMiddlewareSoftwareAccountSuccessAction(),
+                    new fromMiddlewareSoftwareAccount.FetchMiddlewareSoftwareAccountsAction(),
+                    new fromMiddlewareSoftwareAccount.FetchMiddlewareSoftwareAccountsCountAction()
+                ]),
+                catchError(() => of(new fromMiddlewareSoftwareAccount.CreateMiddlewareSoftwareAccountFailureAction()))
+            )),
+            
         )
 
     @Effect({ dispatch: false })
@@ -100,12 +106,14 @@ export class MiddlewareSoftwareAccountEffects {
                     action: fromMiddlewareSoftwareAccount.EditMiddlewareSoftwareAccountAction
                 ) => action.account
             ),
-            switchMap(account => this.softwareAccountService.editMiddlewareSoftwareAccount(account)),
-            concatMap(() => [
-                new fromMiddlewareSoftwareAccount.EditMiddlewareSoftwareAccountSuccessAction(),
-                new fromMiddlewareSoftwareAccount.FetchMiddlewareSoftwareAccountsAction()
-            ]),
-            catchError(() => of(new fromMiddlewareSoftwareAccount.EditMiddlewareSoftwareAccountFailureAction()))
+            switchMap(account => this.softwareAccountService.editMiddlewareSoftwareAccount(account).pipe(
+                concatMap(() => [
+                    new fromMiddlewareSoftwareAccount.EditMiddlewareSoftwareAccountSuccessAction(),
+                    new fromMiddlewareSoftwareAccount.FetchMiddlewareSoftwareAccountsAction()
+                ]),
+                catchError(() => of(new fromMiddlewareSoftwareAccount.EditMiddlewareSoftwareAccountFailureAction()))
+            )),
+            
         )
 
     @Effect({ dispatch: false })

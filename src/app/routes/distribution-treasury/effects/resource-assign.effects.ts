@@ -16,14 +16,26 @@ export class ResourceAssignEffects {
     fetchResourceUseInfoes$ = this.actions$
         .ofType(fromResourceAssign.FETCH_RESOURCE_USE_INFOES)
         .pipe(
-            map((action: fromResourceAssign.FetchResourceUseInfoesAction) =>
-                action.payload),
-            switchMap((params) => this.distributionTreasuryService.fetchResourceUseInfoes(params)),
-            map(accounts =>
-                new fromResourceAssign.FetchResourceUseInfoesSuccessAction(
-                    accounts
-                ),
-                catchError(() => of(new fromResourceAssign.FetchResourceUseInfoesFailureAction()))
+            map(
+                (action: fromResourceAssign.FetchResourceUseInfoesAction) =>
+                    action.payload
+            ),
+            switchMap(params =>
+                this.distributionTreasuryService
+                    .fetchResourceUseInfoes(params)
+                    .pipe(
+                        map(
+                            accounts =>
+                                new fromResourceAssign.FetchResourceUseInfoesSuccessAction(
+                                    accounts
+                                ),
+                            catchError(() =>
+                                of(
+                                    new fromResourceAssign.FetchResourceUseInfoesFailureAction()
+                                )
+                            )
+                        )
+                    )
             )
         )
 
@@ -31,14 +43,27 @@ export class ResourceAssignEffects {
     fetchResourceUseInfoesCount$ = this.actions$
         .ofType(fromResourceAssign.FETCH_RESOURCE_USE_INFOES_COUNT)
         .pipe(
-            map((action: fromResourceAssign.FetchResourceUseInfoesCountAction) =>
-                action.params),
-            switchMap((params) => this.distributionTreasuryService.fetchResourceUseInfoesCount(params)),
-            map(count =>
-                new fromResourceAssign.FetchResourceUseInfoesCountSuccessAction(
-                    count
-                ),
-                catchError(() => of(new fromResourceAssign.FetchResourceUseInfoesCountFailureAction()))
+            map(
+                (
+                    action: fromResourceAssign.FetchResourceUseInfoesCountAction
+                ) => action.params
+            ),
+            switchMap(params =>
+                this.distributionTreasuryService
+                    .fetchResourceUseInfoesCount(params)
+                    .pipe(
+                        map(
+                            count =>
+                                new fromResourceAssign.FetchResourceUseInfoesCountSuccessAction(
+                                    count
+                                )
+                        ),
+                        catchError(() =>
+                            of(
+                                new fromResourceAssign.FetchResourceUseInfoesCountFailureAction()
+                            )
+                        )
+                    )
             )
         )
 
@@ -47,18 +72,26 @@ export class ResourceAssignEffects {
     editResourceUseInfo$ = this.actions$
         .ofType(fromResourceAssign.EDIT_RESOURCE_USE_INFO)
         .pipe(
-            map((action: fromResourceAssign.EditResourceUseInfoAction) =>
-                action.resourceUseInfo),
-            switchMap((params) => this.distributionTreasuryService.editResourceUseInfo(params)),
-            concatMap(count => [
-                new fromResourceAssign.EditResourceUseInfouccessAction(),
-                new fromResourceAssign.FetchResourceUseInfoesAction()
-            ],
-                catchError(() => of(new fromResourceAssign.EditResourceUseInfoFailureAction()))
+            map(
+                (action: fromResourceAssign.EditResourceUseInfoAction) =>
+                    action.resourceUseInfo
+            ),
+            switchMap(params =>
+                this.distributionTreasuryService
+                    .editResourceUseInfo(params)
+                    .pipe(
+                        concatMap(count => [
+                            new fromResourceAssign.EditResourceUseInfouccessAction(),
+                            new fromResourceAssign.FetchResourceUseInfoesAction()
+                        ]),
+                        catchError(() =>
+                            of(
+                                new fromResourceAssign.EditResourceUseInfoFailureAction()
+                            )
+                        )
+                    )
             )
         )
-
-
 
     @Effect({ dispatch: false })
     editResourceUseInfoSuccess$ = this.actions$
@@ -72,7 +105,6 @@ export class ResourceAssignEffects {
             })
         )
 
-
     @Effect({ dispatch: false })
     editResourceUseInfoFailure$ = this.actions$
         .ofType(fromResourceAssign.EDIT_RESOURCE_USE_INFO_FAILURE)
@@ -85,11 +117,10 @@ export class ResourceAssignEffects {
             })
         )
 
-
     constructor(
         private actions$: Actions,
         private distributionTreasuryService: DistributionTreasuryService,
         private notify: NzNotificationService,
         private store: Store<State>
-    ) { }
+    ) {}
 }

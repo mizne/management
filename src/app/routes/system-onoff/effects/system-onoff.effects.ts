@@ -38,19 +38,21 @@ export class SystemOnOffEffects {
             switchMap(applyType => {
                 return this.resourceApplyService
                     .fetchApplyInfo(applyType)
-
-            }),
-            map(
-                applyInfo =>
-                    new fromSystemOnOff.FetchApplyInfoSuccessAction(
-                        applyInfo
+                    .pipe(
+                        map(
+                            applyInfo =>
+                                new fromSystemOnOff.FetchApplyInfoSuccessAction(
+                                    applyInfo
+                                )
+                        ),
+                        catchError(e =>
+                            of(
+                                new fromSystemOnOff.FetchApplyInfoFailureAction()
+                            )
+                        )
                     )
-            ),
-            catchError(e =>
-                of(
-                    new fromSystemOnOff.FetchApplyInfoFailureAction()
-                )
-            )
+            }),
+            
         )
 
     @Effect({ dispatch: false })
@@ -68,19 +70,21 @@ export class SystemOnOffEffects {
             switchMap(applyType => {
                 return this.resourceApplyService
                     .fetchApprovers(applyType)
-
-            }),
-            map(
-                approvers =>
-                    new fromSystemOnOff.FetchApproversSuccessAction(
-                        approvers
+                    .pipe(
+                        map(
+                            approvers =>
+                                new fromSystemOnOff.FetchApproversSuccessAction(
+                                    approvers
+                                )
+                        ),
+                        catchError(e =>
+                            of(
+                                new fromSystemOnOff.FetchApproversFailureAction()
+                            )
+                        )
                     )
-            ),
-            catchError(e =>
-                of(
-                    new fromSystemOnOff.FetchApproversFailureAction()
-                )
-            )
+            }),
+            
         )
 
     @Effect({ dispatch: false })
@@ -116,16 +120,19 @@ export class SystemOnOffEffects {
             switchMap(apply => {
                 return this.resourceApplyService
                     .saveSystemOnOffApply(apply)
+                    .pipe(
+                        map(
+                            () =>
+                                new fromSystemOnOff.SaveSystemOnOffApplySuccessAction()
+                        ),
+                        catchError(() =>
+                            of(
+                                new fromSystemOnOff.SaveSystemOnOffApplyFailureAction()
+                            )
+                        )
+                    )
             }),
-            map(
-                () =>
-                    new fromSystemOnOff.SaveSystemOnOffApplySuccessAction()
-            ),
-            catchError(() =>
-                of(
-                    new fromSystemOnOff.SaveSystemOnOffApplyFailureAction()
-                )
-            )
+            
         )
 
     @Effect({ dispatch: false })
@@ -168,16 +175,19 @@ export class SystemOnOffEffects {
             switchMap(apply => {
                 return this.resourceApplyService
                     .submitSystemOnOffApply(apply)
+                    .pipe(
+                        map(
+                            () =>
+                                new fromSystemOnOff.SubmitSystemOnOffApplySuccessAction()
+                        ),
+                        catchError(() =>
+                            of(
+                                new fromSystemOnOff.SumitSystemOnOffApplyFailureAction()
+                            )
+                        )
+                    )
             }),
-            map(
-                () =>
-                    new fromSystemOnOff.SubmitSystemOnOffApplySuccessAction()
-            ),
-            catchError(() =>
-                of(
-                    new fromSystemOnOff.SumitSystemOnOffApplyFailureAction()
-                )
-            )
+            
         )
 
     @Effect({ dispatch: false })

@@ -14,30 +14,51 @@ export class WorkspaceEffects {
     fetchActivities$ = this.actions$
         .ofType(fromWorkspace.FETCH_INVITATION_ACTIVITIES)
         .pipe(
-            switchMap(() => this.workspaceService.fetchActivities()),
-            map(activities =>
-                new fromWorkspace.FetchInvitationActivitiesSuccessAction(
-                    activities
-                )),
-            catchError(() => of(new fromWorkspace.FetchInvitationActivitiesFailureAction()))
+            switchMap(() =>
+                this.workspaceService
+                    .fetchActivities()
+                    .pipe(
+                        map(
+                            activities =>
+                                new fromWorkspace.FetchInvitationActivitiesSuccessAction(
+                                    activities
+                                )
+                        ),
+                        catchError(() =>
+                            of(
+                                new fromWorkspace.FetchInvitationActivitiesFailureAction()
+                            )
+                        )
+                    )
+            )
         )
-
 
     @Effect()
     fetchStatistics$ = this.actions$
         .ofType(fromWorkspace.FETCH_EXHIBITION_STATISTICS)
         .pipe(
-            switchMap(() => this.workspaceService.fetchStatistics()),
-            map(statistics =>
-                new fromWorkspace.FetchExhibitionStatisticsSuccessAction(
-                    statistics
-                )),
-            catchError(() => of(new fromWorkspace.FetchExhibitionStatisticsFailureAction()))
+            switchMap(() =>
+                this.workspaceService
+                    .fetchStatistics()
+                    .pipe(
+                        map(
+                            statistics =>
+                                new fromWorkspace.FetchExhibitionStatisticsSuccessAction(
+                                    statistics
+                                )
+                        ),
+                        catchError(() =>
+                            of(
+                                new fromWorkspace.FetchExhibitionStatisticsFailureAction()
+                            )
+                        )
+                    )
+            )
         )
 
     constructor(
         private actions$: Actions,
         private workspaceService: WorkspaceService,
         private notify: NzNotificationService
-    ) { }
+    ) {}
 }

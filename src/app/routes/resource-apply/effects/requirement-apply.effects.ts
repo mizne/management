@@ -13,7 +13,14 @@ import {
     getAddedApplyResources,
     getApprovers
 } from '../reducers'
-import { map, mergeMap, switchMap, catchError, tap, withLatestFrom } from 'rxjs/operators';
+import {
+    map,
+    mergeMap,
+    switchMap,
+    catchError,
+    tap,
+    withLatestFrom
+} from 'rxjs/operators'
 
 @Injectable()
 export class RequirementApplyEffects {
@@ -39,13 +46,23 @@ export class RequirementApplyEffects {
                 (action: fromRequirementApply.FetchApplyInfoAction) =>
                     action.applyType
             ),
-            switchMap(applyType => this.resourceApplyService.fetchApplyInfo(applyType)),
-            map(applyInfo => new fromRequirementApply.FetchApplyInfoSuccessAction(
-                applyInfo
-            )),
-            catchError(() => of(
-                new fromRequirementApply.FetchApplyInfoFailureAction()
-            ))
+            switchMap(applyType =>
+                this.resourceApplyService
+                    .fetchApplyInfo(applyType)
+                    .pipe(
+                        map(
+                            applyInfo =>
+                                new fromRequirementApply.FetchApplyInfoSuccessAction(
+                                    applyInfo
+                                )
+                        ),
+                        catchError(() =>
+                            of(
+                                new fromRequirementApply.FetchApplyInfoFailureAction()
+                            )
+                        )
+                    )
+            )
         )
 
     @Effect({ dispatch: false })
@@ -57,7 +74,6 @@ export class RequirementApplyEffects {
             })
         )
 
-
     @Effect()
     fetchApprovers$ = this.actions$
         .ofType(fromRequirementApply.FETCH_APPROVERS)
@@ -66,13 +82,23 @@ export class RequirementApplyEffects {
                 (action: fromRequirementApply.FetchApproversAction) =>
                     action.applyType
             ),
-            switchMap(applyType => this.resourceApplyService.fetchApprovers(applyType)),
-            map(approvers => new fromRequirementApply.FetchApproversSuccessAction(
-                approvers
-            )),
-            catchError(() => of(
-                new fromRequirementApply.FetchApproversFailureAction()
-            ))
+            switchMap(applyType =>
+                this.resourceApplyService
+                    .fetchApprovers(applyType)
+                    .pipe(
+                        map(
+                            approvers =>
+                                new fromRequirementApply.FetchApproversSuccessAction(
+                                    approvers
+                                )
+                        ),
+                        catchError(() =>
+                            of(
+                                new fromRequirementApply.FetchApproversFailureAction()
+                            )
+                        )
+                    )
+            )
         )
 
     @Effect({ dispatch: false })
@@ -80,7 +106,10 @@ export class RequirementApplyEffects {
         .ofType(fromRequirementApply.FETCH_APPROVERS_FAILURE)
         .pipe(
             tap(() => {
-                this.notify.error(`获取审批人信息`, '啊哦，获取审批人信息失败！')
+                this.notify.error(
+                    `获取审批人信息`,
+                    '啊哦，获取审批人信息失败！'
+                )
             })
         )
 
@@ -107,11 +136,21 @@ export class RequirementApplyEffects {
                     approvers
                 })
             ),
-            switchMap(apply => this.resourceApplyService.saveRequirementApply(apply)),
-            map(() => new fromRequirementApply.SaveRequirementApplySuccessAction()),
-            catchError(() => of(
-                new fromRequirementApply.SaveRequirementApplyFailureAction()
-            ))
+            switchMap(apply =>
+                this.resourceApplyService
+                    .saveRequirementApply(apply)
+                    .pipe(
+                        map(
+                            () =>
+                                new fromRequirementApply.SaveRequirementApplySuccessAction()
+                        ),
+                        catchError(() =>
+                            of(
+                                new fromRequirementApply.SaveRequirementApplyFailureAction()
+                            )
+                        )
+                    )
+            )
         )
 
     @Effect({ dispatch: false })
@@ -119,7 +158,10 @@ export class RequirementApplyEffects {
         .ofType(fromRequirementApply.SAVE_REQUIREMENT_APPLY_SUCCESS)
         .pipe(
             tap(() => {
-                this.notify.success(`保存需求信息`, '恭喜您，保存需求信息成功！')
+                this.notify.success(
+                    `保存需求信息`,
+                    '恭喜您，保存需求信息成功！'
+                )
             })
         )
 
@@ -155,9 +197,21 @@ export class RequirementApplyEffects {
                     approvers
                 })
             ),
-            switchMap(apply => this.resourceApplyService.submitRequirementApply(apply)),
-            map(() => new fromRequirementApply.SubmitRequirementApplySuccessAction()),
-            catchError(() => of(new fromRequirementApply.SumitRequirementApplyFailureAction()))
+            switchMap(apply =>
+                this.resourceApplyService
+                    .submitRequirementApply(apply)
+                    .pipe(
+                        map(
+                            () =>
+                                new fromRequirementApply.SubmitRequirementApplySuccessAction()
+                        ),
+                        catchError(() =>
+                            of(
+                                new fromRequirementApply.SumitRequirementApplyFailureAction()
+                            )
+                        )
+                    )
+            )
         )
 
     @Effect({ dispatch: false })
@@ -165,7 +219,10 @@ export class RequirementApplyEffects {
         .ofType(fromRequirementApply.SUBMIT_REQUIREMENT_APPLY_SUCCESS)
         .pipe(
             tap(() => {
-                this.notify.success(`提交需求信息`, '恭喜您，提交需求信息成功！')
+                this.notify.success(
+                    `提交需求信息`,
+                    '恭喜您，提交需求信息成功！'
+                )
             })
         )
 
@@ -183,5 +240,5 @@ export class RequirementApplyEffects {
         private resourceApplyService: ResourceApplyService,
         private notify: NzNotificationService,
         private store: Store<State>
-    ) { }
+    ) {}
 }

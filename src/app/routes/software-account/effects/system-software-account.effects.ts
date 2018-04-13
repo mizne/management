@@ -21,11 +21,13 @@ export class SystemSoftwareAccountEffects {
                     action: fromSystemSoftwareAccount.FetchSystemSoftwareAccountsAction
                 ) => action.payload
             ),
-            switchMap(params => this.softwareAccountService.fetchSystemSoftwareAccounts(params)),
-            map(accounts => new fromSystemSoftwareAccount.FetchSystemSoftwareAccountsSuccessAction(
-                accounts
+            switchMap(params => this.softwareAccountService.fetchSystemSoftwareAccounts(params).pipe(
+                map(accounts => new fromSystemSoftwareAccount.FetchSystemSoftwareAccountsSuccessAction(
+                    accounts
+                )),
+                catchError(() => of(new fromSystemSoftwareAccount.FetchSystemSoftwareAccountsFailureAction()))
             )),
-            catchError(() => of(new fromSystemSoftwareAccount.FetchSystemSoftwareAccountsFailureAction()))
+            
         )
 
     @Effect()
@@ -37,11 +39,13 @@ export class SystemSoftwareAccountEffects {
                     action: fromSystemSoftwareAccount.FetchSystemSoftwareAccountsCountAction
                 ) => action.searchText
             ),
-            switchMap(searchText => this.softwareAccountService.fetchSystemSoftwareAccountsCount(searchText)),
-            map(count => new fromSystemSoftwareAccount.FetchSystemSoftwareAccountsCountSuccessAction(
-                count
+            switchMap(searchText => this.softwareAccountService.fetchSystemSoftwareAccountsCount(searchText).pipe(
+                map(count => new fromSystemSoftwareAccount.FetchSystemSoftwareAccountsCountSuccessAction(
+                    count
+                )),
+                catchError(() => of(new fromSystemSoftwareAccount.FetchSystemSoftwareAccountsCountFailureAction()))
             )),
-            catchError(() => of(new fromSystemSoftwareAccount.FetchSystemSoftwareAccountsCountFailureAction()))
+            
         )
 
     // TODO 新增完的查询逻辑
@@ -54,13 +58,15 @@ export class SystemSoftwareAccountEffects {
                     action: fromSystemSoftwareAccount.CreateSystemSoftwareAccountAction
                 ) => action.account
             ),
-            switchMap(account => this.softwareAccountService.createSystemSoftwareAccount(account)),
-            concatMap(() => [
-                new fromSystemSoftwareAccount.CreateSystemSoftwareAccountSuccessAction(),
-                new fromSystemSoftwareAccount.FetchSystemSoftwareAccountsAction(),
-                new fromSystemSoftwareAccount.FetchSystemSoftwareAccountsCountAction()
-            ]),
-            catchError(() => of(new fromSystemSoftwareAccount.CreateSystemSoftwareAccountFailureAction()))
+            switchMap(account => this.softwareAccountService.createSystemSoftwareAccount(account).pipe(
+                concatMap(() => [
+                    new fromSystemSoftwareAccount.CreateSystemSoftwareAccountSuccessAction(),
+                    new fromSystemSoftwareAccount.FetchSystemSoftwareAccountsAction(),
+                    new fromSystemSoftwareAccount.FetchSystemSoftwareAccountsCountAction()
+                ]),
+                catchError(() => of(new fromSystemSoftwareAccount.CreateSystemSoftwareAccountFailureAction()))
+            )),
+            
         )
 
     @Effect({ dispatch: false })
@@ -97,12 +103,14 @@ export class SystemSoftwareAccountEffects {
                     action: fromSystemSoftwareAccount.EditSystemSoftwareAccountAction
                 ) => action.account
             ),
-            switchMap(account => this.softwareAccountService.editSystemSoftwareAccount(account)),
-            concatMap(() => [
-                new fromSystemSoftwareAccount.EditSystemSoftwareAccountSuccessAction(),
-                new fromSystemSoftwareAccount.FetchSystemSoftwareAccountsAction()
-            ]),
-            catchError(() => of(new fromSystemSoftwareAccount.EditSystemSoftwareAccountFailureAction()))
+            switchMap(account => this.softwareAccountService.editSystemSoftwareAccount(account).pipe(
+                concatMap(() => [
+                    new fromSystemSoftwareAccount.EditSystemSoftwareAccountSuccessAction(),
+                    new fromSystemSoftwareAccount.FetchSystemSoftwareAccountsAction()
+                ]),
+                catchError(() => of(new fromSystemSoftwareAccount.EditSystemSoftwareAccountFailureAction()))
+            )),
+            
         )
 
     @Effect({ dispatch: false })

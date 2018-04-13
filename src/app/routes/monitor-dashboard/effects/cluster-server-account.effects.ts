@@ -23,18 +23,21 @@ export class ClusterServerAccountEffects {
             ),
             switchMap(params =>
                 this.serverAccountService.fetchClusterServerAccounts(params)
-            ),
-            map(
-                accounts =>
-                    new fromClusterServerAccount.FetchClusterServerAccountsSuccessAction(
-                        accounts
+                .pipe(
+                    map(
+                        accounts =>
+                            new fromClusterServerAccount.FetchClusterServerAccountsSuccessAction(
+                                accounts
+                            )
+                    ),
+                    catchError(() =>
+                        of(
+                            new fromClusterServerAccount.FetchClusterServerAccountsFailureAction()
+                        )
                     )
-            ),
-            catchError(() =>
-                of(
-                    new fromClusterServerAccount.FetchClusterServerAccountsFailureAction()
                 )
-            )
+            ),
+            
         )
 
     @Effect()
@@ -49,19 +52,21 @@ export class ClusterServerAccountEffects {
             switchMap(searchText =>
                 this.serverAccountService.fetchClusterServerAccountsCount(
                     searchText
-                )
-            ),
-            map(
-                count =>
-                    new fromClusterServerAccount.FetchClusterServerAccountsCountSuccessAction(
-                        count
+                ).pipe(
+                    map(
+                        count =>
+                            new fromClusterServerAccount.FetchClusterServerAccountsCountSuccessAction(
+                                count
+                            )
+                    ),
+                    catchError(() =>
+                        of(
+                            new fromClusterServerAccount.FetchClusterServerAccountsCountFailureAction()
+                        )
                     )
-            ),
-            catchError(() =>
-                of(
-                    new fromClusterServerAccount.FetchClusterServerAccountsCountFailureAction()
                 )
-            )
+            ),
+            
         )
 
     // TODO 新增完的查询逻辑
@@ -76,17 +81,20 @@ export class ClusterServerAccountEffects {
             ),
             switchMap(account =>
                 this.serverAccountService.createClusterServerAccount(account)
-            ),
-            concatMap(() => [
-                new fromClusterServerAccount.CreateClusterServerAccountSuccessAction(),
-                new fromClusterServerAccount.FetchClusterServerAccountsAction(),
-                new fromClusterServerAccount.FetchClusterServerAccountsCountAction()
-            ]),
-            catchError(() =>
-                of(
-                    new fromClusterServerAccount.CreateClusterServerAccountFailureAction()
+                .pipe(
+                    concatMap(() => [
+                        new fromClusterServerAccount.CreateClusterServerAccountSuccessAction(),
+                        new fromClusterServerAccount.FetchClusterServerAccountsAction(),
+                        new fromClusterServerAccount.FetchClusterServerAccountsCountAction()
+                    ]),
+                    catchError(() =>
+                        of(
+                            new fromClusterServerAccount.CreateClusterServerAccountFailureAction()
+                        )
+                    )
                 )
-            )
+            ),
+            
         )
 
     @Effect({ dispatch: false })
@@ -124,17 +132,19 @@ export class ClusterServerAccountEffects {
                 ) => action.account
             ),
             switchMap(account =>
-                this.serverAccountService.editClusterServerAccount(account)
-            ),
-            concatMap(() => [
-                new fromClusterServerAccount.EditClusterServerAccountSuccessAction(),
-                new fromClusterServerAccount.FetchClusterServerAccountsAction()
-            ]),
-            catchError(() =>
-                of(
-                    new fromClusterServerAccount.EditClusterServerAccountFailureAction()
+                this.serverAccountService.editClusterServerAccount(account).pipe(
+                    concatMap(() => [
+                        new fromClusterServerAccount.EditClusterServerAccountSuccessAction(),
+                        new fromClusterServerAccount.FetchClusterServerAccountsAction()
+                    ]),
+                    catchError(() =>
+                        of(
+                            new fromClusterServerAccount.EditClusterServerAccountFailureAction()
+                        )
+                    )
                 )
-            )
+            ),
+            
         )
 
     @Effect({ dispatch: false })

@@ -28,19 +28,21 @@ export class ToAddApplyResourceEffects {
             switchMap(params => {
                 return this.versionReleaseApplyService
                     .fetchAddableApplyResources(params)
-
-            }),
-            map(
-                resources =>
-                    new fromToAddApplyResource.FetchAddableApplyResourceSuccessAction(
-                        resources
+                    .pipe(
+                        map(
+                            resources =>
+                                new fromToAddApplyResource.FetchAddableApplyResourceSuccessAction(
+                                    resources
+                                )
+                        ),
+                        catchError(() =>
+                            of(
+                                new fromToAddApplyResource.FetchAddableApplyResourceFailureAction()
+                            )
+                        )
                     )
-            ),
-            catchError(() =>
-                of(
-                    new fromToAddApplyResource.FetchAddableApplyResourceFailureAction()
-                )
-            )
+            }),
+            
         )
 
     @Effect()
@@ -55,19 +57,21 @@ export class ToAddApplyResourceEffects {
             switchMap(params => {
                 return this.versionReleaseApplyService
                     .fetchAddableApplyResourcesCount(params)
-
-            }),
-            map(
-                count =>
-                    new fromToAddApplyResource.FetchAddableApplyResourceCountSuccessAction(
-                        count
+                    .pipe(
+                        map(
+                            count =>
+                                new fromToAddApplyResource.FetchAddableApplyResourceCountSuccessAction(
+                                    count
+                                )
+                        ),
+                        catchError(() =>
+                            of(
+                                new fromToAddApplyResource.FetchAddableApplyResourceCountFailureAction()
+                            )
+                        )
                     )
-            ),
-            catchError(() =>
-                of(
-                    new fromToAddApplyResource.FetchAddableApplyResourceCountFailureAction()
-                )
-            )
+            }),
+            
         )
 
     constructor(

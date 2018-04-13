@@ -21,17 +21,19 @@ export class SystemLoggerListEffects {
                     action.payload
             ),
             switchMap(params =>
-                this.systemLoggerService.fetchSystemLoggers(params)
-            ),
-            map(
-                loggers =>
-                    new fromSystemLoggerList.FetchSystemLoggersSuccessAction(
-                        loggers
+                this.systemLoggerService.fetchSystemLoggers(params).pipe(
+                    map(
+                        loggers =>
+                            new fromSystemLoggerList.FetchSystemLoggersSuccessAction(
+                                loggers
+                            )
+                    ),
+                    catchError(() =>
+                        of(new fromSystemLoggerList.FetchSystemLoggersFailureAction())
                     )
+                )
             ),
-            catchError(() =>
-                of(new fromSystemLoggerList.FetchSystemLoggersFailureAction())
-            )
+            
         )
 
     @Effect()
@@ -44,18 +46,21 @@ export class SystemLoggerListEffects {
             ),
             switchMap(searchText =>
                 this.systemLoggerService.fetchSystemLoggersCount(searchText)
-            ),
-            map(
-                count =>
-                    new fromSystemLoggerList.FetchSystemLoggersCountSuccessAction(
-                        count
+                .pipe(
+                    map(
+                        count =>
+                            new fromSystemLoggerList.FetchSystemLoggersCountSuccessAction(
+                                count
+                            )
+                    ),
+                    catchError(() =>
+                        of(
+                            new fromSystemLoggerList.FetchSystemLoggersCountFailureAction()
+                        )
                     )
-            ),
-            catchError(() =>
-                of(
-                    new fromSystemLoggerList.FetchSystemLoggersCountFailureAction()
                 )
-            )
+            ),
+            
         )
 
     constructor(

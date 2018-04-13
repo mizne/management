@@ -22,18 +22,21 @@ export class ResourceFieldSettingsEffects {
                 ) => action.payload
             ),
             switchMap(params =>
-                this.resourceFieldSettingsService.fetchFieldSettings(params)
-            ),
-            map(
-                loggers =>
-                    new fromResourceFieldSettings.FetchResourceFieldSettingsSuccessAction(
-                        loggers
+                this.resourceFieldSettingsService
+                    .fetchFieldSettings(params)
+                    .pipe(
+                        map(
+                            loggers =>
+                                new fromResourceFieldSettings.FetchResourceFieldSettingsSuccessAction(
+                                    loggers
+                                )
+                        ),
+                        catchError(() =>
+                            of(
+                                new fromResourceFieldSettings.FetchResourceFieldSettingsFailureAction()
+                            )
+                        )
                     )
-            ),
-            catchError(() =>
-                of(
-                    new fromResourceFieldSettings.FetchResourceFieldSettingsFailureAction()
-                )
             )
         )
 
@@ -47,20 +50,21 @@ export class ResourceFieldSettingsEffects {
                 ) => action.searchText
             ),
             switchMap(searchText =>
-                this.resourceFieldSettingsService.fetchFieldSettingsCount(
-                    searchText
-                )
-            ),
-            map(
-                count =>
-                    new fromResourceFieldSettings.FetchResourceFieldSettingsCountSuccessAction(
-                        count
+                this.resourceFieldSettingsService
+                    .fetchFieldSettingsCount(searchText)
+                    .pipe(
+                        map(
+                            count =>
+                                new fromResourceFieldSettings.FetchResourceFieldSettingsCountSuccessAction(
+                                    count
+                                )
+                        ),
+                        catchError(() =>
+                            of(
+                                new fromResourceFieldSettings.FetchResourceFieldSettingsCountFailureAction()
+                            )
+                        )
                     )
-            ),
-            catchError(() =>
-                of(
-                    new fromResourceFieldSettings.FetchResourceFieldSettingsCountFailureAction()
-                )
             )
         )
 

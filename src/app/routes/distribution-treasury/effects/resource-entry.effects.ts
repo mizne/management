@@ -16,29 +16,54 @@ export class ResourceEntryEffects {
     fetchResourceInfoes$ = this.actions$
         .ofType(fromResourceEntry.FETCH_RESOURCE_INFOES)
         .pipe(
-            map((action: fromResourceEntry.FetchResourceInfoesAction) =>
-                action.payload),
-            switchMap((params) => this.distributionTreasuryService.fetchResourceInfoes(params)),
-            map(accounts =>
-                new fromResourceEntry.FetchResourceInfoesSuccessAction(
-                    accounts
-                )),
-            catchError(() => of(new fromResourceEntry.FetchResourceInfoesFailureAction()))
+            map(
+                (action: fromResourceEntry.FetchResourceInfoesAction) =>
+                    action.payload
+            ),
+            switchMap(params =>
+                this.distributionTreasuryService
+                    .fetchResourceInfoes(params)
+                    .pipe(
+                        map(
+                            accounts =>
+                                new fromResourceEntry.FetchResourceInfoesSuccessAction(
+                                    accounts
+                                )
+                        ),
+                        catchError(() =>
+                            of(
+                                new fromResourceEntry.FetchResourceInfoesFailureAction()
+                            )
+                        )
+                    )
+            )
         )
-
 
     @Effect()
     fetchResourceInfoesCount$ = this.actions$
         .ofType(fromResourceEntry.FETCH_RESOURCE_INFOES_COUNT)
         .pipe(
-            map((action: fromResourceEntry.FetchResourceInfoesCountAction) =>
-                action.params),
-            switchMap((params) => this.distributionTreasuryService.fetchResourceInfoesCount(params)),
-            map(count =>
-                new fromResourceEntry.FetchResourceInfoesCountSuccessAction(
-                    count
-                )),
-            catchError(() => of(new fromResourceEntry.FetchResourceInfoesCountFailureAction()))
+            map(
+                (action: fromResourceEntry.FetchResourceInfoesCountAction) =>
+                    action.params
+            ),
+            switchMap(params =>
+                this.distributionTreasuryService
+                    .fetchResourceInfoesCount(params)
+                    .pipe(
+                        map(
+                            count =>
+                                new fromResourceEntry.FetchResourceInfoesCountSuccessAction(
+                                    count
+                                )
+                        ),
+                        catchError(() =>
+                            of(
+                                new fromResourceEntry.FetchResourceInfoesCountFailureAction()
+                            )
+                        )
+                    )
+            )
         )
 
     // TODO 新增完的查询逻辑
@@ -46,24 +71,37 @@ export class ResourceEntryEffects {
     createResourceInfo$ = this.actions$
         .ofType(fromResourceEntry.CREATE_RESOURCE_INFO)
         .pipe(
-            map((action: fromResourceEntry.CreateResourceInfoAction) =>
-                action.resourceInfo),
-            switchMap((resourceInfo) => this.distributionTreasuryService.createResourceInfo(resourceInfo)),
-            concatMap(count => [
-                new fromResourceEntry.CreateResourceInfouccessAction(),
-                new fromResourceEntry.FetchResourceInfoesAction(),
-                new fromResourceEntry.FetchResourceInfoesCountAction()
-            ]),
-            catchError(() => of(new fromResourceEntry.CreateResourceInfoFailureAction()))
+            map(
+                (action: fromResourceEntry.CreateResourceInfoAction) =>
+                    action.resourceInfo
+            ),
+            switchMap(resourceInfo =>
+                this.distributionTreasuryService
+                    .createResourceInfo(resourceInfo)
+                    .pipe(
+                        concatMap(count => [
+                            new fromResourceEntry.CreateResourceInfouccessAction(),
+                            new fromResourceEntry.FetchResourceInfoesAction(),
+                            new fromResourceEntry.FetchResourceInfoesCountAction()
+                        ]),
+                        catchError(() =>
+                            of(
+                                new fromResourceEntry.CreateResourceInfoFailureAction()
+                            )
+                        )
+                    )
+            )
         )
-
 
     @Effect({ dispatch: false })
     createResourceInfoSuccess$ = this.actions$
         .ofType(fromResourceEntry.CREATE_RESOURCE_INFO_SUCCESS)
         .pipe(
             tap(() => {
-                this.notify.success(`新增资源信息`, `恭喜您，新增资源信息成功！`)
+                this.notify.success(
+                    `新增资源信息`,
+                    `恭喜您，新增资源信息成功！`
+                )
             })
         )
 
@@ -81,14 +119,25 @@ export class ResourceEntryEffects {
     editResourceInfo$ = this.actions$
         .ofType(fromResourceEntry.EDIT_RESOURCE_INFO)
         .pipe(
-            map((action: fromResourceEntry.EditResourceInfoAction) =>
-                action.resourceInfo),
-            switchMap((resourceInfo) => this.distributionTreasuryService.editResourceInfo(resourceInfo)),
-            concatMap(count => [
-                new fromResourceEntry.EditResourceInfouccessAction(),
-                new fromResourceEntry.FetchResourceInfoesAction()
-            ]),
-            catchError(() => of(new fromResourceEntry.EditResourceInfoFailureAction()))
+            map(
+                (action: fromResourceEntry.EditResourceInfoAction) =>
+                    action.resourceInfo
+            ),
+            switchMap(resourceInfo =>
+                this.distributionTreasuryService
+                    .editResourceInfo(resourceInfo)
+                    .pipe(
+                        concatMap(count => [
+                            new fromResourceEntry.EditResourceInfouccessAction(),
+                            new fromResourceEntry.FetchResourceInfoesAction()
+                        ]),
+                        catchError(() =>
+                            of(
+                                new fromResourceEntry.EditResourceInfoFailureAction()
+                            )
+                        )
+                    )
+            )
         )
 
     @Effect({ dispatch: false })
@@ -96,10 +145,12 @@ export class ResourceEntryEffects {
         .ofType(fromResourceEntry.EDIT_RESOURCE_INFO_SUCCESS)
         .pipe(
             tap(() => {
-                this.notify.success(`编辑资源信息`, `恭喜您，编辑资源信息成功！`)
+                this.notify.success(
+                    `编辑资源信息`,
+                    `恭喜您，编辑资源信息成功！`
+                )
             })
         )
-
 
     @Effect({ dispatch: false })
     editResourceInfoFailure$ = this.actions$
@@ -110,11 +161,10 @@ export class ResourceEntryEffects {
             })
         )
 
-
     constructor(
         private actions$: Actions,
         private distributionTreasuryService: DistributionTreasuryService,
         private notify: NzNotificationService,
         private store: Store<State>
-    ) { }
+    ) {}
 }

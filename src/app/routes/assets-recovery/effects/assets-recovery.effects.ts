@@ -20,14 +20,24 @@ export class AssetsRecoveryEffects {
                 (action: fromAssetsRecovery.FetchAssetsRecoveriesAction) =>
                     action.payload
             ),
-            switchMap(params => this.assetsRecoveryService.fetchAssetsRecoveries(params)),
-            map(assetsRecoveries =>
-                new fromAssetsRecovery.FetchAssetsRecoveriesSuccessAction(
-                    assetsRecoveries
-                )),
-            catchError(() => of(new fromAssetsRecovery.FetchAssetsRecoveriesFailureAction()))
+            switchMap(params =>
+                this.assetsRecoveryService
+                    .fetchAssetsRecoveries(params)
+                    .pipe(
+                        map(
+                            assetsRecoveries =>
+                                new fromAssetsRecovery.FetchAssetsRecoveriesSuccessAction(
+                                    assetsRecoveries
+                                )
+                        ),
+                        catchError(() =>
+                            of(
+                                new fromAssetsRecovery.FetchAssetsRecoveriesFailureAction()
+                            )
+                        )
+                    )
+            )
         )
-
 
     @Effect()
     fetchAssetsRecoveriesCount$ = this.actions$
@@ -37,12 +47,23 @@ export class AssetsRecoveryEffects {
                 (action: fromAssetsRecovery.FetchAssetsRecoveriesCountAction) =>
                     action.params
             ),
-            switchMap(params => this.assetsRecoveryService.fetchAssetsRecoveriesCount(params)),
-            map(count =>
-                new fromAssetsRecovery.FetchAssetsRecoveriesCountSuccessAction(
-                    count
-                )),
-            catchError(() => of(new fromAssetsRecovery.FetchAssetsRecoveriesCountFailureAction()))
+            switchMap(params =>
+                this.assetsRecoveryService
+                    .fetchAssetsRecoveriesCount(params)
+                    .pipe(
+                        map(
+                            count =>
+                                new fromAssetsRecovery.FetchAssetsRecoveriesCountSuccessAction(
+                                    count
+                                )
+                        ),
+                        catchError(() =>
+                            of(
+                                new fromAssetsRecovery.FetchAssetsRecoveriesCountFailureAction()
+                            )
+                        )
+                    )
+            )
         )
 
     // TODO 编辑完的查询逻辑
@@ -54,15 +75,22 @@ export class AssetsRecoveryEffects {
                 (action: fromAssetsRecovery.EnsureRecoveryAction) =>
                     action.assetsRecovery
             ),
-            switchMap(assetsRecovery => this.assetsRecoveryService.ensureRecovery(assetsRecovery)),
-            concatMap(() => [
-                new fromAssetsRecovery.EnsureRecoverySuccessAction(),
-                new fromAssetsRecovery.FetchAssetsRecoveriesAction()
-            ]),
-            catchError(() => of(new fromAssetsRecovery.EnsureRecoveryFailureAction()))
+            switchMap(assetsRecovery =>
+                this.assetsRecoveryService
+                    .ensureRecovery(assetsRecovery)
+                    .pipe(
+                        concatMap(() => [
+                            new fromAssetsRecovery.EnsureRecoverySuccessAction(),
+                            new fromAssetsRecovery.FetchAssetsRecoveriesAction()
+                        ]),
+                        catchError(() =>
+                            of(
+                                new fromAssetsRecovery.EnsureRecoveryFailureAction()
+                            )
+                        )
+                    )
+            )
         )
-
-
 
     @Effect({ dispatch: false })
     ensureRecoverySuccess$ = this.actions$
@@ -87,5 +115,5 @@ export class AssetsRecoveryEffects {
         private assetsRecoveryService: AssetsRecoveryService,
         private notify: NzNotificationService,
         private store: Store<State>
-    ) { }
+    ) {}
 }

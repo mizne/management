@@ -22,18 +22,21 @@ export class ServerTopologyEffects {
                 ) => action.payload
             ),
             switchMap(params =>
-                this.serverAccountService.fetchClusterServerAccounts(params)
-            ),
-            map(
-                accounts =>
-                    new fromClusterServerAccount.FetchClusterServerAccountsSuccessAction(
-                        accounts
+                this.serverAccountService
+                    .fetchClusterServerAccounts(params)
+                    .pipe(
+                        map(
+                            accounts =>
+                                new fromClusterServerAccount.FetchClusterServerAccountsSuccessAction(
+                                    accounts
+                                )
+                        ),
+                        catchError(() =>
+                            of(
+                                new fromClusterServerAccount.FetchClusterServerAccountsFailureAction()
+                            )
+                        )
                     )
-            ),
-            catchError(() =>
-                of(
-                    new fromClusterServerAccount.FetchClusterServerAccountsFailureAction()
-                )
             )
         )
 
@@ -47,20 +50,21 @@ export class ServerTopologyEffects {
                 ) => action.searchText
             ),
             switchMap(searchText =>
-                this.serverAccountService.fetchClusterServerAccountsCount(
-                    searchText
-                )
-            ),
-            map(
-                count =>
-                    new fromClusterServerAccount.FetchClusterServerAccountsCountSuccessAction(
-                        count
+                this.serverAccountService
+                    .fetchClusterServerAccountsCount(searchText)
+                    .pipe(
+                        map(
+                            count =>
+                                new fromClusterServerAccount.FetchClusterServerAccountsCountSuccessAction(
+                                    count
+                                )
+                        ),
+                        catchError(() =>
+                            of(
+                                new fromClusterServerAccount.FetchClusterServerAccountsCountFailureAction()
+                            )
+                        )
                     )
-            ),
-            catchError(() =>
-                of(
-                    new fromClusterServerAccount.FetchClusterServerAccountsCountFailureAction()
-                )
             )
         )
 
@@ -75,17 +79,20 @@ export class ServerTopologyEffects {
                 ) => action.account
             ),
             switchMap(account =>
-                this.serverAccountService.createClusterServerAccount(account)
-            ),
-            concatMap(() => [
-                new fromClusterServerAccount.CreateClusterServerAccountSuccessAction(),
-                new fromClusterServerAccount.FetchClusterServerAccountsAction(),
-                new fromClusterServerAccount.FetchClusterServerAccountsCountAction()
-            ]),
-            catchError(() =>
-                of(
-                    new fromClusterServerAccount.CreateClusterServerAccountFailureAction()
-                )
+                this.serverAccountService
+                    .createClusterServerAccount(account)
+                    .pipe(
+                        concatMap(() => [
+                            new fromClusterServerAccount.CreateClusterServerAccountSuccessAction(),
+                            new fromClusterServerAccount.FetchClusterServerAccountsAction(),
+                            new fromClusterServerAccount.FetchClusterServerAccountsCountAction()
+                        ]),
+                        catchError(() =>
+                            of(
+                                new fromClusterServerAccount.CreateClusterServerAccountFailureAction()
+                            )
+                        )
+                    )
             )
         )
 
@@ -124,16 +131,19 @@ export class ServerTopologyEffects {
                 ) => action.account
             ),
             switchMap(account =>
-                this.serverAccountService.editClusterServerAccount(account)
-            ),
-            concatMap(() => [
-                new fromClusterServerAccount.EditClusterServerAccountSuccessAction(),
-                new fromClusterServerAccount.FetchClusterServerAccountsAction()
-            ]),
-            catchError(() =>
-                of(
-                    new fromClusterServerAccount.EditClusterServerAccountFailureAction()
-                )
+                this.serverAccountService
+                    .editClusterServerAccount(account)
+                    .pipe(
+                        concatMap(() => [
+                            new fromClusterServerAccount.EditClusterServerAccountSuccessAction(),
+                            new fromClusterServerAccount.FetchClusterServerAccountsAction()
+                        ]),
+                        catchError(() =>
+                            of(
+                                new fromClusterServerAccount.EditClusterServerAccountFailureAction()
+                            )
+                        )
+                    )
             )
         )
 

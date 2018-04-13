@@ -23,18 +23,21 @@ export class PhysicalServerAccountEffects {
             ),
             switchMap(params =>
                 this.serverAccountService.fetchPhysicalServerAccounts(params)
-            ),
-            map(
-                accounts =>
-                    new fromPhysicalServerAccount.FetchPhysicalServerAccountsSuccessAction(
-                        accounts
+                .pipe(
+                    map(
+                        accounts =>
+                            new fromPhysicalServerAccount.FetchPhysicalServerAccountsSuccessAction(
+                                accounts
+                            )
+                    ),
+                    catchError(() =>
+                        of(
+                            new fromPhysicalServerAccount.FetchPhysicalServerAccountsFailureAction()
+                        )
                     )
-            ),
-            catchError(() =>
-                of(
-                    new fromPhysicalServerAccount.FetchPhysicalServerAccountsFailureAction()
                 )
-            )
+            ),
+            
         )
 
     @Effect()
@@ -49,19 +52,21 @@ export class PhysicalServerAccountEffects {
             switchMap(searchText =>
                 this.serverAccountService.fetchPhysicalServerAccountsCount(
                     searchText
-                )
-            ),
-            map(
-                count =>
-                    new fromPhysicalServerAccount.FetchPhysicalServerAccountsCountSuccessAction(
-                        count
+                ).pipe(
+                    map(
+                        count =>
+                            new fromPhysicalServerAccount.FetchPhysicalServerAccountsCountSuccessAction(
+                                count
+                            )
+                    ),
+                    catchError(() =>
+                        of(
+                            new fromPhysicalServerAccount.FetchPhysicalServerAccountsCountFailureAction()
+                        )
                     )
-            ),
-            catchError(() =>
-                of(
-                    new fromPhysicalServerAccount.FetchPhysicalServerAccountsCountFailureAction()
                 )
-            )
+            ),
+            
         )
 
     // TODO 新增完的查询逻辑
@@ -76,17 +81,20 @@ export class PhysicalServerAccountEffects {
             ),
             switchMap(account =>
                 this.serverAccountService.createPhysicalServerAccount(account)
-            ),
-            concatMap(() => [
-                new fromPhysicalServerAccount.CreatePhysicalServerAccountSuccessAction(),
-                new fromPhysicalServerAccount.FetchPhysicalServerAccountsAction(),
-                new fromPhysicalServerAccount.FetchPhysicalServerAccountsCountAction()
-            ]),
-            catchError(() =>
-                of(
-                    new fromPhysicalServerAccount.CreatePhysicalServerAccountFailureAction()
+                .pipe(
+                    concatMap(() => [
+                        new fromPhysicalServerAccount.CreatePhysicalServerAccountSuccessAction(),
+                        new fromPhysicalServerAccount.FetchPhysicalServerAccountsAction(),
+                        new fromPhysicalServerAccount.FetchPhysicalServerAccountsCountAction()
+                    ]),
+                    catchError(() =>
+                        of(
+                            new fromPhysicalServerAccount.CreatePhysicalServerAccountFailureAction()
+                        )
+                    )
                 )
-            )
+            ),
+            
         )
 
     @Effect({ dispatch: false })
@@ -129,16 +137,19 @@ export class PhysicalServerAccountEffects {
             ),
             switchMap(account =>
                 this.serverAccountService.editPhysicalServerAccount(account)
-            ),
-            concatMap(() => [
-                new fromPhysicalServerAccount.EditPhysicalServerAccountSuccessAction(),
-                new fromPhysicalServerAccount.FetchPhysicalServerAccountsAction()
-            ]),
-            catchError(() =>
-                of(
-                    new fromPhysicalServerAccount.EditPhysicalServerAccountFailureAction()
+                .pipe(
+                    concatMap(() => [
+                        new fromPhysicalServerAccount.EditPhysicalServerAccountSuccessAction(),
+                        new fromPhysicalServerAccount.FetchPhysicalServerAccountsAction()
+                    ]),
+                    catchError(() =>
+                        of(
+                            new fromPhysicalServerAccount.EditPhysicalServerAccountFailureAction()
+                        )
+                    )
                 )
-            )
+            ),
+            
         )
 
     @Effect({ dispatch: false })

@@ -19,19 +19,21 @@ export class SavedApplyEffects {
             switchMap(() => {
                 return this.versionReleaseApplyService
                     .fetchSavedVersionReleaseApplies()
-
-            }),
-            map(
-                applies =>
-                    new fromSavedApply.FetchSavedAppliesSuccessAction(
-                        applies
+                    .pipe(
+                        map(
+                            applies =>
+                                new fromSavedApply.FetchSavedAppliesSuccessAction(
+                                    applies
+                                )
+                        ),
+                        catchError(err =>
+                            of(
+                                new fromSavedApply.FetchSavedAppliesFailureAction()
+                            )
+                        )
                     )
-            ),
-            catchError(err =>
-                of(
-                    new fromSavedApply.FetchSavedAppliesFailureAction()
-                )
-            )
+            }),
+            
         )
 
     @Effect({ dispatch: false })
@@ -59,17 +61,19 @@ export class SavedApplyEffects {
             switchMap(apply => {
                 return this.versionReleaseApplyService
                     .submitSavedApply(apply)
-
+                    .pipe(
+                        concatMap(() => [
+                            new fromSavedApply.SubmitSavedApplySuccessAction(),
+                            new fromSavedApply.FetchSavedAppliesAction()
+                        ]),
+                        catchError(err =>
+                            of(
+                                new fromSavedApply.SubmitSavedApplyFailureAction()
+                            )
+                        )
+                    )
             }),
-            concatMap(() => [
-                new fromSavedApply.SubmitSavedApplySuccessAction(),
-                new fromSavedApply.FetchSavedAppliesAction()
-            ]),
-            catchError(err =>
-                of(
-                    new fromSavedApply.SubmitSavedApplyFailureAction()
-                )
-            )
+            
         )
 
     @Effect({ dispatch: false })
@@ -94,17 +98,19 @@ export class SavedApplyEffects {
             switchMap(apply => {
                 return this.versionReleaseApplyService
                     .deleteSavedApply(apply)
-
+                    .pipe(
+                        concatMap(() => [
+                            new fromSavedApply.DeleteSavedApplySuccessAction(),
+                            new fromSavedApply.FetchSavedAppliesAction()
+                        ]),
+                        catchError(err =>
+                            of(
+                                new fromSavedApply.DeleteSavedApplyFailureAction()
+                            )
+                        )
+                    )
             }),
-            concatMap(() => [
-                new fromSavedApply.DeleteSavedApplySuccessAction(),
-                new fromSavedApply.FetchSavedAppliesAction()
-            ]),
-            catchError(err =>
-                of(
-                    new fromSavedApply.DeleteSavedApplyFailureAction()
-                )
-            )
+            
         )
 
     @Effect({ dispatch: false })

@@ -1,8 +1,18 @@
-import { FetchItemsParams, FetchItemsCountParams } from '@core/models/pagination.model';
-import { Observable } from 'rxjs/Observable';
-import { Action } from '@ngrx/store';
-import { filter, map, switchMap, catchError, concatMap, tap } from 'rxjs/operators';
-import { of } from 'rxjs/observable/of';
+import {
+    FetchItemsParams,
+    FetchItemsCountParams
+} from '@core/models/pagination.model'
+import { Observable } from 'rxjs/Observable'
+import { Action } from '@ngrx/store'
+import {
+    filter,
+    map,
+    switchMap,
+    catchError,
+    concatMap,
+    tap
+} from 'rxjs/operators'
+import { of } from 'rxjs/observable/of'
 import { DataItem, instanceOf } from '../feature.action'
 import {
     TableFeatureAction,
@@ -18,7 +28,7 @@ import {
 } from './table-feature.action'
 
 export class TableFeatureEffectsHelper<E extends DataItem> {
-    constructor(private actionCreator: TableActionCreator) { }
+    constructor(private actionCreator: TableActionCreator) {}
 
     fetchItemsPipeable(handler: (params: FetchItemsParams) => Observable<E[]>) {
         return (src: Observable<Action>): Observable<TableFeatureAction<E>> => {
@@ -26,36 +36,65 @@ export class TableFeatureEffectsHelper<E extends DataItem> {
                 instanceOf(FetchItemsAction),
                 filter(action => this.actionCreator.has(action)),
                 map(action => action.params),
-                switchMap(handler),
-                map(results => this.actionCreator.fetchItemsSuccessAction<E>(results)),
-                catchError(() => of(this.actionCreator.fetchItemsFailureAction<E>()))
+                switchMap(params =>
+                    handler(params).pipe(
+                        map(results =>
+                            this.actionCreator.fetchItemsSuccessAction<E>(
+                                results
+                            )
+                        ),
+                        catchError(() =>
+                            of(this.actionCreator.fetchItemsFailureAction<E>())
+                        )
+                    )
+                )
             )
         }
     }
-    fetchItemsCountPipeable(handler: (params: FetchItemsCountParams) => Observable<number>) {
+    fetchItemsCountPipeable(
+        handler: (params: FetchItemsCountParams) => Observable<number>
+    ) {
         return (src: Observable<Action>): Observable<TableFeatureAction<E>> => {
             return src.pipe(
                 instanceOf(FetchItemsCountAction),
                 filter(action => this.actionCreator.has(action)),
                 map(action => action.params),
-                switchMap(handler),
-                map(count => this.actionCreator.fetchItemsCountSuccessAction<E>(count)),
-                catchError(() => of(this.actionCreator.fetchItemsCountFailureAction<E>()))
+                switchMap(params =>
+                    handler(params).pipe(
+                        map(count =>
+                            this.actionCreator.fetchItemsCountSuccessAction<E>(
+                                count
+                            )
+                        ),
+                        catchError(() =>
+                            of(
+                                this.actionCreator.fetchItemsCountFailureAction<
+                                    E
+                                >()
+                            )
+                        )
+                    )
+                )
             )
         }
     }
     createItemPipeable(handler: (params: E) => Observable<any>) {
         return (src: Observable<Action>): Observable<TableFeatureAction<E>> => {
             return src.pipe(
-                instanceOf(CreateItemAction),
+                instanceOf<CreateItemAction<E>>(CreateItemAction),
                 filter(action => this.actionCreator.has(action)),
                 map(action => action.params),
-                switchMap(handler),
-                concatMap(() => [
-                    this.actionCreator.createItemSuccessAction<E>(),
-                    this.actionCreator.fetchItemsAction<E>()
-                ]),
-                catchError(() => of(this.actionCreator.createItemFailureAction<E>()))
+                switchMap(params =>
+                    handler(params).pipe(
+                        concatMap(() => [
+                            this.actionCreator.createItemSuccessAction<E>(),
+                            this.actionCreator.fetchItemsAction<E>()
+                        ]),
+                        catchError(() =>
+                            of(this.actionCreator.createItemFailureAction<E>())
+                        )
+                    )
+                )
             )
         }
     }
@@ -80,14 +119,19 @@ export class TableFeatureEffectsHelper<E extends DataItem> {
     editItemPipeable(handler: (params: E) => Observable<E>) {
         return (src: Observable<Action>): Observable<TableFeatureAction<E>> => {
             return src.pipe(
-                instanceOf(EditItemAction),
+                instanceOf<EditItemAction<E>>(EditItemAction),
                 filter(action => this.actionCreator.has(action)),
                 map(action => action.params),
-                switchMap(handler),
-                concatMap((result) => [
-                    this.actionCreator.editItemSuccessAction<E>(result),
-                ]),
-                catchError(() => of(this.actionCreator.editItemFailureAction<E>()))
+                switchMap(params =>
+                    handler(params).pipe(
+                        concatMap(result => [
+                            this.actionCreator.editItemSuccessAction<E>(result)
+                        ]),
+                        catchError(() =>
+                            of(this.actionCreator.editItemFailureAction<E>())
+                        )
+                    )
+                )
             )
         }
     }

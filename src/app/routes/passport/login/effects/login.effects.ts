@@ -17,9 +17,11 @@ export class LoginEffects {
         .ofType(fromLogin.USER_LOGIN)
         .pipe(
             map((action: fromLogin.UserLoginAction) => action.params),
-            switchMap(params => this.loginService.login(params)),
-            map(result => new fromLogin.UserLoginSuccessAction(result)),
+            switchMap(params => this.loginService.login(params).pipe(
+                map(result => new fromLogin.UserLoginSuccessAction(result)),
             catchError(err => of(new fromLogin.UserLoginFailureAction()))
+            )),
+            
         )
 
     @Effect({ dispatch: false })

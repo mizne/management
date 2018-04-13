@@ -13,7 +13,7 @@ import {
     getAddedApplyResources,
     getApprovers
 } from '../reducers'
-import { tap, withLatestFrom, switchMap, map, catchError } from 'rxjs/operators';
+import { tap, withLatestFrom, switchMap, map, catchError } from 'rxjs/operators'
 
 @Injectable()
 export class VersionReleaseEffects {
@@ -24,28 +24,30 @@ export class VersionReleaseEffects {
             switchMap(() => {
                 return this.versionReleaseApplyService
                     .fetchApplyInfo()
-
-            }),
-            map(
-                applyInfo =>
-                    new fromVersionRelease.FetchApplyInfoSuccessAction(
-                        applyInfo
+                    .pipe(
+                        map(
+                            applyInfo =>
+                                new fromVersionRelease.FetchApplyInfoSuccessAction(
+                                    applyInfo
+                                )
+                        ),
+                        catchError(e =>
+                            of(
+                                new fromVersionRelease.FetchApplyInfoFailureAction()
+                            )
+                        )
                     )
-            ),
-            catchError(e =>
-                of(
-                    new fromVersionRelease.FetchApplyInfoFailureAction()
-                )
-            )
-
+            })
         )
 
     @Effect({ dispatch: false })
     fetchApplyInfoFailure$ = this.actions$
         .ofType(fromVersionRelease.FETCH_APPLY_INFO_FAILURE)
-        .pipe(tap(() => {
-            this.notify.error(`获取申请信息`, '啊哦，获取申请信息失败！')
-        }))
+        .pipe(
+            tap(() => {
+                this.notify.error(`获取申请信息`, '啊哦，获取申请信息失败！')
+            })
+        )
 
     @Effect()
     fetchApprovers$ = this.actions$
@@ -54,27 +56,33 @@ export class VersionReleaseEffects {
             switchMap(() => {
                 return this.versionReleaseApplyService
                     .fetchApprovers()
-
-            }),
-            map(
-                approvers =>
-                    new fromVersionRelease.FetchApproversSuccessAction(
-                        approvers
+                    .pipe(
+                        map(
+                            approvers =>
+                                new fromVersionRelease.FetchApproversSuccessAction(
+                                    approvers
+                                )
+                        ),
+                        catchError(e =>
+                            of(
+                                new fromVersionRelease.FetchApproversFailureAction()
+                            )
+                        )
                     )
-            ),
-            catchError(e =>
-                of(
-                    new fromVersionRelease.FetchApproversFailureAction()
-                )
-            )
+            })
         )
 
     @Effect({ dispatch: false })
     fetchApproversFailure$ = this.actions$
         .ofType(fromVersionRelease.FETCH_APPROVERS_FAILURE)
-        .pipe(tap(() => {
-            this.notify.error(`获取审批人信息`, '啊哦，获取审批人信息失败！')
-        }))
+        .pipe(
+            tap(() => {
+                this.notify.error(
+                    `获取审批人信息`,
+                    '啊哦，获取审批人信息失败！'
+                )
+            })
+        )
 
     @Effect()
     saveVersionReleaseApply$ = this.actions$
@@ -102,32 +110,40 @@ export class VersionReleaseEffects {
             switchMap(apply => {
                 return this.versionReleaseApplyService
                     .saveVersionReleaseApply(apply)
-
-            }),
-            map(
-                () =>
-                    new fromVersionRelease.SaveVersionReleaseApplySuccessAction()
-            ),
-            catchError(() =>
-                of(
-                    new fromVersionRelease.SaveVersionReleaseApplyFailureAction()
-                )
-            )
+                    .pipe(
+                        map(
+                            () =>
+                                new fromVersionRelease.SaveVersionReleaseApplySuccessAction()
+                        ),
+                        catchError(() =>
+                            of(
+                                new fromVersionRelease.SaveVersionReleaseApplyFailureAction()
+                            )
+                        )
+                    )
+            })
         )
 
     @Effect({ dispatch: false })
     saveVersionReleaseApplySuccess$ = this.actions$
         .ofType(fromVersionRelease.SAVE_VERSION_RELEASE_APPLY_SUCCESS)
-        .pipe(tap(() => {
-            this.notify.success(`保存申请信息`, '恭喜您，保存申请信息成功！')
-        }))
+        .pipe(
+            tap(() => {
+                this.notify.success(
+                    `保存申请信息`,
+                    '恭喜您，保存申请信息成功！'
+                )
+            })
+        )
 
     @Effect({ dispatch: false })
     saveVersionReleaseApplyFailure$ = this.actions$
         .ofType(fromVersionRelease.SAVE_VERSION_RELEASE_APPLY_FAILURE)
-        .pipe(tap(() => {
-            this.notify.error(`保存申请信息`, '啊哦，保存申请信息失败！')
-        }))
+        .pipe(
+            tap(() => {
+                this.notify.error(`保存申请信息`, '啊哦，保存申请信息失败！')
+            })
+        )
 
     @Effect()
     submitVersionReleaseApply$ = this.actions$
@@ -155,37 +171,45 @@ export class VersionReleaseEffects {
             switchMap(apply => {
                 return this.versionReleaseApplyService
                     .submitVersionReleaseApply(apply)
-
-            }),
-            map(
-                () =>
-                    new fromVersionRelease.SubmitVersionReleaseApplySuccessAction()
-            ),
-            catchError(() =>
-                of(
-                    new fromVersionRelease.SumitVersionReleaseApplyFailureAction()
-                )
-            )
+                    .pipe(
+                        map(
+                            () =>
+                                new fromVersionRelease.SubmitVersionReleaseApplySuccessAction()
+                        ),
+                        catchError(() =>
+                            of(
+                                new fromVersionRelease.SumitVersionReleaseApplyFailureAction()
+                            )
+                        )
+                    )
+            })
         )
 
     @Effect({ dispatch: false })
     submitVersionReleaseApplySuccess$ = this.actions$
         .ofType(fromVersionRelease.SUBMIT_VERSION_RELEASE_APPLY_SUCCESS)
-        .pipe(tap(() => {
-            this.notify.success(`提交申请信息`, '恭喜您，提交申请信息成功！')
-        }))
+        .pipe(
+            tap(() => {
+                this.notify.success(
+                    `提交申请信息`,
+                    '恭喜您，提交申请信息成功！'
+                )
+            })
+        )
 
     @Effect({ dispatch: false })
     submitVersionReleaseApplyFailure$ = this.actions$
         .ofType(fromVersionRelease.SUBMIT_VERSION_RELEASE_APPLY_FAILURE)
-        .pipe(tap(() => {
-            this.notify.error(`提交申请信息`, '啊哦，提交申请信息失败！')
-        }))
+        .pipe(
+            tap(() => {
+                this.notify.error(`提交申请信息`, '啊哦，提交申请信息失败！')
+            })
+        )
 
     constructor(
         private actions$: Actions,
         private versionReleaseApplyService: VersionReleaseService,
         private notify: NzNotificationService,
         private store: Store<State>
-    ) { }
+    ) {}
 }
