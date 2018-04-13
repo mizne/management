@@ -61,7 +61,7 @@ export class SearchTableService<S extends BaseSearchOptions, E extends DataItem>
     private pageSizeChangeSub: Subject<number> = new Subject<number>()
     private checkOneSub: Subject<CheckOneOptions> = new Subject<
         CheckOneOptions
-    >()
+        >()
     private checkAllSub: Subject<boolean> = new Subject<boolean>()
 
     private dataItemsSub: BehaviorSubject<E[]> = new BehaviorSubject<E[]>([])
@@ -69,10 +69,10 @@ export class SearchTableService<S extends BaseSearchOptions, E extends DataItem>
 
     private dataItemsCountSub: BehaviorSubject<number> = new BehaviorSubject<
         number
-    >(0)
+        >(0)
     public dataItemsCount$: Observable<
         number
-    > = this.dataItemsCountSub.asObservable()
+        > = this.dataItemsCountSub.asObservable()
 
     public loading$: Observable<boolean>
 
@@ -147,17 +147,39 @@ export class SearchTableService<S extends BaseSearchOptions, E extends DataItem>
     }
 
     private initDataItems() {
-        const firstFetch = this.initFetchSub
+        const firstFetch = this.firstFetchForDataItems()
+        const searchItems = this.searchForDataItems()
+        const pageChangeItems = this.pageChangeForDataItems()
+        const checkAll = this.checkAllForDataItems()
+        const checkOne = this.checkOneForDataItems()
+
+        merge(
+            firstFetch,
+            searchItems,
+            pageChangeItems,
+            checkAll,
+            checkOne
+        )
+            .pipe(
+                takeUntil(this.destroySub)
+            )
+            .subscribe(this.dataItemsSub)
+    }
+
+    private firstFetchForDataItems(): Observable<E[]> {
+        return this.initFetchSub
             .asObservable()
             .pipe(
                 switchMap(() => this.dataItemsHandler()),
-                takeUntil(this.destroySub.asObservable())
-            )
-            .subscribe(this.dataItemsSub)
+        )
+    }
 
-        // search或reset时 当前pageIndex=1 pageSize=10 才进行查询
-        // 其他情况 都通过 改变pageIndex pageSize去查询
-        const searchItems = this.searchSub
+    private searchForDataItems(): Observable<E[]> {
+        // 由于 search或reset 需将pageIndex置为1 pageSize置为10
+        // 如果当前pageIndex不为1 或pageSize不为10 则会触发pageChange 继而发起获取数据请求
+        // 所以 更正为 search或reset时 当前pageIndex=1 pageSize=10 才进行查询
+        // 其他情况 都通过 触发pageChange 发起获取数据请求
+        return this.searchSub
             .asObservable()
             .pipe(
                 withLatestFrom(this.pageIndex$, (params, pageIndex) => ({
@@ -179,11 +201,11 @@ export class SearchTableService<S extends BaseSearchOptions, E extends DataItem>
 
                 map(({ params, pageIndex, pageSize }) => params),
                 switchMap(params => this.dataItemsHandler(params)),
-                takeUntil(this.destroySub)
-            )
-            .subscribe(this.dataItemsSub)
+        )
+    }
 
-        const pageChangeItems = combineLatest(
+    private pageChangeForDataItems(): Observable<E[]> {
+        return combineLatest(
             this.pageIndex$.pipe(distinctUntilChanged()),
             this.pageSize$.pipe(distinctUntilChanged())
         )
@@ -202,11 +224,11 @@ export class SearchTableService<S extends BaseSearchOptions, E extends DataItem>
                     }
                 ),
                 switchMap(params => this.dataItemsHandler(params)),
-                takeUntil(this.destroySub)
-            )
-            .subscribe(this.dataItemsSub)
+        )
+    }
 
-        const checkAll = this.checkAllSub
+    private checkAllForDataItems(): Observable<E[]> {
+        return this.checkAllSub
             .asObservable()
             .pipe(
                 withLatestFrom(this.dataItems$),
@@ -215,11 +237,11 @@ export class SearchTableService<S extends BaseSearchOptions, E extends DataItem>
                         return Object.assign({}, e, { checked })
                     })
                 ),
-                takeUntil(this.destroySub)
-            )
-            .subscribe(this.dataItemsSub)
+        )
+    }
 
-        const checkOne = this.checkOneSub
+    private checkOneForDataItems(): Observable<E[]> {
+        return this.checkOneSub
             .asObservable()
             .pipe(
                 withLatestFrom(this.dataItems$),
@@ -233,9 +255,7 @@ export class SearchTableService<S extends BaseSearchOptions, E extends DataItem>
                         return Object.assign({}, e)
                     })
                 ),
-                takeUntil(this.destroySub)
-            )
-            .subscribe(this.dataItemsSub)
+        )
     }
 
     private initDataItemsCount() {
@@ -248,7 +268,11 @@ export class SearchTableService<S extends BaseSearchOptions, E extends DataItem>
             .asObservable()
             .pipe(switchMap(params => this.dataItemsCountHandler(params)))
 
-        merge(firstFetch, searchItems).subscribe(this.dataItemsCountSub)
+        merge(firstFetch, searchItems)
+            .pipe(
+                takeUntil(this.destroySub)
+            )
+            .subscribe(this.dataItemsCountSub)
     }
 
     private initLoading() {
