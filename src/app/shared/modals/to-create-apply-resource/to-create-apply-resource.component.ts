@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core'
+import { Component, OnInit, Input } from '@angular/core'
 import { FormGroup, FormBuilder, Validators } from '@angular/forms'
 import { NzModalSubject } from 'ng-zorro-antd'
 import { Subject } from 'rxjs/Subject'
@@ -7,6 +7,7 @@ import * as uuid from 'uuid'
 
 import { DestroyService } from '@core/services/destroy.service'
 import { ApplyResource } from '@core/models/resource-apply.model'
+
 import {
     ResourceType,
     SoftwareName,
@@ -34,12 +35,24 @@ import { takeUntil } from 'rxjs/operators'
 export class ToCreateApplyResourceComponent implements OnInit {
     form: FormGroup
 
-    resourceTypes$: Observable<ResourceType[]>
-    softwareTypes$: Observable<SoftwareType[]>
-    softwareNames$: Observable<SoftwareName[]>
-    softwareSpecs$: Observable<SoftwareSpec[]>
-    useEnvironments$: Observable<UseEnvironment[]>
+    @Input()
+    set applyResourceForSelect(v: any) {
+        this.resourceTypes = v.resourceTypes
+        this.softwareTypes = v.softwareTypes
+        this.softwareNames = v.softwareNames
+        this.softwareSpecs = v.softwareSpecs
+        this.useEnvironments = v.useEnvironments
 
+        if (this.form) {
+            this.patchForm()
+        }
+    }
+
+    resourceTypes: ResourceType[]
+    softwareTypes: SoftwareType[]
+    softwareNames: SoftwareName[]
+    softwareSpecs: SoftwareSpec[]
+    useEnvironments: UseEnvironment[]
     constructor(
         private fb: FormBuilder,
         private subject: NzModalSubject,
@@ -78,8 +91,6 @@ export class ToCreateApplyResourceComponent implements OnInit {
 
     ngOnInit() {
         this.buildForm()
-        this.initDataSource()
-        this.initSubscriber()
     }
 
     toSave() {
@@ -116,59 +127,26 @@ export class ToCreateApplyResourceComponent implements OnInit {
             endTime: [new Date()],
             remark: [null]
         })
+
+        if (this.resourceTypes) {
+            this.patchForm()
+        }
     }
 
-    private initDataSource() {
-        this.resourceTypes$ = this.store.select(getResourceTypes)
-        this.softwareNames$ = this.store.select(getSoftwareNames)
-        this.softwareTypes$ = this.store.select(getSoftwareTypes)
-        this.softwareSpecs$ = this.store.select(getSoftwareSpecs)
-        this.useEnvironments$ = this.store.select(getUseEnvironments)
+    private patchForm(): void {
+        this.form.patchValue({
+            type: this.getLabel(this.resourceTypes),
+            softwareType: this.getLabel(this.softwareTypes),
+            softwareName: this.getLabel(this.softwareNames),
+            version: this.getLabel(this.softwareSpecs),
+            environment: this.getLabel(this.useEnvironments)
+        })
     }
 
-    private initSubscriber() {
-        combineLatest(
-            this.resourceTypes$,
-            this.softwareNames$,
-            this.softwareTypes$,
-            this.softwareSpecs$,
-            this.useEnvironments$
-        )
-            .pipe(takeUntil(this.destroyService))
-            .subscribe(
-                ([
-                    resourceTypes,
-                    softwareNames,
-                    softwareTypes,
-                    softwareSpecs,
-                    useEnvironments
-                ]) => {
-                    if (resourceTypes.length > 0) {
-                        this.form.patchValue({
-                            type: resourceTypes[0].label
-                        })
-                    }
-                    if (softwareNames.length > 0) {
-                        this.form.patchValue({
-                            softwareName: softwareNames[0].label
-                        })
-                    }
-                    if (softwareTypes.length > 0) {
-                        this.form.patchValue({
-                            softwareType: softwareTypes[0].label
-                        })
-                    }
-                    if (softwareSpecs.length > 0) {
-                        this.form.patchValue({
-                            version: softwareSpecs[0].label
-                        })
-                    }
-                    if (useEnvironments.length > 0) {
-                        this.form.patchValue({
-                            environment: useEnvironments[0].label
-                        })
-                    }
-                }
-            )
+    private getLabel(arr: any[]): string | null {
+        if (arr.length > 0) {
+            return arr[0].label
+        }
+        return null
     }
 }

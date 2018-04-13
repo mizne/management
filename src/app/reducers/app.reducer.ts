@@ -70,3 +70,11 @@ export const getSoftwareNames = (state: State) => state.softwareNames
 export const getSoftwareTypes = (state: State) => state.softwareTypes
 export const getSoftwareSpecs = (state: State) => state.softwareSpecs
 export const getUseEnvironments = (state: State) => state.useEnvironments
+
+export const getApplyResourceForSelect = (state: State) => ({
+    resourceTypes: state.resourceTypes,
+    softwareNames: state.softwareNames,
+    softwareSpecs: state.softwareSpecs,
+    softwareTypes: state.softwareTypes,
+    useEnvironments: state.useEnvironments
+})

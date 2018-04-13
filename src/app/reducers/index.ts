@@ -30,3 +30,7 @@ export const getUseEnvironments = createSelector(
     getAppState,
     fromApp.getUseEnvironments
 )
+export const getApplyResourceForSelect = createSelector(
+    getAppState,
+    fromApp.getApplyResourceForSelect
+)

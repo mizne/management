@@ -14,15 +14,6 @@ import {
     SoftwareType,
     UseEnvironment
 } from '@core/models/resource-info.model'
-import { Store } from '@ngrx/store'
-import {
-    State,
-    getResourceTypes,
-    getSoftwareNames,
-    getSoftwareSpecs,
-    getSoftwareTypes,
-    getUseEnvironments
-} from '@app/reducers'
 
 @Component({
     selector: 'app-to-edit-apply-resource',
@@ -33,17 +24,24 @@ export class ToEditApplyResourceComponent implements OnInit {
     form: FormGroup
     _resource: ApplyResource
 
-    resourceTypes$: Observable<ResourceType[]>
-    softwareTypes$: Observable<SoftwareType[]>
-    softwareNames$: Observable<SoftwareName[]>
-    softwareSpecs$: Observable<SoftwareSpec[]>
-    useEnvironments$: Observable<UseEnvironment[]>
+    @Input()
+    set applyResourceForSelect(v: any) {
+        this.resourceTypes = v.resourceTypes
+        this.softwareTypes = v.softwareTypes
+        this.softwareNames = v.softwareNames
+        this.softwareSpecs = v.softwareSpecs
+        this.useEnvironments = v.useEnvironments
+    }
 
+    resourceTypes: ResourceType[]
+    softwareTypes: SoftwareType[]
+    softwareNames: SoftwareName[]
+    softwareSpecs: SoftwareSpec[]
+    useEnvironments: UseEnvironment[]
     constructor(
         private fb: FormBuilder,
         private subject: NzModalSubject,
-        private destroyService: DestroyService,
-        private store: Store<State>
+        private destroyService: DestroyService
     ) {}
 
     @Input()
@@ -84,7 +82,6 @@ export class ToEditApplyResourceComponent implements OnInit {
 
     ngOnInit() {
         this.buildForm()
-        this.initDataSource()
     }
 
     toSave() {
@@ -128,13 +125,5 @@ export class ToEditApplyResourceComponent implements OnInit {
 
     private patchForm() {
         this.form.patchValue(this._resource)
-    }
-
-    private initDataSource() {
-        this.resourceTypes$ = this.store.select(getResourceTypes)
-        this.softwareNames$ = this.store.select(getSoftwareNames)
-        this.softwareTypes$ = this.store.select(getSoftwareTypes)
-        this.softwareSpecs$ = this.store.select(getSoftwareSpecs)
-        this.useEnvironments$ = this.store.select(getUseEnvironments)
     }
 }

@@ -14,6 +14,7 @@ import { NzTreeModule } from 'ng-tree-antd'
 
 import { components } from './components'
 import { pipes } from './pipes'
+import { modals } from './modals'
 
 @NgModule({
     imports: [
@@ -29,7 +30,7 @@ import { pipes } from './pipes'
         ViserModule,
         NzTreeModule
     ],
-    declarations: [...pipes, ...components],
+    declarations: [...pipes, ...components, ...modals],
     exports: [
         NzTreeModule,
         ViserModule,
@@ -44,6 +45,7 @@ import { pipes } from './pipes'
         TranslateModule,
         ...pipes,
         ...components
-    ]
+    ],
+    entryComponents: [...modals]
 })
 export class SharedModule {}

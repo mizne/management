@@ -26,6 +26,7 @@ import {
     getSubPackageInfo,
     getSubPackageAddedApplyResources
 } from './reducers'
+import { getApplyResourceForSelect } from '@app/reducers'
 import {
     AddApplyResourcesAction,
     CreateApplyResourceAction,
@@ -56,11 +57,13 @@ import * as fromExtraTabs from './actions/extra-tabs.action'
 
 import { Subject } from 'rxjs/Subject'
 import { DestroyService } from '@core/services/destroy.service'
-import { ToCreateApplyResourceComponent } from './modals/to-create-apply-resource/to-create-apply-resource.component'
+import {
+    ToCreateApplyResourceComponent,
+    ToEditApplyResourceComponent,
+    ToShowApplyResourceComponent
+} from '@shared/modals'
 import { ToAddApplyResourceComponent } from './modals/to-add-apply-resource/to-add-apply-resource.component'
 import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms'
-import { ToEditApplyResourceComponent } from './modals/to-edit-apply-resource/to-edit-apply-resource.component'
-import { ToShowApplyResourceComponent } from './modals/to-show-apply-resource/to-show-apply-resource.component'
 import {
     ApplyInfo,
     Approver,
@@ -524,12 +527,16 @@ export class UnifiedApplyComponent implements OnInit {
             .asObservable()
             .pipe(
                 filter(() => this.tabIndex === 0),
-                mergeMap(() => {
+                withLatestFrom(this.store.select(getApplyResourceForSelect)),
+                mergeMap(([_, applyResourceForSelect]) => {
                     return this.modalService.open({
                         title: '新建资源信息',
                         content: ToCreateApplyResourceComponent,
                         footer: false,
-                        width: 800
+                        width: 800,
+                        componentParams: {
+                            applyResourceForSelect
+                        }
                     })
                 }),
                 filter(e => typeof e !== 'string'),
@@ -585,13 +592,14 @@ export class UnifiedApplyComponent implements OnInit {
             .asObservable()
             .pipe(
                 filter(() => this.tabIndex === 0),
-                mergeMap(resource => {
+                withLatestFrom(this.store.select(getApplyResourceForSelect)),
+                mergeMap(([resource, applyResourceForSelect]) => {
                     return this.modalService.open({
                         title: '新增的资源信息',
                         content: ToEditApplyResourceComponent,
                         footer: false,
                         width: 1000,
-                        componentParams: { resource }
+                        componentParams: { resource, applyResourceForSelect }
                     })
                 }),
                 filter(e => typeof e !== 'string'),
@@ -888,12 +896,16 @@ export class UnifiedApplyComponent implements OnInit {
             .asObservable()
             .pipe(
                 filter(() => this.tabIndex >= 3),
-                mergeMap(() => {
+                withLatestFrom(this.store.select(getApplyResourceForSelect)),
+                mergeMap(([_, applyResourceForSelect]) => {
                     return this.modalService.open({
                         title: '新建资源信息',
                         content: ToCreateApplyResourceComponent,
                         footer: false,
-                        width: 800
+                        width: 800,
+                        componentParams: {
+                            applyResourceForSelect
+                        }
                     })
                 }),
                 filter(e => typeof e !== 'string'),
@@ -940,13 +952,14 @@ export class UnifiedApplyComponent implements OnInit {
             .asObservable()
             .pipe(
                 filter(() => this.tabIndex >= 3),
-                mergeMap(resource => {
+                withLatestFrom(this.store.select(getApplyResourceForSelect)),
+                mergeMap(([resource, applyResourceForSelect]) => {
                     return this.modalService.open({
                         title: '新增的资源信息',
                         content: ToEditApplyResourceComponent,
                         footer: false,
                         width: 1000,
-                        componentParams: { resource }
+                        componentParams: { resource, applyResourceForSelect }
                     })
                 }),
                 filter(e => typeof e !== 'string'),

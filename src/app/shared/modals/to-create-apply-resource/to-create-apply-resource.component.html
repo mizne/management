@@ -8,7 +8,7 @@
                     </div>
                     <div nz-form-control nz-col nzHasFeedback [nzValidateStatus]="type">
                         <nz-select formControlName="type" [nzPlaceHolder]="'请选择资源类型'" nzAllowClear>
-                            <nz-option *ngFor="let option of resourceTypes$ | async" [nzLabel]="option.label" [nzValue]="option.label">
+                            <nz-option *ngFor="let option of resourceTypes" [nzLabel]="option.label" [nzValue]="option.label">
                             </nz-option>
                         </nz-select>
                     </div>
@@ -25,7 +25,7 @@
                     </div>
                     <div nz-form-control nz-col nzHasFeedback [nzValidateStatus]="softwareType">
                         <nz-select formControlName="softwareType" [nzPlaceHolder]="'请选择软件类型'" nzAllowClear>
-                            <nz-option *ngFor="let option of softwareTypes$ | async" [nzLabel]="option.label" [nzValue]="option.label">
+                            <nz-option *ngFor="let option of softwareTypes" [nzLabel]="option.label" [nzValue]="option.label">
                             </nz-option>
                         </nz-select>
                     </div>
@@ -40,7 +40,7 @@
                         </div>
                         <div nz-form-control nz-col nzHasFeedback [nzValidateStatus]="softwareName">
                             <nz-select formControlName="softwareName" [nzPlaceHolder]="'请选择软件名称'" nzAllowClear>
-                                <nz-option *ngFor="let option of softwareNames$ | async" [nzLabel]="option.label" [nzValue]="option.label">
+                                <nz-option *ngFor="let option of softwareNames" [nzLabel]="option.label" [nzValue]="option.label">
                                 </nz-option>
                             </nz-select>
                         </div>
@@ -58,7 +58,7 @@
                     </div>
                     <div nz-form-control nz-col nzHasFeedback [nzValidateStatus]="version">
                         <nz-select formControlName="version" [nzPlaceHolder]="'请选择软件规格'" nzAllowClear>
-                            <nz-option *ngFor="let option of softwareSpecs$ | async" [nzLabel]="option.label" [nzValue]="option.label">
+                            <nz-option *ngFor="let option of softwareSpecs" [nzLabel]="option.label" [nzValue]="option.label">
                             </nz-option>
                         </nz-select>
                     </div>
@@ -71,7 +71,7 @@
                     </div>
                     <div nz-form-control nz-col nzHasFeedback [nzValidateStatus]="environment">
                         <nz-select formControlName="environment" [nzPlaceHolder]="'请选择使用环境'" nzAllowClear>
-                            <nz-option *ngFor="let option of useEnvironments$ | async" [nzLabel]="option.label" [nzValue]="option.label">
+                            <nz-option *ngFor="let option of useEnvironments" [nzLabel]="option.label" [nzValue]="option.label">
                             </nz-option>
                         </nz-select>
                     </div>
@@ -140,3 +140,4 @@
         <button nz-button (click)="toSave()" [nzType]="'primary'" nzSize="large">保存</button>
     </div>
 </form>
+from shared modals

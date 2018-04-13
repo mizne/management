@@ -20,6 +20,7 @@ import {
     getNeedManualSetTabIndex,
     getTabIndexToNeedManualSet
 } from './reducers'
+import { getApplyResourceForSelect } from '@app/reducers'
 import {
     AddApplyResourcesAction,
     CreateApplyResourceAction,
@@ -44,10 +45,12 @@ import * as fromExtraTabs from './actions/extra-tabs.action'
 
 import { Subject } from 'rxjs/Subject'
 import { DestroyService } from '@core/services/destroy.service'
-import { ToCreateApplyResourceComponent } from './modals/to-create-apply-resource/to-create-apply-resource.component'
+import {
+    ToCreateApplyResourceComponent,
+    ToEditApplyResourceComponent,
+    ToShowApplyResourceComponent
+} from '@shared/modals'
 import { ToAddApplyResourceComponent } from './modals/to-add-apply-resource/to-add-apply-resource.component'
-import { ToEditApplyResourceComponent } from './modals/to-edit-apply-resource/to-edit-apply-resource.component'
-import { ToShowApplyResourceComponent } from './modals/to-show-apply-resource/to-show-apply-resource.component'
 import {
     ApplyInfo,
     Approver,
@@ -60,7 +63,13 @@ import {
     CloseExtraTabAction,
     ResetNeedManualSetTabIndexAction
 } from './actions/extra-tabs.action'
-import { takeUntil, filter, mergeMap, withLatestFrom, first } from 'rxjs/operators';
+import {
+    takeUntil,
+    filter,
+    mergeMap,
+    withLatestFrom,
+    first
+} from 'rxjs/operators'
 
 @Component({
     selector: 'app-version-release',
@@ -81,10 +90,10 @@ export class VersionReleaseComponent implements OnInit {
     toSaveSub: Subject<VersionReleaseApply> = new Subject<VersionReleaseApply>()
     toSubmitSub: Subject<VersionReleaseApply> = new Subject<
         VersionReleaseApply
-        >()
+    >()
     toResetSub: Subject<VersionReleaseApply> = new Subject<
         VersionReleaseApply
-        >()
+    >()
 
     fetchApplyInfoLoading$: Observable<boolean>
     applyInfo$: Observable<ApplyInfo>
@@ -104,16 +113,16 @@ export class VersionReleaseComponent implements OnInit {
     savedApplies$: Observable<VersionReleaseApply[]>
     toEditSavedApplySub: Subject<VersionReleaseApply> = new Subject<
         VersionReleaseApply
-        >()
+    >()
     toDetailSavedApplySub: Subject<VersionReleaseApply> = new Subject<
         VersionReleaseApply
-        >()
+    >()
     toSubmitSavedApplySub: Subject<VersionReleaseApply> = new Subject<
         VersionReleaseApply
-        >()
+    >()
     toDeleteSavedApplySub: Subject<VersionReleaseApply> = new Subject<
         VersionReleaseApply
-        >()
+    >()
 
     // 额外的tabs
     extraTabs$: Observable<TabOptions[]>
@@ -166,7 +175,7 @@ export class VersionReleaseComponent implements OnInit {
         private store: Store<State>,
         private destroyService: DestroyService,
         private fb: FormBuilder
-    ) { }
+    ) {}
 
     ngOnInit() {
         this.buildForm()
@@ -382,12 +391,14 @@ export class VersionReleaseComponent implements OnInit {
             .asObservable()
             .pipe(
                 filter(() => this.tabIndex < 2),
-                mergeMap(() => {
+                withLatestFrom(this.store.select(getApplyResourceForSelect)),
+                mergeMap(([_, applyResourceForSelect]) => {
                     return this.modalService.open({
                         title: '新建资源信息',
                         content: ToCreateApplyResourceComponent,
                         footer: false,
-                        width: 800
+                        width: 800,
+                        componentParams: { applyResourceForSelect }
                     })
                 }),
                 filter(e => typeof e !== 'string'),
@@ -435,7 +446,7 @@ export class VersionReleaseComponent implements OnInit {
                 }),
                 takeUntil(this.destroyService)
             )
-            .subscribe(() => { })
+            .subscribe(() => {})
     }
 
     private initEditTempApplyResource() {
@@ -443,13 +454,14 @@ export class VersionReleaseComponent implements OnInit {
             .asObservable()
             .pipe(
                 filter(() => this.tabIndex < 2),
-                mergeMap(resource => {
+                withLatestFrom(this.store.select(getApplyResourceForSelect)),
+                mergeMap(([resource, applyResourceForSelect]) => {
                     return this.modalService.open({
                         title: '新增的资源信息',
                         content: ToEditApplyResourceComponent,
                         footer: false,
                         width: 1000,
-                        componentParams: { resource }
+                        componentParams: { resource, applyResourceForSelect }
                     })
                 }),
                 filter(e => typeof e !== 'string'),
@@ -595,12 +607,14 @@ export class VersionReleaseComponent implements OnInit {
             .asObservable()
             .pipe(
                 filter(() => this.tabIndex >= 2),
-                mergeMap(() => {
+                withLatestFrom(this.store.select(getApplyResourceForSelect)),
+                mergeMap(([_, applyResourceForSelect]) => {
                     return this.modalService.open({
                         title: '新建资源信息',
                         content: ToCreateApplyResourceComponent,
                         footer: false,
-                        width: 800
+                        width: 800,
+                        componentParams: { applyResourceForSelect }
                     })
                 }),
                 filter(e => typeof e !== 'string'),
@@ -648,13 +662,14 @@ export class VersionReleaseComponent implements OnInit {
             .asObservable()
             .pipe(
                 filter(() => this.tabIndex >= 2),
-                mergeMap(resource => {
+                withLatestFrom(this.store.select(getApplyResourceForSelect)),
+                mergeMap(([resource, applyResourceForSelect]) => {
                     return this.modalService.open({
                         title: '新增的资源信息',
                         content: ToEditApplyResourceComponent,
                         footer: false,
                         width: 1000,
-                        componentParams: { resource }
+                        componentParams: { resource, applyResourceForSelect }
                     })
                 }),
                 filter(e => typeof e !== 'string'),
@@ -686,7 +701,7 @@ export class VersionReleaseComponent implements OnInit {
                 }),
                 takeUntil(this.destroyService)
             )
-            .subscribe(() => { })
+            .subscribe(() => {})
     }
 
     private initDeleteApplyResourceForExtra() {
@@ -709,7 +724,7 @@ export class VersionReleaseComponent implements OnInit {
                         )
                         console.log(
                             `delete apply resource; tab index: ${
-                            this.tabIndex
+                                this.tabIndex
                             }; resource index: ${index}`
                         )
                     }
