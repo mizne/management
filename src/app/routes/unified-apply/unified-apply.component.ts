@@ -555,7 +555,7 @@ export class UnifiedApplyComponent implements OnInit {
                 withLatestFrom(this.store.select(getResourceTypes)),
                 mergeMap(([_, resourceTypes]) => {
                     return this.modalService.open({
-                        title: '添加资源信息',
+                        title: '选择资源信息',
                         content: ToAddApplyResourceComponent,
                         footer: false,
                         width: 1000,
@@ -682,7 +682,7 @@ export class UnifiedApplyComponent implements OnInit {
                 withLatestFrom(this.store.select(getResourceTypes)),
                 mergeMap(([_, resourceTypes]) => {
                     return this.modalService.open({
-                        title: '添加资源信息',
+                        title: '选择资源信息',
                         content: ToAddApplyResourceComponent,
                         footer: false,
                         width: 1000,
@@ -933,7 +933,7 @@ export class UnifiedApplyComponent implements OnInit {
                 withLatestFrom(this.store.select(getResourceTypes)),
                 mergeMap(([_, resourceTypes]) => {
                     return this.modalService.open({
-                        title: '添加资源信息',
+                        title: '选择资源信息',
                         content: ToAddApplyResourceComponent,
                         footer: false,
                         width: 1000,
