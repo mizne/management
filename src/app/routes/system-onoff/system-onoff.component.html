@@ -375,8 +375,8 @@
                     <nz-card *ngIf="tab.data; let tabData;" [nzNoHovering]="true" [nzBordered]="false" nzTitle="申请信息">
                         <ng-template *ngIf="tabData.applyInfoForm; let applyInfoForm;" #body>
                             <desc-list *ngIf="tabData.applyInfoForm; let applyInfoForm;" size="large" class="mb-lg">
-                                <desc-list-item term="申请类别">{{applyInfoForm.value.type}}</desc-list-item>
                                 <desc-list-item term="申请单号">{{applyInfoForm.value.listNumber}}</desc-list-item>
+                                <desc-list-item term="申请类别">{{applyInfoForm.value.type}}</desc-list-item>
                                 <desc-list-item term="系统名称">{{applyInfoForm.value.systemName}}</desc-list-item>
                                 <desc-list-item term="版本号">{{applyInfoForm.value.version}}</desc-list-item>
                                 <desc-list-item term="上线年度">{{applyInfoForm.value.onlineTime}}</desc-list-item>
@@ -473,29 +473,20 @@
                                         <div nz-col [nzSpan]="6">
                                             <div nz-form-item nz-row>
                                                 <div nz-form-label nz-col>
-                                                    <label nz-form-item-required>申请类型</label>
-                                                </div>
-                                                <div nz-form-control nz-col nzHasFeedback [nzValidateStatus]="type">
-                                                    <nz-select formControlName="type" nzPlaceHolder="请选择申请类型" nzDisabled nzAllowClear>
-                                                        <nz-option [nzLabel]="'上线'" [nzValue]="'上线'">
-                                                        </nz-option>
-                                                        <nz-option [nzLabel]="'下线'" [nzValue]="'下线'">
-                                                        </nz-option>
-                                                    </nz-select>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div nz-col [nzSpan]="6">
-                                            <div nz-form-item nz-row>
-                                                <div nz-form-label nz-col>
                                                     <label nz-form-item-required>申请单号</label>
                                                 </div>
                                                 <div nz-form-control nz-col nzHasFeedback [nzValidateStatus]="listNumber">
                                                     <nz-input nzDisabled formControlName="listNumber" nzPlaceHolder="请输入申请单号" nzSize="large"></nz-input>
-                                                    <p nz-form-explain *ngIf="(listNumber.dirty || listNumber.touched) && listNumber.errors?.required">
-                                                        请输入申请单号
-                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div nz-col [nzSpan]="6">
+                                            <div nz-form-item nz-row>
+                                                <div nz-form-label nz-col>
+                                                    <label nz-form-item-required>申请类型</label>
+                                                </div>
+                                                <div nz-form-control nz-col nzHasFeedback [nzValidateStatus]="type">
+                                                    <nz-input nzDisabled formControlName="type" nzPlaceHolder="请选择申请类型" nzSize="large"></nz-input>
                                                 </div>
                                             </div>
                                         </div>
