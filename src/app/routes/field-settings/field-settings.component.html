@@ -14,7 +14,14 @@
             </div>
             <div nz-col [nzXs]="24" [nzMd]="16" class="mb-md">
                 <nz-card [nzBordered]="false">
-                    <form nz-form [formGroup]="form" [nzLayout]="'vertical'">
+                    <nz-alert [nzType]="'info'" nzShowIcon>
+                        <span alert-body>
+                            <span [innerText]="regExpDesc"></span>
+                            <pre><code [innerText]="exampleRegExp1"></code></pre>
+                            <pre><code [innerText]="exampleRegExp2"></code></pre>
+                        </span>
+                    </nz-alert>
+                    <form class="mt-lg" nz-form [formGroup]="form" [nzLayout]="'vertical'">
                         <div nz-row [nzGutter]="40">
                             <div nz-col [nzSpan]="12">
                                 <div nz-form-item nz-row>
@@ -61,7 +68,7 @@
                             </div>
                         </div>
 
-                        <div nz-row [nzGutter]="40">
+                        <!-- <div nz-row [nzGutter]="40">
                             <div nz-col [nzSpan]="20">
                                 <div nz-form-item nz-row>
                                     <div nz-form-label nz-col>
@@ -72,7 +79,7 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div> -->
 
                         <div nz-row [nzGutter]="40" class="d-flex justify-content-center">
                             <button nz-button class="ml-md" [nzType]="'primary'" nzSize="large" (click)="toCreate()">新增属性</button>

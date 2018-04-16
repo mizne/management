@@ -98,6 +98,10 @@ export class AssetsRecoveryEffects {
         .pipe(
             tap(() => {
                 this.notify.success(`回收资产`, `恭喜您，回收资产成功！`)
+                this.notify.success(
+                    `修改资源信息`,
+                    `您还需要再修改对应集群的资源信息！`
+                )
             })
         )
 

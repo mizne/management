@@ -46,6 +46,8 @@ export class SystemLoggerComponent implements OnInit {
     searchSystemLoggerCtrl: FormControl = new FormControl()
     toSearchSystemLoggerSub: Subject<void> = new Subject<void>()
 
+    _dateRange = [null, null]
+
     constructor(
         private messageService: NzMessageService,
         private modalService: NzModalService,

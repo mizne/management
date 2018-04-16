@@ -7,7 +7,10 @@
             系统日志
         </ng-template>
         <div class="mb-md" nz-row>
-            <div nz-col [nzSpan]="'18'" class="text-center">
+            <div nz-col [nzSpan]="'12'">
+                <nz-rangepicker [(ngModel)]="_dateRange" [nzPlaceholder]="['请选择开始时间', '请选择结束时间']"></nz-rangepicker>
+            </div>
+            <div nz-col [nzSpan]="'12'" class="text-center">
                 <nz-input [nzType]="'search'" [formControl]="searchSystemLoggerCtrl" [nzSize]="'large'" [nzPlaceHolder]="'搜索系统日志'" style="width: 300px;"
                     (nzOnSearch)="onSearchSystemLogger()"></nz-input>
             </div>

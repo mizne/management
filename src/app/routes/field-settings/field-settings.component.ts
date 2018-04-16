@@ -117,6 +117,9 @@ export class FieldSettingsComponent implements OnInit {
     options = {}
 
     form: FormGroup
+    regExpDesc = '*代表任意字符串， ?代表任意单个字符，+代表一个到多个字符; 常用正则举例如下: '
+    exampleRegExp1 = '^[0-9]*$ 表示都是数字组成的字符串'
+    exampleRegExp2 = '^[A-Za-z]+$ 标识由26个英文字母组成的字符串'
 
     constructor(
         private messageService: NzMessageService,

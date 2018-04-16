@@ -150,17 +150,14 @@ export class VersionReleaseComponent implements OnInit {
     get releaseVersion() {
         return this.applyForm.controls.releaseVersion
     }
-    get versionCompatibility() {
-        return this.applyForm.controls.versionCompatibility
-    }
-    get hardwareChange() {
-        return this.applyForm.controls.hardwareChange
-    }
     get upgradeMode() {
         return this.applyForm.controls.upgradeMode
     }
-    get expectedReleaseTime() {
-        return this.applyForm.controls.expectedReleaseTime
+    get expectedStartTime() {
+        return this.applyForm.controls.expectedStartTime
+    }
+    get expectedEndTime() {
+        return this.applyForm.controls.expectedEndTime
     }
     get versionUpdateDesc() {
         return this.applyForm.controls.versionUpdateDesc
@@ -220,6 +217,8 @@ export class VersionReleaseComponent implements OnInit {
         this.toResetSub.next()
     }
 
+    toUpload() {}
+
     toShowSavedApply(apply: VersionReleaseApply) {
         this.toDetailSavedApplySub.next(apply)
     }
@@ -256,10 +255,9 @@ export class VersionReleaseComponent implements OnInit {
             projectName: [null, Validators.required],
             onlineVersion: [null, Validators.required],
             releaseVersion: [null, Validators.required],
-            versionCompatibility: [null, Validators.required],
-            hardwareChange: [null, Validators.required],
             upgradeMode: [null, Validators.required],
-            expectedReleaseTime: [null, Validators.required],
+            expectedStartTime: [null, Validators.required],
+            expectedEndTime: [null, Validators.required],
             versionUpdateDesc: [null, Validators.required],
             remark: [null, Validators.required]
         })

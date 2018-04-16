@@ -106,33 +106,6 @@
                                 <div nz-col [nzSpan]="6">
                                     <div nz-form-item nz-row>
                                         <div nz-form-label nz-col>
-                                            <label nz-form-item-required>版本兼容性</label>
-                                        </div>
-                                        <div nz-form-control nz-col nzHasFeedback [nzValidateStatus]="versionCompatibility">
-                                            <nz-input formControlName="versionCompatibility" nzPlaceHolder="请输入版本兼容性" nzSize="large"></nz-input>
-                                            <p nz-form-explain *ngIf="(versionCompatibility.dirty || versionCompatibility.touched) && versionCompatibility.errors?.required">
-                                                请输入版本兼容性
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div nz-col [nzSpan]="6">
-                                    <div nz-form-item nz-row>
-                                        <div nz-form-label nz-col>
-                                            <label nz-form-item-required>硬件变更</label>
-                                        </div>
-                                        <div nz-form-control nz-col nzHasFeedback [nzValidateStatus]="hardwareChange">
-                                            <nz-input formControlName="hardwareChange" nzPlaceHolder="请输入硬件变更" nzSize="large"></nz-input>
-                                            <p nz-form-explain *ngIf="(hardwareChange.dirty || hardwareChange.touched) && hardwareChange.errors?.required">
-                                                请输入硬件变更
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div nz-col [nzSpan]="6">
-                                    <div nz-form-item nz-row>
-                                        <div nz-form-label nz-col>
                                             <label nz-form-item-required>升级方式</label>
                                         </div>
                                         <div nz-form-control nz-col nzHasFeedback [nzValidateStatus]="upgradeMode">
@@ -146,20 +119,28 @@
                                 <div nz-col [nzSpan]="6">
                                     <div nz-form-item nz-row>
                                         <div nz-form-label nz-col>
-                                            <label nz-form-item-required>预计发布时间</label>
+                                            <label nz-form-item-required>预计开始时间</label>
                                         </div>
                                         <div nz-form-control nz-col nzHasFeedback [nzValidateStatus]="expectedReleaseTime">
-                                            <nz-input formControlName="expectedReleaseTime" nzPlaceHolder="请输入预计发布时间" nzSize="large"></nz-input>
-                                            <p nz-form-explain *ngIf="(expectedReleaseTime.dirty || expectedReleaseTime.touched) && expectedReleaseTime.errors?.required">
-                                                请输入预计发布时间
-                                            </p>
+                                            <nz-datepicker formControlName="expectedStartTime" nzFormat="YYYY-MM-DD HH:mm" nzShowTime [nzPlaceHolder]="'请选择预计开始时间'"></nz-datepicker>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div nz-col [nzSpan]="6">
+                                    <div nz-form-item nz-row>
+                                        <div nz-form-label nz-col>
+                                            <label nz-form-item-required>预计结束时间</label>
+                                        </div>
+                                        <div nz-form-control nz-col nzHasFeedback [nzValidateStatus]="expectedReleaseTime">
+                                            <nz-datepicker formControlName="expectedEndTime" nzFormat="YYYY-MM-DD HH:mm" nzShowTime [nzPlaceHolder]="'请选择预计结束时间'"></nz-datepicker>
                                         </div>
                                     </div>
                                 </div>
                             </div>
 
                             <div nz-row [nzGutter]="40">
-                                <div nz-col [nzSpan]="12">
+                                <div nz-col [nzSpan]="18">
                                     <div nz-form-item nz-row>
                                         <div nz-form-label nz-col>
                                             <label>版本更新描述</label>
@@ -172,7 +153,10 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div nz-col [nzSpan]="12">
+
+                            </div>
+                            <div nz-row [nzGutter]="40">
+                                <div nz-col [nzSpan]="18">
                                     <div nz-form-item nz-row>
                                         <div nz-form-label nz-col>
                                             <label>备注</label>
@@ -191,64 +175,16 @@
                 </nz-card>
             </nz-spin>
 
-            <nz-card [nzTitle]="'资源信息'" [nzBordered]="false">
-                <ng-template #extra>
-                    <button nz-button class="mx-sm" nzSize="large" (click)="toCreateResource()">新增资源信息</button>
-                    <!-- <button nz-button class="mx-sm" nzSize="large" [nzType]="'primary'" (click)="toAddResources()">选择资源信息</button> -->
-                </ng-template>
-                <nz-table #nzTable1 [nzAjaxData]="addedApplyResources$ | async" [nzIsPagination]="false">
-                    <thead nz-thead>
-                        <tr>
-                            <th nz-th>
-                                <span>资源类型</span>
-                            </th>
-                            <th nz-th>
-                                <span>资源名称</span>
-                            </th>
-                            <th nz-th>
-                                <span>使用环境</span>
-                            </th>
-                            <th nz-th>
-                                <span>申请数量</span>
-                            </th>
-                            <th nz-th>
-                                <span>申请时间</span>
-                            </th>
-                            <th nz-th>
-                                <span>预计需要时间</span>
-                            </th>
-                            <th nz-th>
-                                <span>操作</span>
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody nz-tbody>
-                        <tr nz-tbody-tr *ngFor="let data of nzTable1.data; let i = index;">
-                            <td nz-td>{{data.type}}</td>
-                            <td nz-td>{{data.name || data.softwareName}}</td>
-                            <td nz-td>{{data.environment}}</td>
-                            <td nz-td>{{data.applyCount}}</td>
-                            <td nz-td>{{data.applyTime | date: 'yyyy-MM-dd'}}</td>
-                            <td nz-td>{{data.endTime | date: 'yyyy-MM-dd'}}</td>
-                            <td nz-td>
-                                <span>
-                                    <a (click)="toShowResource(data)">详情</a>
-                                    <span nz-table-divider></span>
-                                    <a *ngIf="data.tempID" (click)="toEditTempResource(data)">编辑</a>
-                                    <span *ngIf="data.tempID" nz-table-divider></span>
-                                    <a (click)="toDeleteResource(i)">删除</a>
-                                </span>
-                            </td>
-                        </tr>
-                    </tbody>
-                </nz-table>
-            </nz-card>
-
-
             <div class="my-md text-center">
                 <button nz-button class="mx-sm" nzSize="large" (click)="toSave()">保存信息</button>
                 <button nz-button class="mx-sm" nzSize="large" [nzType]="'primary'" (click)="toSubmit()">确认提交</button>
                 <button nz-button class="mx-sm" nzSize="large" (click)="toCancel()">取消创建</button>
+                <nz-upload nzAction="https://jsonplaceholder.typicode.com/posts/">
+                    <button nz-button nzSize="large">
+                        <i class="anticon anticon-upload"></i>
+                        <span>上传附件</span>
+                    </button>
+                </nz-upload>
             </div>
 
             <nz-spin [nzTip]="'获取审批人信息中...'" [nzSpinning]="fetchApproversLoading$ | async">
@@ -349,59 +285,12 @@
                                 <desc-list-item term="对应项目名称">{{applyInfoForm.value.projectName}}</desc-list-item>
                                 <desc-list-item term="在线版本号">{{applyInfoForm.value.onlineVersion}}</desc-list-item>
                                 <desc-list-item term="发布版本号">{{applyInfoForm.value.releaseVersion}}</desc-list-item>
-                                <desc-list-item term="版本兼容性">{{applyInfoForm.value.versionCompatibility}}</desc-list-item>
-                                <desc-list-item term="硬件变更">{{applyInfoForm.value.hardwareChange}}</desc-list-item>
                                 <desc-list-item term="升级方式">{{applyInfoForm.value.upgradeMode}}</desc-list-item>
                                 <desc-list-item term="预计发布时间">{{applyInfoForm.value.expectedReleaseTime}}</desc-list-item>
                                 <desc-list-item term="版本更新描述">{{applyInfoForm.value.versionUpdateDesc}}</desc-list-item>
                                 <desc-list-item term="备注">{{applyInfoForm.value.remark}}</desc-list-item>
                             </desc-list>
                         </ng-template>
-                    </nz-card>
-
-                    <nz-card *ngIf="tab.data; let tabData;" [nzNoHovering]="true" [nzBordered]="false" nzTitle="资源信息">
-                        <nz-table #nzTable6 [nzDataSource]="tabData.addedApplyResources" [nzIsPagination]="false">
-                            <thead nz-thead>
-                                <tr>
-                                    <th nz-th>
-                                        <span>资源类型</span>
-                                    </th>
-                                    <th nz-th>
-                                        <span>资源名称</span>
-                                    </th>
-                                    <th nz-th>
-                                        <span>使用环境</span>
-                                    </th>
-                                    <th nz-th>
-                                        <span>申请数量</span>
-                                    </th>
-                                    <th nz-th>
-                                        <span>申请时间</span>
-                                    </th>
-                                    <th nz-th>
-                                        <span>预计需要时间</span>
-                                    </th>
-                                    <th nz-th>
-                                        <span>操作</span>
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody nz-tbody>
-                                <tr nz-tbody-tr *ngFor="let data of nzTable6.data; let i = index;">
-                                    <td nz-td>{{data.type}}</td>
-                                    <td nz-td>{{data.name || data.softwareName}}</td>
-                                    <td nz-td>{{data.environment}}</td>
-                                    <td nz-td>{{data.applyCount}}</td>
-                                    <td nz-td>{{data.applyTime | date: 'yyyy-MM-dd'}}</td>
-                                    <td nz-td>{{data.endTime | date: 'yyyy-MM-dd'}}</td>
-                                    <td nz-td>
-                                        <span>
-                                            <a (click)="toShowResource(data)">详情</a>
-                                        </span>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </nz-table>
                     </nz-card>
 
                     <nz-card *ngIf="tab.data; let tabData;" [nzNoHovering]="true" [nzBordered]="false" nzTitle="审批人信息">
@@ -531,33 +420,6 @@
                                         <div nz-col [nzSpan]="6">
                                             <div nz-form-item nz-row>
                                                 <div nz-form-label nz-col>
-                                                    <label nz-form-item-required>版本兼容性</label>
-                                                </div>
-                                                <div nz-form-control nz-col nzHasFeedback [nzValidateStatus]="versionCompatibility">
-                                                    <nz-input formControlName="versionCompatibility" nzPlaceHolder="请输入版本兼容性" nzSize="large"></nz-input>
-                                                    <p nz-form-explain *ngIf="(versionCompatibility.dirty || versionCompatibility.touched) && versionCompatibility.errors?.required">
-                                                        请输入版本兼容性
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div nz-col [nzSpan]="6">
-                                            <div nz-form-item nz-row>
-                                                <div nz-form-label nz-col>
-                                                    <label nz-form-item-required>硬件变更</label>
-                                                </div>
-                                                <div nz-form-control nz-col nzHasFeedback [nzValidateStatus]="hardwareChange">
-                                                    <nz-input formControlName="hardwareChange" nzPlaceHolder="请输入硬件变更" nzSize="large"></nz-input>
-                                                    <p nz-form-explain *ngIf="(hardwareChange.dirty || hardwareChange.touched) && hardwareChange.errors?.required">
-                                                        请输入硬件变更
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div nz-col [nzSpan]="6">
-                                            <div nz-form-item nz-row>
-                                                <div nz-form-label nz-col>
                                                     <label nz-form-item-required>升级方式</label>
                                                 </div>
                                                 <div nz-form-control nz-col nzHasFeedback [nzValidateStatus]="upgradeMode">
@@ -615,60 +477,6 @@
                             </form>
                         </nz-card>
                     </nz-spin>
-
-                    <nz-card *ngIf="tab.data; let tabData;" [nzTitle]="'资源信息'" [nzBordered]="false">
-                        <ng-template #extra>
-                            <button nz-button class="mx-sm" nzSize="large" (click)="toCreateResource()">新增资源信息</button>
-                            <!-- <button nz-button class="mx-sm" nzSize="large" [nzType]="'primary'" (click)="toAddResources()">选择资源信息</button> -->
-                        </ng-template>
-                        <nz-table #nzTable4 [nzDataSource]="tabData.addedApplyResources" [nzIsPagination]="false">
-                            <thead nz-thead>
-                                <tr>
-                                    <th nz-th>
-                                        <span>资源类型</span>
-                                    </th>
-                                    <th nz-th>
-                                        <span>资源名称</span>
-                                    </th>
-                                    <th nz-th>
-                                        <span>使用环境</span>
-                                    </th>
-                                    <th nz-th>
-                                        <span>申请数量</span>
-                                    </th>
-                                    <th nz-th>
-                                        <span>申请时间</span>
-                                    </th>
-                                    <th nz-th>
-                                        <span>预计需要时间</span>
-                                    </th>
-                                    <th nz-th>
-                                        <span>操作</span>
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody nz-tbody>
-                                <tr nz-tbody-tr *ngFor="let data of nzTable4.data; let i = index;">
-                                    <td nz-td>{{data.type}}</td>
-                                    <td nz-td>{{data.name || data.softwareName}}</td>
-                                    <td nz-td>{{data.environment}}</td>
-                                    <td nz-td>{{data.applyCount}}</td>
-                                    <td nz-td>{{data.applyTime | date: 'yyyy-MM-dd'}}</td>
-                                    <td nz-td>{{data.endTime | date: 'yyyy-MM-dd'}}</td>
-                                    <td nz-td>
-                                        <span>
-                                            <a (click)="toShowResource(data)">详情</a>
-                                            <span nz-table-divider></span>
-                                            <a *ngIf="data.tempID" (click)="toEditTempResource(data)">编辑</a>
-                                            <span *ngIf="data.tempID" nz-table-divider></span>
-                                            <a (click)="toDeleteResource(i)">删除</a>
-                                        </span>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </nz-table>
-                    </nz-card>
-
 
                     <div class="my-md text-center">
                         <button nz-button class="mx-sm" nzSize="large" (click)="toCancelEdit()">取消</button>
