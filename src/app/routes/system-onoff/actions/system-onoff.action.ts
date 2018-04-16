@@ -7,6 +7,12 @@ import {
 } from '@core/models/system-onoff.model'
 import { ResourceInfo } from '@core/models/resource-info.model'
 
+export const FETCH_LIST_NUMBER = '[System OnOff Apply] Fetch List Number'
+export const FETCH_LIST_NUMBER_SUCCESS =
+    '[System OnOff Apply] Fetch List Number Success'
+export const FETCH_LIST_NUMBER_FAILURE =
+    '[System OnOff Apply] Fetch List Number Failure'
+
 export const SWITCH_APPLY_TYPE = '[System OnOff Apply] Switch Apply Type'
 
 export const FETCH_APPLY_INFO = '[System OnOff Apply] Fetch Apply Info'
@@ -45,6 +51,17 @@ export const SUBMIT_SYSTEM_ONOFF_APPLY_FAILURE =
 
 export const RESET_SYSTEM_ONOFF_APPLY =
     '[System OnOff Apply] Reset System OnOff Apply'
+
+export class FetchListNumberAction implements Action {
+    readonly type = FETCH_LIST_NUMBER
+}
+export class FetchListNumberSuccessAction implements Action {
+    readonly type = FETCH_LIST_NUMBER_SUCCESS
+    constructor(public listNumber: string) {}
+}
+export class FetchListNumberFailureAction implements Action {
+    readonly type = FETCH_LIST_NUMBER_FAILURE
+}
 
 export class SwitchApplyTypeAction implements Action {
     readonly type = SWITCH_APPLY_TYPE
@@ -117,6 +134,9 @@ export class ResetSystemOnOffApplyAction implements Action {
 }
 
 export type Actions =
+    | FetchListNumberAction
+    | FetchListNumberSuccessAction
+    | FetchListNumberFailureAction
     | SwitchApplyTypeAction
     | FetchApplyInfoAction
     | FetchApplyInfoSuccessAction

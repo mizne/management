@@ -8,6 +8,7 @@ import { merge } from 'rxjs/observable/merge'
 import { Store } from '@ngrx/store'
 import {
     State,
+    getListNumber,
     getSaveOrSubmitLoading,
     getSaveOrSubmitText,
     getFetchApplyInfoLoading,
@@ -35,7 +36,8 @@ import {
     ResetSystemOnOffApplyAction,
     FetchApplyInfoAction,
     FetchApproversAction,
-    SubmitSystemOnOffApplyAction
+    SubmitSystemOnOffApplyAction,
+    FetchListNumberAction
 } from './actions/system-onoff.action'
 import {
     FetchSavedAppliesAction,
@@ -312,7 +314,9 @@ export class SystemOnOffComponent implements OnInit {
         this.extraTabs$ = this.store.select(getExtraTabs)
     }
 
-    private initDispatcher(): void {}
+    private initDispatcher(): void {
+        this.store.dispatch(new FetchListNumberAction())
+    }
 
     private initSubscriber(): void {
         this.initFirstTabSubscriber()
@@ -322,6 +326,7 @@ export class SystemOnOffComponent implements OnInit {
 
     private initFirstTabSubscriber() {
         this.initSwitchApplyType()
+        this.initPatchListNumber()
         this.initSelectOffLineSystem()
 
         this.initSaveRequirementApply()
@@ -366,6 +371,17 @@ export class SystemOnOffComponent implements OnInit {
                 if (applyType === '上线') {
                     this.clearApplyForm()
                 }
+            })
+    }
+
+    private initPatchListNumber() {
+        this.store
+            .select(getListNumber)
+            .pipe(takeUntil(this.destroyService))
+            .subscribe(listNumber => {
+                this.applyForm.patchValue({
+                    listNumber
+                })
             })
     }
 

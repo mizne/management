@@ -13,16 +13,56 @@ import {
     getAddedApplyResources,
     getApprovers
 } from '../reducers'
-import { map, mergeMap, switchMap, catchError, tap, withLatestFrom } from 'rxjs/operators';
+import {
+    map,
+    mergeMap,
+    switchMap,
+    catchError,
+    tap,
+    withLatestFrom
+} from 'rxjs/operators'
 
 @Injectable()
 export class SystemOnOffEffects {
+    @Effect()
+    fetchListNumber$ = this.actions$
+        .ofType(fromSystemOnOff.FETCH_LIST_NUMBER)
+        .pipe(
+            switchMap(() => {
+                return this.resourceApplyService
+                    .fetchListNumber()
+                    .pipe(
+                        map(
+                            listNumber =>
+                                new fromSystemOnOff.FetchListNumberSuccessAction(
+                                    listNumber
+                                )
+                        ),
+                        catchError(e =>
+                            of(
+                                new fromSystemOnOff.FetchListNumberFailureAction()
+                            )
+                        )
+                    )
+            })
+        )
+
+    @Effect({ dispatch: false })
+    fetchListNumberFailure$ = this.actions$
+        .ofType(fromSystemOnOff.FETCH_LIST_NUMBER_FAILURE)
+        .pipe(
+            tap(() => {
+                this.notify.error(`获取申请单号`, '啊哦，获取申请单号失败！')
+            })
+        )
+
     @Effect()
     switchApplyType$ = this.actions$
         .ofType(fromSystemOnOff.SWITCH_APPLY_TYPE)
         .pipe(
             map(
-                (action: fromSystemOnOff.SwitchApplyTypeAction) => action.applyType
+                (action: fromSystemOnOff.SwitchApplyTypeAction) =>
+                    action.applyType
             ),
             mergeMap(applyType => [
                 // new fromSystemOnOff.FetchApplyInfoAction(applyType),
@@ -34,7 +74,10 @@ export class SystemOnOffEffects {
     fetchApplyInfo$ = this.actions$
         .ofType(fromSystemOnOff.FETCH_APPLY_INFO)
         .pipe(
-            map((action: fromSystemOnOff.FetchApplyInfoAction) => action.applyType),
+            map(
+                (action: fromSystemOnOff.FetchApplyInfoAction) =>
+                    action.applyType
+            ),
             switchMap(applyType => {
                 return this.resourceApplyService
                     .fetchApplyInfo(applyType)
@@ -51,22 +94,26 @@ export class SystemOnOffEffects {
                             )
                         )
                     )
-            }),
-            
+            })
         )
 
     @Effect({ dispatch: false })
     fetchApplyInfoFailure$ = this.actions$
         .ofType(fromSystemOnOff.FETCH_APPLY_INFO_FAILURE)
-        .pipe(tap(() => {
-            this.notify.error(`获取申请信息`, '啊哦，获取申请信息失败！')
-        }))
+        .pipe(
+            tap(() => {
+                this.notify.error(`获取申请信息`, '啊哦，获取申请信息失败！')
+            })
+        )
 
     @Effect()
     fetchApprovers$ = this.actions$
         .ofType(fromSystemOnOff.FETCH_APPROVERS)
         .pipe(
-            map((action: fromSystemOnOff.FetchApproversAction) => action.applyType),
+            map(
+                (action: fromSystemOnOff.FetchApproversAction) =>
+                    action.applyType
+            ),
             switchMap(applyType => {
                 return this.resourceApplyService
                     .fetchApprovers(applyType)
@@ -83,16 +130,20 @@ export class SystemOnOffEffects {
                             )
                         )
                     )
-            }),
-            
+            })
         )
 
     @Effect({ dispatch: false })
     fetchApproversFailure$ = this.actions$
         .ofType(fromSystemOnOff.FETCH_APPROVERS_FAILURE)
-        .pipe(tap(() => {
-            this.notify.error(`获取审批人信息`, '啊哦，获取审批人信息失败！')
-        }))
+        .pipe(
+            tap(() => {
+                this.notify.error(
+                    `获取审批人信息`,
+                    '啊哦，获取审批人信息失败！'
+                )
+            })
+        )
 
     @Effect()
     saveSystemOnOffApply$ = this.actions$
@@ -131,23 +182,29 @@ export class SystemOnOffEffects {
                             )
                         )
                     )
-            }),
-            
+            })
         )
 
     @Effect({ dispatch: false })
     saveSystemOnOffApplySuccess$ = this.actions$
         .ofType(fromSystemOnOff.SAVE_SYSTEM_ONOFF_APPLY_SUCCESS)
-        .pipe(tap(() => {
-            this.notify.success(`保存申请信息`, '恭喜您，保存申请信息成功！')
-        }))
+        .pipe(
+            tap(() => {
+                this.notify.success(
+                    `保存申请信息`,
+                    '恭喜您，保存申请信息成功！'
+                )
+            })
+        )
 
     @Effect({ dispatch: false })
     saveSystemOnOffApplyFailure$ = this.actions$
         .ofType(fromSystemOnOff.SAVE_SYSTEM_ONOFF_APPLY_FAILURE)
-        .pipe(tap(() => {
-            this.notify.error(`保存申请信息`, '啊哦，保存申请信息失败！')
-        }))
+        .pipe(
+            tap(() => {
+                this.notify.error(`保存申请信息`, '啊哦，保存申请信息失败！')
+            })
+        )
 
     @Effect()
     submitSystemOnOffApply$ = this.actions$
@@ -186,28 +243,34 @@ export class SystemOnOffEffects {
                             )
                         )
                     )
-            }),
-            
+            })
         )
 
     @Effect({ dispatch: false })
     submitSystemOnOffApplySuccess$ = this.actions$
         .ofType(fromSystemOnOff.SUBMIT_SYSTEM_ONOFF_APPLY_SUCCESS)
-        .pipe(tap(() => {
-            this.notify.success(`提交申请信息`, '恭喜您，提交申请信息成功！')
-        }))
+        .pipe(
+            tap(() => {
+                this.notify.success(
+                    `提交申请信息`,
+                    '恭喜您，提交申请信息成功！'
+                )
+            })
+        )
 
     @Effect({ dispatch: false })
     submitSystemOnOffApplyFailure$ = this.actions$
         .ofType(fromSystemOnOff.SUBMIT_SYSTEM_ONOFF_APPLY_FAILURE)
-        .pipe(tap(() => {
-            this.notify.error(`提交申请信息`, '啊哦，提交申请信息失败！')
-        }))
+        .pipe(
+            tap(() => {
+                this.notify.error(`提交申请信息`, '啊哦，提交申请信息失败！')
+            })
+        )
 
     constructor(
         private actions$: Actions,
         private resourceApplyService: SystemOnOffService,
         private notify: NzNotificationService,
         private store: Store<State>
-    ) { }
+    ) {}
 }

@@ -69,14 +69,12 @@ export class SystemInfo {
 
 export class ApplyInfo extends SystemInfo {
     type: string
-    listNumber: string
     description: string
     remark: string
 
     static generateFakeData(applyType: string): ApplyInfo {
         return {
             type: applyType,
-            listNumber: uuid.v4(),
             systemName: `fake systemName ${Math.random()
                 .toString()
                 .slice(0, 5)}`,

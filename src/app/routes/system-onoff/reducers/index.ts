@@ -32,6 +32,10 @@ export const getSystemOnOffApplyState = createSelector(
     getSystemOnOffModuleState,
     (state: SystemOnOffState) => state.systemOnOffApply
 )
+export const getListNumber = createSelector(
+    getSystemOnOffApplyState,
+    fromSystemOnOff.getListNumber
+)
 export const getSaveOrSubmitLoading = createSelector(
     getSystemOnOffApplyState,
     fromSystemOnOff.getSaveOrSubmitLoading

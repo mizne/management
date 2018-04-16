@@ -1,6 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http'
 import { Injectable } from '@angular/core'
 import { Observable } from 'rxjs/Observable'
+import * as uuid from 'uuid'
 import { of } from 'rxjs/observable/of'
 import { delay } from 'rxjs/operators'
 import {
@@ -22,6 +23,10 @@ import {
 @Injectable()
 export class SystemOnOffService {
     constructor() {}
+
+    fetchListNumber(): Observable<string> {
+        return of(uuid.v4()).pipe(delay(4e2))
+    }
 
     fetchSelectableSystemInfoes(params: any): Observable<SystemInfo[]> {
         console.log(`fetch selectable system info, params: `, params)

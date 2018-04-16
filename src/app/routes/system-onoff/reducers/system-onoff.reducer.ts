@@ -6,9 +6,9 @@ import {
 } from '@core/models/system-onoff.model'
 import { ResourceInfo } from '@core/models/resource-info.model'
 
-
 export interface State {
     fetchApplyInfoLoading: boolean
+    listNumber: string
     applyInfo: ApplyInfo
     fetchApproversLoading: boolean
     approvers: Approver[]
@@ -20,6 +20,7 @@ export interface State {
 
 const initialState: State = {
     fetchApplyInfoLoading: false,
+    listNumber: '',
     applyInfo: null,
     fetchApproversLoading: false,
     approvers: [],
@@ -34,6 +35,11 @@ export function reducer(
     action: fromSystemOnOff.Actions
 ): State {
     switch (action.type) {
+        case fromSystemOnOff.FETCH_LIST_NUMBER_SUCCESS:
+            return {
+                ...state,
+                listNumber: action.listNumber
+            }
         case fromSystemOnOff.SWITCH_APPLY_TYPE:
             return {
                 ...state,
@@ -144,7 +150,7 @@ export function reducer(
     }
 }
 
-
+export const getListNumber = (state: State) => state.listNumber
 export const getFetchApplyInfoLoading = (state: State) =>
     state.fetchApplyInfoLoading
 export const getApplyInfo = (state: State) => state.applyInfo
@@ -153,7 +159,8 @@ export const getFetchApproversLoading = (state: State) =>
 export const getApprovers = (state: State) => state.approvers
 export const getAddedApplyResources = (state: State) =>
     state.addedApplyResources
-export const getShowCreateApplyResourceBtn = (state: State) => state.showCreateApplyResourceBtn
+export const getShowCreateApplyResourceBtn = (state: State) =>
+    state.showCreateApplyResourceBtn
 export const getSaveOrSubmitLoading = (state: State) =>
     state.saveOrSubmitLoading
 export const getSaveOrSubmitText = (state: State) => state.saveOrSubmitText
