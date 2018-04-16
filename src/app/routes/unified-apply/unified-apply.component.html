@@ -323,25 +323,19 @@
                             <td nz-td>{{data.applyTime | date: 'yyyy-MM-dd'}}</td>
                             <td nz-td>{{data.endTime | date: 'yyyy-MM-dd'}}</td>
                             <td nz-td>
-                                <nz-input [(ngModel)]="data.budget">
-                                    <ng-template #prefix>
-                                        <i class="anticon anticon-pay-circle-o"></i>
-                                    </ng-template>
-                                </nz-input>
+                                <i class="anticon anticon-pay-circle-o"></i>
+                                <nz-input-number class="ml-sm" [(ngModel)]="data.budget" [nzMin]="1" [nzStep]="1">
+                                </nz-input-number>
                             </td>
                             <td nz-td>
-                                <nz-input [(ngModel)]="data.minPrice">
-                                    <ng-template #prefix>
-                                        <i class="anticon anticon-pay-circle-o"></i>
-                                    </ng-template>
-                                </nz-input>
+                                <i class="anticon anticon-pay-circle-o"></i>
+                                <nz-input-number class="ml-sm" [(ngModel)]="data.minPrice" [nzMin]="1" [nzStep]="1">
+                                </nz-input-number>
                             </td>
                             <td nz-td>
-                                <nz-input [(ngModel)]="data.maxPrice">
-                                    <ng-template #prefix>
-                                        <i class="anticon anticon-pay-circle-o"></i>
-                                    </ng-template>
-                                </nz-input>
+                                <i class="anticon anticon-pay-circle-o"></i>
+                                <nz-input-number class="ml-sm" [(ngModel)]="data.maxPrice" [nzMin]="1" [nzStep]="1">
+                                </nz-input-number>
                             </td>
                             <td nz-td>
                                 <span>
