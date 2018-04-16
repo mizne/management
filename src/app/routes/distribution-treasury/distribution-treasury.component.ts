@@ -28,7 +28,14 @@ import { DestroyService } from '@core/services/destroy.service'
 import { ToCreateResourceInfoComponent } from './modals/to-create-resource-info/to-create-resource-info.component'
 import { ToEditResourceInfoComponent } from './modals/to-edit-resource-info/to-edit-resource-info.component'
 import { ToShowResourceInfoComponent } from './modals/to-show-resource-info/to-show-resource-info.component'
-import { mergeMap, filter, takeUntil, tap, withLatestFrom } from 'rxjs/operators';
+import {
+    mergeMap,
+    filter,
+    takeUntil,
+    tap,
+    withLatestFrom
+} from 'rxjs/operators'
+import { XlsxService } from '@delon/abc'
 
 @Component({
     selector: 'app-distribution-treasury',
@@ -48,6 +55,7 @@ export class DistributionTreasuryComponent implements OnInit {
     resourceInfoPageSize = 10
     resourceEntryPageChangeSub: Subject<void> = new Subject<void>()
     toCreateResourceInfoSub: Subject<void> = new Subject<void>()
+    toExportSub: Subject<void> = new Subject<void>()
     toEditResourceInfoSub: Subject<ResourceInfo> = new Subject<ResourceInfo>()
     toShowResourceInfoSub: Subject<ResourceInfo> = new Subject<ResourceInfo>()
     resourceInfoPageChangeSub: Subject<void> = new Subject<void>()
@@ -63,7 +71,7 @@ export class DistributionTreasuryComponent implements OnInit {
     resourceAssignPageChangeSub: Subject<void> = new Subject<void>()
     selectResourceUseInfoSub: Subject<ResourceUseInfo> = new Subject<
         ResourceUseInfo
-        >()
+    >()
     toEditResourceUseInfoSub: Subject<void> = new Subject<void>()
     resourceUseInfoPageChangeSub: Subject<void> = new Subject<void>()
     resourceUseInfoResetSub: Subject<void> = new Subject<void>()
@@ -73,8 +81,9 @@ export class DistributionTreasuryComponent implements OnInit {
         private modalService: NzModalService,
         private store: Store<State>,
         private destroyService: DestroyService,
-        private fb: FormBuilder
-    ) { }
+        private fb: FormBuilder,
+        private xlsx: XlsxService
+    ) {}
 
     ngOnInit() {
         this.buildForm()
@@ -83,10 +92,14 @@ export class DistributionTreasuryComponent implements OnInit {
         this.initSubscriber()
     }
 
-    tabChange(tabIndex: number) { }
+    tabChange(tabIndex: number) {}
 
     toCreateResourceInfo() {
         this.toCreateResourceInfoSub.next()
+    }
+
+    toExport() {
+        this.toExportSub.next()
     }
 
     queryResourceInfoForm() {
@@ -170,10 +183,16 @@ export class DistributionTreasuryComponent implements OnInit {
 
     private initDispatcher(): void {
         this.store.dispatch(new fromResourceEntry.FetchResourceInfoesAction())
-        this.store.dispatch(new fromResourceEntry.FetchResourceInfoesCountAction())
+        this.store.dispatch(
+            new fromResourceEntry.FetchResourceInfoesCountAction()
+        )
 
-        this.store.dispatch(new fromResourceAssign.FetchResourceUseInfoesAction())
-        this.store.dispatch(new fromResourceAssign.FetchResourceUseInfoesCountAction())
+        this.store.dispatch(
+            new fromResourceAssign.FetchResourceUseInfoesAction()
+        )
+        this.store.dispatch(
+            new fromResourceAssign.FetchResourceUseInfoesCountAction()
+        )
     }
 
     private initSubscriber(): void {
@@ -183,6 +202,7 @@ export class DistributionTreasuryComponent implements OnInit {
 
     private initFirstTabSubscriber() {
         this.initCreateResourceInfo()
+        this.initExportResourceInfo()
         this.initEditResourceInfo()
         this.initShowResourceInfo()
 
@@ -211,7 +231,33 @@ export class DistributionTreasuryComponent implements OnInit {
                 takeUntil(this.destroyService)
             )
             .subscribe(resourceInfo => {
-                this.store.dispatch(new fromResourceEntry.CreateResourceInfoAction(resourceInfo))
+                this.store.dispatch(
+                    new fromResourceEntry.CreateResourceInfoAction(resourceInfo)
+                )
+            })
+    }
+
+    private initExportResourceInfo() {
+        this.toExportSub
+            .asObservable()
+            .pipe(
+                withLatestFrom(this.resourceInfoes$),
+                takeUntil(this.destroyService)
+            )
+            .subscribe(([_, resourceInfoes]) => {
+                console.log(`to export: `, resourceInfoes)
+                this.xlsx.export({
+                    sheets: [
+                        {
+                            data: [
+                                ['编号', '姓名'],
+                                ['编号1', '姓名1'],
+                                ['编号2', '姓名2']
+                            ],
+                            name: 'sheet name'
+                        }
+                    ]
+                })
             })
     }
 
@@ -232,7 +278,9 @@ export class DistributionTreasuryComponent implements OnInit {
                 takeUntil(this.destroyService)
             )
             .subscribe(resourceInfo => {
-                this.store.dispatch(new fromResourceEntry.EditResourceInfoAction(resourceInfo))
+                this.store.dispatch(
+                    new fromResourceEntry.EditResourceInfoAction(resourceInfo)
+                )
             })
     }
 
@@ -271,18 +319,18 @@ export class DistributionTreasuryComponent implements OnInit {
 
         merge(
             this.resourceEntryPageChangeSub.asObservable(),
-            this.resourceInfoResetSub
-                .asObservable()
-                .pipe(
-                    tap(() => {
-                        this.resourceUseInfoPageIndex = 1
-                        this.resourceInfoPageSize = 10
-                    }),
-                    withLatestFrom(this.store.select(getResourceInfoPageParams)),
-                    filter(([_, { pageIndex, pageSize }]) =>
+            this.resourceInfoResetSub.asObservable().pipe(
+                tap(() => {
+                    this.resourceUseInfoPageIndex = 1
+                    this.resourceInfoPageSize = 10
+                }),
+                withLatestFrom(this.store.select(getResourceInfoPageParams)),
+                filter(
+                    ([_, { pageIndex, pageSize }]) =>
                         pageIndex === this.resourceUseInfoPageIndex &&
-                        pageSize === this.resourceInfoPageSize)
+                        pageSize === this.resourceInfoPageSize
                 )
+            )
         )
             .pipe(takeUntil(this.destroyService))
             .subscribe(() => {
@@ -353,19 +401,18 @@ export class DistributionTreasuryComponent implements OnInit {
 
         merge(
             this.resourceAssignPageChangeSub.asObservable(),
-            this.resourceUseInfoResetSub
-                .pipe(
-                    tap(() => {
-                        this.resourceUseInfoPageIndex = 1
-                        this.resourceUseInfoPageSize = 10
-                    }),
-                    withLatestFrom(this.store.select(getResourceUseInfoPageParams)),
-                    filter(
-                        ([_, { pageIndex, pageSize }]) =>
-                            pageIndex === this.resourceUseInfoPageIndex &&
-                            pageSize === this.resourceUseInfoPageSize
-                    )
+            this.resourceUseInfoResetSub.pipe(
+                tap(() => {
+                    this.resourceUseInfoPageIndex = 1
+                    this.resourceUseInfoPageSize = 10
+                }),
+                withLatestFrom(this.store.select(getResourceUseInfoPageParams)),
+                filter(
+                    ([_, { pageIndex, pageSize }]) =>
+                        pageIndex === this.resourceUseInfoPageIndex &&
+                        pageSize === this.resourceUseInfoPageSize
                 )
+            )
         )
             .pipe(takeUntil(this.destroyService))
             .subscribe(() => {

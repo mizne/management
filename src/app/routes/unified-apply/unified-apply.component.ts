@@ -3,6 +3,7 @@ import { NzMessageService, NzModalService } from 'ng-zorro-antd'
 
 import { Observable } from 'rxjs/Observable'
 import { Store } from '@ngrx/store'
+import { XlsxService } from '@delon/abc'
 import {
     State,
     getUnifiedSaveOrSubmitLoading,
@@ -115,6 +116,7 @@ export class UnifiedApplyComponent implements OnInit {
     applyInfo$: Observable<ApplyInfo>
 
     unifiedAddedApplyResources$: Observable<ResourceInfo[]>
+    toExportSub: Subject<void> = new Subject<void>()
     toCreateResourceSub: Subject<void> = new Subject<void>()
     toAddResourcesSub: Subject<void> = new Subject<void>()
     toShowResourceSub: Subject<ResourceInfo> = new Subject<ResourceInfo>()
@@ -221,7 +223,8 @@ export class UnifiedApplyComponent implements OnInit {
         private modalService: NzModalService,
         private store: Store<State>,
         private destroyService: DestroyService,
-        private fb: FormBuilder
+        private fb: FormBuilder,
+        private xlsx: XlsxService
     ) {}
 
     ngOnInit() {
@@ -238,6 +241,7 @@ export class UnifiedApplyComponent implements OnInit {
     // 第一个tab
     toExport() {
         console.log('to export excel')
+        this.toExportSub.next()
     }
 
     toUpload() {
@@ -435,6 +439,8 @@ export class UnifiedApplyComponent implements OnInit {
     private initFirstTabSubscriber() {
         this.initPatchApplyInfo()
 
+        this.initExportExcel()
+
         this.initSaveUnifiedApply()
         this.initSubmitUnifiedApply()
         this.initResetUnifiedApply()
@@ -492,6 +498,27 @@ export class UnifiedApplyComponent implements OnInit {
                 } else {
                     this.applyInfoForm.reset()
                 }
+            })
+    }
+
+    private initExportExcel() {
+        this.toExportSub
+            .asObservable()
+            .pipe(takeUntil(this.destroyService))
+            .subscribe(() => {
+                this.xlsx.export({
+                    sheets: [
+                        {
+                            data: [
+                                ['编号', '姓名'],
+                                ['编号1', '姓名1'],
+                                ['编号2', '姓名2']
+                            ],
+                            name: 'sheet name'
+                        }
+                    ],
+                    filename: 'test.xlsx'
+                })
             })
     }
 
