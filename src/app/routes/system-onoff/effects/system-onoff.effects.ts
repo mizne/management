@@ -25,7 +25,7 @@ export class SystemOnOffEffects {
                 (action: fromSystemOnOff.SwitchApplyTypeAction) => action.applyType
             ),
             mergeMap(applyType => [
-                new fromSystemOnOff.FetchApplyInfoAction(applyType),
+                // new fromSystemOnOff.FetchApplyInfoAction(applyType),
                 new fromSystemOnOff.FetchApproversAction(applyType)
             ])
         )

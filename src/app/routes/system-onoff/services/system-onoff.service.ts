@@ -6,6 +6,7 @@ import { delay } from 'rxjs/operators'
 import {
     ApplyInfo,
     Approver,
+    SystemInfo,
     SystemOnOffApply,
     FetchAddableApplyResourceParams,
     FetchAddableApplyResourceCountParams,
@@ -20,7 +21,18 @@ import {
 
 @Injectable()
 export class SystemOnOffService {
-    constructor() { }
+    constructor() {}
+
+    fetchSelectableSystemInfoes(params: any): Observable<SystemInfo[]> {
+        console.log(`fetch selectable system info, params: `, params)
+        return of(SystemInfo.generateFake()).pipe(delay(4e2))
+    }
+
+    fetchSelectableSystemInfoesCount(params: any): Observable<number> {
+        console.log(`fetch selectable system info count, params: `, params)
+        return of(42).pipe(delay(4e2))
+    }
+
     fetchApplyInfo(applyType: string): Observable<ApplyInfo> {
         return of(ApplyInfo.generateFakeData(applyType)).pipe(delay(4e2))
     }
@@ -50,8 +62,7 @@ export class SystemOnOffService {
     }
 
     fetchSavedSystemOnOffApplies(): Observable<SystemOnOffApply[]> {
-        return of(SystemOnOffApply.generateFakeDataItems()).pipe(delay(3e2)
-        )
+        return of(SystemOnOffApply.generateFakeDataItems()).pipe(delay(3e2))
     }
 
     submitSavedApply(apply: SystemOnOffApply): Observable<any> {

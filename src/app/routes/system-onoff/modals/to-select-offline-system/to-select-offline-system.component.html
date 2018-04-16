@@ -1,0 +1,97 @@
+<nz-card [nzBordered]="false">
+    <form nz-form [formGroup]="form" (ngSubmit)="queryForm()" [nzLayout]="'inline'">
+        <div nz-row [nzGutter]="24">
+            <div nz-col [nzSpan]="6" class="mb-md">
+                <div nz-form-item class="d-flex">
+                    <div nz-form-label>
+                        <label for="status">系统名称</label>
+                    </div>
+                    <div nz-form-control class="flex-1">
+                        <nz-input formControlName="systemName" nzPlaceHolder="请输入系统名称" nzSize="large"></nz-input>
+                    </div>
+                </div>
+            </div>
+            <div nz-col [nzSpan]="6" class="mb-md">
+                <div nz-form-item class="d-flex">
+                    <div nz-form-label>
+                        <label for="updatedAt">上线年度</label>
+                    </div>
+                    <div nz-form-control class="flex-1">
+                        <nz-input formControlName="onlineTime" nzPlaceHolder="请输入上线年度" nzSize="large"></nz-input>
+                    </div>
+                </div>
+            </div>
+            <div nz-col [nzSpan]="6" class="mb-md">
+                <div nz-form-item class="d-flex">
+                    <div nz-form-label>
+                        <label for="updatedAt">开发部门</label>
+                    </div>
+                    <div nz-form-control class="flex-1">
+                        <nz-input formControlName="devDept" nzPlaceHolder="请输入开发部门" nzSize="large"></nz-input>
+                    </div>
+                </div>
+            </div>
+
+            <div nz-col [nzSpan]="6" class="mb-md">
+                <button nz-button type="submit" [nzType]="'primary'" [nzSize]="'large'">查询</button>
+                <button nz-button (click)="resetForm()" [nzSize]="'large'" class="mx-sm">重置</button>
+            </div>
+        </div>
+    </form>
+
+    <nz-table #nzTable1 [nzAjaxData]="selectableSystemInfoes$ | async" [nzShowSizeChanger]="true" [nzLoading]="loading$ | async"
+        [nzTotal]="selectableSystemInfoesCount$ | async" [nzPageIndex]="pageIndex$ | async" (nzPageIndexChange)="pageIndexChange($event)"
+        [nzPageSize]="pageSize$ | async" (nzPageSizeChange)="pageSizeChange($event)" [nzShowFooter]="true">
+        <thead nz-thead>
+            <tr>
+                <th nz-th [nzCheckbox]="true">
+                    <label nz-checkbox [ngModel]="allChecked$ | async" [nzIndeterminate]="indeterminate$ | async" (ngModelChange)="checkAll($event)"></label>
+                </th>
+                <th nz-th>
+                    <span>系统名称</span>
+                </th>
+                <th nz-th>
+                    <span>版本号</span>
+                </th>
+                <th nz-th>
+                    <span>上线年度</span>
+                </th>
+                <th nz-th>
+                    <span>开发部门</span>
+                </th>
+                <th nz-th>
+                    <span>对应项目名称</span>
+                </th>
+                <th nz-th>
+                    <span>项目负责人</span>
+                </th>
+                <th nz-th>
+                    <span>技术联系人</span>
+                </th>
+            </tr>
+        </thead>
+        <tbody nz-tbody>
+            <tr nz-tbody-tr *ngFor="let data of nzTable1.data; trackBy: trackByFn">
+                <td nz-td [nzCheckbox]="true">
+                    <label nz-checkbox [nzDisabled]="data.disabled" [ngModel]="data.checked" (ngModelChange)="refreshStatus($event, data.id)">
+                    </label>
+                </td>
+                <td nz-td>{{data.systemName}}</td>
+                <td nz-td>{{data.version}}</td>
+                <td nz-td>{{data.onlineTime}}</td>
+                <td nz-td>{{data.devDept}}</td>
+                <td nz-td>{{data.projectName}}</td>
+                <td nz-td>{{data.projectOwner}}</td>
+                <td nz-td>{{data.techOwner}}</td>
+            </tr>
+        </tbody>
+        <span nz-table-footer>
+            <i class="anticon anticon-database"></i>
+            {{'共 ' + (selectableSystemInfoesCount$ | async) + ' 条'}}
+        </span>
+    </nz-table>
+</nz-card>
+<div class="customize-footer d-flex justify-content-center">
+    <button nz-button nzSize="large" (click)="toCancel()">取消</button>
+    <button nz-button class="ml-md" (click)="toSave()" [nzType]="'primary'" nzSize="large">确认选择</button>
+</div>

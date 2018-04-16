@@ -12,6 +12,7 @@ import { ExtraTabsEffects } from './effects/extra-tabs.effects'
 import { ToAddApplyResourceEffects } from './effects/to-add-apply-resource.effects'
 import { reducers } from './reducers'
 import { SystemOnOffService } from './services/system-onoff.service'
+import { ToSelectOffLineSystemComponent } from './modals/to-select-offline-system/to-select-offline-system.component'
 
 export const routes: Routes = [
     {
@@ -19,6 +20,9 @@ export const routes: Routes = [
         component: SystemOnOffComponent
     }
 ]
+
+const modals = [ToSelectOffLineSystemComponent]
+
 @NgModule({
     imports: [
         SharedModule,
@@ -32,8 +36,8 @@ export const routes: Routes = [
         ])
     ],
     exports: [],
-    declarations: [SystemOnOffComponent],
+    declarations: [SystemOnOffComponent, ...modals],
     providers: [SystemOnOffService],
-    entryComponents: []
+    entryComponents: [...modals]
 })
 export class SystemOnOffModule {}

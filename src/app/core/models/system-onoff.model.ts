@@ -36,9 +36,8 @@ export class SystemOnOffApply {
     }
 }
 
-export class ApplyInfo {
-    type: string
-    listNumber: string
+export class SystemInfo {
+    id?: string
     systemName: string
     version: string
     onlineTime: string
@@ -48,6 +47,29 @@ export class ApplyInfo {
     projectOwnerPhone: string
     techOwner: string
     techOwnerPhone: string
+
+    checked?: boolean
+
+    static generateFake(): SystemInfo[] {
+        return Array.from({ length: 10 }, (_, i) => ({
+            id: uuid.v4(),
+            systemName: `systemName ${i}`,
+            version: `version ${i}`,
+            onlineTime: `onlineTime ${i}`,
+            devDept: `devDept ${i}`,
+            projectName: `projectName ${i}`,
+            projectOwner: `projectOwner ${i}`,
+            projectOwnerPhone: `projectOwnerPhone ${i}`,
+            techOwner: `techOwner ${i}`,
+            techOwnerPhone: `techOwnerPhone ${i}`,
+            checked: false
+        }))
+    }
+}
+
+export class ApplyInfo extends SystemInfo {
+    type: string
+    listNumber: string
     description: string
     remark: string
 
@@ -91,7 +113,6 @@ export class ApplyInfo {
         }
     }
 }
-
 
 export interface FetchAddableApplyResourceParams extends PaginationParams {
     type: string

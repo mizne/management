@@ -63,7 +63,7 @@ export class SearchTableService<S extends BaseSearchOptions, E extends DataItem>
     private pageSizeChangeSub: Subject<number> = new Subject<number>()
     private checkOneSub: Subject<CheckOneOptions> = new Subject<
         CheckOneOptions
-        >()
+    >()
     private checkAllSub: Subject<boolean> = new Subject<boolean>()
 
     private dataItemsSub: BehaviorSubject<E[]> = new BehaviorSubject<E[]>([])
@@ -71,10 +71,10 @@ export class SearchTableService<S extends BaseSearchOptions, E extends DataItem>
 
     private dataItemsCountSub: BehaviorSubject<number> = new BehaviorSubject<
         number
-        >(0)
+    >(0)
     public dataItemsCount$: Observable<
         number
-        > = this.dataItemsCountSub.asObservable()
+    > = this.dataItemsCountSub.asObservable()
 
     public loading$: Observable<boolean>
 
@@ -155,25 +155,15 @@ export class SearchTableService<S extends BaseSearchOptions, E extends DataItem>
         const checkAll = this.checkAllForDataItems()
         const checkOne = this.checkOneForDataItems()
 
-        merge(
-            firstFetch,
-            searchItems,
-            pageChangeItems,
-            checkAll,
-            checkOne
-        )
-            .pipe(
-                takeUntil(this.destroySub)
-            )
+        merge(firstFetch, searchItems, pageChangeItems, checkAll, checkOne)
+            .pipe(takeUntil(this.destroySub))
             .subscribe(this.dataItemsSub)
     }
 
     private firstFetchForDataItems(): Observable<E[]> {
         return this.initFetchSub
             .asObservable()
-            .pipe(
-                switchMap(() => this.dataItemsHandler()),
-        )
+            .pipe(switchMap(() => this.dataItemsHandler()))
     }
 
     private searchForDataItems(): Observable<E[]> {
@@ -181,28 +171,26 @@ export class SearchTableService<S extends BaseSearchOptions, E extends DataItem>
         // 如果当前pageIndex不为1 或pageSize不为10 则会触发pageChange 继而发起获取数据请求
         // 所以 更正为 search或reset时 当前pageIndex=1 pageSize=10 才进行查询
         // 其他情况 都通过 触发pageChange 发起获取数据请求
-        return this.searchSub
-            .asObservable()
-            .pipe(
-                withLatestFrom(this.pageIndex$, (params, pageIndex) => ({
+        return this.searchSub.asObservable().pipe(
+            withLatestFrom(this.pageIndex$, (params, pageIndex) => ({
+                params,
+                pageIndex
+            })),
+            withLatestFrom(
+                this.pageSize$,
+                ({ params, pageIndex }, pageSize) => ({
                     params,
-                    pageIndex
-                })),
-                withLatestFrom(
-                    this.pageSize$,
-                    ({ params, pageIndex }, pageSize) => ({
-                        params,
-                        pageIndex,
-                        pageSize
-                    })
-                ),
-                filter(
-                    ({ params, pageIndex, pageSize }) =>
-                        pageIndex === 1 && pageSize === 10
-                ),
+                    pageIndex,
+                    pageSize
+                })
+            ),
+            filter(
+                ({ params, pageIndex, pageSize }) =>
+                    pageIndex === 1 && pageSize === 10
+            ),
 
-                map(({ params, pageIndex, pageSize }) => params),
-                switchMap(params => this.dataItemsHandler(params)),
+            map(({ params, pageIndex, pageSize }) => params),
+            switchMap(params => this.dataItemsHandler(params))
         )
     }
 
@@ -210,53 +198,48 @@ export class SearchTableService<S extends BaseSearchOptions, E extends DataItem>
         return combineLatest(
             this.pageIndex$.pipe(distinctUntilChanged()),
             this.pageSize$.pipe(distinctUntilChanged())
-        )
-            .pipe(
-                skip(1),
-                withLatestFrom(
-                    this.searchSub.asObservable().pipe(startWith(null)),
-                    ([pageIndex, pageSize], searchOpt) => {
-                        return Object.assign(
-                            {
-                                pageIndex,
-                                pageSize
-                            },
-                            searchOpt
-                        )
-                    }
-                ),
-                switchMap(params => this.dataItemsHandler(params)),
+        ).pipe(
+            skip(1),
+            withLatestFrom(
+                this.searchSub.asObservable().pipe(startWith(null)),
+                ([pageIndex, pageSize], searchOpt) => {
+                    return Object.assign(
+                        {
+                            pageIndex,
+                            pageSize
+                        },
+                        searchOpt
+                    )
+                }
+            ),
+            switchMap(params => this.dataItemsHandler(params))
         )
     }
 
     private checkAllForDataItems(): Observable<E[]> {
-        return this.checkAllSub
-            .asObservable()
-            .pipe(
-                withLatestFrom(this.dataItems$),
-                map(([checked, items]) =>
-                    items.map(e => {
-                        return Object.assign({}, e, { checked })
-                    })
-                ),
+        return this.checkAllSub.asObservable().pipe(
+            withLatestFrom(this.dataItems$),
+            map(([checked, items]) =>
+                items.map(e => {
+                    return Object.assign({}, e, { checked })
+                })
+            )
         )
     }
 
     private checkOneForDataItems(): Observable<E[]> {
-        return this.checkOneSub
-            .asObservable()
-            .pipe(
-                withLatestFrom(this.dataItems$),
-                map(([opt, items]) =>
-                    items.map(e => {
-                        if (e.id === opt.id) {
-                            return Object.assign({}, e, {
-                                checked: opt.checked
-                            })
-                        }
-                        return Object.assign({}, e)
-                    })
-                ),
+        return this.checkOneSub.asObservable().pipe(
+            withLatestFrom(this.dataItems$),
+            map(([opt, items]) =>
+                items.map(e => {
+                    if (e.id === opt.id) {
+                        return Object.assign({}, e, {
+                            checked: opt.checked
+                        })
+                    }
+                    return Object.assign({}, e)
+                })
+            )
         )
     }
 
@@ -271,9 +254,7 @@ export class SearchTableService<S extends BaseSearchOptions, E extends DataItem>
             .pipe(switchMap(params => this.dataItemsCountHandler(params)))
 
         merge(firstFetch, searchItems)
-            .pipe(
-                takeUntil(this.destroySub)
-            )
+            .pipe(takeUntil(this.destroySub))
             .subscribe(this.dataItemsCountSub)
     }
 

@@ -62,6 +62,7 @@ import {
     TabOptions
 } from '@core/models/system-onoff.model'
 import { ResourceInfo } from '@core/models/resource-info.model'
+import { ToSelectOffLineSystemComponent } from './modals/to-select-offline-system/to-select-offline-system.component'
 import {
     CloseExtraTabAction,
     ResetNeedManualSetTabIndexAction
@@ -80,8 +81,7 @@ import {
     selector: 'app-system-onoff',
     templateUrl: './system-onoff.component.html',
     styleUrls: ['./system-onoff.component.less'],
-    providers: [DestroyService],
-    changeDetection: ChangeDetectionStrategy.OnPush
+    providers: [DestroyService]
 })
 export class SystemOnOffComponent implements OnInit {
     tabIndex = 0
@@ -101,6 +101,7 @@ export class SystemOnOffComponent implements OnInit {
     applyInfo$: Observable<ApplyInfo>
 
     addedApplyResources$: Observable<ResourceInfo[]>
+    toSelectOffLineSystemSub: Subject<void> = new Subject<void>()
     toCreateResourceSub: Subject<void> = new Subject<void>()
     toAddResourcesSub: Subject<void> = new Subject<void>()
     toShowResourceSub: Subject<ResourceInfo> = new Subject<ResourceInfo>()
@@ -191,6 +192,10 @@ export class SystemOnOffComponent implements OnInit {
 
     tabChange(tabIndex: number) {
         this.tabChangeSub.next(tabIndex)
+    }
+
+    toSelectOffLineSystem() {
+        this.toSelectOffLineSystemSub.next()
     }
 
     toCreateResource() {
@@ -317,7 +322,7 @@ export class SystemOnOffComponent implements OnInit {
 
     private initFirstTabSubscriber() {
         this.initSwitchApplyType()
-        this.initPatchApplyInfo()
+        this.initSelectOffLineSystem()
 
         this.initSaveRequirementApply()
         this.initSubmitRequirementApply()
@@ -358,19 +363,43 @@ export class SystemOnOffComponent implements OnInit {
             .pipe(filter(e => !!e), takeUntil(this.destroyService))
             .subscribe(applyType => {
                 this.store.dispatch(new SwitchApplyTypeAction(applyType))
+                if (applyType === '上线') {
+                    this.clearApplyForm()
+                }
             })
     }
 
-    private initPatchApplyInfo() {
-        this.store
-            .select(getApplyInfo)
-            .pipe(takeUntil(this.destroyService))
-            .subscribe(applyInfo => {
-                if (applyInfo) {
-                    this.applyForm.patchValue(applyInfo, { emitEvent: false })
-                } else {
-                    this.applyForm.reset()
-                }
+    private clearApplyForm() {
+        this.applyForm.patchValue({
+            systemName: '',
+            version: '',
+            onlineTime: '',
+            devDept: '',
+            projectName: '',
+            projectOwner: '',
+            projectOwnerPhone: '',
+            techOwner: '',
+            techOwnerPhone: ''
+        })
+    }
+
+    private initSelectOffLineSystem() {
+        this.toSelectOffLineSystemSub
+            .asObservable()
+            .pipe(
+                mergeMap(() => {
+                    return this.modalService.open({
+                        title: '选择下线系统',
+                        content: ToSelectOffLineSystemComponent,
+                        footer: false,
+                        width: 1000
+                    })
+                }),
+                filter(e => typeof e !== 'string'),
+                takeUntil(this.destroyService)
+            )
+            .subscribe(system => {
+                this.applyForm.patchValue(system)
             })
     }
 

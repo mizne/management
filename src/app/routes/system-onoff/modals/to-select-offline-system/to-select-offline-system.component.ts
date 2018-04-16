@@ -21,29 +21,24 @@ import {
     map,
     catchError
 } from 'rxjs/operators'
-import {
-    ResourceType,
-    ResourceInfo
-} from '@app/core/models/resource-info.model'
-import { ResourceInfoService } from '@core/services/resource-info.service'
+import { SystemInfo } from '@app/core/models/system-onoff.model'
+import { SystemOnOffService } from '../../services/system-onoff.service'
 import { of } from 'rxjs/observable/of'
 
 interface SearchOptions {
-    type?: string
-    name?: string
-    version?: string
+    systemName?: string
+    onlineTime?: string
+    devDept?: string
 }
 
 @Component({
-    selector: 'app-to-add-apply-resource',
-    templateUrl: './to-add-apply-resource.component.html',
+    selector: 'app-to-select-offline-system',
+    templateUrl: './to-select-offline-system.component.html',
     providers: [DestroyService, SearchTableService]
 })
-export class ToAddApplyResourceComponent implements OnInit {
-    @Input() resourceTypes: ResourceType[]
-
-    addableResources$: Observable<ResourceInfo[]>
-    addableResourcesCount$: Observable<number>
+export class ToSelectOffLineSystemComponent implements OnInit {
+    selectableSystemInfoes$: Observable<SystemInfo[]>
+    selectableSystemInfoesCount$: Observable<number>
     loading$: Observable<boolean>
     pageIndex$: Observable<number>
     pageSize$: Observable<number>
@@ -63,17 +58,17 @@ export class ToAddApplyResourceComponent implements OnInit {
         private subject: NzModalSubject,
         private destroyService: DestroyService,
         private messageService: NzMessageService,
-        private resourceInfoService: ResourceInfoService,
+        private systemOnOffService: SystemOnOffService,
         private searchTableService: SearchTableService<
             SearchOptions,
-            ResourceInfo
+            SystemInfo
         >
     ) {
         this.searchTableService.setDataItemsHandler(params =>
-            this.resourceInfoService.fetchResourceInfos(params)
+            this.systemOnOffService.fetchSelectableSystemInfoes(params)
         )
         this.searchTableService.setDataItemsCountHandler(params =>
-            this.resourceInfoService.fetchResourceInfosCount(params)
+            this.systemOnOffService.fetchSelectableSystemInfoesCount(params)
         )
     }
 
@@ -121,15 +116,15 @@ export class ToAddApplyResourceComponent implements OnInit {
 
     private buildForm() {
         this.form = this.fb.group({
-            type: [null],
-            name: [null],
-            version: [null]
+            systemName: [null],
+            onlineTime: [null],
+            devDept: [null]
         })
     }
 
     private intDataSource() {
-        this.addableResources$ = this.searchTableService.dataItems$
-        this.addableResourcesCount$ = this.searchTableService.dataItemsCount$
+        this.selectableSystemInfoes$ = this.searchTableService.dataItems$
+        this.selectableSystemInfoesCount$ = this.searchTableService.dataItemsCount$
         this.loading$ = this.searchTableService.loading$
         this.pageIndex$ = this.searchTableService.pageIndex$
         this.pageSize$ = this.searchTableService.pageSize$
@@ -149,25 +144,42 @@ export class ToAddApplyResourceComponent implements OnInit {
         this.ensureSaveSub
             .asObservable()
             .pipe(
-                withLatestFrom(this.addableResources$),
+                withLatestFrom(this.selectableSystemInfoes$),
                 map(([_, resources]) => resources.filter(e => e.checked)),
                 takeUntil(this.destroyService)
             )
-            .subscribe(selectedResources => {
-                if (selectedResources.length === 0) {
-                    this.messageService.info(`还没有选择资源信息呢`)
-                } else {
-                    this.subject.next(selectedResources)
+            .subscribe(selectedItems => {
+                if (selectedItems.length === 0) {
+                    this.messageService.info(`还没有选择下线系统呢`)
+                } else if (selectedItems.length === 1) {
+                    this.subject.next(
+                        R.pick(
+                            [
+                                'systemName',
+                                'version',
+                                'onlineTime',
+                                'devDept',
+                                'projectName',
+                                'projectOwner',
+                                'projectOwnerPhone',
+                                'techOwner',
+                                'techOwnerPhone'
+                            ],
+                            selectedItems[0]
+                        )
+                    )
                     this.subject.destroy('onOk')
+                } else {
+                    this.messageService.info(`只能选择一个下线系统`)
                 }
             })
     }
 
     private convertFormValue(): SearchOptions {
         return R.filter(R.complement(R.isNil), {
-            type: this.form.value.type,
-            name: this.form.value.name,
-            version: this.form.value.version
+            systemName: this.form.value.systemName,
+            onlineTime: this.form.value.onlineTime,
+            devDept: this.form.value.devDept
         })
     }
 }
