@@ -677,8 +677,12 @@ export class UnifiedApplyComponent implements OnInit {
     private initSaveSubPackageApply() {
         this.toSaveSubPackageSub
             .asObservable()
-            .pipe(takeUntil(this.destroyService))
-            .subscribe(() => {
+            .pipe(
+                withLatestFrom(this.subPackageAddedApplyResources$),
+                takeUntil(this.destroyService)
+            )
+            .subscribe(([_, resources]) => {
+                console.log(resources)
                 this.store.dispatch(new SaveSubPackageApplyAction())
             })
     }

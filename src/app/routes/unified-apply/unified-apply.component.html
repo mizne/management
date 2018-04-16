@@ -301,6 +301,15 @@
                                 <span>预计需要时间</span>
                             </th>
                             <th nz-th>
+                                <span>预算/增量预算</span>
+                            </th>
+                            <th nz-th>
+                                <span>最低限价</span>
+                            </th>
+                            <th nz-th>
+                                <span>最高限价</span>
+                            </th>
+                            <th nz-th>
                                 <span>操作</span>
                             </th>
                         </tr>
@@ -311,8 +320,29 @@
                             <td nz-td>{{data.name || data.softwareName}}</td>
                             <td nz-td>{{data.environment}}</td>
                             <td nz-td>{{data.applyCount}}</td>
-                            <td nz-td>{{data.applyTime}}</td>
-                            <td nz-td>{{data.endTime}}</td>
+                            <td nz-td>{{data.applyTime | date: 'yyyy-MM-dd'}}</td>
+                            <td nz-td>{{data.endTime | date: 'yyyy-MM-dd'}}</td>
+                            <td nz-td>
+                                <nz-input [(ngModel)]="data.budget">
+                                    <ng-template #prefix>
+                                        <i class="anticon anticon-pay-circle-o"></i>
+                                    </ng-template>
+                                </nz-input>
+                            </td>
+                            <td nz-td>
+                                <nz-input [(ngModel)]="data.minPrice">
+                                    <ng-template #prefix>
+                                        <i class="anticon anticon-pay-circle-o"></i>
+                                    </ng-template>
+                                </nz-input>
+                            </td>
+                            <td nz-td>
+                                <nz-input [(ngModel)]="data.maxPrice">
+                                    <ng-template #prefix>
+                                        <i class="anticon anticon-pay-circle-o"></i>
+                                    </ng-template>
+                                </nz-input>
+                            </td>
                             <td nz-td>
                                 <span>
                                     <a (click)="toShowResource(data)">详情</a>
@@ -491,8 +521,8 @@
                                 <td nz-td>{{data.name || data.softwareName}}</td>
                                 <td nz-td>{{data.environment}}</td>
                                 <td nz-td>{{data.applyCount}}</td>
-                                <td nz-td>{{data.applyTime}}</td>
-                                <td nz-td>{{data.endTime}}</td>
+                                <td nz-td>{{data.applyTime | date: 'yyyy-MM-dd'}}</td>
+                                <td nz-td>{{data.endTime | date: 'yyyy-MM-dd'}}</td>
                                 <td nz-td>
                                     <span>
                                         <a (click)="toShowResource(data)">详情</a>
@@ -576,8 +606,8 @@
                                 <td nz-td>{{data.name || data.softwareName}}</td>
                                 <td nz-td>{{data.environment}}</td>
                                 <td nz-td>{{data.applyCount}}</td>
-                                <td nz-td>{{data.applyTime}}</td>
-                                <td nz-td>{{data.endTime}}</td>
+                                <td nz-td>{{data.applyTime | date: 'yyyy-MM-dd'}}</td>
+                                <td nz-td>{{data.endTime | date: 'yyyy-MM-dd'}}</td>
                                 <td nz-td>
                                     <span>
                                         <a (click)="toShowResource(data)">详情</a>
@@ -696,8 +726,8 @@
                                 <td nz-td>{{data.name || data.softwareName}}</td>
                                 <td nz-td>{{data.environment}}</td>
                                 <td nz-td>{{data.applyCount}}</td>
-                                <td nz-td>{{data.applyTime}}</td>
-                                <td nz-td>{{data.endTime}}</td>
+                                <td nz-td>{{data.applyTime | date: 'yyyy-MM-dd'}}</td>
+                                <td nz-td>{{data.endTime | date: 'yyyy-MM-dd'}}</td>
                                 <td nz-td>
                                     <span>
                                         <a (click)="toShowResource(data)">详情</a>
@@ -852,8 +882,8 @@
                                 <td nz-td>{{data.name || data.softwareName}}</td>
                                 <td nz-td>{{data.environment}}</td>
                                 <td nz-td>{{data.applyCount}}</td>
-                                <td nz-td>{{data.applyTime}}</td>
-                                <td nz-td>{{data.endTime}}</td>
+                                <td nz-td>{{data.applyTime | date: 'yyyy-MM-dd'}}</td>
+                                <td nz-td>{{data.endTime | date: 'yyyy-MM-dd'}}</td>
                                 <td nz-td>
                                     <span>
                                         <a (click)="toShowResource(data)">详情</a>
