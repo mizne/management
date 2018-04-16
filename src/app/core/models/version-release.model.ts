@@ -41,12 +41,11 @@ export class ApplyInfo {
     applicantTime: string
     projectName: string
     onlineVersion: string
-    onlineTime: string
+    onlineTime: Date
     releaseVersion: string
-    versionCompatibility: string
-    hardwareChange: string
     upgradeMode: string
-    expectedReleaseTime: string
+    expectedStartTime: Date
+    expectedEndTime: Date
     versionUpdateDesc: string
 
     remark: string
@@ -69,24 +68,15 @@ export class ApplyInfo {
             onlineVersion: `fake onlineVersion ${Math.random()
                 .toString()
                 .slice(0, 5)}`,
-            onlineTime: `fake onlineTime ${Math.random()
-                .toString()
-                .slice(0, 5)}`,
+            onlineTime: new Date(),
             releaseVersion: `fake releaseVersion ${Math.random()
-                .toString()
-                .slice(0, 5)}`,
-            versionCompatibility: `fake versionCompatibility ${Math.random()
-                .toString()
-                .slice(0, 5)}`,
-            hardwareChange: `fake hardwareChange ${Math.random()
                 .toString()
                 .slice(0, 5)}`,
             upgradeMode: `fake upgradeMode ${Math.random()
                 .toString()
                 .slice(0, 5)}`,
-            expectedReleaseTime: `fake expectedReleaseTime ${Math.random()
-                .toString()
-                .slice(0, 5)}`,
+            expectedStartTime: new Date(),
+            expectedEndTime: new Date(),
             versionUpdateDesc: `fake versionUpdateDesc ${Math.random()
                 .toString()
                 .slice(0, 5)}`,
@@ -172,7 +162,6 @@ export class TabOptions {
         return {
             id: uuid.v4(),
             name: `编辑 ${apply.applyInfo.listNumber}`,
-            // name: uuid.v4(),
             data: {
                 id: apply.id,
                 fetchApplyInfoLoading: false,
@@ -193,15 +182,12 @@ export class TabOptions {
                     releaseVersion: new FormControl(
                         apply.applyInfo.releaseVersion
                     ),
-                    versionCompatibility: new FormControl(
-                        apply.applyInfo.versionCompatibility
-                    ),
-                    hardwareChange: new FormControl(
-                        apply.applyInfo.hardwareChange
-                    ),
                     upgradeMode: new FormControl(apply.applyInfo.upgradeMode),
-                    expectedReleaseTime: new FormControl(
-                        apply.applyInfo.expectedReleaseTime
+                    expectedStartTime: new FormControl(
+                        apply.applyInfo.expectedStartTime
+                    ),
+                    expectedEndTime: new FormControl(
+                        apply.applyInfo.expectedEndTime
                     ),
                     versionUpdateDesc: new FormControl(
                         apply.applyInfo.versionUpdateDesc
@@ -222,7 +208,6 @@ export class TabOptions {
         return {
             id: uuid.v4(),
             name: `查看 ${apply.applyInfo.listNumber}`,
-            // name: uuid.v4(),
             data: {
                 id: apply.id,
                 fetchApplyInfoLoading: false,
@@ -243,15 +228,12 @@ export class TabOptions {
                     releaseVersion: new FormControl(
                         apply.applyInfo.releaseVersion
                     ),
-                    versionCompatibility: new FormControl(
-                        apply.applyInfo.versionCompatibility
-                    ),
-                    hardwareChange: new FormControl(
-                        apply.applyInfo.hardwareChange
-                    ),
                     upgradeMode: new FormControl(apply.applyInfo.upgradeMode),
-                    expectedReleaseTime: new FormControl(
-                        apply.applyInfo.expectedReleaseTime
+                    expectedStartTime: new FormControl(
+                        apply.applyInfo.expectedStartTime
+                    ),
+                    expectedEndTime: new FormControl(
+                        apply.applyInfo.expectedEndTime
                     ),
                     versionUpdateDesc: new FormControl(
                         apply.applyInfo.versionUpdateDesc

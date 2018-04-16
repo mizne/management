@@ -91,7 +91,12 @@
 
                     <ng-template #extra>
                         <button nz-button class="mx-sm" nzSize="large" (click)="toExport()">导出为Excel</button>
-                        <button nz-button class="mx-sm" nzSize="large" [nzType]="'primary'" (click)="toUpload()">上传附件</button>
+                        <nz-upload class="mx-sm" nzAction="https://jsonplaceholder.typicode.com/posts/">
+                            <button nz-button [nzType]="'primary'" nzSize="large">
+                                <i class="anticon anticon-upload"></i>
+                                <span>上传附件</span>
+                            </button>
+                        </nz-upload>
                     </ng-template>
                 </nz-card>
             </nz-spin>

@@ -250,7 +250,7 @@
                             <td nz-td>{{data.applyInfo?.applicantName}}</td>
                             <td nz-td>{{data.applyInfo?.onlineVersion}}</td>
                             <td nz-td>{{data.applyInfo?.projectName}}</td>
-                            <td nz-td>{{data.applyInfo?.onlineTime}}</td>
+                            <td nz-td>{{data.applyInfo?.onlineTime | date: 'yyyy-MM-dd HH:mm'}}</td>
                             <td nz-td>
                                 <span>
                                     <a (click)="toShowSavedApply(data)">详情</a>
@@ -286,7 +286,8 @@
                                 <desc-list-item term="在线版本号">{{applyInfoForm.value.onlineVersion}}</desc-list-item>
                                 <desc-list-item term="发布版本号">{{applyInfoForm.value.releaseVersion}}</desc-list-item>
                                 <desc-list-item term="升级方式">{{applyInfoForm.value.upgradeMode}}</desc-list-item>
-                                <desc-list-item term="预计发布时间">{{applyInfoForm.value.expectedReleaseTime}}</desc-list-item>
+                                <desc-list-item term="预计开始时间">{{applyInfoForm.value.expectedStartTime | date: 'yyyy-MM-dd HH:mm'}}</desc-list-item>
+                                <desc-list-item term="预计结束时间">{{applyInfoForm.value.expectedEndTime | date: 'yyyy-MM-dd HH:mm'}}</desc-list-item>
                                 <desc-list-item term="版本更新描述">{{applyInfoForm.value.versionUpdateDesc}}</desc-list-item>
                                 <desc-list-item term="备注">{{applyInfoForm.value.remark}}</desc-list-item>
                             </desc-list>
@@ -433,13 +434,21 @@
                                         <div nz-col [nzSpan]="6">
                                             <div nz-form-item nz-row>
                                                 <div nz-form-label nz-col>
-                                                    <label nz-form-item-required>预计发布时间</label>
+                                                    <label nz-form-item-required>预计开始时间</label>
                                                 </div>
                                                 <div nz-form-control nz-col nzHasFeedback [nzValidateStatus]="expectedReleaseTime">
-                                                    <nz-input formControlName="expectedReleaseTime" nzPlaceHolder="请输入预计发布时间" nzSize="large"></nz-input>
-                                                    <p nz-form-explain *ngIf="(expectedReleaseTime.dirty || expectedReleaseTime.touched) && expectedReleaseTime.errors?.required">
-                                                        请输入预计发布时间
-                                                    </p>
+                                                    <nz-datepicker formControlName="expectedStartTime" nzFormat="YYYY-MM-DD HH:mm" nzShowTime [nzPlaceHolder]="'请选择预计开始时间'"></nz-datepicker>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div nz-col [nzSpan]="6">
+                                            <div nz-form-item nz-row>
+                                                <div nz-form-label nz-col>
+                                                    <label nz-form-item-required>预计结束时间</label>
+                                                </div>
+                                                <div nz-form-control nz-col nzHasFeedback [nzValidateStatus]="expectedReleaseTime">
+                                                    <nz-datepicker formControlName="expectedEndTime" nzFormat="YYYY-MM-DD HH:mm" nzShowTime [nzPlaceHolder]="'请选择预计结束时间'"></nz-datepicker>
                                                 </div>
                                             </div>
                                         </div>
