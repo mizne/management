@@ -398,7 +398,7 @@
                         <td nz-td>{{data.applyInfo?.applicantName}}</td>
                         <td nz-td>{{data.applyInfo?.applicantDept}}</td>
                         <td nz-td>{{data.resources.length}}</td>
-                        <td nz-td>{{data.createdAt}}</td>
+                        <td nz-td>{{data.createdAt | date: 'yyyy-MM-dd HH:mm'}}</td>
                         <td nz-td>
                             <span>
                                 <a (click)="toShowSavedUnifiedApply(data)">详情</a>
@@ -446,7 +446,7 @@
                         <td nz-td>{{data.subPackageInfo?.applicantName}}</td>
                         <td nz-td>{{data.subPackageInfo?.applicantDept}}</td>
                         <td nz-td>{{data.resources.length}}</td>
-                        <td nz-td>{{data.createdAt}}</td>
+                        <td nz-td>{{data.createdAt | date: 'yyyy-MM-dd HH:mm:ss'}}</td>
                         <td nz-td>
                             <span>
                                 <a (click)="toShowSavedSubPackageApply(data)">详情</a>

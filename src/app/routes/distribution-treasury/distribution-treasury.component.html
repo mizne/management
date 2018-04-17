@@ -80,7 +80,7 @@
                             <span>数量单位</span>
                         </th>
                         <th nz-th>
-                            <span>入口时间</span>
+                            <span>入库时间</span>
                         </th>
                         <th nz-th>
                             <span>单价</span>
@@ -99,7 +99,7 @@
                         <td nz-td>{{data.softwareVersion}}</td>
                         <td nz-td>{{data.entryCount}}</td>
                         <td nz-td>{{data.countUnit}}</td>
-                        <td nz-td>{{data.entryTime}}</td>
+                        <td nz-td>{{data.entryTime | date: 'yyyy-MM-dd HH:mm:ss'}}</td>
                         <td nz-td>{{data.entryLocation}}</td>
                         <td nz-td>
                             <span>

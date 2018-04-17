@@ -16,7 +16,7 @@ export class SystemOnOffApply {
     applyInfo: ApplyInfo
     resources: ResourceInfo[]
     approvers: Approver[]
-    createdAt: string
+    createdAt: Date
 
     disabled: boolean
     checked: boolean
@@ -29,7 +29,7 @@ export class SystemOnOffApply {
             ),
             resources: ResourceInfo.generateFakeDataItems(),
             approvers: Approver.generateFakeDataItems(),
-            createdAt: `createAt ${i}`,
+            createdAt: new Date(),
             disabled: false,
             checked: false
         }))
@@ -272,7 +272,7 @@ export class TabOptions {
             applyInfo: tab.data.applyInfoForm.value,
             resources: tab.data.addedApplyResources,
             approvers: tab.data.approvers,
-            createdAt: 'fake createdAt',
+            createdAt: new Date(),
             disabled: false,
             checked: false
         }

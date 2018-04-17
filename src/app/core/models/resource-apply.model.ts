@@ -16,7 +16,7 @@ export class RequirementApply {
     applyInfo: ApplyInfo
     resources: ResourceInfo[]
     approvers: Approver[]
-    createdAt: string
+    createdAt: Date
 
     disabled: boolean
     checked: boolean
@@ -29,7 +29,9 @@ export class RequirementApply {
             ),
             resources: ResourceInfo.generateFakeDataItems(),
             approvers: Approver.generateFakeDataItems(),
-            createdAt: `createAt ${i}`,
+            createdAt: moment()
+                .add(i, 'd')
+                .toDate(),
             disabled: false,
             checked: false
         }))
@@ -63,8 +65,6 @@ export class ApplyInfo {
         }
     }
 }
-
-
 
 export interface FetchAddableApplyResourceParams extends PaginationParams {
     type: string
@@ -210,7 +210,7 @@ export class TabOptions {
             applyInfo: tab.data.applyInfoForm.value,
             resources: tab.data.addedApplyResources,
             approvers: tab.data.approvers,
-            createdAt: 'fake createdAt',
+            createdAt: new Date(),
             checked: false,
             disabled: false
         }

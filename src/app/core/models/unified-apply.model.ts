@@ -16,7 +16,7 @@ export class UnifiedApply {
     applyInfo: ApplyInfo
     resources: ResourceInfo[]
     approvers: Approver[]
-    createdAt: string
+    createdAt: Date
 
     disabled: boolean
     checked: boolean
@@ -27,7 +27,9 @@ export class UnifiedApply {
             applyInfo: ApplyInfo.generateFakeData(),
             resources: ResourceInfo.generateFakeDataItems(),
             approvers: Approver.generateFakeDataItems(),
-            createdAt: `createAt ${i}`,
+            createdAt: moment()
+                .add(i, 'd')
+                .toDate(),
             disabled: false,
             checked: false
         }))
@@ -66,7 +68,7 @@ export class SubPackageApply {
     id?: string
     subPackageInfo: SubPackageInfo
     resources: ResourceInfo[]
-    createdAt?: string
+    createdAt?: Date
 
     disabled?: boolean
     checked?: boolean
@@ -77,7 +79,9 @@ export class SubPackageApply {
             subPackageInfo: SubPackageInfo.generateFakeData(),
             resources: ResourceInfo.generateFakeDataItems(),
             approvers: Approver.generateFakeDataItems(),
-            createdAt: `createAt ${i}`
+            createdAt: moment()
+                .add(i, 'd')
+                .toDate()
         }))
     }
 }
@@ -320,7 +324,7 @@ export class TabOptions {
             applyInfo: (tab.data as UnifiedTabData).applyInfoForm.value,
             resources: tab.data.addedApplyResources,
             approvers: (tab.data as UnifiedTabData).approvers,
-            createdAt: 'fake createdAt',
+            createdAt: new Date(),
             checked: false,
             disabled: false
         }

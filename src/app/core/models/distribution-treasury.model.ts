@@ -1,4 +1,5 @@
 import * as uuid from 'uuid'
+import * as moment from 'moment'
 
 export class ResourceInfo {
     id: string
@@ -13,7 +14,7 @@ export class ResourceInfo {
 
     entryCount: number
     countUnit: string
-    entryTime: string
+    entryTime: Date
     entryLocation: string
 
     resourceUnitPrice: string
@@ -32,7 +33,9 @@ export class ResourceInfo {
                 (pageIndex - 1) * pageSize}`,
             entryCount: i + (pageIndex - 1) * pageSize,
             countUnit: `countUnit ${i + (pageIndex - 1) * pageSize}`,
-            entryTime: `storageTime ${i + (pageIndex - 1) * pageSize}`,
+            entryTime: moment()
+                .add(i + (pageIndex - 1) * pageSize, 'd')
+                .toDate(),
             entryLocation: `storageLocation ${i + (pageIndex - 1) * pageSize}`,
             resourceUnitPrice: `resourceUnitPrice ${i +
                 (pageIndex - 1) * pageSize}`,
@@ -66,9 +69,7 @@ export class ResourceInfo {
             countUnit: `countUnit ${Math.random()
                 .toString()
                 .slice(0, 5)}`,
-            entryTime: `storageTime ${Math.random()
-                .toString()
-                .slice(0, 5)}`,
+            entryTime: new Date(),
             entryLocation: `storageLocation ${Math.random()
                 .toString()
                 .slice(0, 5)}`,

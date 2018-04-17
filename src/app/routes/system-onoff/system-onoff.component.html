@@ -346,7 +346,7 @@
                             <td nz-td>{{data.applyInfo?.applicantName}}</td>
                             <td nz-td>{{data.applyInfo?.applicantDept}}</td>
                             <td nz-td>{{data.resources.length}}</td>
-                            <td nz-td>{{data.createdAt}}</td>
+                            <td nz-td>{{data.createdAt | date: 'yyyy-MM-dd HH:mm:ss'}}</td>
                             <td nz-td>
                                 <span>
                                     <a (click)="toShowSavedApply(data)">详情</a>

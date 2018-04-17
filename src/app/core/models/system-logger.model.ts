@@ -1,10 +1,11 @@
 import * as uuid from 'uuid'
+import * as moment from 'moment'
 
 import { PaginationParams, defaultPaginationParams } from './pagination.model'
 
 export class SystemLogger {
     id: string
-    createdAt: string
+    createdAt: Date
     event: string
     operationContent: string
     operator: string
@@ -13,7 +14,9 @@ export class SystemLogger {
     static generateFakeDataItems({ pageIndex, pageSize }): SystemLogger[] {
         return Array.from({ length: pageSize }, (_, i) => ({
             id: uuid.v4(),
-            createdAt: `createdAt ${i + (pageIndex - 1) * pageSize}`,
+            createdAt: moment()
+                .add(i + (pageIndex - 1) * pageSize, 'd')
+                .toDate(),
             event: `event ${i + (pageIndex - 1) * pageSize}`,
             operationContent: `operationContent ${i +
                 (pageIndex - 1) * pageSize}`,
