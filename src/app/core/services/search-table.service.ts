@@ -54,8 +54,9 @@ export class SearchTableService<S extends BaseSearchOptions, E extends DataItem>
     implements OnDestroy {
     private id: string
 
-    private dataItemsHandler: (params?: S) => Observable<E[]>
-    private dataItemsCountHandler: (params?: S) => Observable<number>
+    private dataItemsHandler: (params?: S) => Observable<E[]> = () => of([])
+    private dataItemsCountHandler: (params?: S) => Observable<number> = () =>
+        of(0)
 
     // 搜索表格 支持的操作
     private searchSub: Subject<S> = new Subject<S>()
