@@ -116,6 +116,7 @@ export class SoftwareAccountService {
         // return of(
         //     SystemSoftwareAccount.generateFakeDataItems(params.options)
         // ).pipe(delay(4e2))
+
         return this.http.post('/gdxm-manage/ledger/Select/OperatingSystemSoftware', {
             'userID': '',
             'softwareType': '系统软件',
