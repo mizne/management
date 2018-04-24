@@ -39,7 +39,8 @@ import {
     FetchSystemSoftwareAccountsCountAction,
     EnsurePageParamsAction as EnsureSystemPageParamsAction,
     CreateSystemSoftwareAccountAction,
-    EditSystemSoftwareAccountAction
+    EditSystemSoftwareAccountAction,
+    DeleteSystemSoftwareAccountAction
 } from './actions/system-software-account.action'
 import {
     FetchMiddlewareSoftwareAccountsAction,
@@ -333,6 +334,7 @@ export class SoftwareAccountComponent implements OnInit {
             .toSingleDeleteItem(SoftwareAccountType.SYSTEM)
             .subscribe(id => {
                 console.log(`delete system software account id: ${id}`)
+                this.store.dispatch(new DeleteSystemSoftwareAccountAction(id))
             })
     }
 
@@ -545,7 +547,7 @@ export class SoftwareAccountComponent implements OnInit {
             })
     }
 
-    private initEditSystem() {
+    private initEditSystem(): void {
         this.tableService
             .toEditItem(SoftwareAccountType.SYSTEM)
             .subscribe(account => {

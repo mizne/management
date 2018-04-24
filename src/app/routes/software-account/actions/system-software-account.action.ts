@@ -35,15 +35,23 @@ export const EDIT_SYSTEM_SOFTWARE_ACCOUNT_SUCCESS =
 export const EDIT_SYSTEM_SOFTWARE_ACCOUNT_FAILURE =
     '[System Software Account] Edit System Software Account Failure'
 
+export const DELETE_SYSTEM_SOFTWARE_ACCOUNT =
+    '[System Software Account] Delete System Software Account'
+export const DELETE_SYSTEM_SOFTWARE_ACCOUNT_SUCCESS =
+    '[System Software Account] Delete System Software Account Success'
+export const DELETE_SYSTEM_SOFTWARE_ACCOUNT_FAILURE =
+    '[System Software Account] Delete System Software Account Failure'
+
+
 export const ENSURE_PAGE_PARAMS = '[System Software Account] Ensure Page Params'
 
 export class FetchSystemSoftwareAccountsAction implements Action {
     readonly type = FETCH_SYSTEM_SOFTWARE_ACCOUNTS
-    constructor(public payload: FetchItemsParams = defaultFetchItemsParams) {}
+    constructor(public payload: FetchItemsParams = defaultFetchItemsParams) { }
 }
 export class FetchSystemSoftwareAccountsSuccessAction implements Action {
     readonly type = FETCH_SYSTEM_SOFTWARE_ACCOUNTS_SUCCESS
-    constructor(public systemSoftwareAccounts: SystemSoftwareAccount[]) {}
+    constructor(public systemSoftwareAccounts: SystemSoftwareAccount[]) { }
 }
 export class FetchSystemSoftwareAccountsFailureAction implements Action {
     readonly type = FETCH_SYSTEM_SOFTWARE_ACCOUNTS_FAILURE
@@ -51,11 +59,11 @@ export class FetchSystemSoftwareAccountsFailureAction implements Action {
 
 export class FetchSystemSoftwareAccountsCountAction implements Action {
     readonly type = FETCH_SYSTEM_SOFTWARE_ACCOUNTS_COUNT
-    constructor(public searchText: string = '') {}
+    constructor(public searchText: string = '') { }
 }
 export class FetchSystemSoftwareAccountsCountSuccessAction implements Action {
     readonly type = FETCH_SYSTEM_SOFTWARE_ACCOUNTS_COUNT_SUCCESS
-    constructor(public count: number) {}
+    constructor(public count: number) { }
 }
 export class FetchSystemSoftwareAccountsCountFailureAction implements Action {
     readonly type = FETCH_SYSTEM_SOFTWARE_ACCOUNTS_COUNT_FAILURE
@@ -63,7 +71,7 @@ export class FetchSystemSoftwareAccountsCountFailureAction implements Action {
 
 export class CreateSystemSoftwareAccountAction implements Action {
     readonly type = CREATE_SYSTEM_SOFTWARE_ACCOUNT
-    constructor(public account: SystemSoftwareAccount) {}
+    constructor(public account: SystemSoftwareAccount) { }
 }
 export class CreateSystemSoftwareAccountSuccessAction implements Action {
     readonly type = CREATE_SYSTEM_SOFTWARE_ACCOUNT_SUCCESS
@@ -74,7 +82,7 @@ export class CreateSystemSoftwareAccountFailureAction implements Action {
 
 export class EditSystemSoftwareAccountAction implements Action {
     readonly type = EDIT_SYSTEM_SOFTWARE_ACCOUNT
-    constructor(public account: SystemSoftwareAccount) {}
+    constructor(public account: SystemSoftwareAccount) { }
 }
 export class EditSystemSoftwareAccountSuccessAction implements Action {
     readonly type = EDIT_SYSTEM_SOFTWARE_ACCOUNT_SUCCESS
@@ -83,9 +91,20 @@ export class EditSystemSoftwareAccountFailureAction implements Action {
     readonly type = EDIT_SYSTEM_SOFTWARE_ACCOUNT_FAILURE
 }
 
+export class DeleteSystemSoftwareAccountAction implements Action {
+    readonly type = DELETE_SYSTEM_SOFTWARE_ACCOUNT
+    constructor(public id: string) { }
+}
+export class DeleteSystemSoftwareAccountSuccessAction implements Action {
+    readonly type = DELETE_SYSTEM_SOFTWARE_ACCOUNT_SUCCESS
+}
+export class DeleteSystemSoftwareAccountFailureAction implements Action {
+    readonly type = DELETE_SYSTEM_SOFTWARE_ACCOUNT_FAILURE
+}
+
 export class EnsurePageParamsAction implements Action {
     readonly type = ENSURE_PAGE_PARAMS
-    constructor(public params: PaginationParams) {}
+    constructor(public params: PaginationParams) { }
 }
 
 export type Actions =
@@ -101,4 +120,7 @@ export type Actions =
     | EditSystemSoftwareAccountAction
     | EditSystemSoftwareAccountSuccessAction
     | EditSystemSoftwareAccountFailureAction
+    | DeleteSystemSoftwareAccountAction
+    | DeleteSystemSoftwareAccountSuccessAction
+    | DeleteSystemSoftwareAccountFailureAction
     | EnsurePageParamsAction

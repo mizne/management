@@ -8,7 +8,7 @@ import { SoftwareAccountService } from '../services/software-account.service'
 import { NzNotificationService } from 'ng-zorro-antd'
 import { Store } from '@ngrx/store'
 import { State, getSystemSoftwareAccountsPageParams } from '../reducers'
-import { tap, switchMap, map, concatMap, catchError } from 'rxjs/operators';
+import { tap, switchMap, map, concatMap, catchError, withLatestFrom } from 'rxjs/operators';
 
 @Injectable()
 export class SystemSoftwareAccountEffects {
@@ -27,8 +27,8 @@ export class SystemSoftwareAccountEffects {
                 )),
                 catchError(() => of(new fromSystemSoftwareAccount.FetchSystemSoftwareAccountsFailureAction()))
             )),
-            
-        )
+
+    )
 
     @Effect()
     fetchSystemSoftwareAccountsCount$ = this.actions$
@@ -45,8 +45,8 @@ export class SystemSoftwareAccountEffects {
                 )),
                 catchError(() => of(new fromSystemSoftwareAccount.FetchSystemSoftwareAccountsCountFailureAction()))
             )),
-            
-        )
+
+    )
 
     // TODO 新增完的查询逻辑
     @Effect()
@@ -66,8 +66,8 @@ export class SystemSoftwareAccountEffects {
                 ]),
                 catchError(() => of(new fromSystemSoftwareAccount.CreateSystemSoftwareAccountFailureAction()))
             )),
-            
-        )
+
+    )
 
     @Effect({ dispatch: false })
     createSystemSoftwareAccountSuccess$ = this.actions$
@@ -110,8 +110,8 @@ export class SystemSoftwareAccountEffects {
                 ]),
                 catchError(() => of(new fromSystemSoftwareAccount.EditSystemSoftwareAccountFailureAction()))
             )),
-            
-        )
+
+    )
 
     @Effect({ dispatch: false })
     editSystemSoftwareAccountSuccess$ = this.actions$
@@ -133,6 +133,66 @@ export class SystemSoftwareAccountEffects {
             )
         }))
 
+    @Effect()
+    deleteSystemSoftwareAccount$ = this.actions$
+        .ofType(
+            fromSystemSoftwareAccount.DELETE_SYSTEM_SOFTWARE_ACCOUNT
+        )
+        .pipe(
+            map(
+                (
+                    action: fromSystemSoftwareAccount.DeleteSystemSoftwareAccountAction
+                ) => action.id
+            ),
+            withLatestFrom(this.store.select(getSystemSoftwareAccountsPageParams)),
+            switchMap(([id, params]) =>
+                this.softwareAccountService
+                    .deleteSystemSoftwareAccount(id)
+                    .pipe(
+                        concatMap(() => [
+                            new fromSystemSoftwareAccount.DeleteSystemSoftwareAccountSuccessAction(),
+                            new fromSystemSoftwareAccount.FetchSystemSoftwareAccountsAction({
+                                condition: {},
+                                options: params
+                            }),
+                            new fromSystemSoftwareAccount.FetchSystemSoftwareAccountsCountAction(),
+                        ]),
+                        catchError(() =>
+                            of(
+                                new fromSystemSoftwareAccount.DeleteSystemSoftwareAccountFailureAction()
+                            )
+                        )
+                    )
+            )
+        )
+
+    @Effect({ dispatch: false })
+    deleteSystemSoftwareAccountSuccess$ = this.actions$
+        .ofType(
+            fromSystemSoftwareAccount.DELETE_SYSTEM_SOFTWARE_ACCOUNT_SUCCESS
+        )
+        .pipe(
+            tap(() => {
+                this.notify.success(
+                    `删除应用软件台帐`,
+                    `恭喜您，删除应用软件台帐成功！`
+                )
+            })
+        )
+
+    @Effect({ dispatch: false })
+    deleteSystemSoftwareAccountFailure$ = this.actions$
+        .ofType(
+            fromSystemSoftwareAccount.DELETE_SYSTEM_SOFTWARE_ACCOUNT_FAILURE
+        )
+        .pipe(
+            tap(() => {
+                this.notify.error(
+                    `删除应用软件台帐`,
+                    `啊哦，删除应用软件台帐失败！`
+                )
+            })
+        )
     constructor(
         private actions$: Actions,
         private softwareAccountService: SoftwareAccountService,

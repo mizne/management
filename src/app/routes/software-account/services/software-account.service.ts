@@ -138,9 +138,9 @@ export class SoftwareAccountService {
         account: SystemSoftwareAccount
     ): Observable<any> {
         // return of(null).pipe(delay(4e2))
-        return this.http.post('/gdxm-manage/ledger/OperatingSystemSoftware/insert', {
+        return this.http.post('/gdxm-manage/ledger/OperatingSystem/insert', {
             'userID': '',
-            'softwareType': '',
+            'softwareType': '系统软件',
             'OperatingSystemInfo': {
                 'name': account.name,
                 'type': account.type,
@@ -156,7 +156,7 @@ export class SoftwareAccountService {
 
     editSystemSoftwareAccount(account: SystemSoftwareAccount): Observable<any> {
         // return of(null).pipe(delay(4e2))
-        return this.http.post('/gdxm-manage/ledger/OperatingSystemSoftware/updateById', {
+        return this.http.post('/gdxm-manage/ledger/OperatingSystem/updateById', {
             'userID': '',
             'softwareType': '',
             'uniqueid': account.id,
@@ -174,7 +174,7 @@ export class SoftwareAccountService {
     }
 
     deleteSystemSoftwareAccount(id: string): Observable<any> {
-        return this.http.post('/gdxm-manage/ledger/OperatingSystemSoftware/deleteById', {
+        return this.http.post('/gdxm-manage/ledger/OperatingSystem/deleteById', {
             'userID': '',
             'softwareType': '',
             'uniqueid': id,

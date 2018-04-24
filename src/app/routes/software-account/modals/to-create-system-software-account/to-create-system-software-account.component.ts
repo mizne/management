@@ -17,7 +17,7 @@ export class ToCreateSystemSoftwareAccountComponent implements OnInit {
         private fb: FormBuilder,
         private subject: NzModalSubject,
         private destroyService: DestroyService
-    ) {}
+    ) { }
 
     get name() {
         return this.form.controls.name
@@ -74,7 +74,7 @@ export class ToCreateSystemSoftwareAccountComponent implements OnInit {
             type: [null, Validators.required],
             version: [null],
             whoUse: [null],
-            startTimeUse: [null],
+            startTimeUse: [new Date],
             yearsUse: [null],
             license: [null],
             remark: [null]
