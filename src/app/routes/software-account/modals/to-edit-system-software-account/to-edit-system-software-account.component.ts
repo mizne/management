@@ -19,7 +19,7 @@ export class ToEditSystemSoftwareAccountComponent implements OnInit {
         private fb: FormBuilder,
         private subject: NzModalSubject,
         private destroyService: DestroyService
-    ) {}
+    ) { }
 
     @Input()
     set data(v: SystemSoftwareAccount) {
@@ -89,6 +89,7 @@ export class ToEditSystemSoftwareAccountComponent implements OnInit {
             remark: [null]
         })
         if (this._account) {
+
             this.patchForm()
         }
     }
