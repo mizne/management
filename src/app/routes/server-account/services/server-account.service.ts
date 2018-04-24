@@ -2,7 +2,7 @@ import { HttpClient, HttpParams } from '@angular/common/http'
 import { Injectable } from '@angular/core'
 import { Observable } from 'rxjs/Observable'
 import { of } from 'rxjs/observable/of'
-import { delay } from 'rxjs/operators'
+import { delay, map } from 'rxjs/operators'
 import {
     PhysicalServerAccount,
     VirtualServerAccount,
@@ -16,26 +16,43 @@ import {
 
 @Injectable()
 export class ServerAccountService {
-    constructor() { }
+    constructor(private http: HttpClient) { }
     fetchPhysicalServerAccounts(
         params: FetchItemsParams
     ): Observable<PhysicalServerAccount[]> {
-        if (params.condition.searchText) {
-            console.log(`search physical with ${params.condition.searchText}`)
-        }
-        return of(
-            PhysicalServerAccount.generateFakeDataItems(params.options)
-        ).pipe(delay(4e2))
+        // if (params.condition.searchText) {
+        //     console.log(`search physical with ${params.condition.searchText}`)
+        // }
+        // return of(
+        //     PhysicalServerAccount.generateFakeDataItems(params.options)
+        // ).pipe(delay(4e2))
+        return this.http.post('/gdxm-manage/ledger/Server', {
+            'userID': '',
+            'serverType': '物理机',
+            'page': params.options.pageIndex,
+            'limit': params.options.pageSize,
+        })
+            .pipe(
+                map(res => (res as any).data.map(PhysicalServerAccount.convertFromResp)),
+        )
     }
 
     fetchPhysicalServerAccountsCount(params: FetchItemsCountParams): Observable<number> {
-        return of(42).pipe(delay(3e2))
+        // return of(42).pipe(delay(3e2))
+        return this.http.post('/gdxm-manage/ledger/Server/getRecordNum', {
+            'userID': '',
+            'serverType': '物理机'
+        })
+            .pipe(
+                map((res) => (res as any).data.RecordNum)
+            )
     }
 
     createPhysicalServerAccount(
         account: PhysicalServerAccount
     ): Observable<any> {
         return of(null).pipe(delay(4e2))
+
     }
 
     editPhysicalServerAccount(account: PhysicalServerAccount): Observable<PhysicalServerAccount> {
@@ -45,16 +62,32 @@ export class ServerAccountService {
     fetchVirtualServerAccounts(
         params: FetchItemsParams
     ): Observable<VirtualServerAccount[]> {
-        if (params.condition.searchText) {
-            console.log(`search virtual with ${params.condition.searchText}`)
-        }
-        return of(
-            VirtualServerAccount.generateFakeDataItems(params.options)
-        ).pipe(delay(4e2))
+        // if (params.condition.searchText) {
+        //     console.log(`search virtual with ${params.condition.searchText}`)
+        // }
+        // return of(
+        //     VirtualServerAccount.generateFakeDataItems(params.options)
+        // ).pipe(delay(4e2))
+        return this.http.post('/gdxm-manage/ledger/Virtual_machine', {
+            'userID': '',
+            'serverType': '虚拟机',
+            'page': params.options.pageIndex,
+            'limit': params.options.pageSize,
+        })
+            .pipe(
+                map(res => (res as any).date.map(VirtualServerAccount.convertFromResp)),
+        )
     }
 
     fetchVirtualServerAccountsCount(params: FetchItemsCountParams): Observable<number> {
-        return of(42).pipe(delay(3e2))
+        // return of(42).pipe(delay(3e2))
+        return this.http.post('/gdxm-manage/ledger/Virtual_machine/getRecordNum', {
+            'userID': '',
+            'serverType': '虚拟机'
+        })
+            .pipe(
+                map((res) => (res as any).date.RecordNum)
+            )
     }
 
     createVirtualServerAccount(account: VirtualServerAccount): Observable<any> {
@@ -74,10 +107,26 @@ export class ServerAccountService {
         return of(
             ClusterServerAccount.generateFakeDataItems(params.options)
         ).pipe(delay(4e2))
+        // return this.http.post('/gdxm-manage/ledger/Server_Group', {
+        //     'userID': '',
+        //     'serverType': '服务器集群',
+        //     'page': params.options.pageIndex,
+        //     'limit': params.options.pageSize,
+        // })
+        //     .pipe(
+        //         map(res => (res as any).date.map(ClusterServerAccount.convertFromResp)),
+        // )
     }
 
     fetchClusterServerAccountsCount(params: FetchItemsCountParams): Observable<number> {
         return of(42).pipe(delay(3e2))
+        // return this.http.post('/gdxm-manage/ledger/Server_Group/getRecordNum', {
+        //     'userID': '',
+        //     'serverType': '服务器集群'
+        // })
+        //     .pipe(
+        //         map((res) => (res as any).date.RecordNum)
+        //     )
     }
 
     createClusterServerAccount(account: ClusterServerAccount): Observable<any> {

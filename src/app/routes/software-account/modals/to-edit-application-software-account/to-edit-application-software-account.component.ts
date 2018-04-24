@@ -5,7 +5,7 @@ import { Subject } from 'rxjs/Subject'
 import { Observable } from 'rxjs/Observable'
 
 import { DestroyService } from '@core/services/destroy.service'
-import { SystemLogger } from '@core/models/software-account.model'
+import { ApplicationSoftwareAccount } from '@core/models/software-account.model'
 
 @Component({
     selector: 'app-to-edit-application-software-account',
@@ -14,15 +14,15 @@ import { SystemLogger } from '@core/models/software-account.model'
 })
 export class ToEditApplicationSoftwareAccountComponent implements OnInit {
     form: FormGroup
-    _account: SystemLogger
+    _account: ApplicationSoftwareAccount
     constructor(
         private fb: FormBuilder,
         private subject: NzModalSubject,
         private destroyService: DestroyService
-    ) {}
+    ) { }
 
     @Input()
-    set data(v: SystemLogger) {
+    set data(v: ApplicationSoftwareAccount) {
         this._account = v
         if (this.form) {
             this.patchForm()
@@ -60,6 +60,7 @@ export class ToEditApplicationSoftwareAccountComponent implements OnInit {
     toSave() {
         if (this.form.valid) {
             this.subject.next({
+                id: this._account.id,
                 name: this.name.value,
                 type: this.type.value,
                 version: this.version.value,

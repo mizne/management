@@ -62,7 +62,8 @@ import {
     ToCreateApplyResourceComponent,
     ToEditApplyResourceComponent,
     ToShowApplyResourceComponent,
-    ToAddApplyResourceComponent
+    ToAddApplyResourceComponent,
+    ToCreateDividePakageComponent
 } from '@shared/modals'
 import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms'
 import {
@@ -118,6 +119,9 @@ export class UnifiedApplyComponent implements OnInit {
     unifiedAddedApplyResources$: Observable<ResourceInfo[]>
     toExportSub: Subject<void> = new Subject<void>()
     toCreateResourceSub: Subject<void> = new Subject<void>()
+    //
+    toDividePackage: Subject<void> = new Subject<void>()
+    //
     toAddResourcesSub: Subject<void> = new Subject<void>()
     toShowResourceSub: Subject<ResourceInfo> = new Subject<ResourceInfo>()
     toEditTempResourceSub: Subject<ResourceInfo> = new Subject<ResourceInfo>()
@@ -133,13 +137,13 @@ export class UnifiedApplyComponent implements OnInit {
     saveOrSubmitSubPackageLoading$: Observable<boolean>
     toSaveSubPackageSub: Subject<SubPackageApply> = new Subject<
         SubPackageApply
-    >()
+        >()
     toSubmitSubPackageSub: Subject<SubPackageApply> = new Subject<
         SubPackageApply
-    >()
+        >()
     toResetSubPackageSub: Subject<SubPackageApply> = new Subject<
         SubPackageApply
-    >()
+        >()
 
     fetchSubPackageInfoLoading$: Observable<boolean>
     subPackageInfo$: Observable<SubPackageInfo>
@@ -151,30 +155,30 @@ export class UnifiedApplyComponent implements OnInit {
     savedUnifiedApplies$: Observable<UnifiedApply[]>
     toEditSavedUnifiedApplySub: Subject<UnifiedApply> = new Subject<
         UnifiedApply
-    >()
+        >()
     toDetailSavedUnifiedApplySub: Subject<UnifiedApply> = new Subject<
         UnifiedApply
-    >()
+        >()
     toSubmitSavedUnifiedApplySub: Subject<UnifiedApply> = new Subject<
         UnifiedApply
-    >()
+        >()
     toDeleteSavedUnifiedApplySub: Subject<UnifiedApply> = new Subject<
         UnifiedApply
-    >()
+        >()
     fetchSavedSubPackageAppliesLoading$: Observable<boolean>
     savedSubPackageApplies$: Observable<SubPackageApply[]>
     toEditSavedSubPackageApplySub: Subject<SubPackageApply> = new Subject<
         SubPackageApply
-    >()
+        >()
     toDetailSavedSubPackageApplySub: Subject<SubPackageApply> = new Subject<
         SubPackageApply
-    >()
+        >()
     toSubmitSavedSubPackageApplySub: Subject<SubPackageApply> = new Subject<
         SubPackageApply
-    >()
+        >()
     toDeleteSavedSubPackageApplySub: Subject<SubPackageApply> = new Subject<
         SubPackageApply
-    >()
+        >()
 
     // 额外的tabs
     extraTabs$: Observable<TabOptions[]>
@@ -225,7 +229,7 @@ export class UnifiedApplyComponent implements OnInit {
         private destroyService: DestroyService,
         private fb: FormBuilder,
         private xlsx: XlsxService
-    ) {}
+    ) { }
 
     ngOnInit() {
         this.buildForm()
@@ -251,6 +255,12 @@ export class UnifiedApplyComponent implements OnInit {
     toCreateResource() {
         this.toCreateResourceSub.next()
     }
+    // 分包
+    toDividePackageWindow() {
+        this.toDividePackage.next();
+    }
+
+    //
 
     toAddResources() {
         this.toAddResourcesSub.next()
@@ -450,6 +460,9 @@ export class UnifiedApplyComponent implements OnInit {
         this.initShowApplyResourceForUnified()
         this.initEditTempApplyResourceForUnified()
         this.initDeleteApplyResourceForUnified()
+
+        // 分包
+        this.initCreateDividePackage()
     }
 
     private initSecondTabSubscriber() {
@@ -573,6 +586,26 @@ export class UnifiedApplyComponent implements OnInit {
                 this.store.dispatch(new CreateApplyResourceAction(resource))
             })
     }
+    // 分包窗口
+    private initCreateDividePackage() {
+        this.toDividePackage
+            .asObservable()
+            .pipe(
+                filter(() => this.tabIndex === 0),
+                mergeMap(resource => {
+                    return this.modalService.open({
+                        title: '编辑分包',
+                        content: ToCreateDividePakageComponent,
+                        footer: false,
+                        width: 800,
+                        // componentParams: { resource }
+                    })
+                }),
+                takeUntil(this.destroyService)
+            )
+            .subscribe(() => { })
+    }
+
 
     private initAddApplyResourcesForUnified() {
         this.toAddResourcesSub
@@ -613,7 +646,7 @@ export class UnifiedApplyComponent implements OnInit {
                 }),
                 takeUntil(this.destroyService)
             )
-            .subscribe(() => {})
+            .subscribe(() => { })
     }
 
     private initEditTempApplyResourceForUnified() {
@@ -746,7 +779,7 @@ export class UnifiedApplyComponent implements OnInit {
                 }),
                 takeUntil(this.destroyService)
             )
-            .subscribe(() => {})
+            .subscribe(() => { })
     }
 
     private initDeleteApplyResourceForSubPackage() {
@@ -1028,7 +1061,7 @@ export class UnifiedApplyComponent implements OnInit {
                 }),
                 takeUntil(this.destroyService)
             )
-            .subscribe(() => {})
+            .subscribe(() => { })
     }
 
     private initDeleteApplyResourceForExtra() {
@@ -1051,7 +1084,7 @@ export class UnifiedApplyComponent implements OnInit {
                         )
                         console.log(
                             `delete apply resource; tab index: ${
-                                this.tabIndex
+                            this.tabIndex
                             }; resource index: ${index}`
                         )
                     }

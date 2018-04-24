@@ -4,7 +4,7 @@ import { Subject } from 'rxjs/Subject'
 import { Observable } from 'rxjs/Observable'
 
 import { DestroyService } from '@core/services/destroy.service'
-import { SystemLogger } from '@core/models/software-account.model'
+import { ApplicationSoftwareAccount } from '@core/models/software-account.model'
 import { ResourceInfo } from '@core/models/resource-info.model'
 
 @Component({
@@ -16,11 +16,11 @@ export class ToShowApplyResourceComponent implements OnInit {
     constructor(
         private subject: NzModalSubject,
         private destroyService: DestroyService
-    ) {}
+    ) { }
 
     @Input() resource: ResourceInfo
 
-    ngOnInit() {}
+    ngOnInit() { }
 
     toSave() {
         this.subject.destroy('onOk')

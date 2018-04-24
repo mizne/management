@@ -1,9 +1,9 @@
 import * as fromApplicationSoftwareAccount from '../actions/application-software-account.action'
-import { SystemLogger } from '@core/models/software-account.model'
+import { ApplicationSoftwareAccount } from '@core/models/software-account.model'
 
 export interface State {
     loading: boolean
-    accounts: SystemLogger[]
+    accounts: ApplicationSoftwareAccount[]
     accountsCount: number
     pageIndex: number
     pageSize: number

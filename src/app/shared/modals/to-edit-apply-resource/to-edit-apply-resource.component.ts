@@ -42,7 +42,7 @@ export class ToEditApplyResourceComponent implements OnInit {
         private fb: FormBuilder,
         private subject: NzModalSubject,
         private destroyService: DestroyService
-    ) {}
+    ) { }
 
     @Input()
     set resource(v: ResourceInfo) {

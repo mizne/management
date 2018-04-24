@@ -24,23 +24,21 @@ export class ResourceInfo {
     static generateFakeDataItems({ pageIndex, pageSize }): ResourceInfo[] {
         return Array.from({ length: pageSize }, (_, i) => ({
             id: uuid.v4(),
-            resourceType: `resourceType ${i + (pageIndex - 1) * pageSize}`,
-            assetsNumber: `assetsNumber ${i + (pageIndex - 1) * pageSize}`,
-            assetsType: `assetsType ${i + (pageIndex - 1) * pageSize}`,
-            softwareType: `softwareType ${i + (pageIndex - 1) * pageSize}`,
-            softwareName: `softwareName ${i + (pageIndex - 1) * pageSize}`,
-            softwareVersion: `softwareVersion ${i +
-                (pageIndex - 1) * pageSize}`,
+            resourceType: `编程类`,
+            assetsNumber: `123654${i + (pageIndex - 1) * pageSize + 1}`,
+            assetsType: `研发类`,
+            softwareType: `开发类`,
+            softwareName: `名称 ${i + (pageIndex - 1) * pageSize + 1}`,
+            softwareVersion: `1.7.6.4`,
             entryCount: i + (pageIndex - 1) * pageSize,
-            countUnit: `countUnit ${i + (pageIndex - 1) * pageSize}`,
+            countUnit: `套`,
             entryTime: moment()
                 .add(i + (pageIndex - 1) * pageSize, 'd')
                 .toDate(),
-            entryLocation: `storageLocation ${i + (pageIndex - 1) * pageSize}`,
-            resourceUnitPrice: `resourceUnitPrice ${i +
-                (pageIndex - 1) * pageSize}`,
+            entryLocation: `100`,
+            resourceUnitPrice: `150`,
             operator: `operator ${i + (pageIndex - 1) * pageSize}`,
-            remark: `remark ${i + (pageIndex - 1) * pageSize}`
+            remark: `转为开发准备`
         }))
     }
 
@@ -50,19 +48,19 @@ export class ResourceInfo {
             resourceType: `resourceType ${Math.random()
                 .toString()
                 .slice(0, 5)}`,
-            assetsNumber: `assetsNumber ${Math.random()
+            assetsNumber: `56945${Math.random()
                 .toString()
                 .slice(0, 5)}`,
-            assetsType: `assetsType ${Math.random()
+            assetsType: `类型 ${Math.random()
                 .toString()
                 .slice(0, 5)}`,
-            softwareType: `softwareType ${Math.random()
+            softwareType: `类型 ${Math.random()
                 .toString()
                 .slice(0, 5)}`,
-            softwareName: `softwareName ${Math.random()
+            softwareName: `名称 ${Math.random()
                 .toString()
                 .slice(0, 5)}`,
-            softwareVersion: `softwareVersion ${Math.random()
+            softwareVersion: `1.7.3.63${Math.random()
                 .toString()
                 .slice(0, 5)}`,
             entryCount: 4,
@@ -73,9 +71,7 @@ export class ResourceInfo {
             entryLocation: `storageLocation ${Math.random()
                 .toString()
                 .slice(0, 5)}`,
-            resourceUnitPrice: `resourceUnitPrice ${Math.random()
-                .toString()
-                .slice(0, 5)}`,
+            resourceUnitPrice: `150`,
             operator: `operator ${Math.random()
                 .toString()
                 .slice(0, 5)}`,
@@ -109,12 +105,12 @@ export class ResourceUseInfo {
         return Array.from({ length: pageSize }, (_, i) => ({
             id: uuid.v4(),
             resource: ResourceInfo.generateFakeData(),
-            useState: `useState ${i + (pageIndex - 1) * pageSize}`,
-            whoUse: `whoUse ${i + (pageIndex - 1) * pageSize}`,
-            limitYearsUse: `limitYearsUse ${i + (pageIndex - 1) * pageSize}`,
+            useState: `空闲`,
+            whoUse: `员工 ${i + (pageIndex - 1) * pageSize + 1}`,
+            limitYearsUse: `一年 `,
             useStartTime: `useStartTime ${i + (pageIndex - 1) * pageSize}`,
-            useCount: `useCount ${i + (pageIndex - 1) * pageSize}`,
-            countUnit: `countUnit ${i + (pageIndex - 1) * pageSize}`,
+            useCount: `1`,
+            countUnit: `套`,
             operator: `operator ${i + (pageIndex - 1) * pageSize}`
         }))
     }

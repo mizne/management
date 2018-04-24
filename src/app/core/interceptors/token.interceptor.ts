@@ -14,12 +14,12 @@ import { ErrorLoggerService } from '@core/services/error-logger.service'
 
 @Injectable()
 export class TokenInterceptor implements HttpInterceptor {
-    private url = `${environment.SERVER_URL}/v2`
+    private url = `${environment.SERVER_URL}`
 
     constructor(
         private tenantService: TenantService,
         private errorLogger: ErrorLoggerService
-    ) {}
+    ) { }
 
     intercept(
         req: HttpRequest<any>,

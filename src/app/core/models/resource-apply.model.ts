@@ -50,18 +50,10 @@ export class ApplyInfo {
         return {
             type: applyType,
             listNumber: uuid.v4(),
-            applicantName: `fake applicantName ${Math.random()
-                .toString()
-                .slice(0, 5)}`,
-            applicantDept: `fake applicantDept ${Math.random()
-                .toString()
-                .slice(0, 5)}`,
-            applicantPhone: `fake applicantPhone ${Math.random()
-                .toString()
-                .slice(0, 5)}`,
-            applyReason: `fake applyReason ${Math.random()
-                .toString()
-                .slice(0, 5)}`
+            applicantName: `小明`,
+            applicantDept: `研发部`,
+            applicantPhone: `123456789`,
+            applyReason: `开发项目需要`
         }
     }
 }
@@ -97,18 +89,12 @@ export class Approver {
     static generateFakeDataItems(): Approver[] {
         return Array.from({ length: 2 }, (_, i) => ({
             id: uuid.v4(),
-            name: `name ${i} ${Math.random()
-                .toString()
-                .slice(0, 5)}`,
+            name: `小刚`,
             jobNumber: `jobNumber ${i} ${Math.random()
                 .toString()
                 .slice(0, 5)}`,
-            department: `department ${i} ${Math.random()
-                .toString()
-                .slice(0, 5)}`,
-            job: `job ${i} ${Math.random()
-                .toString()
-                .slice(0, 5)}`
+            department: `审批部`,
+            job: `管理员`
         }))
     }
 }

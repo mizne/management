@@ -15,14 +15,7 @@ import { Observable } from 'rxjs/Observable'
 import { merge } from 'rxjs/observable/merge'
 import { timer } from 'rxjs/observable/timer'
 import { Store } from '@ngrx/store'
-import {
-    State,
-    getPhysicalLoading,
-    getPhysicalServerAccounts,
-    getPhysicalServerAccountCount
-} from './reducers'
 
-import { fromServerTopology } from './actions'
 import { Subject } from 'rxjs/Subject'
 import { DestroyService } from '@core/services/destroy.service'
 import { FormControl } from '@angular/forms'
@@ -35,18 +28,17 @@ import {
     map,
     share
 } from 'rxjs/operators'
-import { ToShowTreeTableSubComponent } from '@shared/modals'
 
 const data = {
     source: {
         nodes: [
-            {
-                shape: 'clusterNode',
-                x: 790 * window.innerWidth / 1858,
-                y: 210 * window.innerHeight / 989,
-                id: 'group3',
-                label: '集群2'
-            },
+            // {
+            //     shape: 'clusterNode',
+            //     x: 790 * window.innerWidth / 1858,
+            //     y: 210 * window.innerHeight / 989,
+            //     id: 'group3',
+            //     label: '集群2'
+            // },
             {
                 shape: 'serverNode',
                 x: 760 * window.innerWidth / 1858,
@@ -77,20 +69,20 @@ const data = {
             //     id: 'group2',
             //     label: '集群2'
             // },
-            {
-                shape: 'clusterNode',
-                x: 430 * window.innerWidth / 1858,
-                y: 210 * window.innerHeight / 989,
-                id: 'group2',
-                label: '集群1'
-            },
-            {
-                shape: 'clusterNode',
-                x: 1180 * window.innerWidth / 1858,
-                y: 210 * window.innerHeight / 989,
-                id: 'group1',
-                label: '集群3'
-            },
+            // {
+            //     shape: 'clusterNode',
+            //     x: 430 * window.innerWidth / 1858,
+            //     y: 210 * window.innerHeight / 989,
+            //     id: 'group2',
+            //     label: '集群1'
+            // },
+            // {
+            //     shape: 'clusterNode',
+            //     x: 1180 * window.innerWidth / 1858,
+            //     y: 210 * window.innerHeight / 989,
+            //     id: 'group1',
+            //     label: '集群3'
+            // },
             {
                 shape: 'serverNode',
                 x: 480 * window.innerWidth / 1858,
@@ -160,47 +152,47 @@ const data = {
     guides: []
 }
 
-G6.registerNode('clusterNode', {
-    draw(cfg, group) {
-        group.addShape('text', {
-            attrs: {
-                x: cfg.x - 20,
-                y: cfg.y - 110,
-                fill: '#333',
-                text: cfg.label
-            }
-        })
-        return group.addShape('rect', {
-            attrs: {
-                x: cfg.x - 100,
-                y: cfg.y - 100,
-                width: 200,
-                height: 200,
-                fill: '#fff',
-                stroke: 'red'
-            }
-        })
-    },
-    getAnchorPoints() {
-        return [
-            [0, 0.25],
-            [0, 0.5],
-            [0, 0.75],
-            [1, 0.25],
-            [1, 0.5],
-            [1, 0.75],
-            [0.25, 0],
-            [0.5, 0],
-            [0.75, 0],
-            [0.25, 1],
-            [0.5, 1],
-            [0.75, 1]
-        ]
-    }
-})
-function a() {
-    alert('aaaaa')
-}
+// G6.registerNode('clusterNode', {
+//     draw(cfg, group) {
+//         group.addShape('text', {
+//             attrs: {
+//                 x: cfg.x - 20,
+//                 y: cfg.y - 110,
+//                 fill: '#333',
+//                 text: cfg.label
+//             }
+//         })
+//         return group.addShape('rect', {
+//             attrs: {
+//                 x: cfg.x - 100,
+//                 y: cfg.y - 100,
+//                 width: 200,
+//                 height: 200,
+//                 fill: '#fff',
+//                 stroke: 'red'
+//             }
+//         })
+//     },
+//     getAnchorPoints() {
+//         return [
+//             [0, 0.25],
+//             [0, 0.5],
+//             [0, 0.75],
+//             [1, 0.25],
+//             [1, 0.5],
+//             [1, 0.75],
+//             [0.25, 0],
+//             [0.5, 0],
+//             [0.75, 0],
+//             [0.25, 1],
+//             [0.5, 1],
+//             [0.75, 1]
+//         ]
+//     }
+// })
+// function a() {
+//     alert('aaaaa')
+// }
 G6.registerNode('serverNode', {
     draw(cfg, group) {
         // group.addShape('text', {
@@ -252,13 +244,13 @@ G6.registerNode('serverNode', {
 })
 
 @Component({
-    selector: 'app-server-topology',
-    templateUrl: './server-topology.component.html',
-    styleUrls: ['./server-topology.component.less'],
+    selector: 'app-to-show-tree-table-sub',
+    templateUrl: './to-show-tree-table-sub.component.html',
+    styleUrls: ['./to-show-tree-table-sub.component.less'],
     providers: [DestroyService],
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ServerTopologyComponent implements OnInit, AfterViewInit {
+export class ToShowTreeTableSubComponent implements OnInit, AfterViewInit {
     tabIndex = 0
     data = data
     net: any
@@ -268,7 +260,6 @@ export class ServerTopologyComponent implements OnInit, AfterViewInit {
     constructor(
         private messageService: NzMessageService,
         private modalService: NzModalService,
-        private store: Store<State>,
         private destroyService: DestroyService
     ) { }
 
@@ -292,16 +283,16 @@ export class ServerTopologyComponent implements OnInit, AfterViewInit {
         // 第六步：渲染关系图
         this.net.render()
 
-        this.net.on('itemclick', ev => {
-            // alert('击中' + ev.item.get('model').id + '!');
-            this.modalService.open({
-                title: ev.item.get('model').label,
-                content: ToShowTreeTableSubComponent,
-                footer: false,
-                width: 800,
-                // componentParams: { resource }
-            })
-        });
+        // this.net.on('itemclick', ev => {
+        //     // alert('击中' + ev.item.get('model').id + '!');
+        //     this.modalService.open({
+        //         title: ev.item.get('model').label,
+        //         content: ToShowTreeTableSubComponent,
+        //         footer: false,
+        //         width: 800,
+        //         // componentParams: { resource }
+        //     })
+        // });
     }
 
     save() {

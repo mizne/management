@@ -70,7 +70,8 @@
                         <label nz-form-item-required>起始使用时间</label>
                     </div>
                     <div nz-form-control nz-col nzHasFeedback [nzValidateStatus]="startTimeUse">
-                        <nz-input formControlName="startTimeUse" nzPlaceHolder="请输入起始使用时间" nzSize="large"></nz-input>
+                        <nz-datepicker formControlName="startTimeUse" [nzSize]="'large'" nzPlaceHolder="请选择时间">
+                        </nz-datepicker>
                         <p nz-form-explain *ngIf="(startTimeUse.dirty || startTimeUse.touched) && startTimeUse.errors?.required">
                             请输入起始使用时间
                         </p>

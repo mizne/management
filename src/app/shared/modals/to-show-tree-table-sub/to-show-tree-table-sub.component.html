@@ -1,0 +1,10 @@
+<nz-tabset [nzType]="'card'" [(nzSelectedIndex)]="tabIndex" (nzSelectedIndexChange)="tabChange($event)">
+    <nz-tab>
+        <ng-template #nzTabHeading>
+            <i class="anticon anticon-apple"></i>
+            服务器拓扑信息
+        </ng-template>
+        <!-- <button (click)="save()">Save</button> -->
+        <div id="c1"></div>
+    </nz-tab>
+</nz-tabset>

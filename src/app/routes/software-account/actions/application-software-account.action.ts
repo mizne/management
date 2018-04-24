@@ -1,6 +1,6 @@
 import { Action } from '@ngrx/store'
 
-import { SystemLogger } from '@core/models/software-account.model'
+import { ApplicationSoftwareAccount } from '@core/models/software-account.model'
 import {
     PaginationParams,
     FetchItemsParams,
@@ -35,16 +35,20 @@ export const EDIT_APPLICATION_SOFTWARE_ACCOUNT_SUCCESS =
 export const EDIT_APPLICATION_SOFTWARE_ACCOUNT_FAILURE =
     '[Application Software Account] Edit Application Software Account Failure'
 
+export const DELETE_APPLICATION_SOFTWARE_ACCOUNT = '[Application Software Account] Delete Application Software Account'
+export const DELETE_APPLICATION_SOFTWARE_ACCOUNT_SUCCESS = '[Application Software Account] Delete Application Software Account Success'
+export const DELETE_APPLICATION_SOFTWARE_ACCOUNT_FAILURE = '[Application Software Account] Delete Application Software Account Failure'
+
 export const ENSURE_PAGE_PARAMS =
     '[Application Software Account] Ensure Page Params'
 
 export class FetchApplicationSoftwareAccountsAction implements Action {
     readonly type = FETCH_APPLICATION_SOFTWARE_ACCOUNTS
-    constructor(public payload: FetchItemsParams = defaultFetchItemsParams) {}
+    constructor(public payload: FetchItemsParams = defaultFetchItemsParams) { }
 }
 export class FetchApplicationSoftwareAccountsSuccessAction implements Action {
     readonly type = FETCH_APPLICATION_SOFTWARE_ACCOUNTS_SUCCESS
-    constructor(public applicationSoftwareAccounts: SystemLogger[]) {}
+    constructor(public applicationSoftwareAccounts: ApplicationSoftwareAccount[]) { }
 }
 export class FetchApplicationSoftwareAccountsFailureAction implements Action {
     readonly type = FETCH_APPLICATION_SOFTWARE_ACCOUNTS_FAILURE
@@ -52,12 +56,12 @@ export class FetchApplicationSoftwareAccountsFailureAction implements Action {
 
 export class FetchApplicationSoftwareAccountsCountAction implements Action {
     readonly type = FETCH_APPLICATION_SOFTWARE_ACCOUNTS_COUNT
-    constructor(public searchText: string = '') {}
+    constructor(public searchText: string = '') { }
 }
 export class FetchApplicationSoftwareAccountsCountSuccessAction
     implements Action {
     readonly type = FETCH_APPLICATION_SOFTWARE_ACCOUNTS_COUNT_SUCCESS
-    constructor(public count: number) {}
+    constructor(public count: number) { }
 }
 export class FetchApplicationSoftwareAccountsCountFailureAction
     implements Action {
@@ -66,7 +70,7 @@ export class FetchApplicationSoftwareAccountsCountFailureAction
 
 export class CreateApplicationSoftwareAccountAction implements Action {
     readonly type = CREATE_APPLICATION_SOFTWARE_ACCOUNT
-    constructor(public account: SystemLogger) {}
+    constructor(public account: ApplicationSoftwareAccount) { }
 }
 export class CreateApplicationSoftwareAccountSuccessAction implements Action {
     readonly type = CREATE_APPLICATION_SOFTWARE_ACCOUNT_SUCCESS
@@ -77,7 +81,7 @@ export class CreateApplicationSoftwareAccountFailureAction implements Action {
 
 export class EditApplicationSoftwareAccountAction implements Action {
     readonly type = EDIT_APPLICATION_SOFTWARE_ACCOUNT
-    constructor(public account: SystemLogger) {}
+    constructor(public account: ApplicationSoftwareAccount) { }
 }
 export class EditApplicationSoftwareAccountSuccessAction implements Action {
     readonly type = EDIT_APPLICATION_SOFTWARE_ACCOUNT_SUCCESS
@@ -86,9 +90,20 @@ export class EditApplicationSoftwareAccountFailureAction implements Action {
     readonly type = EDIT_APPLICATION_SOFTWARE_ACCOUNT_FAILURE
 }
 
+export class DeleteApplicationSoftwareAccountAction implements Action {
+    readonly type = DELETE_APPLICATION_SOFTWARE_ACCOUNT
+    constructor(public id: string) { }
+}
+export class DeleteApplicationSoftwareAccountSuccessAction implements Action {
+    readonly type = DELETE_APPLICATION_SOFTWARE_ACCOUNT_SUCCESS
+}
+export class DeleteApplicationSoftwareAccountFailureAction implements Action {
+    readonly type = DELETE_APPLICATION_SOFTWARE_ACCOUNT_FAILURE
+}
+
 export class EnsurePageParamsAction implements Action {
     readonly type = ENSURE_PAGE_PARAMS
-    constructor(public params: PaginationParams) {}
+    constructor(public params: PaginationParams) { }
 }
 
 export type Actions =
@@ -104,4 +119,7 @@ export type Actions =
     | EditApplicationSoftwareAccountAction
     | EditApplicationSoftwareAccountSuccessAction
     | EditApplicationSoftwareAccountFailureAction
+    | DeleteApplicationSoftwareAccountAction
+    | DeleteApplicationSoftwareAccountSuccessAction
+    | DeleteApplicationSoftwareAccountFailureAction
     | EnsurePageParamsAction

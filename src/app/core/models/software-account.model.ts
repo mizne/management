@@ -8,7 +8,7 @@ export class SoftwareAccount {
     type: string
     version: string
     whoUse: string
-    yearsUse: number
+    yearsUse: string
     startTimeUse: string
     license: string
     remark: string
@@ -17,20 +17,46 @@ export class SoftwareAccount {
     checked?: boolean
 }
 
-export class SystemLogger extends SoftwareAccount {
-    static generateFakeDataItems({ pageIndex, pageSize }): SystemLogger[] {
+export class ApplicationSoftwareAccount extends SoftwareAccount {
+    static generateFakeDataItems({ pageIndex, pageSize }): ApplicationSoftwareAccount[] {
         return Array.from({ length: pageSize }, (_, i) => ({
             id: uuid.v4(),
-            name: `app softwareName ${i + (pageIndex - 1) * pageSize}`,
-            type: `app softwareType ${i + (pageIndex - 1) * pageSize}`,
-            version: `app softwareVersion ${i + (pageIndex - 1) * pageSize}`,
-            whoUse: `who use ${i + (pageIndex - 1) * pageSize}`,
-            yearsUse: i + (pageIndex - 1) * pageSize,
+            name: `软件 ${i + (pageIndex - 1) * pageSize + 1}`,
+            type: `软件类型 ${i + (pageIndex - 1) * pageSize + 1}`,
+            version: `软件版本 ${i + (pageIndex - 1) * pageSize + 1}`,
+            whoUse: `员工 ${i + (pageIndex - 1) * pageSize + 1}`,
+            yearsUse: String(i + (pageIndex - 1) * pageSize),
             startTimeUse: `startTimeUse ${i + (pageIndex - 1) * pageSize}`,
             license: `license ${i + (pageIndex - 1) * pageSize}`,
             remark: `remark ${i + (pageIndex - 1) * pageSize}`
         }))
     }
+
+    static convertFromResp(resp: ApplicationSoftwareAccountResp): ApplicationSoftwareAccount {
+        return {
+            id: resp.uniqueid,
+            name: resp.softwareName,
+            type: resp.softwareType,
+            version: resp.softwareVersion,
+            whoUse: resp.use,
+            yearsUse: resp.usetime,
+            startTimeUse: resp.startTimeUse,
+            license: resp.license,
+            remark: resp.remarks
+        }
+    }
+}
+
+export interface ApplicationSoftwareAccountResp {
+    uniqueid: string,
+    softwareName: string,
+    softwareType: string,
+    softwareVersion: string,
+    use: string,
+    usetime: string,
+    startTimeUse: string,
+    license: string,
+    remarks: string
 }
 
 export class SystemSoftwareAccount extends SoftwareAccount {
@@ -40,16 +66,42 @@ export class SystemSoftwareAccount extends SoftwareAccount {
     }): SystemSoftwareAccount[] {
         return Array.from({ length: pageSize }, (_, i) => ({
             id: uuid.v4(),
-            name: `system softwareName ${i + (pageIndex - 1) * pageSize}`,
-            type: `system softwareType ${i + (pageIndex - 1) * pageSize}`,
-            version: `system softwareVersion ${i + (pageIndex - 1) * pageSize}`,
-            whoUse: `who use ${i + (pageIndex - 1) * pageSize}`,
-            yearsUse: i + (pageIndex - 1) * pageSize,
+            name: `软件 ${i + (pageIndex - 1) * pageSize + 1}`,
+            type: `软件类型 ${i + (pageIndex - 1) * pageSize + 1}`,
+            version: `软件版本 ${i + (pageIndex - 1) * pageSize + 1}`,
+            whoUse: `员工 ${i + (pageIndex - 1) * pageSize + 1}`,
+            yearsUse: String(i + (pageIndex - 1) * pageSize),
             startTimeUse: `startTimeUse ${i + (pageIndex - 1) * pageSize}`,
             license: `license ${i + (pageIndex - 1) * pageSize}`,
             remark: `remark ${i + (pageIndex - 1) * pageSize}`
         }))
     }
+
+    static convertFromResp(resp: SystemSoftwareAccountResp): SystemSoftwareAccount {
+        return {
+            id: resp.uniqueid,
+            name: resp.name,
+            type: resp.type,
+            version: resp.version,
+            whoUse: resp.use,
+            yearsUse: resp.usetime,
+            startTimeUse: resp.startTimeUse,
+            license: resp.license,
+            remark: resp.remarks
+        }
+    }
+}
+
+export interface SystemSoftwareAccountResp {
+    uniqueid: string,
+    name: string,
+    type: string,
+    version: string,
+    use: string,
+    usetime: string,
+    startTimeUse: string,
+    license: string,
+    remarks: string
 }
 
 export class MiddlewareSoftwareAccount {
@@ -66,14 +118,13 @@ export class MiddlewareSoftwareAccount {
     }): MiddlewareSoftwareAccount[] {
         return Array.from({ length: pageSize }, (_, i) => ({
             id: uuid.v4(),
-            name: `middleware softwareName ${i + (pageIndex - 1) * pageSize}`,
-            version: `middleware softwareVersion ${i +
-                (pageIndex - 1) * pageSize}`,
-            alias: `alias ${i + (pageIndex - 1) * pageSize}`,
-            operationSystem: `operationSystem ${i +
-                (pageIndex - 1) * pageSize}`,
-            middlewareVersion: `middlewareVersion ${i +
-                (pageIndex - 1) * pageSize}`,
+            name: `软件 ${i + (pageIndex - 1) * pageSize + 1}`,
+            version: `中间件版本 ${i + (pageIndex - 1) * pageSize + 1}`,
+            alias: `alias ${i + (pageIndex - 1) * pageSize + 1}`,
+            operationSystem: `操作系统 ${i +
+                (pageIndex - 1) * pageSize + 1}`,
+            middlewareVersion: `中间件版本 ${i +
+                (pageIndex - 1) * pageSize + 1}`,
             remark: `remark ${i + (pageIndex - 1) * pageSize}`
         }))
     }

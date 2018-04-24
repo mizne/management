@@ -5,7 +5,7 @@
 
 export const environment = {
     chore: false,
-    SERVER_URL: `http://huizhanren.xiaovbao.cn`,
+    SERVER_URL: `http://192.168.0.126:8080`,
     production: false,
     hmr: false,
     useHash: true

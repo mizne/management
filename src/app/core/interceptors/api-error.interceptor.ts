@@ -33,12 +33,13 @@ export class ApiErrorInterceptor implements HttpInterceptor {
                         if (this.requestWithSelf(req.url)) {
                             if (
                                 event.body &&
-                                event.body.resCode !== 0 &&
-                                event.body.resCode !== 10000
+                                event.body.code !== 0
+                                // &&
+                                // event.body.resCode !== 10000
                             ) {
                                 console.warn(
-                                    `resCode: ${event.body.resCode}; resMsg: ${
-                                    event.body.resMsg
+                                    `resCode: ${event.body.code}; resMsg: ${
+                                    event.body.describe
                                     }`
                                 )
                             }
@@ -56,7 +57,7 @@ export class ApiErrorInterceptor implements HttpInterceptor {
                             this.modalService = this.injector.get(NzModalService)
                             this.modalService.error({
                                 title: '内部错误，请稍候重试',
-                                content: '会展人 遇到了意外情况，无法完成您的请求。'
+                                content: '遇到了意外情况，无法完成您的请求。'
                             })
                         }
                     }

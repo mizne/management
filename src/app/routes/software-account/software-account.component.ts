@@ -3,7 +3,7 @@ import { FormControl } from '@angular/forms'
 import { NzMessageService, NzModalService } from 'ng-zorro-antd'
 
 import {
-    SystemLogger,
+    ApplicationSoftwareAccount,
     SystemSoftwareAccount,
     MiddlewareSoftwareAccount,
     SoftwareAccountType
@@ -31,7 +31,8 @@ import {
     FetchApplicationSoftwareAccountsCountAction,
     EnsurePageParamsAction as EnsureApplicationPageParamsAction,
     CreateApplicationSoftwareAccountAction,
-    EditApplicationSoftwareAccountAction
+    EditApplicationSoftwareAccountAction,
+    DeleteApplicationSoftwareAccountAction
 } from './actions/application-software-account.action'
 import {
     FetchSystemSoftwareAccountsAction,
@@ -82,7 +83,7 @@ import { TableService, HAS_MULTI_TYPE } from '@core/services/table.service'
 export class SoftwareAccountComponent implements OnInit {
     tabIndex = 0
 
-    applications$: Observable<SystemLogger[]>
+    applications$: Observable<ApplicationSoftwareAccount[]>
     applicationsCount$: Observable<number>
     applicationLoading$: Observable<boolean>
     applicationPageIndex = 1
@@ -144,7 +145,7 @@ export class SoftwareAccountComponent implements OnInit {
         this.applicationPageChangeSub.next()
     }
 
-    toEditApplication(account: SystemLogger) {
+    toEditApplication(account: ApplicationSoftwareAccount) {
         this.tableService.preEditItem({
             title: '编辑应用软件台帐',
             content: ToEditApplicationSoftwareAccountComponent,
@@ -153,7 +154,7 @@ export class SoftwareAccountComponent implements OnInit {
         })
     }
 
-    toShowApplication(account: SystemLogger) {
+    toShowApplication(account: ApplicationSoftwareAccount) {
         this.tableService.preShowItem({
             title: '查看应用软件台帐',
             content: ToShowApplicationSoftwareAccountComponent,
@@ -323,6 +324,7 @@ export class SoftwareAccountComponent implements OnInit {
             .toSingleDeleteItem(SoftwareAccountType.APPLICATION)
             .subscribe(id => {
                 console.log(`delete application software account id: ${id}`)
+                this.store.dispatch(new DeleteApplicationSoftwareAccountAction(id))
             })
     }
 

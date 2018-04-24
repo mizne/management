@@ -103,6 +103,7 @@
 
             <nz-card [nzTitle]="'资源信息'" [nzBordered]="false">
                 <ng-template #extra>
+                    <button nz-button class="mx-sm" nzSize="large" (click)="toDividePackageWindow()">编辑分包</button>
                     <button nz-button class="mx-sm" nzSize="large" (click)="toCreateResource()">新增资源信息</button>
                     <button nz-button class="mx-sm" nzSize="large" [nzType]="'primary'" (click)="toAddResources()">选择资源信息</button>
                 </ng-template>
@@ -690,6 +691,7 @@
 
                 <nz-card *ngIf="tab.data; let tabData;" [nzTitle]="'资源信息'" [nzBordered]="false">
                     <ng-template #extra>
+                        <button nz-button class="mx-sm" nzSize="large" (click)="toDividePackageWindow()">编辑分包</button>
                         <button nz-button class="mx-sm" nzSize="large" (click)="toCreateResource()">新增资源信息</button>
                         <button nz-button class="mx-sm" nzSize="large" [nzType]="'primary'" (click)="toAddResources()">选择资源信息</button>
                     </ng-template>
@@ -740,7 +742,6 @@
                         </tbody>
                     </nz-table>
                 </nz-card>
-
                 <div class="my-md text-center">
                     <button nz-button class="mx-sm" nzSize="large" (click)="toCancelEdit()">取消</button>
                     <button nz-button class="mx-sm" nzSize="large" [nzType]="'primary'" (click)="toEnsureEdit()">保存</button>

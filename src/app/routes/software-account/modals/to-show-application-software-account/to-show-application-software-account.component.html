@@ -8,7 +8,7 @@
         <nz-divider class="mb-lg"></nz-divider>
         <desc-list size="large" title="使用信息" class="mb-lg">
             <desc-list-item term="使用对象">{{data.whoUse}}</desc-list-item>
-            <desc-list-item term="起始使用时间">{{data.startTimeUse}}</desc-list-item>
+            <desc-list-item term="起始使用时间">{{data.startTimeUse | date: 'yyyy/MM/dd'}}</desc-list-item>
             <desc-list-item term="使用期限">{{data.yearsUse}}</desc-list-item>
         </desc-list>
         <nz-divider class="mb-lg"></nz-divider>

@@ -29,28 +29,29 @@ export class AssetsRecovery {
     static generateFakeDataItems({ pageIndex, pageSize }): AssetsRecovery[] {
         return Array.from({ length: pageSize }, (_, i) => ({
             id: uuid.v4(),
-            resourceType: `resourceType ${i + (pageIndex - 1) * pageSize}`,
-            computeResourceType: `computeType ${i +
-                (pageIndex - 1) * pageSize}`,
-            resourceName: `resourceName ${i + (pageIndex - 1) * pageSize}`,
-            version: `version ${i + (pageIndex - 1) * pageSize}`,
+            resourceType: `编程类`,
+            computeResourceType: `物理机`,
+
+            resourceName: `名称 ${i + (pageIndex - 1) * pageSize + 1}`,
+            version: `1.7.0_17-b0${i + (pageIndex - 1) * pageSize + 1}`,
             modelNumber: `modelNumber ${i + (pageIndex - 1) * pageSize}`,
-            count: `count ${i + (pageIndex - 1) * pageSize}`,
-            useEnvironment: `useEnvironment ${i + (pageIndex - 1) * pageSize}`,
-            useState: `useState ${i + (pageIndex - 1) * pageSize}`,
-            whoUse: `whoUse ${i + (pageIndex - 1) * pageSize}`,
-            serverName: `serverName ${i + (pageIndex - 1) * pageSize}`,
-            serverPurpose: `serverPurpose ${i + (pageIndex - 1) * pageSize}`,
-            workStatus: `workStatus ${i + (pageIndex - 1) * pageSize}`,
-            managementIP: `managementIP ${i + (pageIndex - 1) * pageSize}`,
-            operationSystem: `operationSystem ${i +
-                (pageIndex - 1) * pageSize}`,
-            cpuCoreCount: `cpuCoreCount ${i + (pageIndex - 1) * pageSize}`,
+            count: ` ${i + (pageIndex - 1) * pageSize + 1}`,
+
+            useEnvironment: `Windows`,
+            useState: `空闲`,
+            whoUse: `使用对象 ${i + (pageIndex - 1) * pageSize + 1}`,
+
+            serverName: `服务器 ${i + (pageIndex - 1) * pageSize}`,
+            serverPurpose: `开发`,
+            workStatus: `空闲`,
+            managementIP: `127.0.0.1`,
+            operationSystem: `Windows`,
+            cpuCoreCount: `SPEC200${i + (pageIndex - 1) * pageSize}`,
             memorySize: `memorySize ${i + (pageIndex - 1) * pageSize}`,
-            storageSize: `storageSize ${i + (pageIndex - 1) * pageSize}`,
-            useStartTime: `useStartTime ${i + (pageIndex - 1) * pageSize}`,
-            useDuration: `useDuration ${i + (pageIndex - 1) * pageSize}`,
-            remark: `remark ${i + (pageIndex - 1) * pageSize}`
+            storageSize: `1TB`,
+            useStartTime: `2018-4-18 14:20:52`,
+            useDuration: `三个月`,
+            remark: `可回收详情`
         }))
     }
 

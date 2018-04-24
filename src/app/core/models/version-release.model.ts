@@ -53,36 +53,22 @@ export class ApplyInfo {
     static generateFakeData(): ApplyInfo {
         return {
             listNumber: uuid.v4(),
-            applicantName: `fake applicantName ${Math.random()
-                .toString()
-                .slice(0, 5)}`,
-            applicantDept: `fake applicantDept ${Math.random()
-                .toString()
-                .slice(0, 5)}`,
-            applicantTime: `fake applicantTime ${Math.random()
-                .toString()
-                .slice(0, 5)}`,
-            projectName: `fake projectName ${Math.random()
-                .toString()
-                .slice(0, 5)}`,
-            onlineVersion: `fake onlineVersion ${Math.random()
+            applicantName: `小明`,
+            applicantDept: `研发部`,
+            applicantTime: `2018-4-18`,
+            projectName: `国电项目 `,
+            onlineVersion: `b${Math.random()
                 .toString()
                 .slice(0, 5)}`,
             onlineTime: new Date(),
-            releaseVersion: `fake releaseVersion ${Math.random()
+            releaseVersion: `1.7.0.${Math.random()
                 .toString()
                 .slice(0, 5)}`,
-            upgradeMode: `fake upgradeMode ${Math.random()
-                .toString()
-                .slice(0, 5)}`,
+            upgradeMode: `自动升级`,
             expectedStartTime: new Date(),
             expectedEndTime: new Date(),
-            versionUpdateDesc: `fake versionUpdateDesc ${Math.random()
-                .toString()
-                .slice(0, 5)}`,
-            remark: `fake remark ${Math.random()
-                .toString()
-                .slice(0, 5)}`
+            versionUpdateDesc: `对产品的功能进行了改善和升级`,
+            remark: `2018-4-18 14:43:29申请`
         }
     }
 }
@@ -118,18 +104,12 @@ export class Approver {
     static generateFakeDataItems(): Approver[] {
         return Array.from({ length: 2 }, (_, i) => ({
             id: uuid.v4(),
-            name: `name ${i} ${Math.random()
-                .toString()
-                .slice(0, 5)}`,
+            name: `小刚`,
             jobNumber: `jobNumber ${i} ${Math.random()
                 .toString()
                 .slice(0, 5)}`,
-            department: `department ${i} ${Math.random()
-                .toString()
-                .slice(0, 5)}`,
-            job: `job ${i} ${Math.random()
-                .toString()
-                .slice(0, 5)}`
+            department: `审批部`,
+            job: `员工`
         }))
     }
 }

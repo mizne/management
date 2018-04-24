@@ -8,7 +8,7 @@ import { SoftwareAccountService } from '../services/software-account.service'
 import { NzNotificationService } from 'ng-zorro-antd'
 import { Store } from '@ngrx/store'
 import { State, getApplicationSoftwareAccountsPageParams } from '../reducers'
-import { map, switchMap, catchError, concatMap, tap } from 'rxjs/operators'
+import { map, switchMap, catchError, concatMap, tap, withLatestFrom } from 'rxjs/operators'
 
 @Injectable()
 export class ApplicationSoftwareAccountEffects {
@@ -187,10 +187,72 @@ export class ApplicationSoftwareAccountEffects {
             })
         )
 
+
+    @Effect()
+    deleteApplicationSoftwareAccount$ = this.actions$
+        .ofType(
+            fromApplicationSoftwareAccount.DELETE_APPLICATION_SOFTWARE_ACCOUNT
+        )
+        .pipe(
+            map(
+                (
+                    action: fromApplicationSoftwareAccount.DeleteApplicationSoftwareAccountAction
+                ) => action.id
+            ),
+            withLatestFrom(this.store.select(getApplicationSoftwareAccountsPageParams)),
+            switchMap(([id, params]) =>
+                this.softwareAccountService
+                    .deleteApplicationSoftwareAccount(id)
+                    .pipe(
+                        concatMap(() => [
+                            new fromApplicationSoftwareAccount.DeleteApplicationSoftwareAccountSuccessAction(),
+                            new fromApplicationSoftwareAccount.FetchApplicationSoftwareAccountsAction({
+                                condition: {},
+                                options: params
+                            }),
+                            new fromApplicationSoftwareAccount.FetchApplicationSoftwareAccountsCountAction(),
+                        ]),
+                        catchError(() =>
+                            of(
+                                new fromApplicationSoftwareAccount.DeleteApplicationSoftwareAccountFailureAction()
+                            )
+                        )
+                    )
+            )
+        )
+
+    @Effect({ dispatch: false })
+    deleteApplicationSoftwareAccountSuccess$ = this.actions$
+        .ofType(
+            fromApplicationSoftwareAccount.DELETE_APPLICATION_SOFTWARE_ACCOUNT_SUCCESS
+        )
+        .pipe(
+            tap(() => {
+                this.notify.success(
+                    `删除应用软件台帐`,
+                    `恭喜您，删除应用软件台帐成功！`
+                )
+            })
+        )
+
+    @Effect({ dispatch: false })
+    deleteApplicationSoftwareAccountFailure$ = this.actions$
+        .ofType(
+            fromApplicationSoftwareAccount.DELETE_APPLICATION_SOFTWARE_ACCOUNT_FAILURE
+        )
+        .pipe(
+            tap(() => {
+                this.notify.error(
+                    `删除应用软件台帐`,
+                    `啊哦，删除应用软件台帐失败！`
+                )
+            })
+        )
+
     constructor(
         private actions$: Actions,
         private softwareAccountService: SoftwareAccountService,
         private notify: NzNotificationService,
         private store: Store<State>
-    ) {}
+    ) { }
 }

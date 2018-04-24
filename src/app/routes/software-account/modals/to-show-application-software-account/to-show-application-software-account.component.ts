@@ -4,7 +4,7 @@ import { Subject } from 'rxjs/Subject'
 import { Observable } from 'rxjs/Observable'
 
 import { DestroyService } from '@core/services/destroy.service'
-import { SystemLogger } from '@core/models/software-account.model'
+import { ApplicationSoftwareAccount } from '@core/models/software-account.model'
 
 @Component({
     selector: 'app-to-show-application-software-account',
@@ -15,11 +15,11 @@ export class ToShowApplicationSoftwareAccountComponent implements OnInit {
     constructor(
         private subject: NzModalSubject,
         private destroyService: DestroyService
-    ) {}
+    ) { }
 
-    @Input() data: SystemLogger
+    @Input() data: ApplicationSoftwareAccount
 
-    ngOnInit() {}
+    ngOnInit() { }
 
     toSave() {
         this.subject.destroy('onOk')

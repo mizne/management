@@ -79,41 +79,21 @@ export class ApplyInfo extends SystemInfo {
         return {
             type: applyType,
             listNumber: uuid.v4(),
-            applicantName: `applicantName`,
-            applicantDept: `applicantDept`,
-            systemName: `fake systemName ${Math.random()
+            applicantName: `申请人`,
+            applicantDept: `研发部`,
+            systemName: `国电系统`,
+            version: `1.7.${Math.random()
                 .toString()
                 .slice(0, 5)}`,
-            version: `fake version ${Math.random()
-                .toString()
-                .slice(0, 5)}`,
-            onlineTime: `fake onlineTime ${Math.random()
-                .toString()
-                .slice(0, 5)}`,
-            devDept: `fake devDept ${Math.random()
-                .toString()
-                .slice(0, 5)}`,
-            projectName: `fake projectName ${Math.random()
-                .toString()
-                .slice(0, 5)}`,
-            projectOwner: `fake projectOwner ${Math.random()
-                .toString()
-                .slice(0, 5)}`,
-            projectOwnerPhone: `fake projectOwnerPhone ${Math.random()
-                .toString()
-                .slice(0, 5)}`,
-            techOwner: `fake techOwner ${Math.random()
-                .toString()
-                .slice(0, 5)}`,
-            techOwnerPhone: `fake techOwnerPhone ${Math.random()
-                .toString()
-                .slice(0, 5)}`,
-            description: `fake description ${Math.random()
-                .toString()
-                .slice(0, 5)}`,
-            remark: `fake remark ${Math.random()
-                .toString()
-                .slice(0, 5)}`
+            onlineTime: `2018-4-18`,
+            devDept: `研发部`,
+            projectName: `国电项目`,
+            projectOwner: `小李`,
+            projectOwnerPhone: `485649879`,
+            techOwner: `小王`,
+            techOwnerPhone: `78974564`,
+            description: `研发产品`,
+            remark: `为研发项目做准备`
         }
     }
 }
@@ -149,18 +129,12 @@ export class Approver {
     static generateFakeDataItems(): Approver[] {
         return Array.from({ length: 2 }, (_, i) => ({
             id: uuid.v4(),
-            name: `name ${i} ${Math.random()
-                .toString()
-                .slice(0, 5)}`,
+            name: `小刚`,
             jobNumber: `jobNumber ${i} ${Math.random()
                 .toString()
                 .slice(0, 5)}`,
-            department: `department ${i} ${Math.random()
-                .toString()
-                .slice(0, 5)}`,
-            job: `job ${i} ${Math.random()
-                .toString()
-                .slice(0, 5)}`
+            department: `审批部门`,
+            job: `管理员`
         }))
     }
 }

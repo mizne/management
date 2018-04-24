@@ -45,21 +45,13 @@ export class ApplyInfo {
 
     static generateFakeData(): ApplyInfo {
         return {
-            listNumber: `fake listNumber ${Math.random()
+            listNumber: `236541${Math.random()
                 .toString()
                 .slice(0, 5)}`,
-            applicantName: `fake applicantName ${Math.random()
-                .toString()
-                .slice(0, 5)}`,
-            applicantDept: `fake applicantDept ${Math.random()
-                .toString()
-                .slice(0, 5)}`,
-            applicantPhone: `fake applicantPhone ${Math.random()
-                .toString()
-                .slice(0, 5)}`,
-            applyReason: `fake applyReason ${Math.random()
-                .toString()
-                .slice(0, 5)}`
+            applicantName: `小明`,
+            applicantDept: `研发部`,
+            applicantPhone: `12345678`,
+            applyReason: `研发需要`
         }
     }
 }
@@ -94,21 +86,13 @@ export class SubPackageInfo {
     applyReason: string
     static generateFakeData(): SubPackageInfo {
         return {
-            subPackageNumber: `fake subPackageNumber ${Math.random()
+            subPackageNumber: `12136${Math.random()
                 .toString()
                 .slice(0, 5)}`,
-            applicantName: `fake applicantName ${Math.random()
-                .toString()
-                .slice(0, 5)}`,
-            applicantDept: `fake applicantDept ${Math.random()
-                .toString()
-                .slice(0, 5)}`,
-            applicantPhone: `fake applicantPhone ${Math.random()
-                .toString()
-                .slice(0, 5)}`,
-            applyReason: `fake applyReason ${Math.random()
-                .toString()
-                .slice(0, 5)}`
+            applicantName: `小明`,
+            applicantDept: `研发部`,
+            applicantPhone: `123456789`,
+            applyReason: `开发需求`
         }
     }
 }
@@ -139,18 +123,12 @@ export class Approver {
 
     static generateFakeDataItems(): Approver[] {
         return Array.from({ length: 2 }, (_, i) => ({
-            name: `name ${i} ${Math.random()
-                .toString()
-                .slice(0, 5)}`,
+            name: `小刚`,
             jobNumber: `jobNumber ${i} ${Math.random()
                 .toString()
                 .slice(0, 5)}`,
-            department: `department ${i} ${Math.random()
-                .toString()
-                .slice(0, 5)}`,
-            job: `job ${i} ${Math.random()
-                .toString()
-                .slice(0, 5)}`
+            department: `审批部`,
+            job: `管理员`
         }))
     }
 }
