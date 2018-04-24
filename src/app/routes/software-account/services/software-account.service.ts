@@ -13,11 +13,7 @@ import {
     FetchItemsParams
 } from '@core/models/pagination.model'
 
-export interface RestResp {
-    code: number
-    date: any[]
-    describe: string
-}
+import { RestResp } from '@core/models/backend-rest.model'
 
 @Injectable()
 export class SoftwareAccountService {
